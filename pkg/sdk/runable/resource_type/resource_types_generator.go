@@ -33,8 +33,9 @@ type ResourceType struct {
 }
 
 var (
-	output   = flag.String("output", "", "Path to the output file for resource types")
-	indexMap = flag.String("index-map", "", "Path to the output file for index map")
+	output            = flag.String("output", "", "Path to the output file for resource types")
+	indexMap          = flag.String("index-map", "", "Path to the output file for index map")
+	resourceTypesList = flag.String("resource-types-list", "", "Path to the output file for index map")
 )
 
 func main() {
@@ -74,13 +75,18 @@ func main() {
 		indexMap = &v
 	}
 
+	if resourceTypesList == nil || len(*resourceTypesList) == 0 {
+		v := "resource_types_list.go"
+		resourceTypesList = &v
+	}
+
 	// Initialize a strings.Builder to construct the output file content
 	b := &strings.Builder{}
 	b.WriteString(fmt.Sprintf(`package provider
 import (
 	"%[1]s/provider/describer"
 	"%[1]s/provider/configs"
-	model "%[1]s/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-azure/pkg/sdk/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
 `, configs.OGPluginRepoURL))
@@ -197,6 +203,23 @@ var ReverseMap = map[string]string{
 
 	// Write the index map to the specified file
 	err = os.WriteFile(*indexMap, []byte(b.String()), os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	// Generate the index map file as before
+	b = &strings.Builder{}
+	b.WriteString(fmt.Sprintf(`package configs
+
+var ResourceTypesList = []string{
+`))
+	for _, resourceType := range resourceTypes {
+		b.WriteString(fmt.Sprintf("  \"%s\",\n", resourceType.ResourceName))
+	}
+	b.WriteString(fmt.Sprintf(`}`))
+
+	// Write the index map to the specified file
+	err = os.WriteFile(*resourceTypesList, []byte(b.String()), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
