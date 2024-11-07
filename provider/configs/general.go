@@ -1,9 +1,11 @@
 package configs
 
-import "github.com/opengovern/og-util/pkg/integration"
+import (
+	"github.com/opengovern/opengovernance/services/integration/integration-type/entra_id_directory/configs"
+)
 
 const (
-	IntegrationTypeLower = "entraid"                                    // example: aws, azure
-	IntegrationName      = integration.Type("ENTRA_ID_DIRECTORY")       // example: AWS_ACCOUNT, AZURE_SUBSCRIPTION
+	IntegrationTypeLower = "entraid" // example: aws, azure
+	IntegrationName      = configs.IntegrationName
 	OGPluginRepoURL      = "github.com/opengovern/og-describer-entraid" // example: github.com/opengovern/og-describer-aws
 )
