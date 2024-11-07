@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func AccountConfigFromMap(m map[string]any) (configs.IntegrationCredentials, error) {
+func AccountCredentialsFromMap(m map[string]any) (configs.IntegrationCredentials, error) {
 	mj, err := json.Marshal(m)
 	if err != nil {
 		return configs.IntegrationCredentials{}, err

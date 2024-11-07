@@ -16,7 +16,7 @@ type Metadata struct {
 	Location         string
 	CloudEnvironment string
 	ResourceType     string
-	SourceID         string
+	IntegrationID    string
 }
 
 //  =================== msgraph ==================
