@@ -1,7 +1,9 @@
+name: Build and Deploy
+
 on:
   workflow_dispatch:
   push:
-    branches: ["main","dev"]
+    branches: ["main", "dev"]
 
 jobs:
   build:
@@ -12,7 +14,8 @@ jobs:
     outputs:
       latest_tag: ${{ steps.set_latest_tag.outputs.latest_tag }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
       - name: Install musl cc
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
@@ -21,51 +24,54 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: './go.mod'
-          cache: false
-      - name: Tag version
+          cache: false  # Disable built-in caching to use custom caching
+      - name: Tag Version
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GH_ACCESS_TOKEN }}
           release_branches: main
           tag_prefix: v
-      - name: Go Cache
-        uses: actions/cache@v3
+      - name: Cache Go Modules and Build Cache
+        uses: actions/cache@v4
         with:
           path: |
             ~/go/pkg/mod
             ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
+            ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}-
             ${{ runner.os }}-go-
-      - run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
-      - name: Build azuread plugin app
+      - name: Configure Git for Private Repos
+        run: |
+          git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
+      - name: Build AzureAd Plugin App
         working-directory: ./steampipe-plugin-azuread
         run: make build
-      - name: Pack azuread plugin build
+      - name: Pack Azure Plugin Build
         working-directory: ./steampipe-plugin-azuread
         run: |
           tar -cvf build.tar build
-      - name: Upload azuread plugin artifact
+      - name: Upload AzureAd Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
           name: steampipe-plugin-azuread
           path: ./steampipe-plugin-azuread/build.tar
           retention-days: 1
-      - name: Build local describer app
+      - name: Build Local Describer App
         working-directory: .
         run: make local-build
-      - name: Pack local describer build
+      - name: Pack Local Describer Build
         working-directory: .
         run: |
           tar -cvf local.tar local
-      - name: Upload local artifact
+      - name: Upload Local Artifact
         uses: actions/upload-artifact@v3
         with:
           name: local-og-describer-entraid
           path: ./local.tar
           retention-days: 1
-      - name: Set latest tag output
+      - name: Set Latest Tag Output
         id: set_latest_tag
         run: |
           if [[ -z "${{ steps.tag_version.outputs.new_tag }}" ]]; then
@@ -74,31 +80,30 @@ jobs:
             echo "latest_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
           fi
   deploy-azuread-plugin:
-    needs:
-      - build
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     environment: main
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Download azuread plugin artifact
+      - name: Download AzureAd Plugin Artifact
         uses: actions/download-artifact@v3
         with:
           name: steampipe-plugin-azuread
           path: .
-      - name: Unpack artifact
+      - name: Unpack AzureAd Plugin Artifact
         run: |
           tar -xvf build.tar
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      - name: Log in to Container Registry
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
-      - name: Build and push Docker images
+      - name: Build and Push Docker Image for Azure Plugin
         uses: docker/build-push-action@v4
         with:
           push: true
@@ -115,23 +120,23 @@ jobs:
       contents: read
     environment: main
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Download plugin artifact
+      - name: Download Local Describer Artifact
         uses: actions/download-artifact@v3
         with:
-          name: local-og-azure-describer
+          name: local-og-describer-entraid
           path: .
-      - name: Unpack plugin artifact
+      - name: Unpack Local Describer Artifact
         run: |
           tar -xvf local.tar
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      - name: Log in to Container Registry
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
-      - name: Build and push Docker images
+      - name: Build and Push Docker Image for Local Describer
         uses: docker/build-push-action@v4
         with:
           push: true
