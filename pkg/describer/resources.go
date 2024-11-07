@@ -5,10 +5,10 @@ package describer
 import (
 	"context"
 	"fmt"
-	model "github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/configs"
-	"github.com/opengovern/og-describer-template/provider/describer"
+	model "github.com/opengovern/og-describer-entraid/pkg/sdk/models"
+	"github.com/opengovern/og-describer-entraid/provider"
+	"github.com/opengovern/og-describer-entraid/provider/configs"
+	"github.com/opengovern/og-describer-entraid/provider/describer"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
 	"sort"
@@ -49,7 +49,7 @@ func GetResources(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg configs.IntegrationConfig,
+	cfg configs.IntegrationCredentials,
 	additionalParameters map[string]string,
 	stream *model.StreamSender,
 ) error {
@@ -60,7 +60,7 @@ func GetResources(
 	return nil
 }
 
-func describe(ctx context.Context, logger *zap.Logger, accountCfg configs.IntegrationConfig, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
+func describe(ctx context.Context, logger *zap.Logger, accountCfg configs.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 	resourceTypeObject, ok := provider.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)

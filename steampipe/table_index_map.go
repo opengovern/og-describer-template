@@ -1,20 +1,80 @@
 package steampipe
 
-// Please import resource clients file after it's genrated completly
+import (
+	"github.com/opengovern/og-describer-entraid/pkg/sdk/es"
+)
 
 var Map = map[string]string{
-	// Example
-	// "AWS::IdentityStore::GroupMembership":                "aws_identitystore_group_membership",
+  "Microsoft.Entra/groups": "azuread_group",
+  "Microsoft.Entra/groupMemberships": "azuread_group_membership",
+  "Microsoft.Entra/devices": "azuread_device",
+  "Microsoft.Entra/signInReports": "azuread_sign_in_report",
+  "Microsoft.Entra/applications": "azuread_application",
+  "Microsoft.Entra/appRegistrations": "azuread_app_registration",
+  "Microsoft.Entra/enterpriseApplication": "azuread_enterprise_application",
+  "Microsoft.Entra/managedIdentity": "azuread_managed_identity",
+  "Microsoft.Entra/microsoftApplication": "azuread_microsoft_application",
+  "Microsoft.Entra/domains": "azuread_domain",
+  "Microsoft.Entra/tenant": "azuread_tenant",
+  "Microsoft.Entra/identityproviders": "azuread_identity_provider",
+  "Microsoft.Entra/securitydefaultspolicy": "azuread_security_defaults_policy",
+  "Microsoft.Entra/authorizationpolicy": "azuread_authorization_policy",
+  "Microsoft.Entra/conditionalaccesspolicy": "azuread_conditional_access_policy",
+  "Microsoft.Entra/adminconsentrequestpolicy": "azuread_admin_consent_request_policy",
+  "Microsoft.Entra/userregistrationdetails": "azuread_user_registration_details",
+  "Microsoft.Entra/serviceprincipals": "azuread_service_principal",
+  "Microsoft.Entra/users": "azuread_user",
+  "Microsoft.Entra/directoryroles": "azuread_directory_role",
+  "Microsoft.Entra/directorysettings": "azuread_directory_setting",
+  "Microsoft.Entra/directoryauditreport": "azuread_directory_audit_report",
 }
 
 var DescriptionMap = map[string]interface{}{
-	// Example
-	// "AWS::EC2::VerifiedAccessInstance":                   opengovernance.EC2VerifiedAccessInstance{},
-	
+  "Microsoft.Entra/groups": opengovernance.AdGroup{},
+  "Microsoft.Entra/groupMemberships": opengovernance.AdGroupMembership{},
+  "Microsoft.Entra/devices": opengovernance.AdDevice{},
+  "Microsoft.Entra/signInReports": opengovernance.AdSignInReport{},
+  "Microsoft.Entra/applications": opengovernance.AdApplication{},
+  "Microsoft.Entra/appRegistrations": opengovernance.AdAppRegistration{},
+  "Microsoft.Entra/enterpriseApplication": opengovernance.AdEnterpriseApplication{},
+  "Microsoft.Entra/managedIdentity": opengovernance.AdManagedIdentity{},
+  "Microsoft.Entra/microsoftApplication": opengovernance.AdMicrosoftApplication{},
+  "Microsoft.Entra/domains": opengovernance.AdDomain{},
+  "Microsoft.Entra/tenant": opengovernance.AdTenant{},
+  "Microsoft.Entra/identityproviders": opengovernance.AdIdentityProvider{},
+  "Microsoft.Entra/securitydefaultspolicy": opengovernance.AdSecurityDefaultsPolicy{},
+  "Microsoft.Entra/authorizationpolicy": opengovernance.AdAuthorizationPolicy{},
+  "Microsoft.Entra/conditionalaccesspolicy": opengovernance.AdConditionalAccessPolicy{},
+  "Microsoft.Entra/adminconsentrequestpolicy": opengovernance.AdAdminConsentRequestPolicy{},
+  "Microsoft.Entra/userregistrationdetails": opengovernance.AdUserRegistrationDetails{},
+  "Microsoft.Entra/serviceprincipals": opengovernance.AdServicePrincipal{},
+  "Microsoft.Entra/users": opengovernance.AdUsers{},
+  "Microsoft.Entra/directoryroles": opengovernance.AdDirectoryRole{},
+  "Microsoft.Entra/directorysettings": opengovernance.AdDirectorySetting{},
+  "Microsoft.Entra/directoryauditreport": opengovernance.AdDirectoryAuditReport{},
 }
 
 var ReverseMap = map[string]string{
-	// Example:
-	// "aws_redshift_snapshot":                           "AWS::Redshift::Snapshot",
-
+  "azuread_group": "Microsoft.Entra/groups",
+  "azuread_group_membership": "Microsoft.Entra/groupMemberships",
+  "azuread_device": "Microsoft.Entra/devices",
+  "azuread_sign_in_report": "Microsoft.Entra/signInReports",
+  "azuread_application": "Microsoft.Entra/applications",
+  "azuread_app_registration": "Microsoft.Entra/appRegistrations",
+  "azuread_enterprise_application": "Microsoft.Entra/enterpriseApplication",
+  "azuread_managed_identity": "Microsoft.Entra/managedIdentity",
+  "azuread_microsoft_application": "Microsoft.Entra/microsoftApplication",
+  "azuread_domain": "Microsoft.Entra/domains",
+  "azuread_tenant": "Microsoft.Entra/tenant",
+  "azuread_identity_provider": "Microsoft.Entra/identityproviders",
+  "azuread_security_defaults_policy": "Microsoft.Entra/securitydefaultspolicy",
+  "azuread_authorization_policy": "Microsoft.Entra/authorizationpolicy",
+  "azuread_conditional_access_policy": "Microsoft.Entra/conditionalaccesspolicy",
+  "azuread_admin_consent_request_policy": "Microsoft.Entra/adminconsentrequestpolicy",
+  "azuread_user_registration_details": "Microsoft.Entra/userregistrationdetails",
+  "azuread_service_principal": "Microsoft.Entra/serviceprincipals",
+  "azuread_user": "Microsoft.Entra/users",
+  "azuread_directory_role": "Microsoft.Entra/directoryroles",
+  "azuread_directory_setting": "Microsoft.Entra/directorysettings",
+  "azuread_directory_audit_report": "Microsoft.Entra/directoryauditreport",
 }

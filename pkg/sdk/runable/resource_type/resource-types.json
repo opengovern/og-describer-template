@@ -1,15 +1,251 @@
 [
   {
-    "ResourceName": "AWS::Redshift::Snapshot",
-    "ListDescriber": "ParallelDescribeRegional(describer.RedshiftSnapshot)",
-    "GetDescriber": "ParallelDescribeRegionalSingleResource(describer.GetRedshiftSnapshot)",
-    "TerraformName": [
-      "aws_redshift_cluster_snapshot"
-    ],
-    "TerraformServiceName": "redshift",
-    "Discovery": "COMPLETE",
-    "SteampipeTable": "aws_redshift_snapshot",
-    "Model": "RedshiftSnapshot"
+    "ResourceName": "Microsoft.Entra/groups",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdGroup)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_group",
+    "Model": "AdGroup"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/groupMemberships",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdGroupMembership)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_group_membership",
+    "Model": "AdGroupMembership"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/devices",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdDevice)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_device",
+    "Model": "AdDevice"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/signInReports",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdSignInReport)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_sign_in_report",
+    "Model": "AdSignInReport"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/applications",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdApplication)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_application",
+    "Model": "AdApplication"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/appRegistrations",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdAppRegistration)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_app_registration",
+    "Model": "AdAppRegistration"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/enterpriseApplication",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdEnterpriseApplication)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_enterprise_application",
+    "Model": "AdEnterpriseApplication"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/managedIdentity",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdManagedIdentity)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_managed_identity",
+    "Model": "AdManagedIdentity"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/microsoftApplication",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdMicrosoftApplication)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_microsoft_application",
+    "Model": "AdMicrosoftApplication"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/domains",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdDomain)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_domain",
+    "Model": "AdDomain"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/tenant",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdTenant)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_tenant",
+    "Model": "AdTenant"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/identityproviders",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdIdentityProvider)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_identity_provider",
+    "Model": "AdIdentityProvider"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/securitydefaultspolicy",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdSecurityDefaultsPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_security_defaults_policy",
+    "Model": "AdSecurityDefaultsPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/authorizationpolicy",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdAuthorizationPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_authorization_policy",
+    "Model": "AdAuthorizationPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/conditionalaccesspolicy",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdConditionalAccessPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_conditional_access_policy",
+    "Model": "AdConditionalAccessPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/adminconsentrequestpolicy",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdAdminConsentRequestPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_admin_consent_request_policy",
+    "Model": "AdAdminConsentRequestPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/userregistrationdetails",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdUserRegistrationDetails)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_user_registration_details",
+    "Model": "AdUserRegistrationDetails"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/serviceprincipals",
+    "Tags": null,
+    "ListDescriber": "DescribeADByTenantID(describer.AdServicePrinciple)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_service_principal",
+    "Model": "AdServicePrincipal"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/users",
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdUsers)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_user",
+    "Model": "AdUsers"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/directoryroles",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdDirectoryRole)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_directory_role",
+    "Model": "AdDirectoryRole"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/directorysettings",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdDirectorySetting)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_directory_setting",
+    "Model": "AdDirectorySetting"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/directoryauditreport",
+    "Tags": {
+      "logo_uri": [
+      ]
+    },
+    "ListDescriber": "DescribeADByTenantID(describer.AdDirectoryAuditReport)",
+    "GetDescriber": "",
+    "SteampipeTable": "azuread_directory_audit_report",
+    "Model": "AdDirectoryAuditReport"
   }
-
 ]

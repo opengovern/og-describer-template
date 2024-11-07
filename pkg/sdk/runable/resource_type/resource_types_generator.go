@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-template/provider/configs"
+	"github.com/opengovern/og-describer-entraid/provider/configs"
 	"os"
 	"sort"
 	"strings"
@@ -80,7 +80,7 @@ func main() {
 import (
 	"%[1]s/provider/describer"
 	"%[1]s/provider/configs"
-	model "github.com/opengovern/og-describer-azure/pkg/sdk/models"
+	model "%[1]s/pkg/sdk/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
 `, configs.OGPluginRepoURL))
