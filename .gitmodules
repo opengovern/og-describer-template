@@ -1,3 +1,0 @@
-[submodule "steampipe-plugin-github"]
-	path = steampipe-plugin-github
-	url = https://github.com/turbot/steampipe-plugin-github.git
