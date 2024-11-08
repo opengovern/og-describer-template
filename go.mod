@@ -14,7 +14,7 @@ require (
 	github.com/nats-io/nats.go v1.36.0
 	github.com/opengovern/og-azure-describer v0.38.0
 	github.com/opengovern/og-describer-template v0.0.0-20241106104819-fc33b6b9125c
-	github.com/opengovern/og-util v1.0.6-0.20241105222646-0d15ca2bc5c5
+	github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca
 	github.com/spf13/cobra v1.8.1
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.10.1
 	go.uber.org/zap v1.26.0
@@ -264,7 +264,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/opengovern/opengovernance v0.434.30-feat-integrations-service.1 // indirect
+	github.com/opengovern/opengovernance v0.434.55-feat-integrations-service.0 // indirect
 	github.com/opensearch-project/opensearch-go/v2 v2.3.0 // indirect
 	github.com/pganalyze/pg_query_go/v4 v4.2.3 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
