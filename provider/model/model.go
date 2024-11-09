@@ -21,6 +21,10 @@ type Secret struct {
 	SecretInfo github.Secret
 }
 
+type WorkflowRun struct {
+	WorkflowRunInfo github.WorkflowRun
+}
+
 type Repository struct {
 	RepositoryInfo steampipemodels.Repository
 }
