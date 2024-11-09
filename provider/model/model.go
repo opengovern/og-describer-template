@@ -13,6 +13,10 @@ type Artifact struct {
 	ArtifactInfo github.Artifact
 }
 
+type Runner struct {
+	RunnerInfo github.Runner
+}
+
 type Repository struct {
 	RepositoryInfo steampipemodels.Repository
 }
