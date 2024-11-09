@@ -16,7 +16,7 @@ require (
 	github.com/nats-io/nats.go v1.36.0
 	github.com/opengovern/og-azure-describer v0.38.0
 	github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca
-	github.com/opengovern/opengovernance v0.434.58-feat-integrations-service.0
+	github.com/opengovern/opengovernance v0.434.59-feat-integrations-service.0
 	github.com/spf13/cobra v1.8.1
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.10.1
 	go.uber.org/zap v1.26.0

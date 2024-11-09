@@ -983,6 +983,8 @@ github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca h1:yeF0lhv15W
 github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca/go.mod h1:7l7fNhK6uewIwA0cs7QagJuhjt/E6hEAC01SR8Y0kKk=
 github.com/opengovern/opengovernance v0.434.58-feat-integrations-service.0 h1:+Wk+p1thvGe3I1cwxZl5jo//w3WZFTK9ZmfBCiCufLQ=
 github.com/opengovern/opengovernance v0.434.58-feat-integrations-service.0/go.mod h1:R0o3Yf92y4p6onI7bYOWL2VhFmO1Crti2EG2l6MWglA=
+github.com/opengovern/opengovernance v0.434.59-feat-integrations-service.0 h1:zVhMcR+FlZBbPa+rOnO/DS/+nkoRlUssupTxgYMe8KQ=
+github.com/opengovern/opengovernance v0.434.59-feat-integrations-service.0/go.mod h1:R0o3Yf92y4p6onI7bYOWL2VhFmO1Crti2EG2l6MWglA=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0 h1:nQIEMr+A92CkhHrZgUhcfsrZjibvB3APXf2a1VwCmMQ=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0/go.mod h1:8LDr9FCgUTVoT+5ESjc2+iaZuldqE+23Iq0r1XeNue8=
 github.com/pganalyze/pg_query_go/v4 v4.2.3 h1:cNLqyiVMasV7YGWyYV+fkXyHp32gDfXVNCqoHztEGNk=
