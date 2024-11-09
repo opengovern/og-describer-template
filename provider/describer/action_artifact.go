@@ -8,13 +8,15 @@ import (
 	"strconv"
 )
 
+const maxArtifactsCount = 100
+
 func GetArtifactList(ctx context.Context, client *github.Client, repo string) ([]models.Resource, error) {
 	owner, _, err := client.Users.Get(ctx, "")
 	if err != nil {
 		return nil, err
 	}
 	ownerName := *owner.Name
-	opts := &github.ListOptions{PerPage: 100}
+	opts := &github.ListOptions{PerPage: maxArtifactsCount}
 	var values []models.Resource
 	for {
 		artifacts, resp, err := client.Actions.ListArtifacts(ctx, ownerName, repo, opts)

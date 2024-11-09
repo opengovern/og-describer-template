@@ -8,13 +8,15 @@ import (
 	"strconv"
 )
 
+const maxRunnerCount = 100
+
 func GetRunnerList(ctx context.Context, client *github.Client, repo string) (*models.Resource, error) {
 	owner, _, err := client.Users.Get(ctx, "")
 	if err != nil {
 		return nil, err
 	}
 	ownerName := *owner.Name
-	opts := &github.ListOptions{PerPage: 100}
+	opts := &github.ListOptions{PerPage: maxRunnerCount}
 	var values []models.Resource
 	for {
 		runners, resp, err := client.Actions.ListRunners(ctx, ownerName, repo, opts)

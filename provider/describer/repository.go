@@ -11,7 +11,7 @@ import (
 
 const pageSize = 50
 
-func GitHubAccountRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.Resource, error) {
+func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.Resource, error) {
 	var query struct {
 		RateLimit steampipemodels.RateLimit
 		Viewer    struct {
