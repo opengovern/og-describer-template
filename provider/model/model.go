@@ -3,3 +3,9 @@
 // Implement types for each resource
 
 package model
+
+import steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+
+type Repository struct {
+	RepositoryInfo steampipemodels.Repository
+}
