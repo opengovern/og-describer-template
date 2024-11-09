@@ -17,6 +17,10 @@ type Runner struct {
 	RunnerInfo github.Runner
 }
 
+type Secret struct {
+	SecretInfo github.Secret
+}
+
 type Repository struct {
 	RepositoryInfo steampipemodels.Repository
 }

@@ -5,30 +5,29 @@ import (
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-template/pkg/sdk/models"
 	"github.com/opengovern/og-describer-template/provider/model"
-	"strconv"
 )
 
-const maxArtifactsCount = 100
+const maxSecretCount = 100
 
-func GetArtifactList(ctx context.Context, client *github.Client, repo string) ([]models.Resource, error) {
+func GetSecretList(ctx context.Context, client *github.Client, repo string) ([]models.Resource, error) {
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
 		return nil, nil
 	}
-	opts := &github.ListOptions{PerPage: maxArtifactsCount}
+	opts := &github.ListOptions{PerPage: maxSecretCount}
 	var values []models.Resource
 	for {
-		artifacts, resp, err := client.Actions.ListArtifacts(ctx, owner, repo, opts)
+		secrets, resp, err := client.Actions.ListRepoSecrets(ctx, owner, repo, opts)
 		if err != nil {
 			return nil, err
 		}
-		for _, artifact := range artifacts.Artifacts {
+		for _, secret := range secrets.Secrets {
 			value := models.Resource{
-				ID:   strconv.Itoa(int(*artifact.ID)),
-				Name: *artifact.Name,
+				ID:   secret.Name,
+				Name: secret.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Artifact{
-						ArtifactInfo: *artifact,
+					Value: model.Secret{
+						SecretInfo: *secret,
 					},
 				},
 			}
@@ -42,24 +41,28 @@ func GetArtifactList(ctx context.Context, client *github.Client, repo string) ([
 	return values, nil
 }
 
-func GetArtifact(ctx context.Context, client *github.Client, repo string, artifactID int64) (*models.Resource, error) {
+func GetSecret(ctx context.Context, client *github.Client, repo, secretName string) (*models.Resource, error) {
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
 		return nil, nil
 	}
-	if artifactID == 0 || repo == "" {
+	if secretName == "" || repo == "" {
 		return nil, nil
 	}
-	artifact, _, err := client.Actions.GetArtifact(ctx, owner, repo, artifactID)
+	type GetResponse struct {
+		secret *github.Secret
+		resp   *github.Response
+	}
+	secret, _, err := client.Actions.GetRepoSecret(ctx, owner, repo, secretName)
 	if err != nil {
 		return nil, err
 	}
 	value := models.Resource{
-		ID:   strconv.Itoa(int(*artifact.ID)),
-		Name: *artifact.Name,
+		ID:   secret.Name,
+		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.Artifact{
-				ArtifactInfo: *artifact,
+			Value: model.Secret{
+				SecretInfo: *secret,
 			},
 		},
 	}

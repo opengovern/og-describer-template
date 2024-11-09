@@ -1,6 +1,8 @@
 package describer
 
 import (
+	"context"
+	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
 	"slices"
 )
@@ -161,4 +163,13 @@ func tableCols() []string {
 		"has_pages",
 		"network_count",
 	}
+}
+
+func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
+	owner, _, err := client.Users.Get(ctx, "")
+	if err != nil {
+		return "", err
+	}
+	ownerName := *owner.Name
+	return ownerName, err
 }

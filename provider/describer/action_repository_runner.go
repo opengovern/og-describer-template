@@ -10,16 +10,15 @@ import (
 
 const maxRunnerCount = 100
 
-func GetRunnerList(ctx context.Context, client *github.Client, repo string) (*models.Resource, error) {
-	owner, _, err := client.Users.Get(ctx, "")
+func GetRunnerList(ctx context.Context, client *github.Client, repo string) ([]models.Resource, error) {
+	owner, err := getOwnerName(ctx, client)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
-	ownerName := *owner.Name
 	opts := &github.ListOptions{PerPage: maxRunnerCount}
 	var values []models.Resource
 	for {
-		runners, resp, err := client.Actions.ListRunners(ctx, ownerName, repo, opts)
+		runners, resp, err := client.Actions.ListRunners(ctx, owner, repo, opts)
 		if err != nil {
 			return nil, err
 		}
@@ -40,19 +39,18 @@ func GetRunnerList(ctx context.Context, client *github.Client, repo string) (*mo
 		}
 		opts.Page = resp.NextPage
 	}
-	return nil, nil
+	return values, nil
 }
 
 func GetRunner(ctx context.Context, client *github.Client, repo string, runnerID int64) (*models.Resource, error) {
-	owner, _, err := client.Users.Get(ctx, "")
+	owner, err := getOwnerName(ctx, client)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
-	ownerName := *owner.Name
 	if runnerID == 0 || repo == "" {
 		return nil, nil
 	}
-	runner, _, err := client.Actions.GetRunner(ctx, ownerName, repo, runnerID)
+	runner, _, err := client.Actions.GetRunner(ctx, owner, repo, runnerID)
 	if err != nil {
 		return nil, err
 	}
