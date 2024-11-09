@@ -4,7 +4,14 @@
 
 package model
 
-import steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+import (
+	"github.com/google/go-github/v55/github"
+	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+)
+
+type Artifact struct {
+	ArtifactInfo github.Artifact
+}
 
 type Repository struct {
 	RepositoryInfo steampipemodels.Repository
