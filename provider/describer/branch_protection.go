@@ -51,6 +51,15 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 	}
 	appendBranchProtectionRuleColumnIncludes(&variables, branchProtectionCols())
 	var values []models.Resource
+	var pushAllowanceApps []model.App
+	var pushAllowanceTeams []model.Team
+	var pushAllowanceUsers []model.User
+	var bypassForcePushAllowanceApps []model.App
+	var bypassForcePushAllowanceTeams []model.Team
+	var bypassForcePushAllowanceUsers []model.User
+	var bypassPullRequestAllowanceApps []model.App
+	var bypassPullRequestAllowanceTeams []model.Team
+	var bypassPullRequestAllowanceUsers []model.User
 	for {
 		err := client.Query(ctx, &query, variables)
 		if err != nil {
@@ -76,13 +85,38 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 					return nil, err
 				}
 			}
+			for _, node := range rule.PushAllowances.Nodes {
+				pushAllowanceApps = append(pushAllowanceApps, node.Actor.App)
+				pushAllowanceTeams = append(pushAllowanceTeams, node.Actor.Team)
+				pushAllowanceUsers = append(pushAllowanceUsers, node.Actor.User)
+			}
+			for _, node := range rule.BypassForcePushAllowances.Nodes {
+				bypassForcePushAllowanceApps = append(bypassForcePushAllowanceApps, node.Actor.App)
+				bypassForcePushAllowanceTeams = append(bypassForcePushAllowanceTeams, node.Actor.Team)
+				bypassForcePushAllowanceUsers = append(bypassForcePushAllowanceUsers, node.Actor.User)
+			}
+			for _, node := range rule.BypassForcePushAllowances.Nodes {
+				bypassPullRequestAllowanceApps = append(bypassPullRequestAllowanceApps, node.Actor.App)
+				bypassPullRequestAllowanceTeams = append(bypassPullRequestAllowanceTeams, node.Actor.Team)
+				bypassPullRequestAllowanceUsers = append(bypassPullRequestAllowanceUsers, node.Actor.User)
+			}
 			value := models.Resource{
 				ID:   strconv.Itoa(rule.Id),
 				Name: rule.NodeId,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.BranchProtection{
 						BranchProtectionRuleWithFirstPageEmbeddedItems: rule,
-						RepoFullName: repo,
+						RepoFullName:                    repo,
+						CreatorLogin:                    rule.Creator.Login,
+						PushAllowanceApps:               pushAllowanceApps,
+						PushAllowanceTeams:              pushAllowanceTeams,
+						PushAllowanceUsers:              pushAllowanceUsers,
+						BypassForcePushAllowanceApps:    bypassForcePushAllowanceApps,
+						BypassForcePushAllowanceTeams:   bypassForcePushAllowanceTeams,
+						BypassForcePushAllowanceUsers:   bypassForcePushAllowanceUsers,
+						BypassPullRequestAllowanceApps:  bypassPullRequestAllowanceApps,
+						BypassPullRequestAllowanceTeams: bypassPullRequestAllowanceTeams,
+						BypassPullRequestAllowanceUsers: bypassPullRequestAllowanceUsers,
 					},
 				},
 			}
@@ -99,7 +133,7 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 		}
 		variables["cursor"] = githubv4.NewString(query.Repository.BranchProtectionRules.PageInfo.EndCursor)
 	}
-	return nil, nil
+	return values, nil
 }
 
 func branchProtectionGetPushAllowances(ctx context.Context, client *githubv4.Client, row *branchProtectionRow, initialCursor githubv4.String) error {

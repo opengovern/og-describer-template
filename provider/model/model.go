@@ -37,7 +37,39 @@ type Branch struct {
 
 type BranchProtection struct {
 	steampipemodels.BranchProtectionRuleWithFirstPageEmbeddedItems
-	RepoFullName string
+	RepoFullName                    string
+	CreatorLogin                    string
+	PushAllowanceApps               []App
+	PushAllowanceTeams              []Team
+	PushAllowanceUsers              []User
+	BypassForcePushAllowanceApps    []App
+	BypassForcePushAllowanceTeams   []Team
+	BypassForcePushAllowanceUsers   []User
+	BypassPullRequestAllowanceApps  []App
+	BypassPullRequestAllowanceTeams []Team
+	BypassPullRequestAllowanceUsers []User
+}
+
+type App struct {
+	Name string
+	Slug string
+}
+
+type Team struct {
+	Name string
+	Slug string
+}
+
+type User struct {
+	Name  string
+	Login string
+}
+
+type Commit struct {
+	steampipemodels.Commit
+	RepoFullName   string
+	AuthorLogin    string
+	CommitterLogin string
 }
 
 type Repository struct {

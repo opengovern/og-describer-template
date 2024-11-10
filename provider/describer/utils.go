@@ -145,6 +145,33 @@ func appendBranchProtectionRuleColumnIncludes(m *map[string]interface{}, cols []
 	(*m)["includeMatchingBranches"] = githubv4.Boolean(slices.Contains(cols, "matching_branches"))
 }
 
+func appendCommitColumnIncludes(m *map[string]interface{}, cols []string) {
+	// For BasicCommit struct
+	(*m)["includeCommitShortSha"] = githubv4.Boolean(slices.Contains(cols, "short_sha"))
+	(*m)["includeCommitAuthoredDate"] = githubv4.Boolean(slices.Contains(cols, "authored_date"))
+	(*m)["includeCommitAuthor"] = githubv4.Boolean(slices.Contains(cols, "author") || slices.Contains(cols, "author_login"))
+	(*m)["includeCommitCommittedDate"] = githubv4.Boolean(slices.Contains(cols, "committed_date"))
+	(*m)["includeCommitCommitter"] = githubv4.Boolean(slices.Contains(cols, "committer") || slices.Contains(cols, "committer_login"))
+	(*m)["includeCommitMessage"] = githubv4.Boolean(slices.Contains(cols, "message"))
+	(*m)["includeCommitUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
+	// For Commit struct
+	(*m)["includeCommitAdditions"] = githubv4.Boolean(slices.Contains(cols, "additions"))
+	(*m)["includeCommitAuthoredByCommitter"] = githubv4.Boolean(slices.Contains(cols, "authored_by_committer"))
+	(*m)["includeCommitChangedFiles"] = githubv4.Boolean(slices.Contains(cols, "changed_files"))
+	(*m)["includeCommitCommittedViaWeb"] = githubv4.Boolean(slices.Contains(cols, "committed_via_web"))
+	(*m)["includeCommitCommitUrl"] = githubv4.Boolean(slices.Contains(cols, "commit_url"))
+	(*m)["includeCommitDeletions"] = githubv4.Boolean(slices.Contains(cols, "deletions"))
+	(*m)["includeCommitSignature"] = githubv4.Boolean(slices.Contains(cols, "signature"))
+	(*m)["includeCommitTarballUrl"] = githubv4.Boolean(slices.Contains(cols, "tarball_url"))
+	(*m)["includeCommitTreeUrl"] = githubv4.Boolean(slices.Contains(cols, "tree_url"))
+	(*m)["includeCommitCanSubscribe"] = githubv4.Boolean(slices.Contains(cols, "can_subscribe"))
+	(*m)["includeCommitSubscription"] = githubv4.Boolean(slices.Contains(cols, "subscription"))
+	(*m)["includeCommitZipballUrl"] = githubv4.Boolean(slices.Contains(cols, "zipball_url"))
+	(*m)["includeCommitMessageHeadline"] = githubv4.Boolean(slices.Contains(cols, "message_headline"))
+	(*m)["includeCommitStatus"] = githubv4.Boolean(slices.Contains(cols, "status"))
+	(*m)["includeCommitNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+}
+
 func repositoryCols() []string {
 	return []string{
 		"id",
@@ -281,6 +308,37 @@ func branchProtectionCols() []string {
 		"commit",
 		"protected",
 		"branch_protection_rule",
+	}
+}
+
+func commitCols() []string {
+	return []string{
+		"repository_full_name",
+		"sha",
+		"short_sha",
+		"message",
+		"author_login",
+		"authored_date",
+		"author",
+		"committer_login",
+		"committed_date",
+		"committer",
+		"additions",
+		"authored_by_committer",
+		"deletions",
+		"changed_files",
+		"committed_via_web",
+		"commit_url",
+		"signature",
+		"status",
+		"tarball_url",
+		"zipball_url",
+		"tree_url",
+		"can_subscribe",
+		"subscription",
+		"url",
+		"node_id",
+		"message_headline",
 	}
 }
 
