@@ -35,6 +35,7 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient provider.GitHub
 	opts := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
 	}
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		workflowRuns, resp, err := client.Actions.ListRepositoryWorkflowRuns(ctx, owner, repo, opts)
@@ -48,7 +49,7 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient provider.GitHub
 				Description: JSONAllFieldsMarshaller{
 					Value: model.WorkflowRun{
 						WorkflowRun:  *workflowRun,
-						RepoFullName: repo,
+						RepoFullName: repoFullName,
 					},
 				},
 			}
@@ -80,13 +81,14 @@ func GetRepoWorkflowRun(ctx context.Context, client *github.Client, repo string,
 	if err != nil {
 		return nil, err
 	}
+	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
 		ID:   strconv.Itoa(int(*workflowRun.ID)),
 		Name: *workflowRun.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.WorkflowRun{
 				WorkflowRun:  *workflowRun,
-				RepoFullName: repo,
+				RepoFullName: repoFullName,
 			},
 		},
 	}

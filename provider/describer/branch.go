@@ -52,6 +52,7 @@ func GetRepositoryBranches(ctx context.Context, githubClient provider.GitHubClie
 		"cursor":   (*githubv4.String)(nil),
 	}
 	appendBranchColumnIncludes(&variables, branchCols())
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		err := graphQLClient.Query(ctx, &query, variables)
@@ -70,7 +71,7 @@ func GetRepositoryBranches(ctx context.Context, githubClient provider.GitHubClie
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Branch{
 						Branch:       branch.Node,
-						RepoFullName: repo,
+						RepoFullName: repoFullName,
 						Protected:    protected,
 					},
 				},

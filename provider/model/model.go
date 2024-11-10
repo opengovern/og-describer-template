@@ -72,6 +72,32 @@ type Commit struct {
 	CommitterLogin string
 }
 
+type CommunityProfile struct {
+	steampipemodels.CommunityProfile
+	RepoFullName string
+	ReadMe       steampipemodels.Blob
+	Contributing steampipemodels.Blob
+	Security     steampipemodels.Blob
+}
+
+type GitIgnore struct {
+	github.Gitignore
+}
+
+type Gist struct {
+	github.Gist
+}
+
+type Organization struct {
+	steampipemodels.OrganizationWithCounts
+}
+
 type Repository struct {
 	steampipemodels.Repository
+}
+
+type Star struct {
+	RepoFullName string
+	StarredAt    steampipemodels.NullableTime
+	Url          string
 }

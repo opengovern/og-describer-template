@@ -57,6 +57,7 @@ func GetRepositoryCommits(ctx context.Context, githubClient provider.GitHubClien
 		"until":    (*githubv4.GitTimestamp)(nil),
 	}
 	appendCommitColumnIncludes(&variables, commitCols())
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		err := client.Query(ctx, &query, variables)
@@ -70,7 +71,7 @@ func GetRepositoryCommits(ctx context.Context, githubClient provider.GitHubClien
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Commit{
 						Commit:         commit,
-						RepoFullName:   repo,
+						RepoFullName:   repoFullName,
 						AuthorLogin:    commit.Author.User.Login,
 						CommitterLogin: commit.Committer.User.Login,
 					},

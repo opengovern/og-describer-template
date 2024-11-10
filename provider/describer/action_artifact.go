@@ -33,6 +33,7 @@ func GetAllArtifacts(ctx context.Context, githubClient provider.GitHubClient, st
 func GetRepositoryArtifacts(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: maxPagesCount}
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		artifacts, resp, err := client.Actions.ListArtifacts(ctx, owner, repo, opts)
@@ -46,7 +47,7 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient provider.GitHubCli
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Artifact{
 						Artifact:     *artifact,
-						RepoFullName: repo,
+						RepoFullName: repoFullName,
 					},
 				},
 			}
@@ -78,13 +79,14 @@ func GetArtifact(ctx context.Context, client *github.Client, repo string, artifa
 	if err != nil {
 		return nil, err
 	}
+	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
 		ID:   strconv.Itoa(int(*artifact.ID)),
 		Name: *artifact.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.Artifact{
 				Artifact:     *artifact,
-				RepoFullName: repo,
+				RepoFullName: repoFullName,
 			},
 		},
 	}

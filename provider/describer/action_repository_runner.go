@@ -33,6 +33,7 @@ func GetAllRunners(ctx context.Context, githubClient provider.GitHubClient, stre
 func GetRepositoryRunners(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: maxPagesCount}
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		runners, resp, err := client.Actions.ListRunners(ctx, owner, repo, opts)
@@ -46,7 +47,7 @@ func GetRepositoryRunners(ctx context.Context, githubClient provider.GitHubClien
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Runner{
 						Runner:       *runner,
-						RepoFullName: repo,
+						RepoFullName: repoFullName,
 					},
 				},
 			}
@@ -78,13 +79,14 @@ func GetRunner(ctx context.Context, client *github.Client, repo string, runnerID
 	if err != nil {
 		return nil, err
 	}
+	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
 		ID:   strconv.Itoa(int(*runner.ID)),
 		Name: *runner.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.Runner{
 				Runner:       *runner,
-				RepoFullName: repo,
+				RepoFullName: repoFullName,
 			},
 		},
 	}

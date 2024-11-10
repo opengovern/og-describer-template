@@ -32,6 +32,7 @@ func GetAllSecrets(ctx context.Context, githubClient provider.GitHubClient, stre
 func GetRepositorySecrets(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: maxPagesCount}
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	for {
 		secrets, resp, err := client.Actions.ListRepoSecrets(ctx, owner, repo, opts)
@@ -45,7 +46,7 @@ func GetRepositorySecrets(ctx context.Context, githubClient provider.GitHubClien
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Secret{
 						Secret:       *secret,
-						RepoFullName: repo,
+						RepoFullName: repoFullName,
 					},
 				},
 			}
@@ -81,13 +82,14 @@ func GetSecret(ctx context.Context, client *github.Client, repo, secretName stri
 	if err != nil {
 		return nil, err
 	}
+	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
 		ID:   secret.Name,
 		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.Secret{
 				Secret:       *secret,
-				RepoFullName: repo,
+				RepoFullName: repoFullName,
 			},
 		},
 	}

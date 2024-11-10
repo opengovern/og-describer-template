@@ -50,6 +50,7 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 		"cursor":   (*githubv4.String)(nil),
 	}
 	appendBranchProtectionRuleColumnIncludes(&variables, branchProtectionCols())
+	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
 	var pushAllowanceApps []model.App
 	var pushAllowanceTeams []model.Team
@@ -102,11 +103,11 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 			}
 			value := models.Resource{
 				ID:   strconv.Itoa(rule.Id),
-				Name: rule.NodeId,
+				Name: strconv.Itoa(rule.Id),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.BranchProtection{
 						BranchProtectionRuleWithFirstPageEmbeddedItems: rule,
-						RepoFullName:                    repo,
+						RepoFullName:                    repoFullName,
 						CreatorLogin:                    rule.Creator.Login,
 						PushAllowanceApps:               pushAllowanceApps,
 						PushAllowanceTeams:              pushAllowanceTeams,
