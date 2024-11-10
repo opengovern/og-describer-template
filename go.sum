@@ -981,6 +981,8 @@ github.com/opengovern/og-azure-describer v0.38.0 h1:mczHIiichW1cga4dQW+3nhlHXHZs
 github.com/opengovern/og-azure-describer v0.38.0/go.mod h1:P3ssRBCwRZtVg+qdJYQF07JrM59M17eNtPhHc9cMRSY=
 github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca h1:yeF0lhv15WWULbOb811lVAv/KTY5nfsA0dkzd4GODlk=
 github.com/opengovern/og-util v1.0.6-0.20241108102418-e20a35efc8ca/go.mod h1:7l7fNhK6uewIwA0cs7QagJuhjt/E6hEAC01SR8Y0kKk=
+github.com/opengovern/og-util v1.1.0 h1:bV2XKX8aIpJGC2CR4kh9CU/rJWPQed76gtVXM2zBDXM=
+github.com/opengovern/og-util v1.1.0/go.mod h1:dyn8rhmxq59o1jnbgGfmcUvW7iB/eN6OxoTUUx6jEHA=
 github.com/opengovern/opengovernance v0.434.58-feat-integrations-service.0 h1:+Wk+p1thvGe3I1cwxZl5jo//w3WZFTK9ZmfBCiCufLQ=
 github.com/opengovern/opengovernance v0.434.58-feat-integrations-service.0/go.mod h1:R0o3Yf92y4p6onI7bYOWL2VhFmO1Crti2EG2l6MWglA=
 github.com/opengovern/opengovernance v0.434.59-feat-integrations-service.0 h1:zVhMcR+FlZBbPa+rOnO/DS/+nkoRlUssupTxgYMe8KQ=
