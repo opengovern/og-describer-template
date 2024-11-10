@@ -4,12 +4,10 @@ import (
 	"context"
 	"github.com/opengovern/og-describer-template/pkg/sdk/models"
 	"github.com/opengovern/og-describer-template/provider/model"
+	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 	"strconv"
 )
-
-const pageSize = 50
 
 func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.Resource, error) {
 	var query struct {

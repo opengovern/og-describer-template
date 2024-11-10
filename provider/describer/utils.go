@@ -7,6 +7,11 @@ import (
 	"slices"
 )
 
+const (
+	maxPagesCount = 100
+	pageSize      = 50
+)
+
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
 	optionals := map[string]string{
 		"allow_update_branch":              "includeAllowUpdateBranch",
@@ -172,4 +177,25 @@ func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
 	}
 	ownerName := *owner.Name
 	return ownerName, err
+}
+
+func getRepositoriesName(ctx context.Context, client *github.Client, owner string) ([]string, error) {
+	opt := &github.RepositoryListOptions{
+		ListOptions: github.ListOptions{PerPage: maxPagesCount},
+	}
+	var repositories []string
+	for {
+		repos, resp, err := client.Repositories.List(ctx, owner, opt)
+		if err != nil {
+			return nil, err
+		}
+		for _, repo := range repos {
+			repositories = append(repositories, repo.GetName())
+		}
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+	}
+	return repositories, nil
 }

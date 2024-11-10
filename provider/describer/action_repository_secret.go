@@ -4,17 +4,31 @@ import (
 	"context"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-template/pkg/sdk/models"
+	"github.com/opengovern/og-describer-template/provider"
 	"github.com/opengovern/og-describer-template/provider/model"
 )
 
-const maxSecretCount = 100
-
-func GetSecretList(ctx context.Context, client *github.Client, repo string) ([]models.Resource, error) {
+func GetAllSecrets(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
 		return nil, nil
 	}
-	opts := &github.ListOptions{PerPage: maxSecretCount}
+	repositories, err := getRepositoriesName(ctx, client, owner)
+	var values []models.Resource
+	for _, repo := range repositories {
+		repoValues, err := GetRepositorySecrets(ctx, githubClient, stream, owner, repo)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, repoValues...)
+	}
+	return values, nil
+}
+
+func GetRepositorySecrets(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+	client := githubClient.RestClient
+	opts := &github.ListOptions{PerPage: maxPagesCount}
 	var values []models.Resource
 	for {
 		secrets, resp, err := client.Actions.ListRepoSecrets(ctx, owner, repo, opts)
@@ -31,7 +45,13 @@ func GetSecretList(ctx context.Context, client *github.Client, repo string) ([]m
 					},
 				},
 			}
-			values = append(values, value)
+			if stream != nil {
+				if err := (*stream)(value); err != nil {
+					return nil, err
+				}
+			} else {
+				values = append(values, value)
+			}
 		}
 		if resp.NextPage == 0 {
 			break
