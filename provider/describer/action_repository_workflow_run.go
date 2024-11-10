@@ -44,7 +44,8 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient provider.GitHub
 				Name: *workflowRun.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.WorkflowRun{
-						WorkflowRunInfo: *workflowRun,
+						WorkflowRun:  *workflowRun,
+						RepoFullName: repo,
 					},
 				},
 			}
@@ -81,7 +82,8 @@ func GetRepoWorkflowRun(ctx context.Context, client *github.Client, repo string,
 		Name: *workflowRun.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.WorkflowRun{
-				WorkflowRunInfo: *workflowRun,
+				WorkflowRun:  *workflowRun,
+				RepoFullName: repo,
 			},
 		},
 	}

@@ -38,7 +38,7 @@ func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.R
 				Name: repo.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Repository{
-						RepositoryInfo: repo,
+						Repository: repo,
 					},
 				},
 			}

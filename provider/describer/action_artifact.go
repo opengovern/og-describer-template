@@ -42,7 +42,8 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient provider.GitHubCli
 				Name: *artifact.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Artifact{
-						ArtifactInfo: *artifact,
+						Artifact:     *artifact,
+						RepoFullName: repo,
 					},
 				},
 			}
@@ -79,7 +80,8 @@ func GetArtifact(ctx context.Context, client *github.Client, repo string, artifa
 		Name: *artifact.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.Artifact{
-				ArtifactInfo: *artifact,
+				Artifact:     *artifact,
+				RepoFullName: repo,
 			},
 		},
 	}

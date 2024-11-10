@@ -10,25 +10,25 @@ import (
 )
 
 type Artifact struct {
-	ArtifactInfo github.Artifact
+	github.Artifact
 	RepoFullName string
 }
 
 type Runner struct {
-	RunnerInfo   github.Runner
+	github.Runner
 	RepoFullName string
 }
 
 type Secret struct {
-	SecretInfo   github.Secret
+	github.Secret
 	RepoFullName string
 }
 
 type WorkflowRun struct {
-	WorkflowRunInfo github.WorkflowRun
-	RepoFullName    string
+	github.WorkflowRun
+	RepoFullName string
 }
 
 type Repository struct {
-	RepositoryInfo steampipemodels.Repository
+	steampipemodels.Repository
 }
