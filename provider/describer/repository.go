@@ -3,13 +3,15 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-template/pkg/sdk/models"
+	"github.com/opengovern/og-describer-template/provider"
 	"github.com/opengovern/og-describer-template/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
 )
 
-func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.Resource, error) {
+func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit steampipemodels.RateLimit
 		Viewer    struct {
@@ -24,7 +26,7 @@ func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.R
 		"pageSize": githubv4.Int(pageSize),
 		"cursor":   (*githubv4.String)(nil),
 	}
-	columnNames := tableCols()
+	columnNames := repositoryCols()
 	appendRepoColumnIncludes(&variables, columnNames)
 	var values []models.Resource
 	for {
@@ -42,7 +44,13 @@ func GetRepositoryList(ctx context.Context, client *githubv4.Client) ([]models.R
 					},
 				},
 			}
-			values = append(values, value)
+			if stream != nil {
+				if err := (*stream)(value); err != nil {
+					return nil, err
+				}
+			} else {
+				values = append(values, value)
+			}
 		}
 		if !query.Viewer.Repositories.PageInfo.HasNextPage {
 			break

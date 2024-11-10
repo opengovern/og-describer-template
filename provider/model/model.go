@@ -29,6 +29,17 @@ type WorkflowRun struct {
 	RepoFullName string
 }
 
+type Branch struct {
+	steampipemodels.Branch
+	RepoFullName string
+	Protected    bool
+}
+
+type BranchProtection struct {
+	steampipemodels.BranchProtectionRuleWithFirstPageEmbeddedItems
+	RepoFullName string
+}
+
 type Repository struct {
 	steampipemodels.Repository
 }

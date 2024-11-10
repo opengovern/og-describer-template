@@ -16,6 +16,9 @@ func GetAllRunners(ctx context.Context, githubClient provider.GitHubClient, stre
 		return nil, nil
 	}
 	repositories, err := getRepositoriesName(ctx, client, owner)
+	if err != nil {
+		return nil, nil
+	}
 	var values []models.Resource
 	for _, repo := range repositories {
 		repoValues, err := GetRepositoryRunners(ctx, githubClient, stream, owner, repo)

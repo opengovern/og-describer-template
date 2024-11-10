@@ -87,7 +87,65 @@ func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
 	}
 }
 
-func tableCols() []string {
+func appendBranchColumnIncludes(m *map[string]interface{}, cols []string) {
+	protectionIncluded := githubv4.Boolean(slices.Contains(cols, "protected") || slices.Contains(cols, "branch_protection_rule"))
+	(*m)["includeBranchProtectionRule"] = protectionIncluded
+	(*m)["includeAllowsDeletions"] = protectionIncluded
+	(*m)["includeAllowsForcePushes"] = protectionIncluded
+	(*m)["includeBlocksCreations"] = protectionIncluded
+	(*m)["includeCreator"] = protectionIncluded
+	(*m)["includeBranchProtectionRuleId"] = protectionIncluded
+	(*m)["includeDismissesStaleReviews"] = protectionIncluded
+	(*m)["includeIsAdminEnforced"] = protectionIncluded
+	(*m)["includeLockAllowsFetchAndMerge"] = protectionIncluded
+	(*m)["includeLockBranch"] = protectionIncluded
+	(*m)["includePattern"] = protectionIncluded
+	(*m)["includeRequireLastPushApproval"] = protectionIncluded
+	(*m)["includeRequiredApprovingReviewCount"] = protectionIncluded
+	(*m)["includeRequiredDeploymentEnvironments"] = protectionIncluded
+	(*m)["includeRequiredStatusChecks"] = protectionIncluded
+	(*m)["includeRequiresApprovingReviews"] = protectionIncluded
+	(*m)["includeRequiresConversationResolution"] = protectionIncluded
+	(*m)["includeRequiresCodeOwnerReviews"] = protectionIncluded
+	(*m)["includeRequiresCommitSignatures"] = protectionIncluded
+	(*m)["includeRequiresDeployments"] = protectionIncluded
+	(*m)["includeRequiresLinearHistory"] = protectionIncluded
+	(*m)["includeRequiresStatusChecks"] = protectionIncluded
+	(*m)["includeRequiresStrictStatusChecks"] = protectionIncluded
+	(*m)["includeRestrictsPushes"] = protectionIncluded
+	(*m)["includeRestrictsReviewDismissals"] = protectionIncluded
+	(*m)["includeMatchingBranches"] = protectionIncluded
+}
+
+func appendBranchProtectionRuleColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeAllowsDeletions"] = githubv4.Boolean(slices.Contains(cols, "allows_deletions"))
+	(*m)["includeAllowsForcePushes"] = githubv4.Boolean(slices.Contains(cols, "allows_force_pushes"))
+	(*m)["includeBlocksCreations"] = githubv4.Boolean(slices.Contains(cols, "blocks_creations"))
+	(*m)["includeCreator"] = githubv4.Boolean(slices.Contains(cols, "creator") || slices.Contains(cols, "creator_login"))
+	(*m)["includeBranchProtectionRuleId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+	(*m)["includeDismissesStaleReviews"] = githubv4.Boolean(slices.Contains(cols, "dismisses_stale_reviews"))
+	(*m)["includeIsAdminEnforced"] = githubv4.Boolean(slices.Contains(cols, "is_admin_enforced"))
+	(*m)["includeLockAllowsFetchAndMerge"] = githubv4.Boolean(slices.Contains(cols, "lock_allows_fetch_and_merge"))
+	(*m)["includeLockBranch"] = githubv4.Boolean(slices.Contains(cols, "lock_branch"))
+	(*m)["includePattern"] = githubv4.Boolean(slices.Contains(cols, "pattern"))
+	(*m)["includeRequireLastPushApproval"] = githubv4.Boolean(slices.Contains(cols, "require_last_push_approval"))
+	(*m)["includeRequiredApprovingReviewCount"] = githubv4.Boolean(slices.Contains(cols, "required_approving_review_count"))
+	(*m)["includeRequiredDeploymentEnvironments"] = githubv4.Boolean(slices.Contains(cols, "required_deployment_environments"))
+	(*m)["includeRequiredStatusChecks"] = githubv4.Boolean(slices.Contains(cols, "required_status_checks"))
+	(*m)["includeRequiresApprovingReviews"] = githubv4.Boolean(slices.Contains(cols, "requires_approving_reviews"))
+	(*m)["includeRequiresConversationResolution"] = githubv4.Boolean(slices.Contains(cols, "requires_conversation_resolution"))
+	(*m)["includeRequiresCodeOwnerReviews"] = githubv4.Boolean(slices.Contains(cols, "requires_code_owner_reviews"))
+	(*m)["includeRequiresCommitSignatures"] = githubv4.Boolean(slices.Contains(cols, "requires_commit_signatures"))
+	(*m)["includeRequiresDeployments"] = githubv4.Boolean(slices.Contains(cols, "requires_deployments"))
+	(*m)["includeRequiresLinearHistory"] = githubv4.Boolean(slices.Contains(cols, "requires_linear_history"))
+	(*m)["includeRequiresStatusChecks"] = githubv4.Boolean(slices.Contains(cols, "requires_status_checks"))
+	(*m)["includeRequiresStrictStatusChecks"] = githubv4.Boolean(slices.Contains(cols, "requires_strict_status_checks"))
+	(*m)["includeRestrictsPushes"] = githubv4.Boolean(slices.Contains(cols, "restricts_pushes"))
+	(*m)["includeRestrictsReviewDismissals"] = githubv4.Boolean(slices.Contains(cols, "restricts_review_dismissals"))
+	(*m)["includeMatchingBranches"] = githubv4.Boolean(slices.Contains(cols, "matching_branches"))
+}
+
+func repositoryCols() []string {
 	return []string{
 		"id",
 		"node_id",
@@ -167,6 +225,62 @@ func tableCols() []string {
 		"has_downloads",
 		"has_pages",
 		"network_count",
+	}
+}
+
+func branchCols() []string {
+	return []string{
+		"repository_full_name",
+		"name",
+		"commit",
+		"protected",
+		"branch_protection_rule",
+	}
+}
+
+func branchProtectionCols() []string {
+	return []string{
+		"repository_full_name",
+		"id",
+		"node_id",
+		"matching_branches",
+		"is_admin_enforced",
+		"allows_deletions",
+		"allows_force_pushes",
+		"blocks_creations",
+		"creator_login",
+		"dismisses_stale_reviews",
+		"lock_allows_fetch_and_merge",
+		"lock_branch",
+		"pattern",
+		"require_last_push_approval",
+		"requires_approving_reviews",
+		"required_approving_review_count",
+		"requires_conversation_resolution",
+		"requires_code_owner_reviews",
+		"requires_commit_signatures",
+		"requires_deployments",
+		"required_deployment_environments",
+		"requires_linear_history",
+		"requires_status_checks",
+		"required_status_checks",
+		"requires_strict_status_checks",
+		"restricts_review_dismissals",
+		"restricts_pushes",
+		"push_allowance_apps",
+		"push_allowance_teams",
+		"push_allowance_users",
+		"bypass_force_push_allowance_apps",
+		"bypass_force_push_allowance_teams",
+		"bypass_force_push_allowance_users",
+		"bypass_pull_request_allowance_apps",
+		"bypass_pull_request_allowance_teams",
+		"bypass_pull_request_allowance_users",
+		"repository_full_name",
+		"name",
+		"commit",
+		"protected",
+		"branch_protection_rule",
 	}
 }
 
