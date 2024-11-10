@@ -6,12 +6,14 @@ import (
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
 	"slices"
+	"strings"
 )
 
 const (
 	maxPagesCount = 100
 	pageSize      = 100
 	repoPageSize  = 50
+	issuePageSize = 50
 )
 
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
@@ -228,6 +230,73 @@ func appendOrganizationColumnIncludes(m *map[string]interface{}, cols []string) 
 func appendStarColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeStarNode"] = githubv4.Boolean(slices.Contains(cols, "repository_full_name") || slices.Contains(cols, "url"))
 	(*m)["includeStarEdges"] = githubv4.Boolean(slices.Contains(cols, "starred_at"))
+}
+
+func appendIssueColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeIssueAuthor"] = githubv4.Boolean(slices.Contains(cols, "author") || slices.Contains(cols, "author_login"))
+	(*m)["includeIssueBody"] = githubv4.Boolean(slices.Contains(cols, "body"))
+	(*m)["includeIssueEditor"] = githubv4.Boolean(slices.Contains(cols, "editor"))
+	(*m)["includeIssueMilestone"] = githubv4.Boolean(slices.Contains(cols, "milestone"))
+	(*m)["includeIssueViewer"] = githubv4.Boolean(slices.Contains(cols, "user_can_close") ||
+		slices.Contains(cols, "user_can_react") ||
+		slices.Contains(cols, "user_can_reopen") ||
+		slices.Contains(cols, "user_can_subscribe") ||
+		slices.Contains(cols, "user_can_update") ||
+		slices.Contains(cols, "user_cannot_update_reasons") ||
+		slices.Contains(cols, "user_did_author") ||
+		slices.Contains(cols, "user_subscription"))
+	(*m)["includeIssueAssignees"] = githubv4.Boolean(slices.Contains(cols, "assignees_total_count") || slices.Contains(cols, "assignees"))
+	(*m)["includeIssueCommentCount"] = githubv4.Boolean(slices.Contains(cols, "comments_total_count"))
+	(*m)["includeIssueLabels"] = githubv4.Boolean(slices.Contains(cols, "labels") ||
+		slices.Contains(cols, "labels_src") ||
+		slices.Contains(cols, "labels_total_count"))
+	(*m)["includeIssueUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
+	(*m)["includeIssueUpdatedAt"] = githubv4.Boolean(slices.Contains(cols, "updated_at"))
+	(*m)["includeIssueTitle"] = githubv4.Boolean(slices.Contains(cols, "title"))
+	(*m)["includeIssueStateReason"] = githubv4.Boolean(slices.Contains(cols, "state_reason"))
+	(*m)["includeIssueState"] = githubv4.Boolean(slices.Contains(cols, "state"))
+	(*m)["includeIssuePublishedAt"] = githubv4.Boolean(slices.Contains(cols, "published_at"))
+	(*m)["includeIssueLocked"] = githubv4.Boolean(slices.Contains(cols, "locked"))
+	(*m)["includeIssueLastEditedAt"] = githubv4.Boolean(slices.Contains(cols, "last_edited_at"))
+	(*m)["includeIssueIsPinned"] = githubv4.Boolean(slices.Contains(cols, "is_pinned"))
+	(*m)["includeIssueIncludesCreatedEdit"] = githubv4.Boolean(slices.Contains(cols, "includes_created_edit"))
+	(*m)["includeIssueFullDatabaseId"] = githubv4.Boolean(slices.Contains(cols, "full_database_id"))
+	(*m)["includeIssueCreatedViaEmail"] = githubv4.Boolean(slices.Contains(cols, "created_via_email"))
+	(*m)["includeIssueCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includeIssueClosedAt"] = githubv4.Boolean(slices.Contains(cols, "closed_at"))
+	(*m)["includeIssueClosed"] = githubv4.Boolean(slices.Contains(cols, "closed"))
+	(*m)["includeIssueBodyUrl"] = githubv4.Boolean(slices.Contains(cols, "body_url"))
+	(*m)["includeIssueAuthorAssociation"] = githubv4.Boolean(slices.Contains(cols, "author_association"))
+	(*m)["includeIssueActiveLockReason"] = githubv4.Boolean(slices.Contains(cols, "active_lock_reason"))
+	(*m)["includeIssueNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includeIssueId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+	(*m)["includeIssueIsReadByUser"] = githubv4.Boolean(slices.Contains(cols, "is_read_by_user"))
+}
+
+func appendIssuePRCommentColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeIssueCommentAuthor"] = githubv4.Boolean(slices.Contains(cols, "author") || slices.Contains(cols, "author_login"))
+	(*m)["includeIssueCommentBody"] = githubv4.Boolean(slices.Contains(cols, "body"))
+	(*m)["includeIssueCommentEditor"] = githubv4.Boolean(slices.Contains(cols, "editor") || slices.Contains(cols, "editor_login"))
+	(*m)["includeIssueCommentViewer"] = githubv4.Boolean(slices.Contains(cols, "can_delete") ||
+		slices.Contains(cols, "can_react") ||
+		slices.Contains(cols, "can_minimize") ||
+		slices.Contains(cols, "can_update") ||
+		slices.Contains(cols, "cannot_update_reasons") ||
+		slices.Contains(cols, "did_author"))
+	(*m)["includeIssueCommentUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
+	(*m)["includeIssueCommentUpdatedAt"] = githubv4.Boolean(slices.Contains(cols, "updated_at"))
+	(*m)["includeIssueCommentPublishedAt"] = githubv4.Boolean(slices.Contains(cols, "published_at"))
+	(*m)["includeIssueCommentMinimizedReason"] = githubv4.Boolean(slices.Contains(cols, "minimized_reason"))
+	(*m)["includeIssueCommentLastEditedAt"] = githubv4.Boolean(slices.Contains(cols, "last_edited_at"))
+	(*m)["includeIssueCommentIsMinimized"] = githubv4.Boolean(slices.Contains(cols, "is_minimized"))
+	(*m)["includeIssueCommentIncludesCreatedEdit"] = githubv4.Boolean(slices.Contains(cols, "includes_created_edit"))
+	(*m)["includeIssueCommentCreatedViaEmail"] = githubv4.Boolean(slices.Contains(cols, "created_via_email"))
+	(*m)["includeIssueCommentCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includeIssueCommentBody"] = githubv4.Boolean(slices.Contains(cols, "body"))
+	(*m)["includeIssueCommentBodyText"] = githubv4.Boolean(slices.Contains(cols, "body_text"))
+	(*m)["includeIssueCommentAuthorAssociation"] = githubv4.Boolean(slices.Contains(cols, "author_association"))
+	(*m)["includeIssueCommentNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includeIssueCommentId"] = githubv4.Boolean(slices.Contains(cols, "id"))
 }
 
 func repositoryCols() []string {
@@ -487,6 +556,83 @@ func starCols() []string {
 	}
 }
 
+func issueCols() []string {
+	return []string{
+		"number",
+		"id",
+		"node_id",
+		"active_lock_reason",
+		"author",
+		"author_login",
+		"author_association",
+		"body",
+		"body_url",
+		"closed",
+		"closed_at",
+		"created_at",
+		"created_via_email",
+		"editor",
+		"full_database_id",
+		"includes_created_edit",
+		"is_pinned",
+		"is_read_by_user",
+		"last_edited_at",
+		"locked",
+		"milestone",
+		"published_at",
+		"state",
+		"state_reason",
+		"title",
+		"updated_at",
+		"url",
+		"assignees_total_count",
+		"comments_total_count",
+		"labels_total_count",
+		"labels_src",
+		"labels",
+		"user_can_close",
+		"user_can_react",
+		"user_can_reopen",
+		"user_can_subscribe",
+		"user_can_update",
+		"user_cannot_update_reasons",
+		"user_did_author",
+		"user_subscription",
+		"assignees",
+	}
+}
+
+func issueCommentCols() []string {
+	return []string{
+		"repository_full_name",
+		"number",
+		"id",
+		"node_id",
+		"author",
+		"author_login",
+		"author_association",
+		"body",
+		"body_text",
+		"created_at",
+		"created_via_email",
+		"editor",
+		"editor_login",
+		"includes_created_edit",
+		"is_minimized",
+		"minimized_reason",
+		"last_edited_at",
+		"published_at",
+		"updated_at",
+		"url",
+		"can_delete",
+		"can_minimize",
+		"can_react",
+		"can_update",
+		"cannot_update_reasons",
+		"did_author",
+	}
+}
+
 func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
 	owner, _, err := client.Users.Get(ctx, "")
 	if err != nil {
@@ -517,6 +663,35 @@ func getRepositoriesName(ctx context.Context, client *github.Client, owner strin
 	return repositories, nil
 }
 
+func getIssues(ctx context.Context, client *github.Client) ([]*github.Issue, error) {
+	opt := &github.IssueListOptions{
+		Filter:      "assigned",
+		State:       "all",
+		ListOptions: github.ListOptions{PerPage: issuePageSize},
+	}
+	for {
+		issues, resp, err := client.Issues.List(ctx, true, opt)
+		if err != nil {
+			return nil, err
+		}
+		if resp.NextPage == 0 {
+			return issues, nil
+		}
+		opt.Page = resp.NextPage
+	}
+}
+
 func formRepositoryFullName(owner, repo string) string {
 	return fmt.Sprintf("%s/%s", owner, repo)
+}
+
+func parseRepoFullName(fullName string) (string, string) {
+	owner := ""
+	repo := ""
+	s := strings.Split(fullName, "/")
+	owner = s[0]
+	if len(s) > 1 {
+		repo = s[1]
+	}
+	return owner, repo
 }

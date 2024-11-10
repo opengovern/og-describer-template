@@ -7,46 +7,43 @@ import (
 	"github.com/opengovern/og-describer-template/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
+	"strconv"
 )
 
-func GetStarList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetIssueList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
+	var filters githubv4.IssueFilters
+	filters.States = &[]githubv4.IssueState{githubv4.IssueStateOpen, githubv4.IssueStateClosed}
 	var query struct {
 		RateLimit steampipemodels.RateLimit
 		Viewer    struct {
-			StarredRepositories struct {
+			Issues struct {
 				TotalCount int
 				PageInfo   steampipemodels.PageInfo
-				Edges      []struct {
-					StarredAt steampipemodels.NullableTime
-					Node      struct {
-						NameWithOwner string
-						Url           string
-					} `graphql:"node @include(if:$includeStarNode)"`
-				} `graphql:"edges @include(if:$includeStarEdges)"`
-			} `graphql:"starredRepositories(first: $pageSize, after: $cursor)"`
+				Nodes      []steampipemodels.Issue
+			} `graphql:"issues(first: $pageSize, after: $cursor, filterBy: $filters)"`
 		}
 	}
 	variables := map[string]interface{}{
 		"pageSize": githubv4.Int(pageSize),
 		"cursor":   (*githubv4.String)(nil),
+		"filters":  filters,
 	}
-	appendStarColumnIncludes(&variables, starCols())
+	appendIssueColumnIncludes(&variables, issueCols())
 	var values []models.Resource
 	for {
 		err := client.Query(ctx, &query, variables)
 		if err != nil {
 			return nil, err
 		}
-		for _, star := range query.Viewer.StarredRepositories.Edges {
+		for _, issue := range query.Viewer.Issues.Nodes {
 			value := models.Resource{
-				ID:   star.Node.Url,
-				Name: star.Node.NameWithOwner,
+				ID:   strconv.Itoa(issue.Id),
+				Name: issue.Title,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Star{
-						RepoFullName: star.Node.NameWithOwner,
-						StarredAt:    star.StarredAt,
-						Url:          star.Node.Url,
+					Value: model.Issue{
+						Issue:        issue,
+						RepoFullName: issue.Repo.NameWithOwner,
 					},
 				},
 			}
@@ -58,10 +55,10 @@ func GetStarList(ctx context.Context, githubClient provider.GitHubClient, stream
 				values = append(values, value)
 			}
 		}
-		if !query.Viewer.StarredRepositories.PageInfo.HasNextPage {
+		if !query.Viewer.Issues.PageInfo.HasNextPage {
 			break
 		}
-		variables["cursor"] = githubv4.NewString(query.Viewer.StarredRepositories.PageInfo.EndCursor)
+		variables["cursor"] = githubv4.NewString(query.Viewer.Issues.PageInfo.EndCursor)
 	}
 	return values, nil
 }

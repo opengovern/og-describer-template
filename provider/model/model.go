@@ -101,3 +101,14 @@ type Star struct {
 	StarredAt    steampipemodels.NullableTime
 	Url          string
 }
+
+type Issue struct {
+	steampipemodels.Issue
+	RepoFullName string
+}
+
+type IssueComment struct {
+	steampipemodels.IssueComment
+	RepoFullName string
+	Number       int
+}
