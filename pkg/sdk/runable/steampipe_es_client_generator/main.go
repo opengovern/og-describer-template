@@ -57,7 +57,7 @@ func main() {
 	}
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../resource_type/resource-types.json"
+		rt := "../../../../provider/resource_types/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
