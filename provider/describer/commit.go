@@ -15,13 +15,13 @@ func GetAllCommits(ctx context.Context, githubClient provider.GitHubClient, stre
 	if err != nil {
 		return nil, nil
 	}
-	repositories, err := getRepositoriesName(ctx, client, owner)
+	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryCommits(ctx, githubClient, stream, owner, repo)
+		repoValues, err := GetRepositoryCommits(ctx, githubClient, stream, owner, repo.GetName())
 		if err != nil {
 			return nil, err
 		}

@@ -7,6 +7,7 @@ package model
 import (
 	"github.com/google/go-github/v55/github"
 	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
+	"github.com/shurcooL/githubv4"
 )
 
 type Artifact struct {
@@ -111,4 +112,60 @@ type IssueComment struct {
 	steampipemodels.IssueComment
 	RepoFullName string
 	Number       int
+}
+
+type License struct {
+	steampipemodels.License
+}
+
+type GitHubTeam struct {
+	steampipemodels.TeamWithCounts
+}
+
+type OrgCollaborators struct {
+	Organization   string
+	Affiliation    string
+	RepositoryName githubv4.String
+	Permission     githubv4.RepositoryPermission
+	UserLogin      steampipemodels.CollaboratorLogin
+}
+
+type AlertDependabot struct {
+	AlertNumber                 int
+	State                       string
+	DependencyPackageEcosystem  string
+	DependencyPackageName       string
+	DependencyManifestPath      string
+	DependencyScope             string
+	SecurityAdvisoryGHSAID      string
+	SecurityAdvisoryCVEID       string
+	SecurityAdvisorySummary     string
+	SecurityAdvisoryDescription string
+	SecurityAdvisorySeverity    string
+	SecurityAdvisoryCVSSScore   float64
+	SecurityAdvisoryCVSSVector  string
+	SecurityAdvisoryCWEs        []string
+	SecurityAdvisoryPublishedAt github.Timestamp
+	SecurityAdvisoryUpdatedAt   github.Timestamp
+	SecurityAdvisoryWithdrawnAt github.Timestamp
+	URL                         string
+	HTMLURL                     string
+	CreatedAt                   github.Timestamp
+	UpdatedAt                   github.Timestamp
+	DismissedAt                 github.Timestamp
+	DismissedReason             string
+	DismissedComment            string
+	FixedAt                     github.Timestamp
+}
+
+type OrgExternalIdentity struct {
+	steampipemodels.OrganizationExternalIdentity
+	Organization string
+}
+
+type OrgMembers struct {
+	steampipemodels.User
+	Organization        string
+	HasTwoFactorEnabled bool
+	Role                string
 }

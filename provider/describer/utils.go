@@ -10,10 +10,12 @@ import (
 )
 
 const (
-	maxPagesCount = 100
-	pageSize      = 100
-	repoPageSize  = 50
-	issuePageSize = 50
+	maxPagesCount            = 100
+	pageSize                 = 100
+	repoPageSize             = 50
+	issuePageSize            = 50
+	orgPageSize              = 10
+	orgCollaboratorsPageSize = 50
 )
 
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
@@ -297,6 +299,96 @@ func appendIssuePRCommentColumnIncludes(m *map[string]interface{}, cols []string
 	(*m)["includeIssueCommentAuthorAssociation"] = githubv4.Boolean(slices.Contains(cols, "author_association"))
 	(*m)["includeIssueCommentNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
 	(*m)["includeIssueCommentId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+}
+
+func appendLicenseColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeLicenseName"] = githubv4.Boolean(slices.Contains(cols, "name"))
+	(*m)["includeLicenseSpdxId"] = githubv4.Boolean(slices.Contains(cols, "spdx_id"))
+	(*m)["includeLicenseUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
+	(*m)["includeLicenseConditions"] = githubv4.Boolean(slices.Contains(cols, "conditions"))
+	(*m)["includeLicenseDescription"] = githubv4.Boolean(slices.Contains(cols, "description"))
+	(*m)["includeLicenseFeatured"] = githubv4.Boolean(slices.Contains(cols, "featured"))
+	(*m)["includeLicenseHidden"] = githubv4.Boolean(slices.Contains(cols, "hidden"))
+	(*m)["includeLicenseImplementation"] = githubv4.Boolean(slices.Contains(cols, "implementation"))
+	(*m)["includeLicenseLimitations"] = githubv4.Boolean(slices.Contains(cols, "limitations"))
+	(*m)["includeLicensePermissions"] = githubv4.Boolean(slices.Contains(cols, "permissions"))
+	(*m)["includeLicenseNickname"] = githubv4.Boolean(slices.Contains(cols, "nickname"))
+	(*m)["includeLicensePseudoLicense"] = githubv4.Boolean(slices.Contains(cols, "pseudo_license"))
+}
+
+func appendTeamColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeTeamAvatarUrl"] = githubv4.Boolean(slices.Contains(cols, "avatar_url"))
+	(*m)["includeTeamCombinedSlug"] = githubv4.Boolean(slices.Contains(cols, "combined_slug"))
+	(*m)["includeTeamCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includeTeamDescription"] = githubv4.Boolean(slices.Contains(cols, "description"))
+	(*m)["includeTeamDiscussionsUrl"] = githubv4.Boolean(slices.Contains(cols, "discussions_url"))
+	(*m)["includeTeamEditTeamUrl"] = githubv4.Boolean(slices.Contains(cols, "edit_team_url"))
+	(*m)["includeTeamMembersUrl"] = githubv4.Boolean(slices.Contains(cols, "members_url"))
+	(*m)["includeTeamNewTeamUrl"] = githubv4.Boolean(slices.Contains(cols, "new_team_url"))
+	(*m)["includeTeamParentTeam"] = githubv4.Boolean(slices.Contains(cols, "parent_team"))
+	(*m)["includeTeamPrivacy"] = githubv4.Boolean(slices.Contains(cols, "privacy"))
+	(*m)["includeTeamRepositoriesUrl"] = githubv4.Boolean(slices.Contains(cols, "repositories_url"))
+	(*m)["includeTeamTeamsUrl"] = githubv4.Boolean(slices.Contains(cols, "teams_url"))
+	(*m)["includeTeamUpdatedAt"] = githubv4.Boolean(slices.Contains(cols, "updated_at"))
+	(*m)["includeTeamUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
+	(*m)["includeTeamCanAdminister"] = githubv4.Boolean(slices.Contains(cols, "can_administer"))
+	(*m)["includeTeamCanSubscribe"] = githubv4.Boolean(slices.Contains(cols, "can_subscribe"))
+	(*m)["includeTeamSubscription"] = githubv4.Boolean(slices.Contains(cols, "subscription"))
+	(*m)["includeTeamAncestors"] = githubv4.Boolean(slices.Contains(cols, "ancestors_total_count"))
+	(*m)["includeTeamChildTeams"] = githubv4.Boolean(slices.Contains(cols, "child_teams_total_count"))
+	(*m)["includeTeamDiscussions"] = githubv4.Boolean(slices.Contains(cols, "discussions_total_count"))
+	(*m)["includeTeamInvitations"] = githubv4.Boolean(slices.Contains(cols, "invitations_total_count"))
+	(*m)["includeTeamMembers"] = githubv4.Boolean(slices.Contains(cols, "members_total_count"))
+	(*m)["includeTeamProjectsV2"] = githubv4.Boolean(slices.Contains(cols, "projects_v2_total_count"))
+	(*m)["includeTeamRepositories"] = githubv4.Boolean(slices.Contains(cols, "repositories_total_count"))
+}
+
+func appendOrgCollaboratorColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeOCPermission"] = githubv4.Boolean(slices.Contains(cols, "permission"))
+	(*m)["includeOCNode"] = githubv4.Boolean(slices.Contains(cols, "user_login"))
+}
+
+func appendOrganizationExternalIdentityColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeOrgExternalIdentityGuid"] = githubv4.Boolean(slices.Contains(cols, "guid"))
+	(*m)["includeOrgExternalIdentityUser"] = githubv4.Boolean(slices.Contains(cols, "user_detail") || slices.Contains(cols, "user_login"))
+	(*m)["includeOrgExternalIdentitySamlIdentity"] = githubv4.Boolean(slices.Contains(cols, "saml_identity"))
+	(*m)["includeOrgExternalIdentityScimIdentity"] = githubv4.Boolean(slices.Contains(cols, "scim_identity"))
+	(*m)["includeOrgExternalIdentityOrganizationInvitation"] = githubv4.Boolean(slices.Contains(cols, "organization_invitation"))
+}
+
+func appendUserColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeUserAnyPinnableItems"] = githubv4.Boolean(slices.Contains(cols, "any_pinnable_items"))
+	(*m)["includeUserAvatarUrl"] = githubv4.Boolean(slices.Contains(cols, "avatar_url"))
+	(*m)["includeUserBio"] = githubv4.Boolean(slices.Contains(cols, "bio"))
+	(*m)["includeUserCompany"] = githubv4.Boolean(slices.Contains(cols, "company"))
+	(*m)["includeUserEstimatedNextSponsorsPayoutInCents"] = githubv4.Boolean(slices.Contains(cols, "estimated_next_sponsors_payout_in_cents"))
+	(*m)["includeUserHasSponsorsListing"] = githubv4.Boolean(slices.Contains(cols, "has_sponsors_listing"))
+	(*m)["includeUserInteractionAbility"] = githubv4.Boolean(slices.Contains(cols, "interaction_ability"))
+	(*m)["includeUserIsBountyHunter"] = githubv4.Boolean(slices.Contains(cols, "is_bounty_hunter"))
+	(*m)["includeUserIsCampusExpert"] = githubv4.Boolean(slices.Contains(cols, "is_campus_expert"))
+	(*m)["includeUserIsDeveloperProgramMember"] = githubv4.Boolean(slices.Contains(cols, "is_developer_program_member"))
+	(*m)["includeUserIsEmployee"] = githubv4.Boolean(slices.Contains(cols, "is_employee"))
+	(*m)["includeUserIsFollowingYou"] = githubv4.Boolean(slices.Contains(cols, "is_following_you"))
+	(*m)["includeUserIsGitHubStar"] = githubv4.Boolean(slices.Contains(cols, "is_github_star"))
+	(*m)["includeUserIsHireable"] = githubv4.Boolean(slices.Contains(cols, "is_hireable"))
+	(*m)["includeUserIsSiteAdmin"] = githubv4.Boolean(slices.Contains(cols, "is_site_admin"))
+	(*m)["includeUserIsSponsoringYou"] = githubv4.Boolean(slices.Contains(cols, "is_sponsoring_you"))
+	(*m)["includeUserIsYou"] = githubv4.Boolean(slices.Contains(cols, "is_you"))
+	(*m)["includeUserLocation"] = githubv4.Boolean(slices.Contains(cols, "location"))
+	(*m)["includeUserMonthlyEstimatedSponsorsIncomeInCents"] = githubv4.Boolean(slices.Contains(cols, "monthly_estimated_sponsors_income_in_cents"))
+	(*m)["includeUserPinnedItemsRemaining"] = githubv4.Boolean(slices.Contains(cols, "pinned_items_remaining"))
+	(*m)["includeUserProjectsUrl"] = githubv4.Boolean(slices.Contains(cols, "projects_url"))
+	(*m)["includeUserPronouns"] = githubv4.Boolean(slices.Contains(cols, "pronouns"))
+	(*m)["includeUserSponsorsListing"] = githubv4.Boolean(slices.Contains(cols, "sponsors_listing"))
+	(*m)["includeUserStatus"] = githubv4.Boolean(slices.Contains(cols, "status"))
+	(*m)["includeUserTwitterUsername"] = githubv4.Boolean(slices.Contains(cols, "twitter_username"))
+	(*m)["includeUserCanChangedPinnedItems"] = githubv4.Boolean(slices.Contains(cols, "can_changed_pinned_items"))
+	(*m)["includeUserCanCreateProjects"] = githubv4.Boolean(slices.Contains(cols, "can_create_projects"))
+	(*m)["includeUserCanFollow"] = githubv4.Boolean(slices.Contains(cols, "can_follow"))
+	(*m)["includeUserCanSponsor"] = githubv4.Boolean(slices.Contains(cols, "can_sponsor"))
+	(*m)["includeUserIsFollowing"] = githubv4.Boolean(slices.Contains(cols, "is_following"))
+	(*m)["includeUserIsSponsoring"] = githubv4.Boolean(slices.Contains(cols, "is_sponsoring"))
+	(*m)["includeUserWebsiteUrl"] = githubv4.Boolean(slices.Contains(cols, "website_url"))
 }
 
 func repositoryCols() []string {
@@ -633,34 +725,142 @@ func issueCommentCols() []string {
 	}
 }
 
-func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
-	owner, _, err := client.Users.Get(ctx, "")
-	if err != nil {
-		return "", err
+func licenseCols() []string {
+	return []string{
+		"spdx_id",
+		"name",
+		"url",
+		"conditions",
+		"description",
+		"featured",
+		"hidden",
+		"implementation",
+		"key",
+		"limitations",
+		"permissions",
+		"nickname",
+		"pseudo_license",
 	}
-	ownerName := *owner.Name
-	return ownerName, err
 }
 
-func getRepositoriesName(ctx context.Context, client *github.Client, owner string) ([]string, error) {
+func teamCols() []string {
+	return []string{
+		"organization",
+		"slug",
+		"name",
+		"id",
+		"node_id",
+		"description",
+		"created_at",
+		"updated_at",
+		"combined_slug",
+		"parent_team",
+		"privacy",
+		"ancestors_total_count",
+		"child_teams_total_count",
+		"discussions_total_count",
+		"invitations_total_count",
+		"members_total_count",
+		"projects_v2_total_count",
+		"repositories_total_count",
+		"url",
+		"avatar_url",
+		"discussions_url",
+		"edit_team_url",
+		"members_url",
+		"new_team_url",
+		"repositories_url",
+		"teams_url",
+		"can_administer",
+		"can_subscribe",
+		"subscription",
+	}
+}
+
+func orgCollaboratorsCols() []string {
+	return []string{
+		"organization",
+		"affiliation",
+		"repository_name",
+		"permission",
+		"user_login",
+	}
+}
+
+func orgExternalIdentitiesCols() []string {
+	return []string{
+		"organization",
+		"guid",
+		"user_login",
+		"user_detail",
+		"saml_identity",
+		"scim_identity",
+		"organization_invitation",
+	}
+}
+
+func orgMembersCols() []string {
+	return []string{
+		"organization",
+		"role",
+		"has_two_factor_enabled",
+		"login",
+		"id",
+		"name",
+		"node_id",
+		"email",
+		"url",
+		"created_at",
+		"updated_at",
+		"any_pinnable_items",
+		"avatar_url",
+		"bio",
+		"company",
+		"estimated_next_sponsors_payout_in_cents",
+		"has_sponsors_listing",
+		"interaction_ability",
+		"is_bounty_hunter",
+		"is_campus_expert",
+		"is_developer_program_member",
+		"is_employee",
+		"is_following_you",
+		"is_github_star",
+		"is_hireable",
+		"is_site_admin",
+		"is_sponsoring_you",
+		"is_you",
+		"location",
+		"monthly_estimated_sponsors_income_in_cents",
+		"pinned_items_remaining",
+		"projects_url",
+		"pronouns",
+		"sponsors_listing",
+		"status",
+		"twitter_username",
+		"can_changed_pinned_items",
+		"can_create_projects",
+		"can_follow",
+		"can_sponsor",
+		"is_following",
+		"is_sponsoring",
+		"website_url",
+	}
+}
+
+func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
 	opt := &github.RepositoryListOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
 	}
-	var repositories []string
 	for {
 		repos, resp, err := client.Repositories.List(ctx, owner, opt)
 		if err != nil {
 			return nil, err
 		}
-		for _, repo := range repos {
-			repositories = append(repositories, repo.GetName())
-		}
 		if resp.NextPage == 0 {
-			break
+			return repos, nil
 		}
 		opt.Page = resp.NextPage
 	}
-	return repositories, nil
 }
 
 func getIssues(ctx context.Context, client *github.Client) ([]*github.Issue, error) {
@@ -679,6 +879,29 @@ func getIssues(ctx context.Context, client *github.Client) ([]*github.Issue, err
 		}
 		opt.Page = resp.NextPage
 	}
+}
+
+func getOrganizations(ctx context.Context, client *github.Client) ([]*github.Organization, error) {
+	opts := &github.ListOptions{PerPage: orgCollaboratorsPageSize}
+	for {
+		organizations, resp, err := client.Organizations.List(ctx, "", opts)
+		if err != nil {
+			return nil, err
+		}
+		if resp.NextPage == 0 {
+			return organizations, nil
+		}
+		opts.Page = resp.NextPage
+	}
+}
+
+func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
+	owner, _, err := client.Users.Get(ctx, "")
+	if err != nil {
+		return "", err
+	}
+	ownerName := *owner.Name
+	return ownerName, err
 }
 
 func formRepositoryFullName(owner, repo string) string {

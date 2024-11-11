@@ -16,13 +16,13 @@ func GetAllBranchProtections(ctx context.Context, githubClient provider.GitHubCl
 	if err != nil {
 		return nil, nil
 	}
-	repositories, err := getRepositoriesName(ctx, client, owner)
+	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryBranchProtections(ctx, githubClient, stream, owner, repo)
+		repoValues, err := GetRepositoryBranchProtections(ctx, githubClient, stream, owner, repo.GetName())
 		if err != nil {
 			return nil, err
 		}
