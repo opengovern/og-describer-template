@@ -36,12 +36,12 @@ func commonKaytuColumns() []*plugin.Column {
 			Transform:   transform.FromField("ID"),
 		},
 		{
-			Name:      "kaytu_metadata",
+			Name:      "og_metadata",
 			Type:      proto.ColumnType_STRING,
 			Transform: transform.FromField("Metadata").Transform(marshalJSON),
 		},
 		{
-			Name:        "kaytu_description",
+			Name:        "og_description",
 			Type:        proto.ColumnType_JSON,
 			Description: "The full model description of the resource",
 			Transform:   transform.FromField("Description").Transform(marshalAzureJSON),
