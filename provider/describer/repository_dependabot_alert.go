@@ -9,31 +9,35 @@ import (
 	"strconv"
 )
 
-func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRepositoriesDependabotAlerts(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	organizations, err := getOrganizations(ctx, client)
+	owner, err := getOwnerName(ctx, client)
+	if err != nil {
+		return nil, nil
+	}
+	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
 	}
 	var values []models.Resource
-	for _, org := range organizations {
-		orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, org.GetName())
+	for _, repo := range repositories {
+		repoValues, err := GetRepositoryDependabotAlerts(ctx, githubClient, stream, owner, repo.GetName())
 		if err != nil {
 			return nil, err
 		}
-		values = append(values, orgValues...)
+		values = append(values, repoValues...)
 	}
 	return values, nil
 }
 
-func GetOrganizationDependabotAlerts(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetRepositoryDependabotAlerts(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opt := &github.ListAlertsOptions{
-		ListCursorOptions: github.ListCursorOptions{First: maxPagesCount},
+		ListCursorOptions: github.ListCursorOptions{First: pageSize},
 	}
 	var values []models.Resource
 	for {
-		alerts, resp, err := client.Dependabot.ListOrgAlerts(ctx, org, opt)
+		alerts, resp, err := client.Dependabot.ListRepoAlerts(ctx, owner, repo, opt)
 		if err != nil {
 			return nil, err
 		}
@@ -46,7 +50,7 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient provider.
 				ID:   strconv.Itoa(*alert.Number),
 				Name: strconv.Itoa(*alert.Number),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.OrgAlertDependabot{
+					Value: model.RepoAlertDependabot{
 						AlertNumber:                 *alert.Number,
 						State:                       *alert.State,
 						DependencyPackageEcosystem:  *alert.Dependency.Package.Ecosystem,

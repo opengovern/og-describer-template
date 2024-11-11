@@ -15,7 +15,7 @@ type CollaboratorEdge struct {
 	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
 }
 
-func GetAllCollaborators(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllOrganizationsCollaborators(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	organizations, err := getOrganizations(ctx, client)
 	if err != nil {

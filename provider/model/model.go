@@ -97,6 +97,91 @@ type Repository struct {
 	steampipemodels.Repository
 }
 
+type RepoCollaborators struct {
+	Affiliation  string
+	RepoFullName string
+	Permission   githubv4.RepositoryPermission
+	UserLogin    string
+}
+
+type RepoAlertDependabot struct {
+	RepoFullName                string
+	AlertNumber                 int
+	State                       string
+	DependencyPackageEcosystem  string
+	DependencyPackageName       string
+	DependencyManifestPath      string
+	DependencyScope             string
+	SecurityAdvisoryGHSAID      string
+	SecurityAdvisoryCVEID       string
+	SecurityAdvisorySummary     string
+	SecurityAdvisoryDescription string
+	SecurityAdvisorySeverity    string
+	SecurityAdvisoryCVSSScore   float64
+	SecurityAdvisoryCVSSVector  string
+	SecurityAdvisoryCWEs        []string
+	SecurityAdvisoryPublishedAt github.Timestamp
+	SecurityAdvisoryUpdatedAt   github.Timestamp
+	SecurityAdvisoryWithdrawnAt github.Timestamp
+	URL                         string
+	HTMLURL                     string
+	CreatedAt                   github.Timestamp
+	UpdatedAt                   github.Timestamp
+	DismissedAt                 github.Timestamp
+	DismissedReason             string
+	DismissedComment            string
+	FixedAt                     github.Timestamp
+}
+
+type RepoDeployment struct {
+	steampipemodels.Deployment
+	RepoFullName string
+}
+
+type RepoEnvironment struct {
+	steampipemodels.Environment
+	RepoFullName string
+}
+
+type RepoRuleSet struct {
+	steampipemodels.Ruleset
+	RepoFullName string
+}
+
+type RepoSBOM struct {
+	RepositoryFullName string
+	SPDXID             string
+	SPDXVersion        string
+	CreationInfo       *github.CreationInfo
+	Name               string
+	DataLicense        string
+	DocumentDescribes  []string
+	DocumentNamespace  string
+	Packages           []*github.RepoDependencies
+}
+
+type RepoVulnerabilityAlert struct {
+	RepositoryFullName         string
+	Number                     int
+	NodeID                     string
+	AutoDismissedAt            steampipemodels.NullableTime
+	CreatedAt                  steampipemodels.NullableTime
+	DependencyScope            githubv4.RepositoryVulnerabilityAlertDependencyScope
+	DismissComment             string
+	DismissReason              string
+	DismissedAt                steampipemodels.NullableTime
+	Dismisser                  steampipemodels.BasicUser
+	FixedAt                    steampipemodels.NullableTime
+	State                      githubv4.RepositoryVulnerabilityAlertState
+	SecurityAdvisory           steampipemodels.SecurityAdvisory
+	SecurityVulnerability      steampipemodels.SecurityVulnerability
+	VulnerableManifestFilename string
+	VulnerableManifestPath     string
+	VulnerableRequirements     string
+	Severity                   githubv4.SecurityAdvisorySeverity
+	CvssScore                  float64
+}
+
 type Star struct {
 	RepoFullName string
 	StarredAt    steampipemodels.NullableTime
@@ -130,7 +215,7 @@ type OrgCollaborators struct {
 	UserLogin      steampipemodels.CollaboratorLogin
 }
 
-type AlertDependabot struct {
+type OrgAlertDependabot struct {
 	AlertNumber                 int
 	State                       string
 	DependencyPackageEcosystem  string

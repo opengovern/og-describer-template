@@ -391,6 +391,54 @@ func appendUserColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeUserWebsiteUrl"] = githubv4.Boolean(slices.Contains(cols, "website_url"))
 }
 
+func appendRepoCollaboratorColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeRCPermission"] = githubv4.Boolean(slices.Contains(cols, "permission"))
+	(*m)["includeRCNode"] = githubv4.Boolean(slices.Contains(cols, "user_login"))
+}
+
+func appendRepoDeploymentColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeDeploymentId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+	(*m)["includeDeploymentNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includeDeploymentCommitSha"] = githubv4.Boolean(slices.Contains(cols, "sha"))
+	(*m)["includeDeploymentCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includeDeploymentCreator"] = githubv4.Boolean(slices.Contains(cols, "creator"))
+	(*m)["includeDeploymentDescription"] = githubv4.Boolean(slices.Contains(cols, "description"))
+	(*m)["includeDeploymentEnvironment"] = githubv4.Boolean(slices.Contains(cols, "environment"))
+	(*m)["includeDeploymentLatestEnvironment"] = githubv4.Boolean(slices.Contains(cols, "latest_environment"))
+	(*m)["includeDeploymentLatestStatus"] = githubv4.Boolean(slices.Contains(cols, "latest_status"))
+	(*m)["includeDeploymentOriginalEnvironment"] = githubv4.Boolean(slices.Contains(cols, "original_environment"))
+	(*m)["includeDeploymentPayload"] = githubv4.Boolean(slices.Contains(cols, "payload"))
+	(*m)["includeDeploymentRef"] = githubv4.Boolean(slices.Contains(cols, "ref"))
+	(*m)["includeDeploymentState"] = githubv4.Boolean(slices.Contains(cols, "state"))
+	(*m)["includeDeploymentTask"] = githubv4.Boolean(slices.Contains(cols, "task"))
+	(*m)["includeDeploymentUpdatedAt"] = githubv4.Boolean(slices.Contains(cols, "updated_at"))
+}
+
+func appendRepoEnvironmentColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeEnvironmentName"] = githubv4.Boolean(slices.Contains(cols, "name"))
+	(*m)["includeEnvironmentNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includeEnvironmentId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+}
+
+func appendRepoVulnerabilityAlertColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeVulnerabilityAlertNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includeVulnerabilityAlertNumber"] = githubv4.Boolean(slices.Contains(cols, "number"))
+	(*m)["includeVulnerabilityAlertAutoDismissedAt"] = githubv4.Boolean(slices.Contains(cols, "auto_dismissed_at"))
+	(*m)["includeVulnerabilityAlertCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includeVulnerabilityAlertDependencyScope"] = githubv4.Boolean(slices.Contains(cols, "dependency_scope"))
+	(*m)["includeVulnerabilityAlertDismissComment"] = githubv4.Boolean(slices.Contains(cols, "dismiss_comment"))
+	(*m)["includeVulnerabilityAlertDismissReason"] = githubv4.Boolean(slices.Contains(cols, "dismiss_reason"))
+	(*m)["includeVulnerabilityAlertDismissedAt"] = githubv4.Boolean(slices.Contains(cols, "dismissed_at"))
+	(*m)["includeVulnerabilityAlertDismisser"] = githubv4.Boolean(slices.Contains(cols, "dismisser"))
+	(*m)["includeVulnerabilityAlertFixedAt"] = githubv4.Boolean(slices.Contains(cols, "fixed_at"))
+	(*m)["includeVulnerabilityAlertState"] = githubv4.Boolean(slices.Contains(cols, "state"))
+	(*m)["includeVulnerabilityAlertSecurityAdvisory"] = githubv4.Boolean(slices.Contains(cols, "security_advisory") || slices.Contains(cols, "cvss_score"))
+	(*m)["includeVulnerabilityAlertSecurityVulnerability"] = githubv4.Boolean(slices.Contains(cols, "security_vulnerability") || slices.Contains(cols, "severity"))
+	(*m)["includeVulnerabilityAlertVulnerableManifestFilename"] = githubv4.Boolean(slices.Contains(cols, "vulnerable_manifest_filename"))
+	(*m)["includeVulnerabilityAlertVulnerableManifestPath"] = githubv4.Boolean(slices.Contains(cols, "vulnerable_manifest_path"))
+	(*m)["includeVulnerabilityAlertVulnerableRequirements"] = githubv4.Boolean(slices.Contains(cols, "vulnerable_requirements"))
+}
+
 func repositoryCols() []string {
 	return []string{
 		"id",
@@ -844,6 +892,69 @@ func orgMembersCols() []string {
 		"is_following",
 		"is_sponsoring",
 		"website_url",
+	}
+}
+
+func repositoryCollaboratorsCols() []string {
+	return []string{
+		"repository_full_name",
+		"affiliation",
+		"permission",
+		"user_login",
+	}
+}
+
+func repositoryDeploymentsCols() []string {
+	return []string{
+		"repository_full_name",
+		"id",
+		"node_id",
+		"commit_sha",
+		"created_at",
+		"creator",
+		"description",
+		"environment",
+		"latest_environment",
+		"latest_status",
+		"original_environment",
+		"payload",
+		"ref",
+		"state",
+		"task",
+		"updated_at",
+	}
+}
+
+func repositoryEnvironmentsCols() []string {
+	return []string{
+		"repository_full_name",
+		"id",
+		"node_id",
+		"name",
+	}
+}
+
+func repositoryVulnerabilityAlertCols() []string {
+	return []string{
+		"repository_full_name",
+		"number",
+		"node_id",
+		"auto_dismissed_at",
+		"created_at",
+		"dependency_scope",
+		"dismiss_comment",
+		"dismiss_reason",
+		"dismissed_at",
+		"dismisser",
+		"fixed_at",
+		"state",
+		"security_advisory",
+		"security_vulnerability",
+		"vulnerable_manifest_filename",
+		"vulnerable_manifest_path",
+		"vulnerable_requirements",
+		"severity",
+		"cvss_score",
 	}
 }
 
