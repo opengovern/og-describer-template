@@ -24,7 +24,7 @@ type AdUsers struct {
 	PlatformID      string                     `json:"platform_id"`
 	Description     entraid.AdUsersDescription `json:"description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
-	DescribedBy     int                        `json:"described_by"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
@@ -310,7 +310,7 @@ type AdGroup struct {
 	PlatformID      string                     `json:"platform_id"`
 	Description     entraid.AdGroupDescription `json:"description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
-	DescribedBy     int                        `json:"described_by"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
@@ -628,7 +628,7 @@ type AdServicePrincipal struct {
 	PlatformID      string                                `json:"platform_id"`
 	Description     entraid.AdServicePrincipalDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
-	DescribedBy     int                                   `json:"described_by"`
+	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
@@ -934,7 +934,7 @@ type AdApplication struct {
 	PlatformID      string                           `json:"platform_id"`
 	Description     entraid.AdApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                 `json:"metadata"`
-	DescribedBy     int                              `json:"described_by"`
+	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
 	IntegrationType string                           `json:"integration_type"`
 	IntegrationID   string                           `json:"integration_id"`
@@ -1222,7 +1222,7 @@ type AdDirectoryRole struct {
 	PlatformID      string                             `json:"platform_id"`
 	Description     entraid.AdDirectoryRoleDescription `json:"description"`
 	Metadata        entraid.Metadata                   `json:"metadata"`
-	DescribedBy     int                                `json:"described_by"`
+	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
@@ -1484,7 +1484,7 @@ type AdDirectorySetting struct {
 	PlatformID      string                                `json:"platform_id"`
 	Description     entraid.AdDirectorySettingDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
-	DescribedBy     int                                   `json:"described_by"`
+	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
@@ -1748,7 +1748,7 @@ type AdDirectoryAuditReport struct {
 	PlatformID      string                                    `json:"platform_id"`
 	Description     entraid.AdDirectoryAuditReportDescription `json:"description"`
 	Metadata        entraid.Metadata                          `json:"metadata"`
-	DescribedBy     int                                       `json:"described_by"`
+	DescribedBy     string                                    `json:"described_by"`
 	ResourceType    string                                    `json:"resource_type"`
 	IntegrationType string                                    `json:"integration_type"`
 	IntegrationID   string                                    `json:"integration_id"`
@@ -2026,7 +2026,7 @@ type AdDomain struct {
 	PlatformID      string                      `json:"platform_id"`
 	Description     entraid.AdDomainDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
-	DescribedBy     int                         `json:"described_by"`
+	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
@@ -2296,7 +2296,7 @@ type AdTenant struct {
 	PlatformID      string                      `json:"platform_id"`
 	Description     entraid.AdTenantDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
-	DescribedBy     int                         `json:"described_by"`
+	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
@@ -2562,7 +2562,7 @@ type AdIdentityProvider struct {
 	PlatformID      string                                `json:"platform_id"`
 	Description     entraid.AdIdentityProviderDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
-	DescribedBy     int                                   `json:"described_by"`
+	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
@@ -2826,7 +2826,7 @@ type AdSecurityDefaultsPolicy struct {
 	PlatformID      string                                      `json:"platform_id"`
 	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                            `json:"metadata"`
-	DescribedBy     int                                         `json:"described_by"`
+	DescribedBy     string                                      `json:"described_by"`
 	ResourceType    string                                      `json:"resource_type"`
 	IntegrationType string                                      `json:"integration_type"`
 	IntegrationID   string                                      `json:"integration_id"`
@@ -3088,7 +3088,7 @@ type AdAuthorizationPolicy struct {
 	PlatformID      string                                   `json:"platform_id"`
 	Description     entraid.AdAuthorizationPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                         `json:"metadata"`
-	DescribedBy     int                                      `json:"described_by"`
+	DescribedBy     string                                   `json:"described_by"`
 	ResourceType    string                                   `json:"resource_type"`
 	IntegrationType string                                   `json:"integration_type"`
 	IntegrationID   string                                   `json:"integration_id"`
@@ -3362,7 +3362,7 @@ type AdConditionalAccessPolicy struct {
 	PlatformID      string                                       `json:"platform_id"`
 	Description     entraid.AdConditionalAccessPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
-	DescribedBy     int                                          `json:"described_by"`
+	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
 	IntegrationType string                                       `json:"integration_type"`
 	IntegrationID   string                                       `json:"integration_id"`
@@ -3656,7 +3656,7 @@ type AdAdminConsentRequestPolicy struct {
 	PlatformID      string                                         `json:"platform_id"`
 	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                               `json:"metadata"`
-	DescribedBy     int                                            `json:"described_by"`
+	DescribedBy     string                                         `json:"described_by"`
 	ResourceType    string                                         `json:"resource_type"`
 	IntegrationType string                                         `json:"integration_type"`
 	IntegrationID   string                                         `json:"integration_id"`
@@ -3922,7 +3922,7 @@ type AdSignInReport struct {
 	PlatformID      string                            `json:"platform_id"`
 	Description     entraid.AdSignInReportDescription `json:"description"`
 	Metadata        entraid.Metadata                  `json:"metadata"`
-	DescribedBy     int                               `json:"described_by"`
+	DescribedBy     string                            `json:"described_by"`
 	ResourceType    string                            `json:"resource_type"`
 	IntegrationType string                            `json:"integration_type"`
 	IntegrationID   string                            `json:"integration_id"`
@@ -4220,7 +4220,7 @@ type AdDevice struct {
 	PlatformID      string                      `json:"platform_id"`
 	Description     entraid.AdDeviceDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
-	DescribedBy     int                         `json:"described_by"`
+	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
@@ -4500,7 +4500,7 @@ type AdUserRegistrationDetails struct {
 	PlatformID      string                                       `json:"platform_id"`
 	Description     entraid.AdUserRegistrationDetailsDescription `json:"description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
-	DescribedBy     int                                          `json:"described_by"`
+	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
 	IntegrationType string                                       `json:"integration_type"`
 	IntegrationID   string                                       `json:"integration_id"`
@@ -4786,7 +4786,7 @@ type AdGroupMembership struct {
 	PlatformID      string                               `json:"platform_id"`
 	Description     entraid.AdGroupMembershipDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
-	DescribedBy     int                                  `json:"described_by"`
+	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
@@ -5064,7 +5064,7 @@ type AdAppRegistration struct {
 	PlatformID      string                               `json:"platform_id"`
 	Description     entraid.AdAppRegistrationDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
-	DescribedBy     int                                  `json:"described_by"`
+	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
@@ -5352,7 +5352,7 @@ type AdEnterpriseApplication struct {
 	PlatformID      string                                     `json:"platform_id"`
 	Description     entraid.AdEnterpriseApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                           `json:"metadata"`
-	DescribedBy     int                                        `json:"described_by"`
+	DescribedBy     string                                     `json:"described_by"`
 	ResourceType    string                                     `json:"resource_type"`
 	IntegrationType string                                     `json:"integration_type"`
 	IntegrationID   string                                     `json:"integration_id"`
@@ -5658,7 +5658,7 @@ type AdManagedIdentity struct {
 	PlatformID      string                               `json:"platform_id"`
 	Description     entraid.AdManagedIdentityDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
-	DescribedBy     int                                  `json:"described_by"`
+	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
@@ -5964,7 +5964,7 @@ type AdMicrosoftApplication struct {
 	PlatformID      string                                    `json:"platform_id"`
 	Description     entraid.AdMicrosoftApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                          `json:"metadata"`
-	DescribedBy     int                                       `json:"described_by"`
+	DescribedBy     string                                    `json:"described_by"`
 	ResourceType    string                                    `json:"resource_type"`
 	IntegrationType string                                    `json:"integration_type"`
 	IntegrationID   string                                    `json:"integration_id"`
