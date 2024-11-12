@@ -56,8 +56,41 @@ func GetTeamList(ctx context.Context, githubClient provider.GitHubClient, stream
 				ID:   strconv.Itoa(team.Id),
 				Name: team.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.GitHubTeam{
-						TeamWithCounts: team,
+					Value: model.Team{
+						Organization: team.Organization.Name,
+						Slug:         team.Slug,
+						Name:         team.Name,
+						ID:           team.Id,
+						NodeID:       team.NodeId,
+						Description:  team.Description,
+						CreatedAt:    team.CreatedAt,
+						UpdatedAt:    team.UpdatedAt,
+						CombinedSlug: team.CombinedSlug,
+						ParentTeam: struct {
+							Id     int
+							NodeId string
+							Name   string
+							Slug   string
+						}{Id: team.ParentTeam.Id, NodeId: team.ParentTeam.NodeId, Name: team.ParentTeam.Name, Slug: team.ParentTeam.Slug},
+						Privacy:                team.Privacy,
+						AncestorsTotalCount:    team.Ancestors.TotalCount,
+						ChildTeamsTotalCount:   team.ChildTeams.TotalCount,
+						DiscussionsTotalCount:  team.Discussions.TotalCount,
+						InvitationsTotalCount:  team.Invitations.TotalCount,
+						MembersTotalCount:      team.Members.TotalCount,
+						ProjectsV2TotalCount:   team.ProjectsV2.TotalCount,
+						RepositoriesTotalCount: team.Repositories.TotalCount,
+						URL:                    team.Url,
+						AvatarURL:              team.AvatarUrl,
+						DiscussionsURL:         team.DiscussionsUrl,
+						EditTeamURL:            team.EditTeamUrl,
+						MembersURL:             team.MembersUrl,
+						NewTeamURL:             team.NewTeamUrl,
+						RepositoriesURL:        team.RepositoriesUrl,
+						TeamsURL:               team.TeamsUrl,
+						CanAdminister:          team.CanAdminister,
+						CanSubscribe:           team.CanSubscribe,
+						Subscription:           team.Subscription,
 					},
 				},
 			}

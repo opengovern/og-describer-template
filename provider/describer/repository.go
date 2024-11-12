@@ -2,12 +2,14 @@ package describer
 
 import (
 	"context"
+	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-template/pkg/sdk/models"
 	"github.com/opengovern/og-describer-template/provider"
 	"github.com/opengovern/og-describer-template/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
+	"strings"
 )
 
 func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
@@ -35,12 +37,94 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 			return nil, err
 		}
 		for _, repo := range query.Viewer.Repositories.Nodes {
+			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, repo.Name)
+			if err != nil {
+				return nil, err
+			}
+			topics, subscribersCount, hasDownloads, hasPages, networkCount, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Name)
 			value := models.Resource{
 				ID:   strconv.Itoa(repo.Id),
 				Name: repo.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Repository{
-						Repository: repo,
+						ID:                            repo.Id,
+						NodeID:                        repo.NodeId,
+						Name:                          repo.Name,
+						AllowUpdateBranch:             repo.AllowUpdateBranch,
+						ArchivedAt:                    repo.ArchivedAt,
+						AutoMergeAllowed:              repo.AutoMergeAllowed,
+						CodeOfConduct:                 repo.CodeOfConduct,
+						ContactLinks:                  repo.ContactLinks,
+						CreatedAt:                     repo.CreatedAt,
+						DefaultBranchRef:              repo.DefaultBranchRef,
+						DeleteBranchOnMerge:           repo.DeleteBranchOnMerge,
+						Description:                   repo.Description,
+						DiskUsage:                     repo.DiskUsage,
+						ForkCount:                     repo.ForkCount,
+						ForkingAllowed:                repo.ForkingAllowed,
+						FundingLinks:                  repo.FundingLinks,
+						HasDiscussionsEnabled:         repo.HasDiscussionsEnabled,
+						HasIssuesEnabled:              repo.HasIssuesEnabled,
+						HasProjectsEnabled:            repo.HasProjectsEnabled,
+						HasVulnerabilityAlertsEnabled: repo.HasVulnerabilityAlertsEnabled,
+						HasWikiEnabled:                repo.HasWikiEnabled,
+						HomepageURL:                   repo.HomepageUrl,
+						InteractionAbility:            repo.InteractionAbility,
+						IsArchived:                    repo.IsArchived,
+						IsBlankIssuesEnabled:          repo.IsBlankIssuesEnabled,
+						IsDisabled:                    repo.IsDisabled,
+						IsEmpty:                       repo.IsEmpty,
+						IsFork:                        repo.IsFork,
+						IsInOrganization:              repo.IsInOrganization,
+						IsLocked:                      repo.IsLocked,
+						IsMirror:                      repo.IsMirror,
+						IsPrivate:                     repo.IsPrivate,
+						IsSecurityPolicyEnabled:       repo.IsSecurityPolicyEnabled,
+						IsTemplate:                    repo.IsTemplate,
+						IsUserConfigurationRepository: repo.IsUserConfigurationRepository,
+						IssueTemplates:                repo.IssueTemplates,
+						LicenseInfo:                   repo.LicenseInfo,
+						LockReason:                    repo.LockReason,
+						MergeCommitAllowed:            repo.MergeCommitAllowed,
+						MergeCommitMessage:            repo.MergeCommitMessage,
+						MergeCommitTitle:              repo.MergeCommitTitle,
+						MirrorURL:                     repo.MirrorUrl,
+						NameWithOwner:                 repo.NameWithOwner,
+						OpenGraphImageURL:             repo.OpenGraphImageUrl,
+						OwnerLogin:                    repo.Owner.Login,
+						PrimaryLanguage:               repo.PrimaryLanguage,
+						ProjectsURL:                   repo.ProjectsUrl,
+						PullRequestTemplates:          repo.PullRequestTemplates,
+						PushedAt:                      repo.PushedAt,
+						RebaseMergeAllowed:            repo.RebaseMergeAllowed,
+						SecurityPolicyURL:             repo.SecurityPolicyUrl,
+						SquashMergeAllowed:            repo.SquashMergeAllowed,
+						SquashMergeCommitMessage:      repo.SquashMergeCommitMessage,
+						SquashMergeCommitTitle:        repo.SquashMergeCommitTitle,
+						SSHURL:                        repo.SshUrl,
+						StargazerCount:                repo.StargazerCount,
+						UpdatedAt:                     repo.UpdatedAt,
+						URL:                           repo.Url,
+						UsesCustomOpenGraphImage:      repo.UsesCustomOpenGraphImage,
+						CanAdminister:                 repo.CanAdminister,
+						CanCreateProjects:             repo.CanCreateProjects,
+						CanSubscribe:                  repo.CanSubscribe,
+						CanUpdateTopics:               repo.CanUpdateTopics,
+						HasStarred:                    repo.HasStarred,
+						PossibleCommitEmails:          repo.PossibleCommitEmails,
+						Subscription:                  repo.Subscription,
+						Visibility:                    repo.Visibility,
+						YourPermission:                repo.YourPermission,
+						WebCommitSignOffRequired:      repo.WebCommitSignoffRequired,
+						RepositoryTopicsTotalCount:    repo.RepositoryTopics.TotalCount,
+						OpenIssuesTotalCount:          repo.OpenIssues.TotalCount,
+						WatchersTotalCount:            repo.Watchers.TotalCount,
+						Hooks:                         hooks,
+						Topics:                        topics,
+						SubscribersCount:              subscribersCount,
+						HasDownloads:                  hasDownloads,
+						HasPages:                      hasPages,
+						NetworkCount:                  networkCount,
 					},
 				},
 			}
@@ -58,4 +142,45 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 		variables["cursor"] = githubv4.NewString(query.Viewer.Repositories.PageInfo.EndCursor)
 	}
 	return values, nil
+}
+
+func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, repo string) ([]string, int, bool, bool, int, error) {
+	owner, err := getOwnerName(ctx, client)
+	if err != nil {
+		return nil, 0, false, false, 0, nil
+	}
+	r, _, err := client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			return nil, 0, false, false, 0, nil
+		}
+		return nil, 0, false, false, 0, err
+	}
+	if r == nil {
+		return nil, 0, false, false, 0, nil
+	}
+	return r.Topics, *r.SubscribersCount, *r.HasDownloads, *r.HasPages, *r.NetworkCount, nil
+}
+
+func GetRepositoryHooks(ctx context.Context, client *github.Client, repo string) ([]*github.Hook, error) {
+	owner, err := getOwnerName(ctx, client)
+	if err != nil {
+		return nil, nil
+	}
+	var repositoryHooks []*github.Hook
+	opt := &github.ListOptions{PerPage: pageSize}
+	for {
+		hooks, resp, err := client.Repositories.ListHooks(ctx, owner, repo, opt)
+		if err != nil && strings.Contains(err.Error(), "Not Found") {
+			return nil, nil
+		} else if err != nil {
+			return nil, err
+		}
+		repositoryHooks = append(repositoryHooks, hooks...)
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+	}
+	return repositoryHooks, nil
 }

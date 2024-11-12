@@ -67,6 +67,8 @@ func GetRepositoryIssueComments(ctx context.Context, githubClient provider.GitHu
 						IssueComment: comment,
 						RepoFullName: repoFullName,
 						Number:       issueNumber,
+						AuthorLogin:  comment.Author.Login,
+						EditorLogin:  comment.Editor.Login,
 					},
 				},
 			}

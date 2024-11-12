@@ -16,6 +16,7 @@ const (
 	issuePageSize            = 50
 	orgPageSize              = 10
 	orgCollaboratorsPageSize = 50
+	teamMembersPageSize      = 50
 )
 
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
@@ -958,6 +959,114 @@ func repositoryVulnerabilityAlertCols() []string {
 	}
 }
 
+func teamMembersCols() []string {
+	return []string{
+		"organization",
+		"slug",
+		"name",
+		"id",
+		"node_id",
+		"description",
+		"created_at",
+		"updated_at",
+		"combined_slug",
+		"parent_team",
+		"privacy",
+		"ancestors_total_count",
+		"child_teams_total_count",
+		"discussions_total_count",
+		"invitations_total_count",
+		"members_total_count",
+		"projects_v2_total_count",
+		"repositories_total_count",
+		"url",
+		"avatar_url",
+		"discussions_url",
+		"edit_team_url",
+		"members_url",
+		"new_team_url",
+		"repositories_url",
+		"teams_url",
+		"can_administer",
+		"can_subscribe",
+		"subscription",
+	}
+}
+
+func teamRepositoriesCols() []string {
+	return []string{
+		"organization",
+		"slug",
+		"permission",
+		"id",
+		"node_id",
+		"name",
+		"allow_update_branch",
+		"archived_at",
+		"auto_merge_allowed",
+		"code_of_conduct",
+		"contact_links",
+		"created_at",
+		"default_branch_ref",
+		"delete_branch_on_merge",
+		"description",
+		"disk_usage",
+		"fork_count",
+		"forking_allowed",
+		"funding_links",
+		"has_discussions_enabled",
+		"has_issues_enabled",
+		"has_projects_enabled",
+		"has_vulnerability_alerts_enabled",
+		"has_wiki_enabled",
+		"homepage_url",
+		"interaction_ability",
+		"is_archived",
+		"is_blank_issues_enabled",
+		"is_disabled",
+		"is_empty",
+		"is_fork",
+		"is_in_organization",
+		"is_locked",
+		"is_mirror",
+		"is_private",
+		"is_security_policy_enabled",
+		"is_template",
+		"is_user_configuration_repository",
+		"issue_templates",
+		"license_info",
+		"lock_reason",
+		"merge_commit_allowed",
+		"merge_commit_message",
+		"merge_commit_title",
+		"mirror_url",
+		"name_with_owner",
+		"open_graph_image_url",
+		"owner_login",
+		"primary_language",
+		"projects_url",
+		"pull_request_templates",
+		"pushed_at",
+		"rebase_merge_allowed",
+		"security_policy_url",
+		"squash_merge_allowed",
+		"squash_merge_commit_message",
+		"squash_merge_commit_title",
+		"ssh_url",
+		"stargazer_count",
+		"updated_at",
+		"url",
+		"uses_custom_open_graph_image",
+		"can_administer",
+		"can_create_projects",
+		"can_subscribe",
+		"can_update_topics",
+		"has_starred",
+		"possible_commit_emails",
+		"subscription",
+	}
+}
+
 func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
 	opt := &github.RepositoryListOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
@@ -1003,6 +1112,20 @@ func getOrganizations(ctx context.Context, client *github.Client) ([]*github.Org
 			return organizations, nil
 		}
 		opts.Page = resp.NextPage
+	}
+}
+
+func getTeams(ctx context.Context, client *github.Client) ([]*github.Team, error) {
+	opt := &github.ListOptions{PerPage: 10}
+	for {
+		teams, resp, err := client.Teams.ListUserTeams(ctx, opt)
+		if err != nil {
+			return nil, err
+		}
+		if resp.NextPage == 0 {
+			return teams, nil
+		}
+		opt.Page = resp.NextPage
 	}
 }
 

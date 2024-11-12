@@ -52,15 +52,15 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 	appendBranchProtectionRuleColumnIncludes(&variables, branchProtectionCols())
 	repoFullName := formRepositoryFullName(owner, repo)
 	var values []models.Resource
-	var pushAllowanceApps []model.App
-	var pushAllowanceTeams []model.Team
-	var pushAllowanceUsers []model.User
-	var bypassForcePushAllowanceApps []model.App
-	var bypassForcePushAllowanceTeams []model.Team
-	var bypassForcePushAllowanceUsers []model.User
-	var bypassPullRequestAllowanceApps []model.App
-	var bypassPullRequestAllowanceTeams []model.Team
-	var bypassPullRequestAllowanceUsers []model.User
+	var pushAllowanceApps []model.BranchApp
+	var pushAllowanceTeams []model.BranchTeam
+	var pushAllowanceUsers []model.BranchUser
+	var bypassForcePushAllowanceApps []model.BranchApp
+	var bypassForcePushAllowanceTeams []model.BranchTeam
+	var bypassForcePushAllowanceUsers []model.BranchUser
+	var bypassPullRequestAllowanceApps []model.BranchApp
+	var bypassPullRequestAllowanceTeams []model.BranchTeam
+	var bypassPullRequestAllowanceUsers []model.BranchUser
 	for {
 		err := client.Query(ctx, &query, variables)
 		if err != nil {
@@ -106,9 +106,10 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 				Name: strconv.Itoa(rule.Id),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.BranchProtection{
-						BranchProtectionRuleWithFirstPageEmbeddedItems: rule,
+						BranchProtectionRule:            rule.BranchProtectionRule,
 						RepoFullName:                    repoFullName,
 						CreatorLogin:                    rule.Creator.Login,
+						MatchingBranches:                rule.MatchingBranches.TotalCount,
 						PushAllowanceApps:               pushAllowanceApps,
 						PushAllowanceTeams:              pushAllowanceTeams,
 						PushAllowanceUsers:              pushAllowanceUsers,

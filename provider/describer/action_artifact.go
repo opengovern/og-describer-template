@@ -46,8 +46,15 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient provider.GitHubCli
 				Name: *artifact.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Artifact{
-						Artifact:     *artifact,
-						RepoFullName: repoFullName,
+						ID:                 artifact.ID,
+						NodeID:             artifact.NodeID,
+						Name:               artifact.Name,
+						SizeInBytes:        artifact.SizeInBytes,
+						ArchiveDownloadURL: artifact.ArchiveDownloadURL,
+						Expired:            artifact.Expired,
+						CreatedAt:          artifact.CreatedAt,
+						ExpiresAt:          artifact.ExpiresAt,
+						RepoFullName:       repoFullName,
 					},
 				},
 			}
@@ -85,8 +92,15 @@ func GetArtifact(ctx context.Context, client *github.Client, repo string, artifa
 		Name: *artifact.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.Artifact{
-				Artifact:     *artifact,
-				RepoFullName: repoFullName,
+				ID:                 artifact.ID,
+				NodeID:             artifact.NodeID,
+				Name:               artifact.Name,
+				SizeInBytes:        artifact.SizeInBytes,
+				ArchiveDownloadURL: artifact.ArchiveDownloadURL,
+				Expired:            artifact.Expired,
+				CreatedAt:          artifact.CreatedAt,
+				ExpiresAt:          artifact.ExpiresAt,
+				RepoFullName:       repoFullName,
 			},
 		},
 	}

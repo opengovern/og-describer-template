@@ -37,13 +37,57 @@ func GetIssueList(ctx context.Context, githubClient provider.GitHubClient, strea
 			return nil, err
 		}
 		for _, issue := range query.Viewer.Issues.Nodes {
+			labelsSrc := issue.Labels.Nodes[:100]
+			labels := make(map[string]steampipemodels.Label)
+			for _, label := range issue.Labels.Nodes {
+				labels[label.Name] = label
+			}
 			value := models.Resource{
 				ID:   strconv.Itoa(issue.Id),
 				Name: issue.Title,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.Issue{
-						Issue:        issue,
-						RepoFullName: issue.Repo.NameWithOwner,
+						Id:                      issue.Id,
+						NodeId:                  issue.NodeId,
+						Number:                  issue.Number,
+						ActiveLockReason:        issue.ActiveLockReason,
+						Author:                  issue.Author,
+						AuthorLogin:             issue.Author.Login,
+						AuthorAssociation:       issue.AuthorAssociation,
+						Body:                    issue.Body,
+						BodyUrl:                 issue.BodyUrl,
+						Closed:                  issue.Closed,
+						ClosedAt:                issue.ClosedAt,
+						CreatedAt:               issue.CreatedAt,
+						CreatedViaEmail:         issue.CreatedViaEmail,
+						Editor:                  issue.Editor,
+						FullDatabaseId:          issue.FullDatabaseId,
+						IncludesCreatedEdit:     issue.IncludesCreatedEdit,
+						IsPinned:                issue.IsPinned,
+						IsReadByUser:            issue.IsReadByUser,
+						LastEditedAt:            issue.LastEditedAt,
+						Locked:                  issue.Locked,
+						Milestone:               issue.Milestone,
+						PublishedAt:             issue.PublishedAt,
+						State:                   issue.State,
+						StateReason:             issue.StateReason,
+						Title:                   issue.Title,
+						UpdatedAt:               issue.UpdatedAt,
+						Url:                     issue.Url,
+						UserCanClose:            issue.UserCanClose,
+						UserCanReact:            issue.UserCanReact,
+						UserCanReopen:           issue.UserCanReopen,
+						UserCanSubscribe:        issue.UserCanSubscribe,
+						UserCanUpdate:           issue.UserCanUpdate,
+						UserCannotUpdateReasons: issue.UserCannotUpdateReasons,
+						UserDidAuthor:           issue.UserDidAuthor,
+						UserSubscription:        issue.UserSubscription,
+						CommentsTotalCount:      issue.Comments.TotalCount,
+						LabelsTotalCount:        issue.Labels.TotalCount,
+						LabelsSrc:               labelsSrc,
+						Labels:                  labels,
+						AssigneesTotalCount:     issue.Assignees.TotalCount,
+						Assignees:               issue.Assignees.Nodes,
 					},
 				},
 			}

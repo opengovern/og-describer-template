@@ -60,6 +60,8 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient provide
 					Value: model.OrgExternalIdentity{
 						OrganizationExternalIdentity: externalIdentity,
 						Organization:                 org,
+						UserLogin:                    externalIdentity.User.Login,
+						UserDetail:                   externalIdentity.User,
 					},
 				},
 			}
