@@ -455,6 +455,42 @@ type License struct {
 	steampipemodels.License
 }
 
+type SearchCode struct {
+	github.CodeResult
+	RepoFullName string
+	Query        string
+}
+
+type SearchCommit struct {
+	github.CommitResult
+	RepoFullName string
+	Query        string
+}
+
+type SearchIssue struct {
+	Issue
+	RepoFullName string
+	Query        string
+	TextMatches  []steampipemodels.TextMatch
+}
+
+type Stargazer struct {
+	RepoFullName string
+	StarredAt    steampipemodels.NullableTime
+	UserLogin    string
+	UserDetail   steampipemodels.BasicUser
+}
+
+type Tag struct {
+	RepositoryFullName string
+	Name               string
+	TaggerDate         time.Time
+	TaggerName         string
+	TaggerLogin        string
+	Message            string
+	Commit             steampipemodels.BaseCommit
+}
+
 type ParentTeam struct {
 	Id     int
 	NodeId string
@@ -506,4 +542,27 @@ type TeamRepository struct {
 	Organization string
 	Slug         string
 	Permission   githubv4.RepositoryPermission
+}
+
+type TrafficViewDaily struct {
+	github.TrafficData
+	RepositoryFullName string
+}
+
+type TrafficViewWeekly struct {
+	github.TrafficData
+	RepositoryFullName string
+}
+
+type Tree struct {
+	TreeSHA            string
+	RepositoryFullName string
+	Recursive          bool
+	Truncated          bool
+	SHA                *string
+	Path               *string
+	Mode               *string
+	Type               *string
+	Size               *int
+	URL                *string
 }

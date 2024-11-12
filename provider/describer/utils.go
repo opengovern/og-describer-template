@@ -440,6 +440,16 @@ func appendRepoVulnerabilityAlertColumnIncludes(m *map[string]interface{}, cols 
 	(*m)["includeVulnerabilityAlertVulnerableRequirements"] = githubv4.Boolean(slices.Contains(cols, "vulnerable_requirements"))
 }
 
+func appendStargazerColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeStargazerStarredAt"] = githubv4.Boolean(slices.Contains(cols, "starred_at"))
+	(*m)["includeStargazerNode"] = githubv4.Boolean(slices.Contains(cols, "user_login") || slices.Contains(cols, "user_detail"))
+}
+
+func appendTagColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeTagTarget"] = githubv4.Boolean(slices.Contains(cols, "tagger_date") || slices.Contains(cols, "tagger_name") || slices.Contains(cols, "tagger_login") || slices.Contains(cols, "message") || slices.Contains(cols, "commit"))
+	(*m)["includeTagName"] = githubv4.Boolean(slices.Contains(cols, "name"))
+}
+
 func repositoryCols() []string {
 	return []string{
 		"id",
@@ -1067,6 +1077,27 @@ func teamRepositoriesCols() []string {
 	}
 }
 
+func stargazerCols() []string {
+	return []string{
+		"repository_full_name",
+		"starred_at",
+		"user_login",
+		"user_detail",
+	}
+}
+
+func tagCols() []string {
+	return []string{
+		"repository_full_name",
+		"name",
+		"tagger_date",
+		"tagger_name",
+		"tagger_login",
+		"message",
+		"commit",
+	}
+}
+
 func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
 	opt := &github.RepositoryListOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
@@ -1134,7 +1165,7 @@ func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ownerName := *owner.Name
+	ownerName := *owner.Login
 	return ownerName, err
 }
 

@@ -41,7 +41,7 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 			if err != nil {
 				return nil, err
 			}
-			topics, subscribersCount, hasDownloads, hasPages, networkCount, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Name)
+			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Name)
 			value := models.Resource{
 				ID:   strconv.Itoa(repo.Id),
 				Name: repo.Name,
@@ -120,11 +120,11 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 						OpenIssuesTotalCount:          repo.OpenIssues.TotalCount,
 						WatchersTotalCount:            repo.Watchers.TotalCount,
 						Hooks:                         hooks,
-						Topics:                        topics,
-						SubscribersCount:              subscribersCount,
-						HasDownloads:                  hasDownloads,
-						HasPages:                      hasPages,
-						NetworkCount:                  networkCount,
+						Topics:                        additionalRepoInfo.Topics,
+						SubscribersCount:              *additionalRepoInfo.SubscribersCount,
+						HasDownloads:                  *additionalRepoInfo.HasDownloads,
+						HasPages:                      *additionalRepoInfo.HasPages,
+						NetworkCount:                  *additionalRepoInfo.NetworkCount,
 					},
 				},
 			}
@@ -144,22 +144,22 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 	return values, nil
 }
 
-func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, repo string) ([]string, int, bool, bool, int, error) {
+func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, repo string) (*github.Repository, error) {
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
-		return nil, 0, false, false, 0, nil
+		return nil, nil
 	}
-	r, _, err := client.Repositories.Get(ctx, owner, repo)
+	repository, _, err := client.Repositories.Get(ctx, owner, repo)
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
-			return nil, 0, false, false, 0, nil
+			return nil, nil
 		}
-		return nil, 0, false, false, 0, err
+		return nil, nil
 	}
-	if r == nil {
-		return nil, 0, false, false, 0, nil
+	if repository == nil {
+		return nil, nil
 	}
-	return r.Topics, *r.SubscribersCount, *r.HasDownloads, *r.HasPages, *r.NetworkCount, nil
+	return repository, nil
 }
 
 func GetRepositoryHooks(ctx context.Context, client *github.Client, repo string) ([]*github.Hook, error) {
