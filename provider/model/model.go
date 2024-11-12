@@ -566,3 +566,25 @@ type Tree struct {
 	Size               *int
 	URL                *string
 }
+
+type User struct {
+	steampipemodels.User
+	RepositoriesTotalDiskUsage    int
+	FollowersTotalCount           int
+	FollowingTotalCount           int
+	PublicRepositoriesTotalCount  int
+	PrivateRepositoriesTotalCount int
+	PublicGistsTotalCount         int
+	IssuesTotalCount              int
+	OrganizationsTotalCount       int
+	PublicKeysTotalCount          int
+	OpenPullRequestsTotalCount    int
+	MergedPullRequestsTotalCount  int
+	ClosedPullRequestsTotalCount  int
+	PackagesTotalCount            int
+	PinnedItemsTotalCount         int
+	SponsoringTotalCount          int
+	SponsorsTotalCount            int
+	StarredRepositoriesTotalCount int
+	WatchingTotalCount            int
+}

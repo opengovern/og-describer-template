@@ -450,6 +450,60 @@ func appendTagColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeTagName"] = githubv4.Boolean(slices.Contains(cols, "name"))
 }
 
+func appendUserWithCountColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includeUserAnyPinnableItems"] = githubv4.Boolean(slices.Contains(cols, "any_pinnable_items"))
+	(*m)["includeUserAvatarUrl"] = githubv4.Boolean(slices.Contains(cols, "avatar_url"))
+	(*m)["includeUserBio"] = githubv4.Boolean(slices.Contains(cols, "bio"))
+	(*m)["includeUserCompany"] = githubv4.Boolean(slices.Contains(cols, "company"))
+	(*m)["includeUserEstimatedNextSponsorsPayoutInCents"] = githubv4.Boolean(slices.Contains(cols, "estimated_next_sponsors_payout_in_cents"))
+	(*m)["includeUserHasSponsorsListing"] = githubv4.Boolean(slices.Contains(cols, "has_sponsors_listing"))
+	(*m)["includeUserInteractionAbility"] = githubv4.Boolean(slices.Contains(cols, "interaction_ability"))
+	(*m)["includeUserIsBountyHunter"] = githubv4.Boolean(slices.Contains(cols, "is_bounty_hunter"))
+	(*m)["includeUserIsCampusExpert"] = githubv4.Boolean(slices.Contains(cols, "is_campus_expert"))
+	(*m)["includeUserIsDeveloperProgramMember"] = githubv4.Boolean(slices.Contains(cols, "is_developer_program_member"))
+	(*m)["includeUserIsEmployee"] = githubv4.Boolean(slices.Contains(cols, "is_employee"))
+	(*m)["includeUserIsFollowingYou"] = githubv4.Boolean(slices.Contains(cols, "is_following_you"))
+	(*m)["includeUserIsGitHubStar"] = githubv4.Boolean(slices.Contains(cols, "is_github_star"))
+	(*m)["includeUserIsHireable"] = githubv4.Boolean(slices.Contains(cols, "is_hireable"))
+	(*m)["includeUserIsSiteAdmin"] = githubv4.Boolean(slices.Contains(cols, "is_site_admin"))
+	(*m)["includeUserIsSponsoringYou"] = githubv4.Boolean(slices.Contains(cols, "is_sponsoring_you"))
+	(*m)["includeUserIsYou"] = githubv4.Boolean(slices.Contains(cols, "is_you"))
+	(*m)["includeUserLocation"] = githubv4.Boolean(slices.Contains(cols, "location"))
+	(*m)["includeUserMonthlyEstimatedSponsorsIncomeInCents"] = githubv4.Boolean(slices.Contains(cols, "monthly_estimated_sponsors_income_in_cents"))
+	(*m)["includeUserPinnedItemsRemaining"] = githubv4.Boolean(slices.Contains(cols, "pinned_items_remaining"))
+	(*m)["includeUserProjectsUrl"] = githubv4.Boolean(slices.Contains(cols, "projects_url"))
+	(*m)["includeUserPronouns"] = githubv4.Boolean(slices.Contains(cols, "pronouns"))
+	(*m)["includeUserSponsorsListing"] = githubv4.Boolean(slices.Contains(cols, "sponsors_listing"))
+	(*m)["includeUserStatus"] = githubv4.Boolean(slices.Contains(cols, "status"))
+	(*m)["includeUserTwitterUsername"] = githubv4.Boolean(slices.Contains(cols, "twitter_username"))
+	(*m)["includeUserCanChangedPinnedItems"] = githubv4.Boolean(slices.Contains(cols, "can_changed_pinned_items"))
+	(*m)["includeUserCanCreateProjects"] = githubv4.Boolean(slices.Contains(cols, "can_create_projects"))
+	(*m)["includeUserCanFollow"] = githubv4.Boolean(slices.Contains(cols, "can_follow"))
+	(*m)["includeUserCanSponsor"] = githubv4.Boolean(slices.Contains(cols, "can_sponsor"))
+	(*m)["includeUserIsFollowing"] = githubv4.Boolean(slices.Contains(cols, "is_following"))
+	(*m)["includeUserIsSponsoring"] = githubv4.Boolean(slices.Contains(cols, "is_sponsoring"))
+	(*m)["includeUserWebsiteUrl"] = githubv4.Boolean(slices.Contains(cols, "website_url"))
+
+	(*m)["includeUserRepositories"] = githubv4.Boolean(slices.Contains(cols, "repositories_total_disk_usage"))
+	(*m)["includeUserFollowers"] = githubv4.Boolean(slices.Contains(cols, "followers_total_count"))
+	(*m)["includeUserFollowing"] = githubv4.Boolean(slices.Contains(cols, "following_total_count"))
+	(*m)["includeUserPublicRepositories"] = githubv4.Boolean(slices.Contains(cols, "public_repositories_total_count"))
+	(*m)["includeUserPrivateRepositories"] = githubv4.Boolean(slices.Contains(cols, "private_repositories_total_count"))
+	(*m)["includeUserPublicGists"] = githubv4.Boolean(slices.Contains(cols, "public_gists_total_count"))
+	(*m)["includeUserIssues"] = githubv4.Boolean(slices.Contains(cols, "issues_total_count"))
+	(*m)["includeUserOrganizations"] = githubv4.Boolean(slices.Contains(cols, "organizations_total_count"))
+	(*m)["includeUserPublicKeys"] = githubv4.Boolean(slices.Contains(cols, "public_keys_total_count"))
+	(*m)["includeUserOpenPullRequests"] = githubv4.Boolean(slices.Contains(cols, "open_pull_requests_total_count"))
+	(*m)["includeUserMergedPullRequests"] = githubv4.Boolean(slices.Contains(cols, "merged_pull_requests_total_count"))
+	(*m)["includeUserClosedPullRequests"] = githubv4.Boolean(slices.Contains(cols, "closed_pull_requests_total_count"))
+	(*m)["includeUserPackages"] = githubv4.Boolean(slices.Contains(cols, "packages_total_count"))
+	(*m)["includeUserPinnedItems"] = githubv4.Boolean(slices.Contains(cols, "pinned_items_total_count"))
+	(*m)["includeUserSponsoring"] = githubv4.Boolean(slices.Contains(cols, "sponsoring_total_count"))
+	(*m)["includeUserSponsors"] = githubv4.Boolean(slices.Contains(cols, "sponsors_total_count"))
+	(*m)["includeUserStarredRepositories"] = githubv4.Boolean(slices.Contains(cols, "starred_repositories_total_count"))
+	(*m)["includeUserWatching"] = githubv4.Boolean(slices.Contains(cols, "watching_total_count"))
+}
+
 func repositoryCols() []string {
 	return []string{
 		"id",
@@ -1095,6 +1149,69 @@ func tagCols() []string {
 		"tagger_login",
 		"message",
 		"commit",
+	}
+}
+
+func userCols() []string {
+	return []string{
+		"login",
+		"id",
+		"name",
+		"node_id",
+		"email",
+		"url",
+		"created_at",
+		"updated_at",
+		"any_pinnable_items",
+		"avatar_url",
+		"bio",
+		"company",
+		"estimated_next_sponsors_payout_in_cents",
+		"has_sponsors_listing",
+		"interaction_ability",
+		"is_bounty_hunter",
+		"is_campus_expert",
+		"is_developer_program_member",
+		"is_employee",
+		"is_following_you",
+		"is_github_star",
+		"is_hireable",
+		"is_site_admin",
+		"is_sponsoring_you",
+		"is_you",
+		"location",
+		"monthly_estimated_sponsors_income_in_cents",
+		"pinned_items_remaining",
+		"projects_url",
+		"pronouns",
+		"sponsors_listing",
+		"status",
+		"twitter_username",
+		"can_changed_pinned_items",
+		"can_create_projects",
+		"can_follow",
+		"can_sponsor",
+		"is_following",
+		"is_sponsoring",
+		"website_url",
+		"repositories_total_disk_usage",
+		"followers_total_count",
+		"following_total_count",
+		"public_repositories_total_count",
+		"private_repositories_total_count",
+		"public_gists_total_count",
+		"issues_total_count",
+		"organizations_total_count",
+		"public_keys_total_count",
+		"open_pull_requests_total_count",
+		"merged_pull_requests_total_count",
+		"closed_pull_requests_total_count",
+		"packages_total_count",
+		"pinned_items_total_count",
+		"sponsoring_total_count",
+		"sponsors_total_count",
+		"starred_repositories_total_count",
+		"watching_total_count",
 	}
 }
 
