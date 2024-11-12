@@ -5,6 +5,7 @@
 package model
 
 import (
+	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -587,4 +588,12 @@ type User struct {
 	SponsorsTotalCount            int
 	StarredRepositoriesTotalCount int
 	WatchingTotalCount            int
+}
+
+type Workflow struct {
+	github.Workflow
+	RepositoryFullName      string
+	WorkFlowFileContent     string
+	WorkFlowFileContentJson *github.RepositoryContent
+	Pipeline                *goPipeline.Pipeline
 }

@@ -32,6 +32,7 @@ func GetUser(ctx context.Context, githubClient provider.GitHubClient, stream *mo
 		}
 		return nil, err
 	}
+	var values []models.Resource
 	user := query.User
 	value := models.Resource{
 		ID:   strconv.Itoa(user.Id),
@@ -60,5 +61,12 @@ func GetUser(ctx context.Context, githubClient provider.GitHubClient, stream *mo
 			},
 		},
 	}
-	return []models.Resource{value}, nil
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	} else {
+		values = append(values, value)
+	}
+	return values, nil
 }
