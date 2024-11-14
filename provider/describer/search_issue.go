@@ -3,10 +3,10 @@ package describer
 import (
 	"context"
 	"fmt"
-	"github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/model"
-	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider"
+	"github.com/opengovern/og-describer-github/provider/model"
+	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
 )

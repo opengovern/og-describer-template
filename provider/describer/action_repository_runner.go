@@ -3,9 +3,9 @@ package describer
 import (
 	"context"
 	"github.com/google/go-github/v55/github"
-	"github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/model"
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider"
+	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
 )
 

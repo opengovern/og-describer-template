@@ -7,7 +7,7 @@ package model
 import (
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
-	steampipemodels "github.com/opengovern/og-describer-template/steampipe-plugin-github/github/models"
+	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"time"
 )

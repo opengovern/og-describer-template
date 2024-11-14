@@ -2,9 +2,9 @@ package describer
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/model"
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider"
+	"github.com/opengovern/og-describer-github/provider/model"
 )
 
 func GetGitIgnoreTemplateList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {

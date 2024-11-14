@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	local "github.com/opengovern/og-describer-template/service"
+	local "github.com/opengovern/og-describer-github/service"
 	"os"
 	"os/signal"
 	"syscall"

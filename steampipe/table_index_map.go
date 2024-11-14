@@ -1,7 +1,7 @@
 package steampipe
 
 import (
-	opengovernance "github.com/opengovern/og-describer-template/pkg/sdk/es"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 )
 
 var Map = map[string]string{

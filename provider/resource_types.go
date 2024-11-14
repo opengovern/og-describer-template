@@ -1,9 +1,9 @@
 package provider
 
 import (
-	model "github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider/configs"
-	"github.com/opengovern/og-describer-template/provider/describer"
+	model "github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider/configs"
+	"github.com/opengovern/og-describer-github/provider/describer"
 )
 
 var ResourceTypes = map[string]model.ResourceType{

@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/go-github/v55/github"
-	"github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/model"
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider"
+	"github.com/opengovern/og-describer-github/provider/model"
 )
 
 func GetAllSearchCommits(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
