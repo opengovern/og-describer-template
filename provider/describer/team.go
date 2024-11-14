@@ -56,7 +56,7 @@ func GetTeamList(ctx context.Context, githubClient provider.GitHubClient, stream
 				ID:   strconv.Itoa(team.Id),
 				Name: team.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Team{
+					Value: model.TeamDescription{
 						Organization: team.Organization.Name,
 						Slug:         team.Slug,
 						Name:         team.Name,

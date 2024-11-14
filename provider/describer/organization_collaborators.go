@@ -77,7 +77,7 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient provider.Git
 					ID:   repoFullName,
 					Name: repoFullName,
 					Description: JSONAllFieldsMarshaller{
-						Value: model.OrgCollaborators{
+						Value: model.OrgCollaboratorsDescription{
 							Organization:   org,
 							Affiliation:    "ALL",
 							RepositoryName: node.Name,

@@ -45,7 +45,7 @@ func GetRepositorySBOMs(ctx context.Context, githubClient provider.GitHubClient,
 		ID:   *SBOM.SBOM.SPDXID,
 		Name: *SBOM.SBOM.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.RepoSBOM{
+			Value: model.RepoSBOMDescription{
 				RepositoryFullName: repoFullName,
 				SPDXID:             *SBOM.SBOM.SPDXID,
 				SPDXVersion:        *SBOM.SBOM.SPDXVersion,

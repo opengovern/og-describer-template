@@ -44,7 +44,7 @@ func GetRepositorySecrets(ctx context.Context, githubClient provider.GitHubClien
 				ID:   secret.Name,
 				Name: secret.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Secret{
+					Value: model.SecretDescription{
 						Secret:       *secret,
 						RepoFullName: repoFullName,
 					},
@@ -87,7 +87,7 @@ func GetSecret(ctx context.Context, client *github.Client, repo, secretName stri
 		ID:   secret.Name,
 		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.Secret{
+			Value: model.SecretDescription{
 				Secret:       *secret,
 				RepoFullName: repoFullName,
 			},

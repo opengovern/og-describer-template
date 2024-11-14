@@ -61,7 +61,7 @@ func GetRepositoryTags(ctx context.Context, githubClient provider.GitHubClient, 
 				ID:   tag.Target.Tag.Tagger.User.Login,
 				Name: tag.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Tag{
+					Value: model.TagDescription{
 						RepositoryFullName: repoFullName,
 						Name:               tag.Name,
 						TaggerDate:         tag.Target.Tag.Tagger.Date,

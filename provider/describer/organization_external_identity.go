@@ -57,7 +57,7 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient provide
 				ID:   org,
 				Name: org,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.OrgExternalIdentity{
+					Value: model.OrgExternalIdentityDescription{
 						OrganizationExternalIdentity: externalIdentity,
 						Organization:                 org,
 						UserLogin:                    externalIdentity.User.Login,

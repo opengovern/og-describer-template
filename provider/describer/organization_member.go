@@ -69,7 +69,7 @@ func GetOrganizationMembers(ctx context.Context, githubClient provider.GitHubCli
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.OrgMembers{
+					Value: model.OrgMembersDescription{
 						User:                member.Node,
 						Organization:        org,
 						HasTwoFactorEnabled: *member.HasTwoFactorEnabled,

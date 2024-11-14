@@ -69,7 +69,7 @@ func GetRepositoryCommits(ctx context.Context, githubClient provider.GitHubClien
 				ID:   commit.Sha,
 				Name: commit.Sha,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Commit{
+					Value: model.CommitDescription{
 						Commit:         commit,
 						RepoFullName:   repoFullName,
 						AuthorLogin:    commit.Author.User.Login,

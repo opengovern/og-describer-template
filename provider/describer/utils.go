@@ -12,6 +12,7 @@ import (
 const (
 	maxPagesCount            = 100
 	pageSize                 = 100
+	pullRequestsPageSize     = 75
 	repoPageSize             = 50
 	issuePageSize            = 50
 	orgPageSize              = 10
@@ -502,6 +503,74 @@ func appendUserWithCountColumnIncludes(m *map[string]interface{}, cols []string)
 	(*m)["includeUserSponsors"] = githubv4.Boolean(slices.Contains(cols, "sponsors_total_count"))
 	(*m)["includeUserStarredRepositories"] = githubv4.Boolean(slices.Contains(cols, "starred_repositories_total_count"))
 	(*m)["includeUserWatching"] = githubv4.Boolean(slices.Contains(cols, "watching_total_count"))
+}
+
+func appendPullRequestColumnIncludes(m *map[string]interface{}, cols []string) {
+	(*m)["includePRAuthor"] = githubv4.Boolean(slices.Contains(cols, "author"))
+	(*m)["includePRBody"] = githubv4.Boolean(slices.Contains(cols, "body"))
+	(*m)["includePREditor"] = githubv4.Boolean(slices.Contains(cols, "editor"))
+	(*m)["includePRMergedBy"] = githubv4.Boolean(slices.Contains(cols, "merged_by"))
+	(*m)["includePRMilestone"] = githubv4.Boolean(slices.Contains(cols, "milestone"))
+
+	(*m)["includePRBaseRef"] = githubv4.Boolean(slices.Contains(cols, "base_ref"))
+	(*m)["includePRHeadRef"] = githubv4.Boolean(slices.Contains(cols, "head_ref"))
+	(*m)["includePRMergeCommit"] = githubv4.Boolean(slices.Contains(cols, "merge_commit"))
+	(*m)["includePRSuggested"] = githubv4.Boolean(slices.Contains(cols, "suggested_reviewers"))
+	(*m)["includePRViewer"] = githubv4.Boolean(slices.Contains(cols, "can_apply_suggestion") ||
+		slices.Contains(cols, "can_close") ||
+		slices.Contains(cols, "can_delete_head_ref") ||
+		slices.Contains(cols, "can_disable_auto_merge") ||
+		slices.Contains(cols, "can_edit_files") ||
+		slices.Contains(cols, "can_enable_auto_merge") ||
+		slices.Contains(cols, "can_react") ||
+		slices.Contains(cols, "can_reopen") ||
+		slices.Contains(cols, "can_subscribe") ||
+		slices.Contains(cols, "can_update") ||
+		slices.Contains(cols, "can_update_branch") ||
+		slices.Contains(cols, "did_author") ||
+		slices.Contains(cols, "cannot_update_reasons") ||
+		slices.Contains(cols, "subscription"))
+	(*m)["includePRAssignees"] = githubv4.Boolean(slices.Contains(cols, "assignees_total_count") || slices.Contains(cols, "assignees"))
+	(*m)["includePRCommitCount"] = githubv4.Boolean(slices.Contains(cols, "commits_total_count"))
+	(*m)["includePRReviewRequestCount"] = githubv4.Boolean(slices.Contains(cols, "review_requests_total_count"))
+	(*m)["includePRReviewCount"] = githubv4.Boolean(slices.Contains(cols, "reviews_total_count"))
+	(*m)["includePRLabels"] = githubv4.Boolean(slices.Contains(cols, "labels") ||
+		slices.Contains(cols, "labels_src") ||
+		slices.Contains(cols, "labels_total_count"))
+	(*m)["includePRId"] = githubv4.Boolean(slices.Contains(cols, "id"))
+	(*m)["includePRNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
+	(*m)["includePRAuthorAssociation"] = githubv4.Boolean(slices.Contains(cols, "author_association"))
+	(*m)["includePRBaseRefName"] = githubv4.Boolean(slices.Contains(cols, "base_ref_name"))
+	(*m)["includePRActiveLockReason"] = githubv4.Boolean(slices.Contains(cols, "active_lock_reason"))
+	(*m)["includePRAdditions"] = githubv4.Boolean(slices.Contains(cols, "additions"))
+	(*m)["includePRChangedFiles"] = githubv4.Boolean(slices.Contains(cols, "changed_files"))
+	(*m)["includePRChecksUrl"] = githubv4.Boolean(slices.Contains(cols, "checks_url"))
+	(*m)["includePRClosed"] = githubv4.Boolean(slices.Contains(cols, "closed"))
+	(*m)["includePRClosedAt"] = githubv4.Boolean(slices.Contains(cols, "closed_at"))
+	(*m)["includePRCreatedAt"] = githubv4.Boolean(slices.Contains(cols, "created_at"))
+	(*m)["includePRCreatedViaEmail"] = githubv4.Boolean(slices.Contains(cols, "created_via_email"))
+	(*m)["includePRDeletions"] = githubv4.Boolean(slices.Contains(cols, "deletions"))
+	(*m)["includePRHeadRefName"] = githubv4.Boolean(slices.Contains(cols, "head_ref_name"))
+	(*m)["includePRHeadRefOid"] = githubv4.Boolean(slices.Contains(cols, "head_ref_oid"))
+	(*m)["includePRIncludesCreatedEdit"] = githubv4.Boolean(slices.Contains(cols, "includes_created_edit"))
+	(*m)["includePRIsCrossRepository"] = githubv4.Boolean(slices.Contains(cols, "is_cross_repository"))
+	(*m)["includePRIsDraft"] = githubv4.Boolean(slices.Contains(cols, "is_draft"))
+	(*m)["includePRIsReadByUser"] = githubv4.Boolean(slices.Contains(cols, "is_read_by_user"))
+	(*m)["includePRLastEditedAt"] = githubv4.Boolean(slices.Contains(cols, "last_edited_at"))
+	(*m)["includePRLocked"] = githubv4.Boolean(slices.Contains(cols, "locked"))
+	(*m)["includePRMaintainerCanModify"] = githubv4.Boolean(slices.Contains(cols, "maintainer_can_modify"))
+	(*m)["includePRMergeable"] = githubv4.Boolean(slices.Contains(cols, "mergeable"))
+	(*m)["includePRMerged"] = githubv4.Boolean(slices.Contains(cols, "merged"))
+	(*m)["includePRMergedAt"] = githubv4.Boolean(slices.Contains(cols, "merged_at"))
+	(*m)["includePRPermalink"] = githubv4.Boolean(slices.Contains(cols, "permalink"))
+	(*m)["includePRPublishedAt"] = githubv4.Boolean(slices.Contains(cols, "published_at"))
+	(*m)["includePRRevertUrl"] = githubv4.Boolean(slices.Contains(cols, "revert_url"))
+	(*m)["includePRReviewDecision"] = githubv4.Boolean(slices.Contains(cols, "review_decision"))
+	(*m)["includePRState"] = githubv4.Boolean(slices.Contains(cols, "state"))
+	(*m)["includePRTitle"] = githubv4.Boolean(slices.Contains(cols, "title"))
+	(*m)["includePRTotalCommentsCount"] = githubv4.Boolean(slices.Contains(cols, "total_comments_count"))
+	(*m)["includePRUpdatedAt"] = githubv4.Boolean(slices.Contains(cols, "updated_at"))
+	(*m)["includePRUrl"] = githubv4.Boolean(slices.Contains(cols, "url"))
 }
 
 func repositoryCols() []string {
@@ -1215,6 +1284,79 @@ func userCols() []string {
 	}
 }
 
+func pullRequestCols() []string {
+	return []string{
+		"repository_full_name",
+		"number",
+		"id",
+		"node_id",
+		"active_lock_reason",
+		"additions",
+		"author",
+		"author_association",
+		"base_ref_name",
+		"body",
+		"changed_files",
+		"checks_url",
+		"closed",
+		"closed_at",
+		"created_at",
+		"created_via_email",
+		"deletions",
+		"editor",
+		"head_ref_name",
+		"head_ref_oid",
+		"includes_created_edit",
+		"is_cross_repository",
+		"is_draft",
+		"is_read_by_user",
+		"last_edited_at",
+		"locked",
+		"maintainer_can_modify",
+		"mergeable",
+		"merged",
+		"merged_at",
+		"merged_by",
+		"milestone",
+		"permalink",
+		"published_at",
+		"revert_url",
+		"review_decision",
+		"state",
+		"title",
+		"total_comments_count",
+		"updated_at",
+		"url",
+		"assignees",
+		"base_ref",
+		"head_ref",
+		"merge_commit",
+		"suggested_reviewers",
+		"can_apply_suggestion",
+		"can_close",
+		"can_delete_head_ref",
+		"can_disable_auto_merge",
+		"can_edit_files",
+		"can_enable_auto_merge",
+		"can_merge_as_admin",
+		"can_react",
+		"can_reopen",
+		"can_subscribe",
+		"can_update",
+		"can_update_branch",
+		"did_author",
+		"cannot_update_reasons",
+		"subscription",
+		"labels_src",
+		"labels",
+		"assignees_total_count",
+		"labels_total_count",
+		"commits_total_count",
+		"review_requests_total_count",
+		"reviews_total_count",
+	}
+}
+
 func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
 	opt := &github.RepositoryListOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
@@ -1275,6 +1417,22 @@ func getTeams(ctx context.Context, client *github.Client) ([]*github.Team, error
 		}
 		opt.Page = resp.NextPage
 	}
+}
+
+func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
+	fileContent, directoryContent, _, err := client.Repositories.GetContents(context.Background(), owner, repo, "", nil)
+	if err != nil {
+		return nil, err
+	}
+	var fileSHAs []string
+	if fileContent != nil {
+		fileSHAs = append(fileSHAs, *fileContent.SHA)
+	} else {
+		for _, content := range directoryContent {
+			fileSHAs = append(fileSHAs, *content.SHA)
+		}
+	}
+	return fileSHAs, nil
 }
 
 func getOwnerName(ctx context.Context, client *github.Client) (string, error) {

@@ -46,7 +46,7 @@ func GetRepositoryList(ctx context.Context, githubClient provider.GitHubClient, 
 				ID:   strconv.Itoa(repo.Id),
 				Name: repo.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Repository{
+					Value: model.RepositoryDescription{
 						ID:                            repo.Id,
 						NodeID:                        repo.NodeId,
 						Name:                          repo.Name,

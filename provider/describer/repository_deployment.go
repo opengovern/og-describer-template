@@ -62,7 +62,7 @@ func GetRepositoryDeployments(ctx context.Context, githubClient provider.GitHubC
 				ID:   strconv.Itoa(deployment.Id),
 				Name: strconv.Itoa(deployment.Id),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoDeployment{
+					Value: model.RepoDeploymentDescription{
 						Deployment:   deployment,
 						RepoFullName: repoFullName,
 					},

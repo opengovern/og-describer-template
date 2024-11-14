@@ -65,8 +65,8 @@ func GetSearchIssues(ctx context.Context, githubClient provider.GitHubClient, st
 				ID:   strconv.Itoa(issue.Node.Id),
 				Name: strconv.Itoa(issue.Node.Number),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.SearchIssue{
-						Issue: model.Issue{
+					Value: model.SearchIssueDescription{
+						IssueDescription: model.IssueDescription{
 							Id:                      issue.Node.Id,
 							NodeId:                  issue.Node.NodeId,
 							Number:                  issue.Node.Number,

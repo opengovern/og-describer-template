@@ -50,7 +50,7 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient provider.Gi
 				ID:   strconv.Itoa(*alert.Number),
 				Name: strconv.Itoa(*alert.Number),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoAlertDependabot{
+					Value: model.RepoAlertDependabotDescription{
 						AlertNumber:                 *alert.Number,
 						State:                       *alert.State,
 						DependencyPackageEcosystem:  *alert.Dependency.Package.Ecosystem,

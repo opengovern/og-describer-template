@@ -22,7 +22,7 @@ func GetGistList(ctx context.Context, githubClient provider.GitHubClient, stream
 				ID:   *gist.ID,
 				Name: *gist.ID,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Gist{
+					Value: model.GistDescription{
 						Gist:       *gist,
 						OwnerID:    int(*gist.Owner.ID),
 						OwnerLogin: *gist.Owner.Login,

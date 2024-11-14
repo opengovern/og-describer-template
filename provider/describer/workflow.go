@@ -69,7 +69,7 @@ func GetRepositoryWorkflows(ctx context.Context, githubClient provider.GitHubCli
 				ID:   strconv.Itoa(int(*workflow.ID)),
 				Name: *workflow.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Workflow{
+					Value: model.WorkflowDescription{
 						Workflow:                *workflow,
 						RepositoryFullName:      repoFullName,
 						WorkFlowFileContent:     *fileContent.Content,

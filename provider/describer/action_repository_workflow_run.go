@@ -47,7 +47,7 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient provider.GitHub
 				ID:   strconv.Itoa(int(*workflowRun.ID)),
 				Name: *workflowRun.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.WorkflowRun{
+					Value: model.WorkflowRunDescription{
 						ID:                 workflowRun.ID,
 						Name:               workflowRun.Name,
 						NodeID:             workflowRun.NodeID,
@@ -118,7 +118,7 @@ func GetRepoWorkflowRun(ctx context.Context, client *github.Client, repo string,
 		ID:   strconv.Itoa(int(*workflowRun.ID)),
 		Name: *workflowRun.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.WorkflowRun{
+			Value: model.WorkflowRunDescription{
 				ID:                 workflowRun.ID,
 				Name:               workflowRun.Name,
 				NodeID:             workflowRun.NodeID,

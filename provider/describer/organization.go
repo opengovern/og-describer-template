@@ -48,7 +48,7 @@ func GetOrganizationList(ctx context.Context, githubClient provider.GitHubClient
 				ID:   strconv.Itoa(org.Id),
 				Name: org.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Organization{
+					Value: model.OrganizationDescription{
 						Organization:                         org.Organization,
 						Hooks:                                hooks,
 						BillingEmail:                         *additionalOrgInfo.BillingEmail,

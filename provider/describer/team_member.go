@@ -66,7 +66,7 @@ func tableGitHubTeamMemberList(ctx context.Context, githubClient provider.GitHub
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.TeamMembers{
+					Value: model.TeamMembersDescription{
 						User:         member.Node,
 						Organization: org,
 						Slug:         slug,

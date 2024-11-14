@@ -46,7 +46,7 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient provider.
 				ID:   strconv.Itoa(*alert.Number),
 				Name: strconv.Itoa(*alert.Number),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.OrgAlertDependabot{
+					Value: model.OrgAlertDependabotDescription{
 						AlertNumber:                 *alert.Number,
 						State:                       *alert.State,
 						DependencyPackageEcosystem:  *alert.Dependency.Package.Ecosystem,

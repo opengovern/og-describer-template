@@ -81,7 +81,7 @@ func GetRepositoryCommunityProfiles(ctx context.Context, githubClient provider.G
 		ID:   repo,
 		Name: repo,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.CommunityProfile{
+			Value: model.CommunityProfileDescription{
 				RepoFullName:         repoFullName,
 				LicenseInfo:          communityProfile.LicenseInfo,
 				CodeOfConduct:        communityProfile.CodeOfConduct,

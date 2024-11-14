@@ -72,7 +72,7 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient provider.GitHu
 				ID:   strconv.Itoa(collaborator.Node.Id),
 				Name: collaborator.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoCollaborators{
+					Value: model.RepoCollaboratorsDescription{
 						Affiliation:  "ALL",
 						RepoFullName: repoFullName,
 						Permission:   collaborator.Permission,

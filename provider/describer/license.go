@@ -26,7 +26,7 @@ func GetLicenseList(ctx context.Context, githubClient provider.GitHubClient, str
 			ID:   license.Key,
 			Name: license.Name,
 			Description: JSONAllFieldsMarshaller{
-				Value: model.License{
+				Value: model.LicenseDescription{
 					License: license,
 				},
 			},

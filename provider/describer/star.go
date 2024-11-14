@@ -43,7 +43,7 @@ func GetStarList(ctx context.Context, githubClient provider.GitHubClient, stream
 				ID:   star.Node.Url,
 				Name: star.Node.NameWithOwner,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Star{
+					Value: model.StarDescription{
 						RepoFullName: star.Node.NameWithOwner,
 						StarredAt:    star.StarredAt,
 						Url:          star.Node.Url,

@@ -105,7 +105,7 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient provider.G
 				ID:   strconv.Itoa(rule.Id),
 				Name: strconv.Itoa(rule.Id),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.BranchProtection{
+					Value: model.BranchProtectionDescription{
 						BranchProtectionRule:            rule.BranchProtectionRule,
 						RepoFullName:                    repoFullName,
 						CreatorLogin:                    rule.Creator.Login,

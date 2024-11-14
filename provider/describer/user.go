@@ -38,7 +38,7 @@ func GetUser(ctx context.Context, githubClient provider.GitHubClient, stream *mo
 		ID:   strconv.Itoa(user.Id),
 		Name: user.Login,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.User{
+			Value: model.UserDescription{
 				User:                          user.User,
 				RepositoriesTotalDiskUsage:    user.Repositories.TotalDiskUsage,
 				FollowersTotalCount:           user.Followers.TotalCount,

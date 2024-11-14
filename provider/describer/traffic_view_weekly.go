@@ -46,7 +46,7 @@ func GetRepositoryTrafficViewWeeklies(ctx context.Context, githubClient provider
 				ID:   strconv.Itoa(*view.Uniques),
 				Name: strconv.Itoa(*view.Uniques),
 				Description: JSONAllFieldsMarshaller{
-					Value: model.TrafficViewWeekly{
+					Value: model.TrafficViewWeeklyDescription{
 						TrafficData:        *view,
 						RepositoryFullName: repoFullName,
 					},

@@ -23,7 +23,7 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-const PluginPath = "../../../../steampipe-plugin-aws/aws" // TODO: change to steampipe plugin
+const PluginPath = "C:\\Users\\ASUS\\GolandProjects\\og-describer-github\\steampipe-plugin-github/github" // TODO: change to steampipe plugin
 
 type IntegrationType struct {
 	Name            string
@@ -43,11 +43,11 @@ type ResourceType struct {
 
 func main() {
 	if output == nil || len(*output) == 0 {
-		v := "../../es/resources_clients.go"
+		v := "C:\\Users\\ASUS\\GolandProjects\\og-describer-github\\pkg\\sdk\\es\\resources_clients.go"
 		output = &v
 	}
 	if file == nil || len(*file) == 0 {
-		v := "../../../../provider/model/model.go"
+		v := "C:\\Users\\ASUS\\GolandProjects\\og-describer-github\\provider\\model\\model.go"
 		file = &v
 	}
 
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../resource_type/resource-types.json"
+		rt := "C:\\Users\\ASUS\\GolandProjects\\og-describer-github\\pkg\\sdk\\runable\\resource_type\\resource-types.json"
 		resourceTypesFile = &rt
 	}
 

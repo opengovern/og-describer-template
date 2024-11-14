@@ -46,7 +46,7 @@ func GetIssueList(ctx context.Context, githubClient provider.GitHubClient, strea
 				ID:   strconv.Itoa(issue.Id),
 				Name: issue.Title,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Issue{
+					Value: model.IssueDescription{
 						Id:                      issue.Id,
 						NodeId:                  issue.NodeId,
 						Number:                  issue.Number,

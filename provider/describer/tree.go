@@ -51,7 +51,7 @@ func GetRepositoryTrees(ctx context.Context, githubClient provider.GitHubClient,
 			ID:   *entry.SHA,
 			Name: *entry.SHA,
 			Description: JSONAllFieldsMarshaller{
-				Value: model.Tree{
+				Value: model.TreeDescription{
 					TreeSHA:            sha,
 					RepositoryFullName: repoFullName,
 					Recursive:          true,

@@ -45,7 +45,7 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient provider.GitHubCli
 				ID:   strconv.Itoa(int(*artifact.ID)),
 				Name: *artifact.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Artifact{
+					Value: model.ArtifactDescription{
 						ID:                 artifact.ID,
 						NodeID:             artifact.NodeID,
 						Name:               artifact.Name,
@@ -91,7 +91,7 @@ func GetArtifact(ctx context.Context, client *github.Client, repo string, artifa
 		ID:   strconv.Itoa(int(*artifact.ID)),
 		Name: *artifact.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.Artifact{
+			Value: model.ArtifactDescription{
 				ID:                 artifact.ID,
 				NodeID:             artifact.NodeID,
 				Name:               artifact.Name,

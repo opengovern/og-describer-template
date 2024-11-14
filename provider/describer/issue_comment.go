@@ -63,7 +63,7 @@ func GetRepositoryIssueComments(ctx context.Context, githubClient provider.GitHu
 				ID:   strconv.Itoa(comment.Id),
 				Name: comment.Url,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.IssueComment{
+					Value: model.IssueCommentDescription{
 						IssueComment: comment,
 						RepoFullName: repoFullName,
 						Number:       issueNumber,

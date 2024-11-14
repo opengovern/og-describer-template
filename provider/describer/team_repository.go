@@ -63,13 +63,13 @@ func GetTeamRepositories(ctx context.Context, githubClient provider.GitHubClient
 			if err != nil {
 				return nil, err
 			}
-			topics, subscribersCount, hasDownloads, hasPages, networkCount, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Node.Name)
+			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Node.Name)
 			value := models.Resource{
 				ID:   strconv.Itoa(repo.Node.Id),
 				Name: repo.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.TeamRepository{
-						Repository: model.Repository{
+					Value: model.TeamRepositoryDescription{
+						RepositoryDescription: model.RepositoryDescription{
 							ID:                            repo.Node.Id,
 							NodeID:                        repo.Node.NodeId,
 							Name:                          repo.Node.Name,
@@ -143,11 +143,11 @@ func GetTeamRepositories(ctx context.Context, githubClient provider.GitHubClient
 							OpenIssuesTotalCount:          repo.Node.OpenIssues.TotalCount,
 							WatchersTotalCount:            repo.Node.Watchers.TotalCount,
 							Hooks:                         hooks,
-							Topics:                        topics,
-							SubscribersCount:              subscribersCount,
-							HasDownloads:                  hasDownloads,
-							HasPages:                      hasPages,
-							NetworkCount:                  networkCount,
+							Topics:                        additionalRepoInfo.Topics,
+							SubscribersCount:              *additionalRepoInfo.SubscribersCount,
+							HasDownloads:                  *additionalRepoInfo.HasDownloads,
+							HasPages:                      *additionalRepoInfo.HasPages,
+							NetworkCount:                  *additionalRepoInfo.NetworkCount,
 						},
 						Organization: org,
 						Slug:         slug,

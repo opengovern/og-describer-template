@@ -50,7 +50,7 @@ func GetSearchCommits(ctx context.Context, githubClient provider.GitHubClient, s
 				ID:   *codeResult.SHA,
 				Name: *codeResult.Commit.Message,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.SearchCommit{
+					Value: model.SearchCommitDescription{
 						CommitResult: *codeResult,
 						RepoFullName: repoFullName,
 						Query:        query,

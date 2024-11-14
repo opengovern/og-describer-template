@@ -62,7 +62,7 @@ func GetRepositoryEnvironments(ctx context.Context, githubClient provider.GitHub
 				ID:   strconv.Itoa(environment.Id),
 				Name: environment.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoEnvironment{
+					Value: model.RepoEnvironmentDescription{
 						Environment:  environment,
 						RepoFullName: repoFullName,
 					},

@@ -120,7 +120,7 @@ func GetRepositoryRuleSets(ctx context.Context, githubClient provider.GitHubClie
 				ID:   ruleset.ID,
 				Name: ruleset.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoRuleSet{
+					Value: model.RepoRuleSetDescription{
 						Ruleset:      ruleset,
 						RepoFullName: repoFullName,
 					},

@@ -69,7 +69,7 @@ func GetStargazers(ctx context.Context, githubClient provider.GitHubClient, stre
 				ID:   strconv.Itoa(sg.Node.Id),
 				Name: sg.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Stargazer{
+					Value: model.StargazerDescription{
 						RepoFullName: repoFullName,
 						StarredAt:    sg.StarredAt,
 						UserLogin:    sg.Node.Login,

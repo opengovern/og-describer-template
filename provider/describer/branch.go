@@ -69,7 +69,7 @@ func GetRepositoryBranches(ctx context.Context, githubClient provider.GitHubClie
 				ID:   branch.Node.Name,
 				Name: branch.Node.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Branch{
+					Value: model.BranchDescription{
 						Name:                 branch.Node.Name,
 						Commit:               branch.Node.Target.Commit,
 						BranchProtectionRule: branch.Node.BranchProtectionRule,

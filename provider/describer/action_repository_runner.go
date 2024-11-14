@@ -45,7 +45,7 @@ func GetRepositoryRunners(ctx context.Context, githubClient provider.GitHubClien
 				ID:   strconv.Itoa(int(*runner.ID)),
 				Name: *runner.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: model.Runner{
+					Value: model.RunnerDescription{
 						Runner:       *runner,
 						RepoFullName: repoFullName,
 					},
@@ -84,7 +84,7 @@ func GetRunner(ctx context.Context, client *github.Client, repo string, runnerID
 		ID:   strconv.Itoa(int(*runner.ID)),
 		Name: *runner.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.Runner{
+			Value: model.RunnerDescription{
 				Runner:       *runner,
 				RepoFullName: repoFullName,
 			},
