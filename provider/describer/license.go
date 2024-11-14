@@ -5,7 +5,7 @@ import (
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
-	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
+	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
 func GetLicenseList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
