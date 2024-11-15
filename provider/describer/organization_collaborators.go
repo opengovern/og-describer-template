@@ -3,14 +3,12 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/shurcooL/githubv4"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-type CollaboratorEdge struct {
-	Permission githubv4.RepositoryPermission     `graphql:"permission @include(if:$includeOCPermission)" json:"permission"`
-	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
-}
+//type CollaboratorEdge struct {
+//	Permission githubv4.RepositoryPermission     `graphql:"permission @include(if:$includeOCPermission)" json:"permission"`
+//	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
+//}
 
 func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient

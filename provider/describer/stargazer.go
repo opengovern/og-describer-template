@@ -3,13 +3,12 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-type Stargazer struct {
-	StarredAt steampipemodels.NullableTime `graphql:"starredAt @include(if:$includeStargazerStarredAt)" json:"starred_at"`
-	Node      steampipemodels.BasicUser    `graphql:"node @include(if:$includeStargazerNode)" json:"node"`
-}
+//type Stargazer struct {
+//	StarredAt steampipemodels.NullableTime `graphql:"starredAt @include(if:$includeStargazerStarredAt)" json:"starred_at"`
+//	Node      steampipemodels.BasicUser    `graphql:"node @include(if:$includeStargazerNode)" json:"node"`
+//}
 
 func GetAllStargazers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient

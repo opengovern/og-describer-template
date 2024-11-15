@@ -3,8 +3,6 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/shurcooL/githubv4"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
 func GetAllRepositoriesRuleSets(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
@@ -141,84 +139,84 @@ func GetRepositoryRuleSets(ctx context.Context, githubClient GitHubClient, strea
 	return nil, nil
 }
 
-func getAdditionalRules(ctx context.Context, client *githubv4.Client, databaseID int, owner string, repo string, initialCursor githubv4.String) []steampipemodels.Rule {
-	var query struct {
-		RateLimit  steampipemodels.RateLimit
-		Repository struct {
-			Ruleset struct {
-				Rules struct {
-					PageInfo struct {
-						HasNextPage bool
-						EndCursor   githubv4.String
-					}
-					Edges []struct {
-						Node steampipemodels.Rule
-					}
-				} `graphql:"rules(first: $pageSize, after: $cursor)"`
-			} `graphql:"ruleset(databaseId: $databaseID)"`
-		} `graphql:"repository(owner: $owner, name: $name)"`
-	}
-	variables := map[string]interface{}{
-		"pageSize":   githubv4.Int(100),
-		"cursor":     githubv4.NewString(initialCursor),
-		"databaseID": githubv4.Int(databaseID),
-		"owner":      githubv4.String(owner),
-		"name":       githubv4.String(repo),
-	}
-	var rules []steampipemodels.Rule
-	for {
-		err := client.Query(ctx, &query, variables)
-		if err != nil {
-			return nil
-		}
-		for _, edge := range query.Repository.Ruleset.Rules.Edges {
-			rules = append(rules, edge.Node)
-		}
-		if !query.Repository.Ruleset.Rules.PageInfo.HasNextPage {
-			break
-		}
-		variables["cursor"] = githubv4.NewString(query.Repository.Ruleset.Rules.PageInfo.EndCursor)
-	}
-	return rules
-}
-
-func getAdditionalBypassActors(ctx context.Context, client *githubv4.Client, owner string, repo string, databaseID int, initialCursor githubv4.String) []steampipemodels.BypassActor {
-	var query struct {
-		RateLimit  steampipemodels.RateLimit
-		Repository struct {
-			Ruleset struct {
-				BypassActors struct {
-					PageInfo struct {
-						HasNextPage bool
-						EndCursor   githubv4.String
-					}
-					Edges []struct {
-						Node steampipemodels.BypassActor
-					}
-				} `graphql:"bypassActors(first: $pageSize, after: $cursor)"`
-			} `graphql:"ruleset(databaseId: $databaseID)"`
-		} `graphql:"repository(owner: $owner, name: $name)"`
-	}
-	variables := map[string]interface{}{
-		"owner":      githubv4.String(owner),
-		"name":       githubv4.String(repo),
-		"pageSize":   githubv4.Int(100),
-		"cursor":     githubv4.NewString(initialCursor),
-		"databaseID": githubv4.Int(databaseID),
-	}
-	var bypassActors []steampipemodels.BypassActor
-	for {
-		err := client.Query(ctx, &query, variables)
-		if err != nil {
-			return nil
-		}
-		for _, edge := range query.Repository.Ruleset.BypassActors.Edges {
-			bypassActors = append(bypassActors, edge.Node)
-		}
-		if !query.Repository.Ruleset.BypassActors.PageInfo.HasNextPage {
-			break
-		}
-		variables["cursor"] = githubv4.NewString(query.Repository.Ruleset.BypassActors.PageInfo.EndCursor)
-	}
-	return bypassActors
-}
+//func getAdditionalRules(ctx context.Context, client *githubv4.Client, databaseID int, owner string, repo string, initialCursor githubv4.String) []steampipemodels.Rule {
+//	var query struct {
+//		RateLimit  steampipemodels.RateLimit
+//		Repository struct {
+//			Ruleset struct {
+//				Rules struct {
+//					PageInfo struct {
+//						HasNextPage bool
+//						EndCursor   githubv4.String
+//					}
+//					Edges []struct {
+//						Node steampipemodels.Rule
+//					}
+//				} `graphql:"rules(first: $pageSize, after: $cursor)"`
+//			} `graphql:"ruleset(databaseId: $databaseID)"`
+//		} `graphql:"repository(owner: $owner, name: $name)"`
+//	}
+//	variables := map[string]interface{}{
+//		"pageSize":   githubv4.Int(100),
+//		"cursor":     githubv4.NewString(initialCursor),
+//		"databaseID": githubv4.Int(databaseID),
+//		"owner":      githubv4.String(owner),
+//		"name":       githubv4.String(repo),
+//	}
+//	var rules []steampipemodels.Rule
+//	for {
+//		err := client.Query(ctx, &query, variables)
+//		if err != nil {
+//			return nil
+//		}
+//		for _, edge := range query.Repository.Ruleset.Rules.Edges {
+//			rules = append(rules, edge.Node)
+//		}
+//		if !query.Repository.Ruleset.Rules.PageInfo.HasNextPage {
+//			break
+//		}
+//		variables["cursor"] = githubv4.NewString(query.Repository.Ruleset.Rules.PageInfo.EndCursor)
+//	}
+//	return rules
+//}
+//
+//func getAdditionalBypassActors(ctx context.Context, client *githubv4.Client, owner string, repo string, databaseID int, initialCursor githubv4.String) []steampipemodels.BypassActor {
+//	var query struct {
+//		RateLimit  steampipemodels.RateLimit
+//		Repository struct {
+//			Ruleset struct {
+//				BypassActors struct {
+//					PageInfo struct {
+//						HasNextPage bool
+//						EndCursor   githubv4.String
+//					}
+//					Edges []struct {
+//						Node steampipemodels.BypassActor
+//					}
+//				} `graphql:"bypassActors(first: $pageSize, after: $cursor)"`
+//			} `graphql:"ruleset(databaseId: $databaseID)"`
+//		} `graphql:"repository(owner: $owner, name: $name)"`
+//	}
+//	variables := map[string]interface{}{
+//		"owner":      githubv4.String(owner),
+//		"name":       githubv4.String(repo),
+//		"pageSize":   githubv4.Int(100),
+//		"cursor":     githubv4.NewString(initialCursor),
+//		"databaseID": githubv4.Int(databaseID),
+//	}
+//	var bypassActors []steampipemodels.BypassActor
+//	for {
+//		err := client.Query(ctx, &query, variables)
+//		if err != nil {
+//			return nil
+//		}
+//		for _, edge := range query.Repository.Ruleset.BypassActors.Edges {
+//			bypassActors = append(bypassActors, edge.Node)
+//		}
+//		if !query.Repository.Ruleset.BypassActors.PageInfo.HasNextPage {
+//			break
+//		}
+//		variables["cursor"] = githubv4.NewString(query.Repository.Ruleset.BypassActors.PageInfo.EndCursor)
+//	}
+//	return bypassActors
+//}

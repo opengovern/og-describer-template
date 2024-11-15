@@ -3,8 +3,6 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/shurcooL/githubv4"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
 func GetTeamList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
@@ -108,33 +106,33 @@ func GetTeamList(ctx context.Context, githubClient GitHubClient, stream *models.
 	return nil, nil
 }
 
-func getAdditionalTeams(ctx context.Context, client *githubv4.Client, org string, initialCursor githubv4.String) ([]steampipemodels.TeamWithCounts, error) {
-	var query struct {
-		RateLimit    steampipemodels.RateLimit
-		Organization struct {
-			Teams struct {
-				PageInfo steampipemodels.PageInfo
-				Nodes    []steampipemodels.TeamWithCounts
-			} `graphql:"teams(first: $pageSize, after: $cursor)"`
-		} `graphql:"organization(login: $login)"`
-	}
-	variables := map[string]interface{}{
-		"pageSize": githubv4.Int(100),
-		"cursor":   githubv4.NewString(initialCursor),
-		"login":    githubv4.String(org),
-	}
-	appendTeamColumnIncludes(&variables, teamCols())
-	var ts []steampipemodels.TeamWithCounts
-	for {
-		err := client.Query(ctx, &query, variables)
-		if err != nil {
-			return nil, err
-		}
-		ts = append(ts, query.Organization.Teams.Nodes...)
-		if !query.Organization.Teams.PageInfo.HasNextPage {
-			break
-		}
-		variables["cursor"] = githubv4.NewString(query.Organization.Teams.PageInfo.EndCursor)
-	}
-	return ts, nil
-}
+//func getAdditionalTeams(ctx context.Context, client *githubv4.Client, org string, initialCursor githubv4.String) ([]steampipemodels.TeamWithCounts, error) {
+//	var query struct {
+//		RateLimit    steampipemodels.RateLimit
+//		Organization struct {
+//			Teams struct {
+//				PageInfo steampipemodels.PageInfo
+//				Nodes    []steampipemodels.TeamWithCounts
+//			} `graphql:"teams(first: $pageSize, after: $cursor)"`
+//		} `graphql:"organization(login: $login)"`
+//	}
+//	variables := map[string]interface{}{
+//		"pageSize": githubv4.Int(100),
+//		"cursor":   githubv4.NewString(initialCursor),
+//		"login":    githubv4.String(org),
+//	}
+//	appendTeamColumnIncludes(&variables, teamCols())
+//	var ts []steampipemodels.TeamWithCounts
+//	for {
+//		err := client.Query(ctx, &query, variables)
+//		if err != nil {
+//			return nil, err
+//		}
+//		ts = append(ts, query.Organization.Teams.Nodes...)
+//		if !query.Organization.Teams.PageInfo.HasNextPage {
+//			break
+//		}
+//		variables["cursor"] = githubv4.NewString(query.Organization.Teams.PageInfo.EndCursor)
+//	}
+//	return ts, nil
+//}

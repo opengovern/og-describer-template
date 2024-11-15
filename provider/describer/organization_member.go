@@ -3,14 +3,13 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-type memberWithRole struct {
-	HasTwoFactorEnabled *bool
-	Role                *string
-	Node                steampipemodels.User
-}
+//type memberWithRole struct {
+//	HasTwoFactorEnabled *bool
+//	Role                *string
+//	Node                steampipemodels.User
+//}
 
 func GetAllMembers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
