@@ -5,8 +5,8 @@ import (
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
-	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
+	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 	"strconv"
 	"strings"
 )
