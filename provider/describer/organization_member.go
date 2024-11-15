@@ -3,7 +3,6 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -17,7 +16,7 @@ type memberWithRole struct {
 	Node                steampipemodels.User
 }
 
-func GetAllMembers(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllMembers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	organizations, err := getOrganizations(ctx, client)
 	if err != nil {
@@ -34,7 +33,7 @@ func GetAllMembers(ctx context.Context, githubClient provider.GitHubClient, stre
 	return values, nil
 }
 
-func GetOrganizationMembers(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetOrganizationMembers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit

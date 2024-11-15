@@ -3,11 +3,10 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetAllBlobs(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllBlobs(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -28,7 +27,7 @@ func GetAllBlobs(ctx context.Context, githubClient provider.GitHubClient, stream
 	return values, nil
 }
 
-func GetRepositoryBlobs(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryBlobs(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	fileSHAs, err := getFileSHAs(client, owner, repo)
 	if err != nil {
@@ -51,7 +50,7 @@ func GetRepositoryBlobs(ctx context.Context, githubClient provider.GitHubClient,
 	return values, nil
 }
 
-func GetBlob(ctx context.Context, githubClient provider.GitHubClient, owner, repo, sha string) (*models.Resource, error) {
+func GetBlob(ctx context.Context, githubClient GitHubClient, owner, repo, sha string) (*models.Resource, error) {
 	client := githubClient.RestClient
 	blob, _, err := client.Git.GetBlob(ctx, owner, repo, sha)
 	if err != nil {

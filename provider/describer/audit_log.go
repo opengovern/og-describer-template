@@ -4,11 +4,10 @@ import (
 	"context"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetAllAuditLogs(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllAuditLogs(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	organizations, err := getOrganizations(ctx, client)
 	if err != nil {
@@ -25,7 +24,7 @@ func GetAllAuditLogs(ctx context.Context, githubClient provider.GitHubClient, st
 	return values, nil
 }
 
-func GetRepositoryAuditLog(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetRepositoryAuditLog(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	var phrase string
 	var include string

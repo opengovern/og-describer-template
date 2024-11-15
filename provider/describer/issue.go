@@ -3,14 +3,13 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
 )
 
-func GetIssueList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetIssueList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var filters githubv4.IssueFilters
 	filters.States = &[]githubv4.IssueState{githubv4.IssueStateOpen, githubv4.IssueStateClosed}

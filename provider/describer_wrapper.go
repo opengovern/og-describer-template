@@ -17,13 +17,7 @@ import (
 	"strings"
 )
 
-// GitHubClient custom struct for defining both rest and graphql clients
-type GitHubClient struct {
-	RestClient    *github.Client
-	GraphQLClient *githubv4.Client
-}
-
-func DescribeByGithub(describe func(context.Context, GitHubClient, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
+func DescribeByGithub(describe func(context.Context, describer.GitHubClient, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
 	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 		ctx = describer.WithTriggerType(ctx, triggerType)
 		var restClient *github.Client
@@ -105,7 +99,7 @@ func DescribeByGithub(describe func(context.Context, GitHubClient, *model.Stream
 				graphQLClient = githubv4.NewEnterpriseClient(uv4.String(), &http.Client{Transport: transport})
 			}
 		}
-		client := GitHubClient{
+		client := describer.GitHubClient{
 			RestClient:    restClient,
 			GraphQLClient: graphQLClient,
 		}

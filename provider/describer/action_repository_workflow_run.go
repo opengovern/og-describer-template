@@ -4,12 +4,11 @@ import (
 	"context"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
 )
 
-func GetAllWorkflowRuns(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -30,7 +29,7 @@ func GetAllWorkflowRuns(ctx context.Context, githubClient provider.GitHubClient,
 	return values, nil
 }
 
-func GetRepositoryWorkflowRuns(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryWorkflowRuns(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListWorkflowRunsOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},

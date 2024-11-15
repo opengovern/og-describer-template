@@ -3,14 +3,13 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
 )
 
-func GetAllPullRequests(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -31,7 +30,7 @@ func GetAllPullRequests(ctx context.Context, githubClient provider.GitHubClient,
 	return values, nil
 }
 
-func GetRepositoryPullRequests(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	states := []githubv4.PullRequestState{githubv4.PullRequestStateOpen, githubv4.PullRequestStateClosed, githubv4.PullRequestStateMerged}
 	var query struct {

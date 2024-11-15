@@ -3,14 +3,13 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
 
 	"github.com/google/go-github/v55/github"
 )
 
-func GetAllTrafficViewWeeklies(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTrafficViewWeeklies(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -31,7 +30,7 @@ func GetAllTrafficViewWeeklies(ctx context.Context, githubClient provider.GitHub
 	return values, nil
 }
 
-func GetRepositoryTrafficViewWeeklies(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryTrafficViewWeeklies(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.TrafficBreakdownOptions{Per: "week"}
 	trafficViews, _, err := client.Repositories.ListTrafficViews(ctx, owner, repo, opts)

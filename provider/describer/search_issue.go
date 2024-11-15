@@ -4,14 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"strconv"
 )
 
-func GetAllSearchIssues(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllSearchIssues(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -32,7 +31,7 @@ func GetAllSearchIssues(ctx context.Context, githubClient provider.GitHubClient,
 	return values, nil
 }
 
-func GetSearchIssues(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetSearchIssues(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	repoFullName := formRepositoryFullName(owner, repo)
 	input := fmt.Sprintf("repo:%s is:issue", repoFullName)

@@ -3,7 +3,6 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -15,7 +14,7 @@ type Stargazer struct {
 	Node      steampipemodels.BasicUser    `graphql:"node @include(if:$includeStargazerNode)" json:"node"`
 }
 
-func GetAllStargazers(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllStargazers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -36,7 +35,7 @@ func GetAllStargazers(ctx context.Context, githubClient provider.GitHubClient, s
 	return values, nil
 }
 
-func GetStargazers(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetStargazers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	repoFullName := formRepositoryFullName(owner, repo)
 	var query struct {

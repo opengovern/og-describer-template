@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
 	"strings"
@@ -14,7 +13,7 @@ import (
 	"github.com/google/go-github/v55/github"
 )
 
-func GetAllWorkflows(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllWorkflows(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -41,7 +40,7 @@ type FileContent struct {
 	Content    string
 }
 
-func GetRepositoryWorkflows(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryWorkflows(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: pageSize}
 	repoFullName := formRepositoryFullName(owner, repo)

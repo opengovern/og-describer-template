@@ -3,11 +3,10 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetGitIgnoreTemplateList(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetGitIgnoreTemplateList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	gitIgnores, _, err := client.Gitignores.List(ctx)
 	if err != nil {
@@ -30,7 +29,7 @@ func GetGitIgnoreTemplateList(ctx context.Context, githubClient provider.GitHubC
 	return values, nil
 }
 
-func GetGitignoreTemplate(ctx context.Context, githubClient provider.GitHubClient, gitIgnoreName string) (*models.Resource, error) {
+func GetGitignoreTemplate(ctx context.Context, githubClient GitHubClient, gitIgnoreName string) (*models.Resource, error) {
 	client := githubClient.RestClient
 	gitIgnore, _, err := client.Gitignores.Get(ctx, gitIgnoreName)
 	if err != nil {

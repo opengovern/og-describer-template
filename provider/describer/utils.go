@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+// GitHubClient custom struct for defining both rest and graphql clients
+type GitHubClient struct {
+	RestClient    *github.Client
+	GraphQLClient *githubv4.Client
+}
+
 const (
 	maxPagesCount            = 100
 	pageSize                 = 100

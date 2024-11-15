@@ -3,14 +3,13 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
 
 	"github.com/google/go-github/v55/github"
 )
 
-func GetAllTrafficViewDailies(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTrafficViewDailies(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -31,7 +30,7 @@ func GetAllTrafficViewDailies(ctx context.Context, githubClient provider.GitHubC
 	return values, nil
 }
 
-func GetRepositoryTrafficViewDailies(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryTrafficViewDailies(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.TrafficBreakdownOptions{Per: "day"}
 	trafficViews, _, err := client.Repositories.ListTrafficViews(ctx, owner, repo, opts)

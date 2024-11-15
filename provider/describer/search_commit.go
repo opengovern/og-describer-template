@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetAllSearchCommits(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllSearchCommits(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner, err := getOwnerName(ctx, client)
 	if err != nil {
@@ -30,7 +29,7 @@ func GetAllSearchCommits(ctx context.Context, githubClient provider.GitHubClient
 	return values, nil
 }
 
-func GetSearchCommits(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetSearchCommits(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	repoFullName := formRepositoryFullName(owner, repo)
 	query := fmt.Sprintf("repo:%s", repoFullName)

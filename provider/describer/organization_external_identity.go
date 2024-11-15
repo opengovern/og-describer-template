@@ -3,13 +3,12 @@ package describer
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider"
 	"github.com/opengovern/og-describer-github/provider/model"
 	steampipemodels "github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 )
 
-func GetAllExternalIdentities(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllExternalIdentities(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	organizations, err := getOrganizations(ctx, client)
 	if err != nil {
@@ -26,7 +25,7 @@ func GetAllExternalIdentities(ctx context.Context, githubClient provider.GitHubC
 	return values, nil
 }
 
-func GetOrganizationExternalIdentities(ctx context.Context, githubClient provider.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetOrganizationExternalIdentities(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit
