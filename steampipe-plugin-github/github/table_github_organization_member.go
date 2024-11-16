@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/turbot/steampipe-plugin-github/github/models"
+	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 
 	"github.com/shurcooL/githubv4"
 

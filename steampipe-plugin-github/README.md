@@ -5,7 +5,7 @@
 * **[Get started →](https://hub.steampipe.io/plugins/turbot/github)**
 * Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/turbot/github/tables)
 * Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
-* Get involved: [Issues](https://github.com/turbot/steampipe-plugin-github/issues)
+* Get involved: [Issues](https://github.com/opengovern/og-describer-github/steampipe-plugin-github/issues)
 
 ## Quick start
 
@@ -67,7 +67,7 @@ Prerequisites:
 Clone:
 
 ```sh
-git clone https://github.com/turbot/steampipe-plugin-github.git
+git clone https://github.com/opengovern/og-describer-github/steampipe-plugin-github.git
 cd steampipe-plugin-github
 ```
 
@@ -109,4 +109,4 @@ This repository is published under the [Apache 2.0](https://www.apache.org/licen
 Want to help but don't know where to start? Pick up one of the `help wanted` issues:
 
 * [Steampipe](https://github.com/turbot/steampipe/labels/help%20wanted)
-* [GitHub Plugin](https://github.com/turbot/steampipe-plugin-github/labels/help%20wanted)
+* [GitHub Plugin](https://github.com/opengovern/og-describer-github/steampipe-plugin-github/labels/help%20wanted)
