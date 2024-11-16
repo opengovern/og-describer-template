@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/go-github/v55/github"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -17,12 +18,12 @@ func tableGitHubActionsRepositoryRunner() *plugin.Table {
 		List: &plugin.ListConfig{
 			KeyColumns:        plugin.SingleColumn("repository_full_name"),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubRunnerList,
+			Hydrate:           opengovernance.ListRunner,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "id"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubRunnerGet,
+			Hydrate:           opengovernance.GetRunner,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns

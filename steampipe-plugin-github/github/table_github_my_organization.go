@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -14,7 +15,7 @@ func tableGitHubMyOrganization() *plugin.Table {
 		Name:        "github_my_organization",
 		Description: "GitHub Organizations that you are a member of. GitHub Organizations are shared accounts where businesses and open-source projects can collaborate across many projects at once.",
 		List: &plugin.ListConfig{
-			Hydrate: tableGitHubMyOrganizationList,
+			Hydrate: opengovernance.ListOrganization,
 		},
 		Columns: commonColumns(gitHubOrganizationColumns()),
 	}

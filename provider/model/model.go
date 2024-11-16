@@ -8,6 +8,7 @@ import (
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
+	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 	"time"
 )
 
@@ -91,11 +92,11 @@ type BlobDescription struct {
 }
 
 type BranchDescription struct {
-	RepoFullName string
-	Name         string
-	//Commit               steampipemodels.BaseCommit
-	//BranchProtectionRule steampipemodels.BranchProtectionRule
-	Protected bool
+	RepoFullName         string
+	Name                 string
+	Commit               steampipemodels.BaseCommit
+	BranchProtectionRule steampipemodels.BranchProtectionRule
+	Protected            bool
 }
 
 type BranchApp struct {
@@ -114,7 +115,7 @@ type BranchUser struct {
 }
 
 type BranchProtectionDescription struct {
-	//steampipemodels.BranchProtectionRule
+	steampipemodels.BranchProtectionRule
 	RepoFullName                    string
 	CreatorLogin                    string
 	MatchingBranches                int
@@ -130,21 +131,21 @@ type BranchProtectionDescription struct {
 }
 
 type CommitDescription struct {
-	//steampipemodels.Commit
+	steampipemodels.Commit
 	RepoFullName   string
 	AuthorLogin    string
 	CommitterLogin string
 }
 
 type CommunityProfileDescription struct {
-	RepoFullName string
-	//LicenseInfo          steampipemodels.BaseLicense
-	//CodeOfConduct        steampipemodels.RepositoryCodeOfConduct
-	//IssueTemplates       []steampipemodels.IssueTemplate
-	//PullRequestTemplates []steampipemodels.PullRequestTemplate
-	//ReadMe               steampipemodels.Blob
-	//Contributing         steampipemodels.Blob
-	//Security             steampipemodels.Blob
+	RepoFullName         string
+	LicenseInfo          steampipemodels.BaseLicense
+	CodeOfConduct        steampipemodels.RepositoryCodeOfConduct
+	IssueTemplates       []steampipemodels.IssueTemplate
+	PullRequestTemplates []steampipemodels.PullRequestTemplate
+	ReadMe               steampipemodels.Blob
+	Contributing         steampipemodels.Blob
+	Security             steampipemodels.Blob
 }
 
 type GitIgnoreDescription struct {
@@ -159,7 +160,7 @@ type GistDescription struct {
 }
 
 type OrganizationDescription struct {
-	//steampipemodels.Organization
+	steampipemodels.Organization
 	Hooks                                []*github.Hook
 	BillingEmail                         string
 	TwoFactorRequirementEnabled          bool
@@ -202,7 +203,7 @@ type OrgCollaboratorsDescription struct {
 	Affiliation    string
 	RepositoryName githubv4.String
 	Permission     githubv4.RepositoryPermission
-	//UserLogin      steampipemodels.CollaboratorLogin
+	UserLogin      steampipemodels.CollaboratorLogin
 }
 
 type OrgAlertDependabotDescription struct {
@@ -234,83 +235,83 @@ type OrgAlertDependabotDescription struct {
 }
 
 type OrgExternalIdentityDescription struct {
-	//steampipemodels.OrganizationExternalIdentity
+	steampipemodels.OrganizationExternalIdentity
 	Organization string
 	UserLogin    string
-	//UserDetail   steampipemodels.BasicUser
+	UserDetail   steampipemodels.BasicUser
 }
 
 type OrgMembersDescription struct {
-	//steampipemodels.User
+	steampipemodels.User
 	Organization        string
 	HasTwoFactorEnabled bool
 	Role                string
 }
 
 type PullRequestDescription struct {
-	RepoFullName     string
-	Id               int
-	NodeId           string
-	Number           int
-	ActiveLockReason githubv4.LockReason
-	Additions        int
-	//Author                   steampipemodels.Actor
-	AuthorAssociation githubv4.CommentAuthorAssociation
-	BaseRefName       string
-	Body              string
-	ChangedFiles      int
-	ChecksUrl         string
-	Closed            bool
-	//ClosedAt                 steampipemodels.NullableTime
-	//CreatedAt                steampipemodels.NullableTime
-	CreatedViaEmail bool
-	Deletions       int
-	//Editor                   steampipemodels.Actor
-	HeadRefName         string
-	HeadRefOid          string
-	IncludesCreatedEdit bool
-	IsCrossRepository   bool
-	IsDraft             bool
-	IsReadByUser        bool
-	//LastEditedAt             steampipemodels.NullableTime
-	Locked              bool
-	MaintainerCanModify bool
-	Mergeable           githubv4.MergeableState
-	Merged              bool
-	//MergedAt                 steampipemodels.NullableTime
-	//MergedBy                 steampipemodels.Actor
-	//Milestone                steampipemodels.Milestone
-	Permalink string
-	//PublishedAt              steampipemodels.NullableTime
-	RevertUrl          string
-	ReviewDecision     githubv4.PullRequestReviewDecision
-	State              githubv4.PullRequestState
-	Title              string
-	TotalCommentsCount int
-	//UpdatedAt                steampipemodels.NullableTime
-	Url string
-	//Assignees                []steampipemodels.BaseUser
-	//BaseRef                  *steampipemodels.BasicRef
-	//HeadRef                  *steampipemodels.BasicRef
-	//MergeCommit              *steampipemodels.BasicCommit
-	//SuggestedReviewers       []steampipemodels.SuggestedReviewer
-	CanApplySuggestion  bool
-	CanClose            bool
-	CanDeleteHeadRef    bool
-	CanDisableAutoMerge bool
-	CanEditFiles        bool
-	CanEnableAutoMerge  bool
-	CanMergeAsAdmin     bool
-	CanReact            bool
-	CanReopen           bool
-	CanSubscribe        bool
-	CanUpdate           bool
-	CanUpdateBranch     bool
-	DidAuthor           bool
-	CannotUpdateReasons []githubv4.CommentCannotUpdateReason
-	Subscription        githubv4.SubscriptionState
-	//LabelsSrc                []steampipemodels.Label
-	//Labels                   map[string]steampipemodels.Label
+	RepoFullName             string
+	Id                       int
+	NodeId                   string
+	Number                   int
+	ActiveLockReason         githubv4.LockReason
+	Additions                int
+	Author                   steampipemodels.Actor
+	AuthorAssociation        githubv4.CommentAuthorAssociation
+	BaseRefName              string
+	Body                     string
+	ChangedFiles             int
+	ChecksUrl                string
+	Closed                   bool
+	ClosedAt                 steampipemodels.NullableTime
+	CreatedAt                steampipemodels.NullableTime
+	CreatedViaEmail          bool
+	Deletions                int
+	Editor                   steampipemodels.Actor
+	HeadRefName              string
+	HeadRefOid               string
+	IncludesCreatedEdit      bool
+	IsCrossRepository        bool
+	IsDraft                  bool
+	IsReadByUser             bool
+	LastEditedAt             steampipemodels.NullableTime
+	Locked                   bool
+	MaintainerCanModify      bool
+	Mergeable                githubv4.MergeableState
+	Merged                   bool
+	MergedAt                 steampipemodels.NullableTime
+	MergedBy                 steampipemodels.Actor
+	Milestone                steampipemodels.Milestone
+	Permalink                string
+	PublishedAt              steampipemodels.NullableTime
+	RevertUrl                string
+	ReviewDecision           githubv4.PullRequestReviewDecision
+	State                    githubv4.PullRequestState
+	Title                    string
+	TotalCommentsCount       int
+	UpdatedAt                steampipemodels.NullableTime
+	Url                      string
+	Assignees                []steampipemodels.BaseUser
+	BaseRef                  *steampipemodels.BasicRef
+	HeadRef                  *steampipemodels.BasicRef
+	MergeCommit              *steampipemodels.BasicCommit
+	SuggestedReviewers       []steampipemodels.SuggestedReviewer
+	CanApplySuggestion       bool
+	CanClose                 bool
+	CanDeleteHeadRef         bool
+	CanDisableAutoMerge      bool
+	CanEditFiles             bool
+	CanEnableAutoMerge       bool
+	CanMergeAsAdmin          bool
+	CanReact                 bool
+	CanReopen                bool
+	CanSubscribe             bool
+	CanUpdate                bool
+	CanUpdateBranch          bool
+	DidAuthor                bool
+	CannotUpdateReasons      []githubv4.CommentCannotUpdateReason
+	Subscription             githubv4.SubscriptionState
+	LabelsSrc                []steampipemodels.Label
+	Labels                   map[string]steampipemodels.Label
 	CommitsTotalCount        int
 	ReviewRequestsTotalCount int
 	ReviewsTotalCount        int
@@ -319,29 +320,29 @@ type PullRequestDescription struct {
 }
 
 type RepositoryDescription struct {
-	ID                int
-	NodeID            string
-	Name              string
-	AllowUpdateBranch bool
-	//ArchivedAt                    steampipemodels.NullableTime
-	AutoMergeAllowed bool
-	//CodeOfConduct                 steampipemodels.RepositoryCodeOfConduct
-	//ContactLinks                  []steampipemodels.RepositoryContactLink
-	//CreatedAt                     steampipemodels.NullableTime
-	//DefaultBranchRef              steampipemodels.BasicRefWithBranchProtectionRule
-	DeleteBranchOnMerge bool
-	Description         string
-	DiskUsage           int
-	ForkCount           int
-	ForkingAllowed      bool
-	//FundingLinks                  []steampipemodels.RepositoryFundingLinks
+	ID                            int
+	NodeID                        string
+	Name                          string
+	AllowUpdateBranch             bool
+	ArchivedAt                    steampipemodels.NullableTime
+	AutoMergeAllowed              bool
+	CodeOfConduct                 steampipemodels.RepositoryCodeOfConduct
+	ContactLinks                  []steampipemodels.RepositoryContactLink
+	CreatedAt                     steampipemodels.NullableTime
+	DefaultBranchRef              steampipemodels.BasicRefWithBranchProtectionRule
+	DeleteBranchOnMerge           bool
+	Description                   string
+	DiskUsage                     int
+	ForkCount                     int
+	ForkingAllowed                bool
+	FundingLinks                  []steampipemodels.RepositoryFundingLinks
 	HasDiscussionsEnabled         bool
 	HasIssuesEnabled              bool
 	HasProjectsEnabled            bool
 	HasVulnerabilityAlertsEnabled bool
 	HasWikiEnabled                bool
 	HomepageURL                   string
-	//InteractionAbility            steampipemodels.RepositoryInteractionAbility
+	InteractionAbility            steampipemodels.RepositoryInteractionAbility
 	IsArchived                    bool
 	IsBlankIssuesEnabled          bool
 	IsDisabled                    bool
@@ -354,49 +355,49 @@ type RepositoryDescription struct {
 	IsSecurityPolicyEnabled       bool
 	IsTemplate                    bool
 	IsUserConfigurationRepository bool
-	//IssueTemplates                []steampipemodels.IssueTemplate
-	//LicenseInfo                   steampipemodels.BasicLicense
-	LockReason         githubv4.LockReason
-	MergeCommitAllowed bool
-	MergeCommitMessage githubv4.MergeCommitMessage
-	MergeCommitTitle   githubv4.MergeCommitTitle
-	MirrorURL          string
-	NameWithOwner      string
-	OpenGraphImageURL  string
-	OwnerLogin         string
-	//PrimaryLanguage               steampipemodels.Language
-	ProjectsURL string
-	//PullRequestTemplates          []steampipemodels.PullRequestTemplate
-	//PushedAt                      steampipemodels.NullableTime
-	RebaseMergeAllowed       bool
-	SecurityPolicyURL        string
-	SquashMergeAllowed       bool
-	SquashMergeCommitMessage githubv4.SquashMergeCommitMessage
-	SquashMergeCommitTitle   githubv4.SquashMergeCommitTitle
-	SSHURL                   string
-	StargazerCount           int
-	//UpdatedAt                     steampipemodels.NullableTime
-	URL                        string
-	UsesCustomOpenGraphImage   bool
-	CanAdminister              bool
-	CanCreateProjects          bool
-	CanSubscribe               bool
-	CanUpdateTopics            bool
-	HasStarred                 bool
-	PossibleCommitEmails       []string
-	Subscription               githubv4.SubscriptionState
-	Visibility                 githubv4.RepositoryVisibility
-	YourPermission             githubv4.RepositoryPermission
-	WebCommitSignOffRequired   bool
-	RepositoryTopicsTotalCount int
-	OpenIssuesTotalCount       int
-	WatchersTotalCount         int
-	Hooks                      []*github.Hook
-	Topics                     []string
-	SubscribersCount           int
-	HasDownloads               bool
-	HasPages                   bool
-	NetworkCount               int
+	IssueTemplates                []steampipemodels.IssueTemplate
+	LicenseInfo                   steampipemodels.BasicLicense
+	LockReason                    githubv4.LockReason
+	MergeCommitAllowed            bool
+	MergeCommitMessage            githubv4.MergeCommitMessage
+	MergeCommitTitle              githubv4.MergeCommitTitle
+	MirrorURL                     string
+	NameWithOwner                 string
+	OpenGraphImageURL             string
+	OwnerLogin                    string
+	PrimaryLanguage               steampipemodels.Language
+	ProjectsURL                   string
+	PullRequestTemplates          []steampipemodels.PullRequestTemplate
+	PushedAt                      steampipemodels.NullableTime
+	RebaseMergeAllowed            bool
+	SecurityPolicyURL             string
+	SquashMergeAllowed            bool
+	SquashMergeCommitMessage      githubv4.SquashMergeCommitMessage
+	SquashMergeCommitTitle        githubv4.SquashMergeCommitTitle
+	SSHURL                        string
+	StargazerCount                int
+	UpdatedAt                     steampipemodels.NullableTime
+	URL                           string
+	UsesCustomOpenGraphImage      bool
+	CanAdminister                 bool
+	CanCreateProjects             bool
+	CanSubscribe                  bool
+	CanUpdateTopics               bool
+	HasStarred                    bool
+	PossibleCommitEmails          []string
+	Subscription                  githubv4.SubscriptionState
+	Visibility                    githubv4.RepositoryVisibility
+	YourPermission                githubv4.RepositoryPermission
+	WebCommitSignOffRequired      bool
+	RepositoryTopicsTotalCount    int
+	OpenIssuesTotalCount          int
+	WatchersTotalCount            int
+	Hooks                         []*github.Hook
+	Topics                        []string
+	SubscribersCount              int
+	HasDownloads                  bool
+	HasPages                      bool
+	NetworkCount                  int
 }
 
 type RepoCollaboratorsDescription struct {
@@ -436,17 +437,17 @@ type RepoAlertDependabotDescription struct {
 }
 
 type RepoDeploymentDescription struct {
-	//steampipemodels.Deployment
+	steampipemodels.Deployment
 	RepoFullName string
 }
 
 type RepoEnvironmentDescription struct {
-	//steampipemodels.Environment
+	steampipemodels.Environment
 	RepoFullName string
 }
 
 type RepoRuleSetDescription struct {
-	//steampipemodels.Ruleset
+	steampipemodels.Ruleset
 	RepoFullName string
 }
 
@@ -463,20 +464,20 @@ type RepoSBOMDescription struct {
 }
 
 type RepoVulnerabilityAlertDescription struct {
-	RepositoryFullName string
-	Number             int
-	NodeID             string
-	//AutoDismissedAt            steampipemodels.NullableTime
-	//CreatedAt                  steampipemodels.NullableTime
-	DependencyScope githubv4.RepositoryVulnerabilityAlertDependencyScope
-	DismissComment  string
-	DismissReason   string
-	//DismissedAt                steampipemodels.NullableTime
-	//Dismisser                  steampipemodels.BasicUser
-	//FixedAt                    steampipemodels.NullableTime
-	State githubv4.RepositoryVulnerabilityAlertState
-	//SecurityAdvisory           steampipemodels.SecurityAdvisory
-	//SecurityVulnerability      steampipemodels.SecurityVulnerability
+	RepositoryFullName         string
+	Number                     int
+	NodeID                     string
+	AutoDismissedAt            steampipemodels.NullableTime
+	CreatedAt                  steampipemodels.NullableTime
+	DependencyScope            githubv4.RepositoryVulnerabilityAlertDependencyScope
+	DismissComment             string
+	DismissReason              string
+	DismissedAt                steampipemodels.NullableTime
+	Dismisser                  steampipemodels.BasicUser
+	FixedAt                    steampipemodels.NullableTime
+	State                      githubv4.RepositoryVulnerabilityAlertState
+	SecurityAdvisory           steampipemodels.SecurityAdvisory
+	SecurityVulnerability      steampipemodels.SecurityVulnerability
 	VulnerableManifestFilename string
 	VulnerableManifestPath     string
 	VulnerableRequirements     string
@@ -486,37 +487,37 @@ type RepoVulnerabilityAlertDescription struct {
 
 type StarDescription struct {
 	RepoFullName string
-	//StarredAt    steampipemodels.NullableTime
-	Url string
+	StarredAt    steampipemodels.NullableTime
+	Url          string
 }
 
 type IssueDescription struct {
-	Id               int
-	NodeId           string
-	Number           int
-	ActiveLockReason githubv4.LockReason
-	//Author                  steampipemodels.Actor
-	AuthorLogin       string
-	AuthorAssociation githubv4.CommentAuthorAssociation
-	Body              string
-	BodyUrl           string
-	Closed            bool
-	//ClosedAt                steampipemodels.NullableTime
-	//CreatedAt               steampipemodels.NullableTime
-	CreatedViaEmail bool
-	//Editor                  steampipemodels.Actor
-	FullDatabaseId      string
-	IncludesCreatedEdit bool
-	IsPinned            bool
-	IsReadByUser        bool
-	//LastEditedAt            steampipemodels.NullableTime
-	Locked bool
-	//Milestone               steampipemodels.Milestone
-	//PublishedAt             steampipemodels.NullableTime
-	State       githubv4.IssueState
-	StateReason githubv4.IssueStateReason
-	Title       string
-	//UpdatedAt               steampipemodels.NullableTime
+	Id                      int
+	NodeId                  string
+	Number                  int
+	ActiveLockReason        githubv4.LockReason
+	Author                  steampipemodels.Actor
+	AuthorLogin             string
+	AuthorAssociation       githubv4.CommentAuthorAssociation
+	Body                    string
+	BodyUrl                 string
+	Closed                  bool
+	ClosedAt                steampipemodels.NullableTime
+	CreatedAt               steampipemodels.NullableTime
+	CreatedViaEmail         bool
+	Editor                  steampipemodels.Actor
+	FullDatabaseId          string
+	IncludesCreatedEdit     bool
+	IsPinned                bool
+	IsReadByUser            bool
+	LastEditedAt            steampipemodels.NullableTime
+	Locked                  bool
+	Milestone               steampipemodels.Milestone
+	PublishedAt             steampipemodels.NullableTime
+	State                   githubv4.IssueState
+	StateReason             githubv4.IssueStateReason
+	Title                   string
+	UpdatedAt               steampipemodels.NullableTime
 	Url                     string
 	UserCanClose            bool
 	UserCanReact            bool
@@ -528,14 +529,14 @@ type IssueDescription struct {
 	UserSubscription        githubv4.SubscriptionState
 	CommentsTotalCount      int
 	LabelsTotalCount        int
-	//LabelsSrc               []steampipemodels.Label
-	//Labels                  map[string]steampipemodels.Label
-	AssigneesTotalCount int
-	//Assignees               []steampipemodels.BaseUser
+	LabelsSrc               []steampipemodels.Label
+	Labels                  map[string]steampipemodels.Label
+	AssigneesTotalCount     int
+	Assignees               []steampipemodels.BaseUser
 }
 
 type IssueCommentDescription struct {
-	//steampipemodels.IssueComment
+	steampipemodels.IssueComment
 	RepoFullName string
 	Number       int
 	AuthorLogin  string
@@ -543,7 +544,7 @@ type IssueCommentDescription struct {
 }
 
 type LicenseDescription struct {
-	//steampipemodels.License
+	steampipemodels.License
 }
 
 type SearchCodeDescription struct {
@@ -562,14 +563,14 @@ type SearchIssueDescription struct {
 	IssueDescription
 	RepoFullName string
 	Query        string
-	//TextMatches  []steampipemodels.TextMatch
+	TextMatches  []steampipemodels.TextMatch
 }
 
 type StargazerDescription struct {
 	RepoFullName string
-	//StarredAt    steampipemodels.NullableTime
-	UserLogin string
-	//UserDetail   steampipemodels.BasicUser
+	StarredAt    steampipemodels.NullableTime
+	UserLogin    string
+	UserDetail   steampipemodels.BasicUser
 }
 
 type TagDescription struct {
@@ -579,7 +580,7 @@ type TagDescription struct {
 	TaggerName         string
 	TaggerLogin        string
 	Message            string
-	//Commit             steampipemodels.BaseCommit
+	Commit             steampipemodels.BaseCommit
 }
 
 type ParentTeam struct {
@@ -622,7 +623,7 @@ type TeamDescription struct {
 }
 
 type TeamMembersDescription struct {
-	//steampipemodels.User
+	steampipemodels.User
 	Organization string
 	Slug         string
 	Role         githubv4.TeamMemberRole
@@ -659,7 +660,7 @@ type TreeDescription struct {
 }
 
 type UserDescription struct {
-	//steampipemodels.User
+	steampipemodels.User
 	RepositoriesTotalDiskUsage    int
 	FollowersTotalCount           int
 	FollowingTotalCount           int

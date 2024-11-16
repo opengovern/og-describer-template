@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/go-github/v55/github"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -14,12 +15,12 @@ func tableGitHubGitignore() *plugin.Table {
 		Name:        "github_gitignore",
 		Description: "GitHub defined .gitignore templates that you can associate with your repository.",
 		List: &plugin.ListConfig{
-			Hydrate: tableGitHubGitignoreList,
+			Hydrate: opengovernance.ListGitIgnore,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.SingleColumn("name"),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubGitignoreGetData,
+			Hydrate:           opengovernance.GetGitIgnore,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns

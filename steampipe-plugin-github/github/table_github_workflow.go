@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"strings"
 
 	goPipeline "github.com/buildkite/go-pipeline"
@@ -23,12 +25,12 @@ func tableGitHubWorkflow() *plugin.Table {
 		List: &plugin.ListConfig{
 			KeyColumns:        plugin.SingleColumn("repository_full_name"),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubWorkflowList,
+			Hydrate:           opengovernance.ListWorkflow,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "id"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubWorkflowGet,
+			Hydrate:           opengovernance.GetWorkflow,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns

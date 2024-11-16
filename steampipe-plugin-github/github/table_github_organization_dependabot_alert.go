@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/google/go-github/v55/github"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -191,7 +192,7 @@ func tableGitHubOrganizationDependabotAlert() *plugin.Table {
 				},
 			},
 			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           tableGitHubOrganizationDependabotAlertList,
+			Hydrate:           opengovernance.ListOrgAlertDependabot,
 		},
 		Columns: commonColumns(append(
 			gitHubDependabotAlertColumns(),

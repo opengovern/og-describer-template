@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"time"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -22,12 +23,12 @@ func tableGitHubCommit() *plugin.Table {
 				{Name: "repository_full_name", Require: plugin.Required},
 				{Name: "authored_date", Require: plugin.Optional, Operators: []string{">", ">=", "=", "<", "<="}},
 			},
-			Hydrate: tableGitHubCommitList,
+			Hydrate: opengovernance.ListCommit,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "sha"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubCommitGet,
+			Hydrate:           opengovernance.GetCommit,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "repository_full_name", Type: proto.ColumnType_STRING, Transform: transform.FromQual("repository_full_name"), Description: "Full name of the repository that contains the commit."},

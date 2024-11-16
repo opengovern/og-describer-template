@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"strings"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -31,7 +33,7 @@ func tableGitHubTeamRepository() *plugin.Table {
 				{Name: "organization", Require: plugin.Required},
 				{Name: "slug", Require: plugin.Required},
 			},
-			Hydrate:           tableGitHubTeamRepositoryList,
+			Hydrate:           opengovernance.ListTeamRepository,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 		},
 		Get: &plugin.GetConfig{
@@ -40,7 +42,7 @@ func tableGitHubTeamRepository() *plugin.Table {
 				{Name: "slug", Require: plugin.Required},
 				{Name: "name", Require: plugin.Required},
 			},
-			Hydrate:           tableGitHubTeamRepositoryGet,
+			Hydrate:           opengovernance.GetTeamRepository,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 		},
 		Columns: commonColumns(gitHubTeamRepositoryColumns()),

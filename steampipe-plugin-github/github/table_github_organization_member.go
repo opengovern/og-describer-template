@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"strings"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -37,7 +39,7 @@ func tableGitHubOrganizationMember() *plugin.Table {
 			KeyColumns: []*plugin.KeyColumn{
 				{Name: "organization", Require: plugin.Required},
 			},
-			Hydrate: tableGitHubOrganizationMemberList,
+			Hydrate: opengovernance.ListOrgMembers,
 		},
 		Columns: commonColumns(gitHubOrganizationMemberColumns()),
 	}

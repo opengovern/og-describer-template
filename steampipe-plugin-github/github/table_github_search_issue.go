@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -17,7 +18,7 @@ func tableGitHubSearchIssue() *plugin.Table {
 		Description: "Find issues by state and keyword.",
 		List: &plugin.ListConfig{
 			KeyColumns: plugin.SingleColumn("query"),
-			Hydrate:    tableGitHubSearchIssueList,
+			Hydrate:    opengovernance.ListSearchIssue,
 		},
 		Columns: commonColumns(gitHubSearchIssueColumns()),
 	}

@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"strings"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -22,7 +23,7 @@ func tableGitHubTeamMember() *plugin.Table {
 				{Name: "slug", Require: plugin.Required},
 				{Name: "role", Require: plugin.Optional},
 			},
-			Hydrate:           tableGitHubTeamMemberList,
+			Hydrate:           opengovernance.ListTeamMembers,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 		},
 		Columns: commonColumns(gitHubTeamMemberColumns()),

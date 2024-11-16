@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -16,12 +17,12 @@ func tableGitHubLicense() *plugin.Table {
 		Name:        "github_license",
 		Description: "GitHub Licenses are common software licenses that you can associate with your repository.",
 		List: &plugin.ListConfig{
-			Hydrate: tableGitHubLicenseList,
+			Hydrate: opengovernance.ListLicense,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.SingleColumn("key"),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubLicenseGetData,
+			Hydrate:           opengovernance.GetLicense,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "spdx_id", Description: "The Software Package Data Exchange (SPDX) id of the license.", Type: proto.ColumnType_STRING, Transform: transform.FromValue(), Hydrate: licenseHydrateSpdxId},

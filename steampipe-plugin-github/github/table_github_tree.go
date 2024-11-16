@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/go-github/v55/github"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -15,7 +16,7 @@ func tableGitHubTree() *plugin.Table {
 		Name:        "github_tree",
 		Description: "Lists directories and files in the given repository's git tree.",
 		List: &plugin.ListConfig{
-			Hydrate:           tableGitHubTreeList,
+			Hydrate:           opengovernance.ListTree,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			KeyColumns: []*plugin.KeyColumn{
 				{Name: "repository_full_name", Require: plugin.Required},

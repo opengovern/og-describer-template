@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"regexp"
 
 	"github.com/google/go-github/v55/github"
@@ -16,7 +18,7 @@ func tableGitHubSearchCode() *plugin.Table {
 		Description: "Searches for query terms inside of a file.",
 		List: &plugin.ListConfig{
 			KeyColumns: plugin.SingleColumn("query"),
-			Hydrate:    tableGitHubSearchCodeList,
+			Hydrate:    opengovernance.ListSearchCode,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the file where the match has been found."},

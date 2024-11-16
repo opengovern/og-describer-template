@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -13,7 +14,7 @@ func tableGitHubBlob() *plugin.Table {
 		Name:        "github_blob",
 		Description: "Gets a blob from a repository.",
 		List: &plugin.ListConfig{
-			Hydrate:           tableGitHubBlobList,
+			Hydrate:           opengovernance.ListBlob,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			KeyColumns: []*plugin.KeyColumn{
 				{Name: "repository_full_name", Require: plugin.Required},

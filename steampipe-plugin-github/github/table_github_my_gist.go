@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/google/go-github/v55/github"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -12,7 +13,7 @@ func tableGitHubMyGist() *plugin.Table {
 		Name:        "github_my_gist",
 		Description: "GitHub Gists owned by you. GitHub Gist is a simple way to share snippets and pastes with others.",
 		List: &plugin.ListConfig{
-			Hydrate: tableGitHubMyGistList,
+			Hydrate: opengovernance.ListGist,
 		},
 		Columns: commonColumns(gitHubGistColumns()),
 	}

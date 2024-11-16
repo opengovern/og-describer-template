@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
@@ -48,7 +49,7 @@ func tableGitHubIssueComment() *plugin.Table {
 		List: &plugin.ListConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "number"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubRepositoryIssueCommentList,
+			Hydrate:           opengovernance.ListIssueComment,
 		},
 		Columns: commonColumns(sharedCommentsColumns()),
 	}

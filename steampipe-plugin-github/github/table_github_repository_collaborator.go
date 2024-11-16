@@ -3,6 +3,8 @@ package github
 import (
 	"context"
 	"fmt"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"strings"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -26,7 +28,7 @@ func tableGitHubRepositoryCollaborator() *plugin.Table {
 		Name:        "github_repository_collaborator",
 		Description: "Collaborators are users that have contributed to the repository.",
 		List: &plugin.ListConfig{
-			Hydrate:           tableGitHubRepositoryCollaboratorList,
+			Hydrate:           opengovernance.ListRepoCollaborators,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			KeyColumns: []*plugin.KeyColumn{
 				{

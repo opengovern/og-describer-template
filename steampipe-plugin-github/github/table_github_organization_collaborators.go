@@ -3,6 +3,8 @@ package github
 import (
 	"context"
 	"fmt"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"strings"
 
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
@@ -53,7 +55,7 @@ func tableGitHubOrganizationCollaborator() *plugin.Table {
 					CacheMatch: "exact",
 				},
 			},
-			Hydrate: listGitHubOrganizationCollaborators,
+			Hydrate: opengovernance.ListOrgCollaborators,
 		},
 		Columns: commonColumns(gitHubOrganizationCollaborators()),
 	}

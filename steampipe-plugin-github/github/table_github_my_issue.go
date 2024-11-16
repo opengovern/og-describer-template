@@ -3,6 +3,8 @@ package github
 import (
 	"context"
 	"fmt"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -25,7 +27,7 @@ func tableGitHubMyIssue() *plugin.Table {
 		Name:        "github_my_issue",
 		Description: "GitHub Issues owned by you. GitHub Issues are used to track ideas, enhancements, tasks, or bugs for work on GitHub.",
 		List: &plugin.ListConfig{
-			Hydrate: tableGitHubMyIssueList,
+			Hydrate: opengovernance.ListIssue,
 			KeyColumns: []*plugin.KeyColumn{
 				{Name: "state", Require: plugin.Optional},
 				{Name: "updated_at", Require: plugin.Optional, Operators: []string{">", ">="}},

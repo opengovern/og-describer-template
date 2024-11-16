@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 	"github.com/google/go-github/v55/github"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -41,12 +42,12 @@ func tableGitHubRepositoryDependabotAlert() *plugin.Table {
 				},
 			},
 			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           tableGitHubRepositoryDependabotAlertList,
+			Hydrate:           opengovernance.ListRepoAlertDependabot,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "alert_number"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           tableGitHubRepositoryDependabotAlertGet,
+			Hydrate:           opengovernance.GetRepoAlertDependabot,
 		},
 		Columns: commonColumns(append(
 			gitHubDependabotAlertColumns(),

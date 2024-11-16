@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/google/go-github/v55/github"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -23,7 +25,7 @@ func tableGitHubAuditLog() *plugin.Table {
 				{Name: "actor", Require: plugin.Optional},
 				{Name: "created_at", Require: plugin.Optional, Operators: []string{">", ">=", "<", "<=", "="}},
 			},
-			Hydrate: tableGitHubAuditLogList,
+			Hydrate: opengovernance.ListAuditLog,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "organization", Type: proto.ColumnType_STRING, Transform: transform.FromQual("organization"), Description: "The GitHub organization."},

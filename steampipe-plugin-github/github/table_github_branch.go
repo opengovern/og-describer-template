@@ -3,6 +3,7 @@ package github
 import (
 	"context"
 
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 
@@ -20,7 +21,7 @@ func tableGitHubBranch() *plugin.Table {
 				{Name: "repository_full_name", Require: plugin.Required},
 			},
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubBranchList,
+			Hydrate:           opengovernance.ListBranch,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "repository_full_name", Type: proto.ColumnType_STRING, Transform: transform.FromQual("repository_full_name"), Description: "Full name of the repository that contains the branch."},

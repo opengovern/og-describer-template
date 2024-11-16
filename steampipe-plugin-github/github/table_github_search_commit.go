@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"regexp"
 	"strings"
 
@@ -17,7 +19,7 @@ func tableGitHubSearchCommit() *plugin.Table {
 		Description: "Find commits via various criteria on the default branch (usually master).",
 		List: &plugin.ListConfig{
 			KeyColumns: plugin.SingleColumn("query"),
-			Hydrate:    tableGitHubSearchCommitList,
+			Hydrate:    opengovernance.ListSearchCommit,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "sha", Type: proto.ColumnType_STRING, Transform: transform.FromField("SHA"), Description: "The SHA of the commit."},

@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
+
 	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
 	"github.com/shurcooL/githubv4"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -12,7 +14,7 @@ func tableGitHubMyRepository() *plugin.Table {
 		Name:        "github_my_repository",
 		Description: "GitHub Repositories that you are associated with. GitHub Repositories contain all of your project's files and each file's revision history.",
 		List: &plugin.ListConfig{
-			Hydrate:           tableGitHubMyRepositoryList,
+			Hydrate:           opengovernance.ListRepository,
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 		},
 		Columns: commonColumns(sharedRepositoryColumns()),

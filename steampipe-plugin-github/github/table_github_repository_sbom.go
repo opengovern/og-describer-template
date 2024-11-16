@@ -2,7 +2,7 @@ package github
 
 import (
 	"context"
-
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -20,7 +20,7 @@ func tableGitHubRepositorySbom() *plugin.Table {
 				},
 			},
 			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           listRepositorySboms,
+			Hydrate:           opengovernance.ListRepoSBOM,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -75,7 +75,7 @@ func tableGitHubRepositorySbom() *plugin.Table {
 	}
 }
 
-//// LIST FUNCTION
+// // LIST FUNCTION
 func listRepositorySboms(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	var owner, repo string
 
