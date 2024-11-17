@@ -41,11 +41,11 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 		}
 		for _, runner := range runners.Runners {
 			value := models.Resource{
-				ID:   strconv.Itoa(int(*runner.ID)),
-				Name: *runner.Name,
+				ID:   strconv.Itoa(int(runner.GetID())),
+				Name: runner.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.RunnerDescription{
-						Runner:       *runner,
+						Runner:       runner,
 						RepoFullName: repoFullName,
 					},
 				},
@@ -80,11 +80,11 @@ func GetRunner(ctx context.Context, client *github.Client, repo string, runnerID
 	}
 	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
-		ID:   strconv.Itoa(int(*runner.ID)),
-		Name: *runner.Name,
+		ID:   strconv.Itoa(int(runner.GetID())),
+		Name: runner.GetName(),
 		Description: JSONAllFieldsMarshaller{
 			Value: model.RunnerDescription{
-				Runner:       *runner,
+				Runner:       runner,
 				RepoFullName: repoFullName,
 			},
 		},

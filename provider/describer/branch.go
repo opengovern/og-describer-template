@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
@@ -64,8 +65,9 @@ func GetRepositoryBranches(ctx context.Context, githubClient GitHubClient, strea
 				return nil, err
 			}
 			protected := branchInfo.GetProtected()
+			id := fmt.Sprintf("%s/%s/%s", owner, repo, branch.Node.Name)
 			value := models.Resource{
-				ID:   branch.Node.Name,
+				ID:   id,
 				Name: branch.Node.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.BranchDescription{

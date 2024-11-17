@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
@@ -22,7 +23,7 @@ func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubCl
 	}
 	var values []models.Resource
 	for _, org := range organizations {
-		orgValues, err := GetOrganizationCollaborators(ctx, githubClient, stream, org.GetName())
+		orgValues, err := GetOrganizationCollaborators(ctx, githubClient, stream, org.GetLogin())
 		if err != nil {
 			return nil, err
 		}
@@ -72,8 +73,9 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient GitHubClient
 		for _, node := range query.Organization.Repositories.Nodes {
 			repoFullName := formRepositoryFullName(org, string(node.Name))
 			for _, collaborator := range node.Collaborators.Edges {
+				id := fmt.Sprintf("%s/%s", repoFullName, collaborator.Node.Login)
 				value := models.Resource{
-					ID:   repoFullName,
+					ID:   id,
 					Name: repoFullName,
 					Description: JSONAllFieldsMarshaller{
 						Value: model.OrgCollaboratorsDescription{

@@ -18,7 +18,7 @@ func GetAllTeamsMembers(ctx context.Context, githubClient GitHubClient, stream *
 	}
 	var values []models.Resource
 	for _, team := range teams {
-		teamValues, err := tableGitHubTeamMemberList(ctx, githubClient, stream, *team.Organization.Name, *team.Slug)
+		teamValues, err := tableGitHubTeamMemberList(ctx, githubClient, stream, team.GetOrganization().GetLogin(), team.GetSlug())
 		if err != nil {
 			return nil, err
 		}

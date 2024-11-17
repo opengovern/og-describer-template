@@ -15,7 +15,7 @@ func GetAllAuditLogs(ctx context.Context, githubClient GitHubClient, stream *mod
 	}
 	var values []models.Resource
 	for _, org := range organizations {
-		orgValues, err := GetRepositoryAuditLog(ctx, githubClient, stream, org.GetName())
+		orgValues, err := GetRepositoryAuditLog(ctx, githubClient, stream, org.GetLogin())
 		if err != nil {
 			return nil, err
 		}
@@ -41,22 +41,22 @@ func GetRepositoryAuditLog(ctx context.Context, githubClient GitHubClient, strea
 		}
 		for _, audit := range auditResults {
 			value := models.Resource{
-				ID:   *audit.DocumentID,
-				Name: *audit.Name,
+				ID:   audit.GetDocumentID(),
+				Name: audit.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.AuditLogDescription{
-						ID:            *audit.DocumentID,
-						CreatedAt:     audit.CreatedAt,
+						ID:            audit.GetDocumentID(),
+						CreatedAt:     audit.GetCreatedAt(),
 						Organization:  org,
 						Phrase:        phrase,
 						Include:       include,
-						Action:        *audit.Action,
-						Actor:         *audit.Actor,
-						ActorLocation: audit.ActorLocation,
-						Team:          *audit.Team,
-						UserLogin:     *audit.User,
-						Repo:          *audit.Repo,
-						Data:          audit.Data,
+						Action:        audit.GetAction(),
+						Actor:         audit.GetActor(),
+						ActorLocation: audit.GetActorLocation(),
+						Team:          audit.GetTeam(),
+						UserLogin:     audit.GetUser(),
+						Repo:          audit.GetRepository(),
+						Data:          audit.GetData(),
 					},
 				},
 			}

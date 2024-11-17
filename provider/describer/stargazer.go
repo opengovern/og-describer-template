@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
@@ -64,8 +65,9 @@ func GetStargazers(ctx context.Context, githubClient GitHubClient, stream *model
 			return nil, err
 		}
 		for _, sg := range query.Repository.Stargazers.Edges {
+			id := fmt.Sprintf("%s/%s/%s", owner, repo, strconv.Itoa(sg.Node.Id))
 			value := models.Resource{
-				ID:   strconv.Itoa(sg.Node.Id),
+				ID:   id,
 				Name: sg.Node.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.StargazerDescription{

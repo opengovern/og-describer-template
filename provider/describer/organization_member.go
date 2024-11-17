@@ -24,7 +24,7 @@ func GetAllMembers(ctx context.Context, githubClient GitHubClient, stream *model
 	}
 	var values []models.Resource
 	for _, org := range organizations {
-		orgValues, err := GetOrganizationMembers(ctx, githubClient, stream, org.GetName())
+		orgValues, err := GetOrganizationMembers(ctx, githubClient, stream, org.GetLogin())
 		if err != nil {
 			return nil, err
 		}
@@ -71,8 +71,8 @@ func GetOrganizationMembers(ctx context.Context, githubClient GitHubClient, stre
 					Value: model.OrgMembersDescription{
 						User:                member.Node,
 						Organization:        org,
-						HasTwoFactorEnabled: *member.HasTwoFactorEnabled,
-						Role:                *member.Role,
+						HasTwoFactorEnabled: member.HasTwoFactorEnabled,
+						Role:                member.Role,
 					},
 				},
 			}

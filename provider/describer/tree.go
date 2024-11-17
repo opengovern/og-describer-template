@@ -47,20 +47,20 @@ func GetRepositoryTrees(ctx context.Context, githubClient GitHubClient, stream *
 	repoFullName := formRepositoryFullName(owner, repo)
 	for _, entry := range entries {
 		value := models.Resource{
-			ID:   *entry.SHA,
-			Name: *entry.SHA,
+			ID:   entry.GetSHA(),
+			Name: entry.GetSHA(),
 			Description: JSONAllFieldsMarshaller{
 				Value: model.TreeDescription{
 					TreeSHA:            sha,
 					RepositoryFullName: repoFullName,
 					Recursive:          true,
-					Truncated:          *tree.Truncated,
-					SHA:                entry.SHA,
-					Path:               entry.Path,
-					Mode:               entry.Mode,
-					Type:               entry.Type,
-					Size:               entry.Size,
-					URL:                entry.URL,
+					Truncated:          tree.GetTruncated(),
+					SHA:                entry.GetSHA(),
+					Path:               entry.GetPath(),
+					Mode:               entry.GetMode(),
+					Type:               entry.GetType(),
+					Size:               entry.GetSize(),
+					URL:                entry.GetURL(),
 				},
 			},
 		}

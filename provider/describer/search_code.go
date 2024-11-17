@@ -46,11 +46,11 @@ func GetSearchCodes(ctx context.Context, githubClient GitHubClient, stream *mode
 		codeResults := result.CodeResults
 		for _, codeResult := range codeResults {
 			value := models.Resource{
-				ID:   *codeResult.SHA,
-				Name: *codeResult.Name,
+				ID:   codeResult.GetSHA(),
+				Name: codeResult.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.SearchCodeDescription{
-						CodeResult:   *codeResult,
+						CodeResult:   codeResult,
 						RepoFullName: repoFullName,
 						Query:        query,
 					},

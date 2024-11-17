@@ -60,7 +60,7 @@ func GetRepositoryIssueComments(ctx context.Context, githubClient GitHubClient, 
 		for _, comment := range query.Repository.Issue.Comments.Nodes {
 			value := models.Resource{
 				ID:   strconv.Itoa(comment.Id),
-				Name: comment.Url,
+				Name: strconv.Itoa(comment.Id),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.IssueCommentDescription{
 						IssueComment: comment,

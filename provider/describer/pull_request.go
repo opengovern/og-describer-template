@@ -6,6 +6,7 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+	"math"
 	"strconv"
 )
 
@@ -59,7 +60,8 @@ func GetRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, s
 			return nil, err
 		}
 		for _, issue := range query.Repository.PullRequests.Nodes {
-			labelsSrc := issue.Labels.Nodes[:100]
+			labelsSrcLength := int(math.Max(float64(len(issue.Labels.Nodes)), 100.0))
+			labelsSrc := issue.Labels.Nodes[:labelsSrcLength]
 			labels := make(map[string]steampipemodels.Label)
 			for _, label := range issue.Labels.Nodes {
 				labels[label.Name] = label

@@ -40,7 +40,7 @@ func GetGitignoreTemplate(ctx context.Context, githubClient GitHubClient, gitIgn
 		Name: gitIgnoreName,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.GitIgnoreDescription{
-				Gitignore: *gitIgnore,
+				Gitignore: gitIgnore,
 			},
 		},
 	}

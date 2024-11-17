@@ -18,7 +18,7 @@ func GetAllTeamsRepositories(ctx context.Context, githubClient GitHubClient, str
 	}
 	var values []models.Resource
 	for _, team := range teams {
-		teamValues, err := GetTeamRepositories(ctx, githubClient, stream, *team.Organization.Name, *team.Slug)
+		teamValues, err := GetTeamRepositories(ctx, githubClient, stream, team.GetOrganization().GetLogin(), team.GetSlug())
 		if err != nil {
 			return nil, err
 		}
@@ -143,10 +143,10 @@ func GetTeamRepositories(ctx context.Context, githubClient GitHubClient, stream 
 							WatchersTotalCount:            repo.Node.Watchers.TotalCount,
 							Hooks:                         hooks,
 							Topics:                        additionalRepoInfo.Topics,
-							SubscribersCount:              *additionalRepoInfo.SubscribersCount,
-							HasDownloads:                  *additionalRepoInfo.HasDownloads,
-							HasPages:                      *additionalRepoInfo.HasPages,
-							NetworkCount:                  *additionalRepoInfo.NetworkCount,
+							SubscribersCount:              additionalRepoInfo.GetSubscribersCount(),
+							HasDownloads:                  additionalRepoInfo.GetHasDownloads(),
+							HasPages:                      additionalRepoInfo.GetHasPages(),
+							NetworkCount:                  additionalRepoInfo.GetNetworkCount(),
 						},
 						Organization: org,
 						Slug:         slug,

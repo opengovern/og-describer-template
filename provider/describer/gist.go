@@ -18,14 +18,14 @@ func GetGistList(ctx context.Context, githubClient GitHubClient, stream *models.
 		}
 		for _, gist := range gists {
 			value := models.Resource{
-				ID:   *gist.ID,
-				Name: *gist.ID,
+				ID:   gist.GetID(),
+				Name: gist.GetID(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.GistDescription{
-						Gist:       *gist,
-						OwnerID:    int(*gist.Owner.ID),
-						OwnerLogin: *gist.Owner.Login,
-						OwnerType:  *gist.Owner.Type,
+						Gist:       gist,
+						OwnerID:    int(gist.GetOwner().GetID()),
+						OwnerLogin: gist.GetOwner().GetLogin(),
+						OwnerType:  gist.GetOwner().GetType(),
 					},
 				},
 			}

@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
@@ -39,12 +40,13 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 			return nil, err
 		}
 		for _, secret := range secrets.Secrets {
+			id := fmt.Sprintf("%s/%s/%s", owner, repo, secret.Name)
 			value := models.Resource{
-				ID:   secret.Name,
+				ID:   id,
 				Name: secret.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.SecretDescription{
-						Secret:       *secret,
+						Secret:       secret,
 						RepoFullName: repoFullName,
 					},
 				},
@@ -73,10 +75,6 @@ func GetSecret(ctx context.Context, client *github.Client, repo, secretName stri
 	if secretName == "" || repo == "" {
 		return nil, nil
 	}
-	type GetResponse struct {
-		secret *github.Secret
-		resp   *github.Response
-	}
 	secret, _, err := client.Actions.GetRepoSecret(ctx, owner, repo, secretName)
 	if err != nil {
 		return nil, err
@@ -87,7 +85,7 @@ func GetSecret(ctx context.Context, client *github.Client, repo, secretName stri
 		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.SecretDescription{
-				Secret:       *secret,
+				Secret:       secret,
 				RepoFullName: repoFullName,
 			},
 		},

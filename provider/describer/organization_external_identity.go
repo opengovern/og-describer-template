@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
@@ -16,7 +17,7 @@ func GetAllExternalIdentities(ctx context.Context, githubClient GitHubClient, st
 	}
 	var values []models.Resource
 	for _, org := range organizations {
-		orgValues, err := GetOrganizationExternalIdentities(ctx, githubClient, stream, org.GetName())
+		orgValues, err := GetOrganizationExternalIdentities(ctx, githubClient, stream, org.GetLogin())
 		if err != nil {
 			return nil, err
 		}
@@ -52,8 +53,9 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient GitHubC
 			return nil, err
 		}
 		for _, externalIdentity := range query.Organization.SamlIdentityProvider.ExternalIdentities.Nodes {
+			id := fmt.Sprintf("%s/%s", org, externalIdentity.User.Login)
 			value := models.Resource{
-				ID:   org,
+				ID:   id,
 				Name: org,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.OrgExternalIdentityDescription{

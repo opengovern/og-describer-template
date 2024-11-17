@@ -42,11 +42,11 @@ func GetRepositoryTrafficViewWeeklies(ctx context.Context, githubClient GitHubCl
 	for _, view := range trafficViews.Views {
 		if view != nil {
 			value := models.Resource{
-				ID:   strconv.Itoa(*view.Uniques),
-				Name: strconv.Itoa(*view.Uniques),
+				ID:   strconv.Itoa(view.GetUniques()),
+				Name: strconv.Itoa(view.GetUniques()),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.TrafficViewWeeklyDescription{
-						TrafficData:        *view,
+						TrafficData:        view,
 						RepositoryFullName: repoFullName,
 					},
 				},

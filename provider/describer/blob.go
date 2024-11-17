@@ -60,11 +60,11 @@ func GetBlob(ctx context.Context, githubClient GitHubClient, owner, repo, sha st
 	var value models.Resource
 	if blob != nil {
 		value = models.Resource{
-			ID:   *blob.SHA,
-			Name: *blob.SHA,
+			ID:   blob.GetSHA(),
+			Name: blob.GetSHA(),
 			Description: JSONAllFieldsMarshaller{
 				Value: model.BlobDescription{
-					Blob:         *blob,
+					Blob:         blob,
 					RepoFullName: repoFullName,
 				},
 			},

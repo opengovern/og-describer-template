@@ -77,8 +77,8 @@ func GetRepositoryCommunityProfiles(ctx context.Context, githubClient GitHubClie
 	}
 	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
-		ID:   repo,
-		Name: repo,
+		ID:   repoFullName,
+		Name: repoFullName,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.CommunityProfileDescription{
 				RepoFullName:         repoFullName,

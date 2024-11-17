@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
@@ -56,8 +57,9 @@ func GetRepositoryTags(ctx context.Context, githubClient GitHubClient, stream *m
 			return nil, err
 		}
 		for _, tag := range query.Repository.Refs.Nodes {
+			id := fmt.Sprintf("%s/%s/%s", owner, repo, tag.Name)
 			value := models.Resource{
-				ID:   tag.Target.Tag.Tagger.User.Login,
+				ID:   id,
 				Name: tag.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.TagDescription{

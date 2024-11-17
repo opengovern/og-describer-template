@@ -13,57 +13,57 @@ import (
 )
 
 type ArtifactDescription struct {
-	ID                 *int64
-	NodeID             *string
-	Name               *string
-	SizeInBytes        *int64
-	ArchiveDownloadURL *string
-	Expired            *bool
-	CreatedAt          *github.Timestamp
-	ExpiresAt          *github.Timestamp
+	ID                 int64
+	NodeID             string
+	Name               string
+	SizeInBytes        int64
+	ArchiveDownloadURL string
+	Expired            bool
+	CreatedAt          github.Timestamp
+	ExpiresAt          github.Timestamp
 	RepoFullName       string
 }
 
 type RunnerDescription struct {
-	github.Runner
+	*github.Runner
 	RepoFullName string
 }
 
 type SecretDescription struct {
-	github.Secret
+	*github.Secret
 	RepoFullName string
 }
 
 type WorkflowRunDescription struct {
-	ID                 *int64
-	Name               *string
-	NodeID             *string
-	HeadBranch         *string
-	HeadSHA            *string
-	RunNumber          *int
-	RunAttempt         *int
-	Event              *string
-	DisplayTitle       *string
-	Status             *string
-	Conclusion         *string
-	WorkflowID         *int64
-	CheckSuiteID       *int64
-	CheckSuiteNodeID   *string
-	URL                *string
-	HTMLURL            *string
+	ID                 int64
+	Name               string
+	NodeID             string
+	HeadBranch         string
+	HeadSHA            string
+	RunNumber          int
+	RunAttempt         int
+	Event              string
+	DisplayTitle       string
+	Status             string
+	Conclusion         string
+	WorkflowID         int64
+	CheckSuiteID       int64
+	CheckSuiteNodeID   string
+	URL                string
+	HTMLURL            string
 	PullRequests       []*github.PullRequest
-	CreatedAt          *github.Timestamp
-	UpdatedAt          *github.Timestamp
-	RunStartedAt       *github.Timestamp
-	JobsURL            *string
-	LogsURL            *string
-	CheckSuiteURL      *string
-	ArtifactsURL       *string
-	CancelURL          *string
-	RerunURL           *string
-	PreviousAttemptURL *string
+	CreatedAt          github.Timestamp
+	UpdatedAt          github.Timestamp
+	RunStartedAt       github.Timestamp
+	JobsURL            string
+	LogsURL            string
+	CheckSuiteURL      string
+	ArtifactsURL       string
+	CancelURL          string
+	RerunURL           string
+	PreviousAttemptURL string
 	HeadCommit         *github.HeadCommit
-	WorkflowURL        *string
+	WorkflowURL        string
 	Repository         *github.Repository
 	HeadRepository     *github.Repository
 	Actor              *github.User
@@ -73,7 +73,7 @@ type WorkflowRunDescription struct {
 
 type AuditLogDescription struct {
 	ID            string
-	CreatedAt     *github.Timestamp
+	CreatedAt     github.Timestamp
 	Organization  string
 	Phrase        string
 	Include       string
@@ -87,7 +87,7 @@ type AuditLogDescription struct {
 }
 
 type BlobDescription struct {
-	github.Blob
+	*github.Blob
 	RepoFullName string
 }
 
@@ -149,14 +149,70 @@ type CommunityProfileDescription struct {
 }
 
 type GitIgnoreDescription struct {
-	github.Gitignore
+	*github.Gitignore
 }
 
 type GistDescription struct {
-	github.Gist
+	*github.Gist
 	OwnerID    int
 	OwnerLogin string
 	OwnerType  string
+}
+
+type IssueDescription struct {
+	Id                      int
+	NodeId                  string
+	Number                  int
+	ActiveLockReason        githubv4.LockReason
+	Author                  steampipemodels.Actor
+	AuthorLogin             string
+	AuthorAssociation       githubv4.CommentAuthorAssociation
+	Body                    string
+	BodyUrl                 string
+	Closed                  bool
+	ClosedAt                steampipemodels.NullableTime
+	CreatedAt               steampipemodels.NullableTime
+	CreatedViaEmail         bool
+	Editor                  steampipemodels.Actor
+	FullDatabaseId          string
+	IncludesCreatedEdit     bool
+	IsPinned                bool
+	IsReadByUser            bool
+	LastEditedAt            steampipemodels.NullableTime
+	Locked                  bool
+	Milestone               steampipemodels.Milestone
+	PublishedAt             steampipemodels.NullableTime
+	State                   githubv4.IssueState
+	StateReason             githubv4.IssueStateReason
+	Title                   string
+	UpdatedAt               steampipemodels.NullableTime
+	Url                     string
+	UserCanClose            bool
+	UserCanReact            bool
+	UserCanReopen           bool
+	UserCanSubscribe        bool
+	UserCanUpdate           bool
+	UserCannotUpdateReasons []githubv4.CommentCannotUpdateReason
+	UserDidAuthor           bool
+	UserSubscription        githubv4.SubscriptionState
+	CommentsTotalCount      int
+	LabelsTotalCount        int
+	LabelsSrc               []steampipemodels.Label
+	Labels                  map[string]steampipemodels.Label
+	AssigneesTotalCount     int
+	Assignees               []steampipemodels.BaseUser
+}
+
+type IssueCommentDescription struct {
+	steampipemodels.IssueComment
+	RepoFullName string
+	Number       int
+	AuthorLogin  string
+	EditorLogin  string
+}
+
+type LicenseDescription struct {
+	steampipemodels.License
 }
 
 type OrganizationDescription struct {
@@ -218,7 +274,7 @@ type OrgAlertDependabotDescription struct {
 	SecurityAdvisorySummary     string
 	SecurityAdvisoryDescription string
 	SecurityAdvisorySeverity    string
-	SecurityAdvisoryCVSSScore   float64
+	SecurityAdvisoryCVSSScore   *float64
 	SecurityAdvisoryCVSSVector  string
 	SecurityAdvisoryCWEs        []string
 	SecurityAdvisoryPublishedAt github.Timestamp
@@ -244,8 +300,8 @@ type OrgExternalIdentityDescription struct {
 type OrgMembersDescription struct {
 	steampipemodels.User
 	Organization        string
-	HasTwoFactorEnabled bool
-	Role                string
+	HasTwoFactorEnabled *bool
+	Role                *string
 }
 
 type PullRequestDescription struct {
@@ -420,7 +476,7 @@ type RepoAlertDependabotDescription struct {
 	SecurityAdvisorySummary     string
 	SecurityAdvisoryDescription string
 	SecurityAdvisorySeverity    string
-	SecurityAdvisoryCVSSScore   float64
+	SecurityAdvisoryCVSSScore   *float64
 	SecurityAdvisoryCVSSVector  string
 	SecurityAdvisoryCWEs        []string
 	SecurityAdvisoryPublishedAt github.Timestamp
@@ -485,76 +541,14 @@ type RepoVulnerabilityAlertDescription struct {
 	CvssScore                  float64
 }
 
-type StarDescription struct {
-	RepoFullName string
-	StarredAt    steampipemodels.NullableTime
-	Url          string
-}
-
-type IssueDescription struct {
-	Id                      int
-	NodeId                  string
-	Number                  int
-	ActiveLockReason        githubv4.LockReason
-	Author                  steampipemodels.Actor
-	AuthorLogin             string
-	AuthorAssociation       githubv4.CommentAuthorAssociation
-	Body                    string
-	BodyUrl                 string
-	Closed                  bool
-	ClosedAt                steampipemodels.NullableTime
-	CreatedAt               steampipemodels.NullableTime
-	CreatedViaEmail         bool
-	Editor                  steampipemodels.Actor
-	FullDatabaseId          string
-	IncludesCreatedEdit     bool
-	IsPinned                bool
-	IsReadByUser            bool
-	LastEditedAt            steampipemodels.NullableTime
-	Locked                  bool
-	Milestone               steampipemodels.Milestone
-	PublishedAt             steampipemodels.NullableTime
-	State                   githubv4.IssueState
-	StateReason             githubv4.IssueStateReason
-	Title                   string
-	UpdatedAt               steampipemodels.NullableTime
-	Url                     string
-	UserCanClose            bool
-	UserCanReact            bool
-	UserCanReopen           bool
-	UserCanSubscribe        bool
-	UserCanUpdate           bool
-	UserCannotUpdateReasons []githubv4.CommentCannotUpdateReason
-	UserDidAuthor           bool
-	UserSubscription        githubv4.SubscriptionState
-	CommentsTotalCount      int
-	LabelsTotalCount        int
-	LabelsSrc               []steampipemodels.Label
-	Labels                  map[string]steampipemodels.Label
-	AssigneesTotalCount     int
-	Assignees               []steampipemodels.BaseUser
-}
-
-type IssueCommentDescription struct {
-	steampipemodels.IssueComment
-	RepoFullName string
-	Number       int
-	AuthorLogin  string
-	EditorLogin  string
-}
-
-type LicenseDescription struct {
-	steampipemodels.License
-}
-
 type SearchCodeDescription struct {
-	github.CodeResult
+	*github.CodeResult
 	RepoFullName string
 	Query        string
 }
 
 type SearchCommitDescription struct {
-	github.CommitResult
+	*github.CommitResult
 	RepoFullName string
 	Query        string
 }
@@ -564,6 +558,12 @@ type SearchIssueDescription struct {
 	RepoFullName string
 	Query        string
 	TextMatches  []steampipemodels.TextMatch
+}
+
+type StarDescription struct {
+	RepoFullName string
+	StarredAt    steampipemodels.NullableTime
+	Url          string
 }
 
 type StargazerDescription struct {
@@ -637,12 +637,12 @@ type TeamRepositoryDescription struct {
 }
 
 type TrafficViewDailyDescription struct {
-	github.TrafficData
+	*github.TrafficData
 	RepositoryFullName string
 }
 
 type TrafficViewWeeklyDescription struct {
-	github.TrafficData
+	*github.TrafficData
 	RepositoryFullName string
 }
 
@@ -651,12 +651,12 @@ type TreeDescription struct {
 	RepositoryFullName string
 	Recursive          bool
 	Truncated          bool
-	SHA                *string
-	Path               *string
-	Mode               *string
-	Type               *string
-	Size               *int
-	URL                *string
+	SHA                string
+	Path               string
+	Mode               string
+	Type               string
+	Size               int
+	URL                string
 }
 
 type UserDescription struct {
@@ -682,7 +682,7 @@ type UserDescription struct {
 }
 
 type WorkflowDescription struct {
-	github.Workflow
+	*github.Workflow
 	RepositoryFullName      string
 	WorkFlowFileContent     string
 	WorkFlowFileContentJson *github.RepositoryContent

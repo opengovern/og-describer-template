@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
@@ -16,7 +17,7 @@ func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient GitHu
 	}
 	var values []models.Resource
 	for _, org := range organizations {
-		orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, org.GetName())
+		orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, org.GetLogin())
 		if err != nil {
 			return nil, err
 		}
@@ -39,38 +40,39 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient GitHubCli
 		for _, alert := range alerts {
 			var CWEs []string
 			for _, cwe := range alert.SecurityAdvisory.CWEs {
-				CWEs = append(CWEs, *cwe.Name)
+				CWEs = append(CWEs, cwe.GetName())
 			}
+			id := fmt.Sprintf("%s/%s", org, strconv.Itoa(alert.GetNumber()))
 			value := models.Resource{
-				ID:   strconv.Itoa(*alert.Number),
-				Name: strconv.Itoa(*alert.Number),
+				ID:   id,
+				Name: strconv.Itoa(alert.GetNumber()),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.OrgAlertDependabotDescription{
-						AlertNumber:                 *alert.Number,
-						State:                       *alert.State,
-						DependencyPackageEcosystem:  *alert.Dependency.Package.Ecosystem,
-						DependencyPackageName:       *alert.Dependency.Package.Name,
-						DependencyManifestPath:      *alert.Dependency.ManifestPath,
-						DependencyScope:             *alert.Dependency.Scope,
-						SecurityAdvisoryGHSAID:      *alert.SecurityAdvisory.GHSAID,
-						SecurityAdvisoryCVEID:       *alert.SecurityAdvisory.CVEID,
-						SecurityAdvisorySummary:     *alert.SecurityAdvisory.Summary,
-						SecurityAdvisoryDescription: *alert.SecurityAdvisory.Description,
-						SecurityAdvisorySeverity:    *alert.SecurityAdvisory.Severity,
-						SecurityAdvisoryCVSSScore:   *alert.SecurityAdvisory.CVSS.Score,
-						SecurityAdvisoryCVSSVector:  *alert.SecurityAdvisory.CVSS.VectorString,
+						AlertNumber:                 alert.GetNumber(),
+						State:                       alert.GetState(),
+						DependencyPackageEcosystem:  alert.GetDependency().GetPackage().GetEcosystem(),
+						DependencyPackageName:       alert.GetDependency().GetPackage().GetName(),
+						DependencyManifestPath:      alert.GetDependency().GetManifestPath(),
+						DependencyScope:             alert.GetDependency().GetScope(),
+						SecurityAdvisoryGHSAID:      alert.GetSecurityAdvisory().GetGHSAID(),
+						SecurityAdvisoryCVEID:       alert.GetSecurityAdvisory().GetCVEID(),
+						SecurityAdvisorySummary:     alert.GetSecurityAdvisory().GetSummary(),
+						SecurityAdvisoryDescription: alert.GetSecurityAdvisory().GetDescription(),
+						SecurityAdvisorySeverity:    alert.GetSecurityAdvisory().GetSeverity(),
+						SecurityAdvisoryCVSSScore:   alert.GetSecurityAdvisory().GetCVSS().GetScore(),
+						SecurityAdvisoryCVSSVector:  alert.GetSecurityAdvisory().GetCVSS().GetVectorString(),
 						SecurityAdvisoryCWEs:        CWEs,
-						SecurityAdvisoryPublishedAt: *alert.SecurityAdvisory.PublishedAt,
-						SecurityAdvisoryUpdatedAt:   *alert.SecurityAdvisory.UpdatedAt,
-						SecurityAdvisoryWithdrawnAt: *alert.SecurityAdvisory.WithdrawnAt,
-						URL:                         *alert.URL,
-						HTMLURL:                     *alert.HTMLURL,
-						CreatedAt:                   *alert.CreatedAt,
-						UpdatedAt:                   *alert.UpdatedAt,
-						DismissedAt:                 *alert.DismissedAt,
-						DismissedReason:             *alert.DismissedReason,
-						DismissedComment:            *alert.DismissedComment,
-						FixedAt:                     *alert.FixedAt,
+						SecurityAdvisoryPublishedAt: alert.GetSecurityAdvisory().GetPublishedAt(),
+						SecurityAdvisoryUpdatedAt:   alert.GetSecurityAdvisory().GetUpdatedAt(),
+						SecurityAdvisoryWithdrawnAt: alert.GetSecurityAdvisory().GetWithdrawnAt(),
+						URL:                         alert.GetURL(),
+						HTMLURL:                     alert.GetHTMLURL(),
+						CreatedAt:                   alert.GetCreatedAt(),
+						UpdatedAt:                   alert.GetUpdatedAt(),
+						DismissedAt:                 alert.GetDismissedAt(),
+						DismissedReason:             alert.GetDismissedReason(),
+						DismissedComment:            alert.GetDismissedComment(),
+						FixedAt:                     alert.GetFixedAt(),
 					},
 				},
 			}

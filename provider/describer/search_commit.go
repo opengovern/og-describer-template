@@ -46,11 +46,11 @@ func GetSearchCommits(ctx context.Context, githubClient GitHubClient, stream *mo
 		codeResults := result.Commits
 		for _, codeResult := range codeResults {
 			value := models.Resource{
-				ID:   *codeResult.SHA,
-				Name: *codeResult.Commit.Message,
+				ID:   codeResult.GetSHA(),
+				Name: codeResult.GetCommit().GetMessage(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.SearchCommitDescription{
-						CommitResult: *codeResult,
+						CommitResult: codeResult,
 						RepoFullName: repoFullName,
 						Query:        query,
 					},

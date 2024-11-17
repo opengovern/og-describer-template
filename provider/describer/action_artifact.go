@@ -41,18 +41,18 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 		}
 		for _, artifact := range artifacts.Artifacts {
 			value := models.Resource{
-				ID:   strconv.Itoa(int(*artifact.ID)),
-				Name: *artifact.Name,
+				ID:   strconv.Itoa(int(artifact.GetID())),
+				Name: artifact.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.ArtifactDescription{
-						ID:                 artifact.ID,
-						NodeID:             artifact.NodeID,
-						Name:               artifact.Name,
-						SizeInBytes:        artifact.SizeInBytes,
-						ArchiveDownloadURL: artifact.ArchiveDownloadURL,
-						Expired:            artifact.Expired,
-						CreatedAt:          artifact.CreatedAt,
-						ExpiresAt:          artifact.ExpiresAt,
+						ID:                 artifact.GetID(),
+						NodeID:             artifact.GetNodeID(),
+						Name:               artifact.GetName(),
+						SizeInBytes:        artifact.GetSizeInBytes(),
+						ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
+						Expired:            artifact.GetExpired(),
+						CreatedAt:          artifact.GetCreatedAt(),
+						ExpiresAt:          artifact.GetExpiresAt(),
 						RepoFullName:       repoFullName,
 					},
 				},
@@ -87,18 +87,18 @@ func GetArtifact(ctx context.Context, client *github.Client, repo string, artifa
 	}
 	repoFullName := formRepositoryFullName(owner, repo)
 	value := models.Resource{
-		ID:   strconv.Itoa(int(*artifact.ID)),
-		Name: *artifact.Name,
+		ID:   strconv.Itoa(int(artifact.GetID())),
+		Name: artifact.GetName(),
 		Description: JSONAllFieldsMarshaller{
 			Value: model.ArtifactDescription{
-				ID:                 artifact.ID,
-				NodeID:             artifact.NodeID,
-				Name:               artifact.Name,
-				SizeInBytes:        artifact.SizeInBytes,
-				ArchiveDownloadURL: artifact.ArchiveDownloadURL,
-				Expired:            artifact.Expired,
-				CreatedAt:          artifact.CreatedAt,
-				ExpiresAt:          artifact.ExpiresAt,
+				ID:                 artifact.GetID(),
+				NodeID:             artifact.GetNodeID(),
+				Name:               artifact.GetName(),
+				SizeInBytes:        artifact.GetSizeInBytes(),
+				ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
+				Expired:            artifact.GetExpired(),
+				CreatedAt:          artifact.GetCreatedAt(),
+				ExpiresAt:          artifact.GetExpiresAt(),
 				RepoFullName:       repoFullName,
 			},
 		},

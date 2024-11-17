@@ -55,23 +55,27 @@ func GetRepositoryWorkflows(ctx context.Context, githubClient GitHubClient, stre
 			if err != nil {
 				return nil, err
 			}
+			content, err := fileContent.GetContent()
+			if err != nil {
+				return nil, err
+			}
 			fileContentBasic := FileContent{
 				Repository: repo,
-				FilePath:   *fileContent.Path,
-				Content:    *fileContent.Content,
+				FilePath:   fileContent.GetPath(),
+				Content:    content,
 			}
 			pipeline, err := decodeFileContentToPipeline(fileContentBasic)
 			if err != nil {
 				return nil, err
 			}
 			value := models.Resource{
-				ID:   strconv.Itoa(int(*workflow.ID)),
-				Name: *workflow.Name,
+				ID:   strconv.Itoa(int(workflow.GetID())),
+				Name: workflow.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.WorkflowDescription{
-						Workflow:                *workflow,
+						Workflow:                workflow,
 						RepositoryFullName:      repoFullName,
-						WorkFlowFileContent:     *fileContent.Content,
+						WorkFlowFileContent:     content,
 						WorkFlowFileContentJson: fileContent,
 						Pipeline:                pipeline,
 					},
@@ -102,7 +106,7 @@ func getWorkflowFileContent(ctx context.Context, client *github.Client, workflow
 	if len(workflowUrlParts) > 6 {
 		defaultBranch = workflowUrlParts[6]
 	}
-	content, _, _, err := client.Repositories.GetContents(ctx, owner, repo, *workflow.Path, &github.RepositoryContentGetOptions{Ref: defaultBranch})
+	content, _, _, err := client.Repositories.GetContents(ctx, owner, repo, workflow.GetPath(), &github.RepositoryContentGetOptions{Ref: defaultBranch})
 	if err != nil {
 		if strings.Contains(err.Error(), "404 Not Found") || strings.Contains(err.Error(), "404 No commit found") {
 			return nil, nil
