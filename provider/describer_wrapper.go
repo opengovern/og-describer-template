@@ -26,7 +26,7 @@ func DescribeByGithub(describe func(context.Context, describer.GitHubClient, *mo
 			return nil, fmt.Errorf("'token' or 'app_id', 'installation_id' and 'private_key' must be set in the connection configuration. Edit your connection configuration file and then restart Steampipe")
 		}
 		// Return error for unsupported token by prefix
-		if cfg.Token != "" && !strings.HasPrefix(cfg.Token, "ghs_") && !strings.HasPrefix(cfg.Token, "ghp_") && !strings.HasPrefix(cfg.Token, "gho_") && strings.HasPrefix(cfg.Token, "github_pat_") {
+		if cfg.Token != "" && !strings.HasPrefix(cfg.Token, "ghs_") && !strings.HasPrefix(cfg.Token, "ghp_") && !strings.HasPrefix(cfg.Token, "gho_") && !strings.HasPrefix(cfg.Token, "github_pat_") {
 			return nil, fmt.Errorf("supported token formats are 'ghs_', 'gho_', 'ghp_' and 'github_pat_'")
 		}
 		// Authentication with GitHub access token
