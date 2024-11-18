@@ -13,7 +13,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/nats-io/nats.go v1.36.0
-	github.com/opengovern/og-util v1.0.6-0.20241105222646-0d15ca2bc5c5
+	github.com/opengovern/og-util v1.1.5
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.7.0
 	github.com/turbot/steampipe-plugin-github v1.0.0
