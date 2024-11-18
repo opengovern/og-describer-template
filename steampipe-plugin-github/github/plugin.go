@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -12,16 +13,10 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: "steampipe-plugin-github",
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
-			NewInstance: ConfigInstance,
+			NewInstance: essdk.ConfigInstance,
+			Schema:      essdk.ConfigSchema(),
 		},
-		ConnectionKeyColumns: []plugin.ConnectionKeyColumn{
-			{
-				Name:    "login_id",
-				Hydrate: getLoginId,
-			},
-		},
-		DefaultTransform:   transform.FromGo(),
-		DefaultRetryConfig: retryConfig(),
+		DefaultTransform: transform.FromCamel(),
 		TableMap: map[string]*plugin.Table{
 			"github_actions_artifact":                tableGitHubActionsArtifact(),
 			"github_actions_repository_runner":       tableGitHubActionsRepositoryRunner(),

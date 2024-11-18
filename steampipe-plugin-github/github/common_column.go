@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/shurcooL/githubv4"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -13,13 +14,38 @@ import (
 func commonColumns(c []*plugin.Column) []*plugin.Column {
 	return append([]*plugin.Column{
 		{
-			Name:        "login_id",
-			Description: "Unique identifier for the user login.",
+			Name:        "og_account_id",
 			Type:        proto.ColumnType_STRING,
-			Hydrate:     getLoginId,
-			Transform:   transform.FromValue(),
+			Description: "The Platform Account ID in which the resource is located.",
+			Transform:   transform.FromField("IntegrationID"),
+		},
+		{
+			Name:        "og_resource_id",
+			Type:        proto.ColumnType_STRING,
+			Description: "The unique ID of the resource in opengovernance.",
+			Transform:   transform.FromField("PlatformID"),
+		},
+		{
+			Name:        "og_metadata",
+			Type:        proto.ColumnType_JSON,
+			Description: "The metadata of the resource",
+			Transform:   transform.FromField("Metadata").Transform(marshalJSON),
+		},
+		{
+			Name:        "og_description",
+			Type:        proto.ColumnType_JSON,
+			Description: "The full model description of the resource",
+			Transform:   transform.FromField("Description").Transform(marshalJSON),
 		},
 	}, c...)
+}
+
+func marshalJSON(_ context.Context, d *transform.TransformData) (interface{}, error) {
+	b, err := json.Marshal(d.Value)
+	if err != nil {
+		return nil, err
+	}
+	return string(b), nil
 }
 
 // if the caching is required other than per connection, build a cache key for the call and use it in Memoize.
