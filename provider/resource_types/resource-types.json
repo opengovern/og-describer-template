@@ -48,18 +48,6 @@
     "Model": "WorkflowRun"
   },
   {
-    "ResourceName": "Github/AuditLog",
-    "Tags": {
-      "category": [
-        "Audit Log"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllAuditLogs)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_audit_log",
-    "Model": "AuditLog"
-  },
-  {
     "ResourceName": "Github/Blob",
     "Tags": {
       "category": [
@@ -132,18 +120,6 @@
     "Model": "GitIgnore"
   },
   {
-    "ResourceName": "Github/Issue",
-    "Tags": {
-      "category": [
-        "Issue"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetIssueList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_issue",
-    "Model": "Issue"
-  },
-  {
     "ResourceName": "Github/Issue/Comment",
     "Tags": {
       "category": [
@@ -166,18 +142,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_license",
     "Model": "License"
-  },
-  {
-    "ResourceName": "Github/Organization",
-    "Tags": {
-      "category": [
-        "Organization"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetOrganizationList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_organization",
-    "Model": "Organization"
   },
   {
     "ResourceName": "Github/Organization/Collaborator",
@@ -238,18 +202,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_pull_request",
     "Model": "PullRequest"
-  },
-  {
-    "ResourceName": "Github/Repository",
-    "Tags": {
-      "category": [
-        "Repository"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetRepositoryList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_repository",
-    "Model": "Repository"
   },
   {
     "ResourceName": "Github/Repository/Collaborator",
@@ -336,18 +288,6 @@
     "Model": "RepoVulnerabilityAlert"
   },
   {
-    "ResourceName": "Github/Star",
-    "Tags": {
-      "category": [
-        "Star"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetStarList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_star",
-    "Model": "Star"
-  },
-  {
     "ResourceName": "Github/Stargazer",
     "Tags": {
       "category": [
@@ -370,18 +310,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_tag",
     "Model": "Tag"
-  },
-  {
-    "ResourceName": "Github/Team",
-    "Tags": {
-      "category": [
-        "Team"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetTeamList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_team",
-    "Model": "Team"
   },
   {
     "ResourceName": "Github/Team/Member",

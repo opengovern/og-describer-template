@@ -62,20 +62,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/AuditLog": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/AuditLog",
-		Tags:                 map[string][]string{
-            "category": {"Audit Log"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllAuditLogs),
-		GetDescriber:         nil,
-	},
-
 	"Github/Blob": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Blob",
@@ -160,20 +146,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Issue": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Issue",
-		Tags:                 map[string][]string{
-            "category": {"Issue"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetIssueList),
-		GetDescriber:         nil,
-	},
-
 	"Github/Issue/Comment": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Issue/Comment",
@@ -199,20 +171,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetLicenseList),
-		GetDescriber:         nil,
-	},
-
-	"Github/Organization": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Organization",
-		Tags:                 map[string][]string{
-            "category": {"Organization"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetOrganizationList),
 		GetDescriber:         nil,
 	},
 
@@ -283,20 +241,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllPullRequests),
-		GetDescriber:         nil,
-	},
-
-	"Github/Repository": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Repository",
-		Tags:                 map[string][]string{
-            "category": {"Repository"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetRepositoryList),
 		GetDescriber:         nil,
 	},
 
@@ -398,20 +342,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Star": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Star",
-		Tags:                 map[string][]string{
-            "category": {"Star"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetStarList),
-		GetDescriber:         nil,
-	},
-
 	"Github/Stargazer": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Stargazer",
@@ -437,20 +367,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllTags),
-		GetDescriber:         nil,
-	},
-
-	"Github/Team": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Team",
-		Tags:                 map[string][]string{
-            "category": {"Team"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetTeamList),
 		GetDescriber:         nil,
 	},
 
