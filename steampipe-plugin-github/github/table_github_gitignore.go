@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 
 	"github.com/google/go-github/v55/github"
 	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
@@ -24,33 +25,19 @@ func tableGitHubGitignore() *plugin.Table {
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the gitignore template."},
-			{Name: "source", Type: proto.ColumnType_STRING, Hydrate: tableGitHubGitignoreGetData, Description: "Source code of the gitignore template."},
+			{
+				Name:        "name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Name"),
+				Description: "Name of the gitignore template."},
+			{
+				Name:        "source",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Source"),
+				Description: "Source code of the gitignore template."},
 		}),
 	}
 }
-
-func tableGitHubGitignoreList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client := connect(ctx, d)
-
-	gitIgnores, _, err := client.Gitignores.List(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, i := range gitIgnores {
-		if i != "" {
-			d.StreamListItem(ctx, github.Gitignore{Name: github.String(i)})
-		}
-
-		// Context can be cancelled due to manual cancellation or the limit has been hit
-		if d.RowsRemaining(ctx) == 0 {
-			return nil, nil
-		}
-	}
-	return nil, nil
-}
-
 func tableGitHubGitignoreGetData(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	var name string
 	if h.Item != nil {

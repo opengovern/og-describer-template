@@ -107,9 +107,7 @@ func tableGitHubOrganization() *plugin.Table {
 		Name:        "github_organization",
 		Description: "GitHub Organizations are shared accounts where businesses and open-source projects can collaborate across many projects at once.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.SingleColumn("login"),
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           tableGitHubOrganizationList,
+			Hydrate: tableGitHubOrganizationList,
 		},
 		Columns: commonColumns(gitHubOrganizationColumns()),
 	}
