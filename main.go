@@ -28,7 +28,7 @@ func main() {
 		}
 	}()
 
-	if err := service.WorkerCommand().ExecuteContext(ctx); err != nil {
+	if err := local.WorkerCommand().ExecuteContext(ctx); err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
