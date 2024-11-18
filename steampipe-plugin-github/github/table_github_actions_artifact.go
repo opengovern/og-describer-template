@@ -57,7 +57,7 @@ func tableGitHubActionsArtifact() *plugin.Table {
 			{
 				Name:        "created_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.CreatedAt"),
+				Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
 				Description: "Time when the artifact was created.",
 			},
 			{
@@ -69,7 +69,7 @@ func tableGitHubActionsArtifact() *plugin.Table {
 			{
 				Name:        "expires_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.ExpiresAt"),
+				Transform:   transform.FromField("Description.ExpiresAt").Transform(convertTimestamp),
 				Description: "Time when the artifact expires.",
 			},
 			{

@@ -129,7 +129,7 @@ func tableGitHubActionsRepositoryWorkflowRun() *plugin.Table {
 			{
 				Name:        "created_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.CreatedAt"),
+				Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
 				Description: "Time when the workflow run was created."},
 			{
 				Name:        "head_commit",
@@ -154,12 +154,12 @@ func tableGitHubActionsRepositoryWorkflowRun() *plugin.Table {
 			{
 				Name:        "run_started_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.RunStartedAt"),
+				Transform:   transform.FromField("Description.RunStartedAt").Transform(convertTimestamp),
 				Description: "Time when the workflow run was started."},
 			{
 				Name:        "updated_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.UpdatedAt"),
+				Transform:   transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
 				Description: "Time when the workflow run was updated."},
 			{
 				Name:        "actor",
