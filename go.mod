@@ -156,7 +156,7 @@ require (
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/oleiade/reflections v1.0.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/opengovern/opengovernance v0.465.11 // indirect
+	github.com/opengovern/opengovernance v0.465.12 // indirect
 	github.com/opensearch-project/opensearch-go/v2 v2.3.0 // indirect
 	github.com/pganalyze/pg_query_go/v4 v4.2.3 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect

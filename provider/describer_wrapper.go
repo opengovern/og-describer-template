@@ -16,13 +16,13 @@ func DescribeByGithub(describe func(context.Context, describer.GitHubClient, *mo
 	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 		ctx = describer.WithTriggerType(ctx, triggerType)
 
-		if cfg.Token == "" {
+		if cfg.PatToken == "" {
 			return nil, fmt.Errorf("'token' must be set in the connection configuration. Edit your connection configuration file and then restart Steampipe")
 		}
 
 		// Create an OAuth2 token source
 		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: cfg.Token},
+			&oauth2.Token{AccessToken: cfg.PatToken},
 		)
 
 		// Create an OAuth2 client

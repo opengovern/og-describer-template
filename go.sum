@@ -756,6 +756,8 @@ github.com/opengovern/og-util v1.1.7 h1:hfa1GLRItvwR+s2u5YMjrrgLxDEWGX6h4bk8IRAq
 github.com/opengovern/og-util v1.1.7/go.mod h1:dyn8rhmxq59o1jnbgGfmcUvW7iB/eN6OxoTUUx6jEHA=
 github.com/opengovern/opengovernance v0.465.11 h1:SyXxLDMokM0JNXarWrqrc990zdZG5v4xTVuDVSYbrqc=
 github.com/opengovern/opengovernance v0.465.11/go.mod h1:FRn+nQAdUmwiLD/kSpD43pBikU4c20r/73907gLwS04=
+github.com/opengovern/opengovernance v0.465.12 h1:5vv5MBUeJ2ElDDYSmDFHvYX7qtiO6i/vkmjr1Pe1Lpk=
+github.com/opengovern/opengovernance v0.465.12/go.mod h1:FRn+nQAdUmwiLD/kSpD43pBikU4c20r/73907gLwS04=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0 h1:nQIEMr+A92CkhHrZgUhcfsrZjibvB3APXf2a1VwCmMQ=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0/go.mod h1:8LDr9FCgUTVoT+5ESjc2+iaZuldqE+23Iq0r1XeNue8=
 github.com/pganalyze/pg_query_go/v4 v4.2.3 h1:cNLqyiVMasV7YGWyYV+fkXyHp32gDfXVNCqoHztEGNk=
