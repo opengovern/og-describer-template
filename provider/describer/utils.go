@@ -1432,10 +1432,10 @@ func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
 	}
 	var fileSHAs []string
 	if fileContent != nil {
-		fileSHAs = append(fileSHAs, *fileContent.SHA)
+		fileSHAs = append(fileSHAs, fileContent.GetSHA())
 	} else {
 		for _, content := range directoryContent {
-			fileSHAs = append(fileSHAs, *content.SHA)
+			fileSHAs = append(fileSHAs, content.GetSHA())
 		}
 	}
 	return fileSHAs, nil
@@ -1446,7 +1446,7 @@ func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ownerName := *owner.Login
+	ownerName := owner.GetLogin()
 	return ownerName, err
 }
 

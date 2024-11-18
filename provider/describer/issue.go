@@ -6,6 +6,7 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+	"math"
 	"strconv"
 )
 
@@ -36,7 +37,8 @@ func GetIssueList(ctx context.Context, githubClient GitHubClient, stream *models
 			return nil, err
 		}
 		for _, issue := range query.Viewer.Issues.Nodes {
-			labelsSrc := issue.Labels.Nodes[:100]
+			labelsSrcLength := int(math.Min(float64(len(issue.Labels.Nodes)), 100.0))
+			labelsSrc := issue.Labels.Nodes[:labelsSrcLength]
 			labels := make(map[string]steampipemodels.Label)
 			for _, label := range issue.Labels.Nodes {
 				labels[label.Name] = label
