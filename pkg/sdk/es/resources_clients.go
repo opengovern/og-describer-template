@@ -3,9 +3,6 @@ package opengovernance
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	githubDescriber "github.com/opengovern/og-describer-github/provider/describer"
 	github "github.com/opengovern/og-describer-github/provider/model"
 	essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 	steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
