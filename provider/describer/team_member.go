@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func GetAllTeamsMembers(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTeamsMembers(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	teams, err := getTeams(ctx, client)
 	if err != nil {
