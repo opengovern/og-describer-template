@@ -27,5 +27,5 @@
 	<tr><td>tenant_id</td><td>The Azure Tenant ID where the resource is located.</td></tr>
 	<tr><td>metadata</td><td>Metadata of the Azure resource</td></tr>
 	<tr><td>og_account_id</td><td>The Platform Account ID in which the resource is located.</td></tr>
-	<tr><td>og_resource_id</td><td>The unique ID of the resource in Kaytu.</td></tr>
+	<tr><td>og_resource_id</td><td>The unique ID of the resource in OG.</td></tr>
 </table>

@@ -19,7 +19,7 @@ func tableAzureAdSecurityDefaultsPolicy(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdSecurityDefaultsPolicy,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "display_name",
 				Type:        proto.ColumnType_STRING,

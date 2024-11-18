@@ -18,7 +18,7 @@ func tableAzureAdUserRegistrationDetails(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdUserRegistrationDetails,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Type:        proto.ColumnType_STRING,

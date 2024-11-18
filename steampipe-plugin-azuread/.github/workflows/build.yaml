@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: './go.mod'
-      - run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/kaytu-io.insteadOf https://github.com/kaytu-io
+      - run: git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovernance-io.insteadOf https://github.com/opengovernance-io
       - name: Build app
         run: make build
       - name: Pack build

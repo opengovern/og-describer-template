@@ -27,7 +27,7 @@ func tableAzureAdTenant(_ context.Context) *plugin.Table {
 				ShouldIgnoreErrorFunc: isIgnorableErrorPredicate([]string{"Invalid filter clause"}),
 			},
 		},
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{Name: "tenant_id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the Tenant.", Transform: transform.FromField("Description.TenantID")},
 			{Name: "display_name", Type: proto.ColumnType_STRING, Description: "The name displayed in the address book for the Tenant.", Transform: transform.FromField("Description.DisplayName")},
 			{Name: "tenant_type", Type: proto.ColumnType_STRING, Description: "The type of the Tenant.", Transform: transform.FromField("Description.TenantType")},

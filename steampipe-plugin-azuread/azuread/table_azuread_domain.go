@@ -27,7 +27,7 @@ func tableAzureAdDomain(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdDomain,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Type:        proto.ColumnType_STRING,

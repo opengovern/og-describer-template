@@ -19,7 +19,7 @@ func tableAzureAdAdminConsentRequestPolicy(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdAdminConsentRequestPolicy,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "is_enabled",
 				Type:        proto.ColumnType_BOOL,
