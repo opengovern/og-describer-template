@@ -6,19 +6,16 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	repositories, err := getRepositories(ctx, client, owner)
+
+	repositories, err := getRepositories(ctx, client, organizationName)
 	if err != nil {
 		return nil, nil
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValue, err := GetRepositorySBOMs(ctx, githubClient, owner, repo.GetName())
+		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err
 		}

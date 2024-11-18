@@ -1364,11 +1364,11 @@ func pullRequestCols() []string {
 }
 
 func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
-	opt := &github.RepositoryListOptions{
+	opt := &github.RepositoryListByOrgOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
 	}
 	for {
-		repos, resp, err := client.Repositories.List(ctx, owner, opt)
+		repos, resp, err := client.Repositories.ListByOrg(ctx, owner, opt)
 		if err != nil {
 			return nil, err
 		}
@@ -1379,14 +1379,14 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 	}
 }
 
-func getIssues(ctx context.Context, client *github.Client) ([]*github.Issue, error) {
+func getIssues(ctx context.Context, orgName string, client *github.Client) ([]*github.Issue, error) {
 	opt := &github.IssueListOptions{
 		Filter:      "assigned",
 		State:       "all",
 		ListOptions: github.ListOptions{PerPage: issuePageSize},
 	}
 	for {
-		issues, resp, err := client.Issues.List(ctx, true, opt)
+		issues, resp, err := client.Issues.ListByOrg(ctx, orgName, opt)
 		if err != nil {
 			return nil, err
 		}
@@ -1439,15 +1439,6 @@ func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
 		}
 	}
 	return fileSHAs, nil
-}
-
-func getOwnerName(ctx context.Context, client *github.Client) (string, error) {
-	owner, _, err := client.Users.Get(ctx, "")
-	if err != nil {
-		return "", err
-	}
-	ownerName := owner.GetLogin()
-	return ownerName, err
 }
 
 func formRepositoryFullName(owner, repo string) string {

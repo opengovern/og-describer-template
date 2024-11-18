@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func GetAllTeamsRepositories(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTeamsRepositories(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	teams, err := getTeams(ctx, client)
 	if err != nil {
@@ -18,7 +18,7 @@ func GetAllTeamsRepositories(ctx context.Context, githubClient GitHubClient, str
 	}
 	var values []models.Resource
 	for _, team := range teams {
-		teamValues, err := GetTeamRepositories(ctx, githubClient, stream, team.GetOrganization().GetLogin(), team.GetSlug())
+		teamValues, err := GetTeamRepositories(ctx, githubClient, organizationName, stream, team.GetOrganization().GetLogin(), team.GetSlug())
 		if err != nil {
 			return nil, err
 		}
@@ -27,7 +27,7 @@ func GetAllTeamsRepositories(ctx context.Context, githubClient GitHubClient, str
 	return values, nil
 }
 
-func GetTeamRepositories(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org, slug string) ([]models.Resource, error) {
+func GetTeamRepositories(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender, org, slug string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit
@@ -58,11 +58,11 @@ func GetTeamRepositories(ctx context.Context, githubClient GitHubClient, stream 
 			return nil, err
 		}
 		for _, repo := range query.Organization.Team.Repositories.Edges {
-			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, repo.Node.Name)
+			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, organizationName, repo.Node.Name)
 			if err != nil {
 				return nil, err
 			}
-			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Node.Name)
+			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, organizationName, repo.Node.Name)
 			value := models.Resource{
 				ID:   strconv.Itoa(repo.Node.Id),
 				Name: repo.Node.Name,

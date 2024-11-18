@@ -11,19 +11,20 @@ import (
 	"strings"
 )
 
-func GetRepositoryList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetRepositoryList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
-	var query struct {
-		RateLimit steampipemodels.RateLimit
-		Viewer    struct {
+	query := struct {
+		RateLimit    steampipemodels.RateLimit
+		Organization struct {
 			Repositories struct {
 				PageInfo   steampipemodels.PageInfo
 				TotalCount int
 				Nodes      []steampipemodels.Repository
-			} `graphql:"repositories(first: $pageSize, after: $cursor, affiliations: [COLLABORATOR, OWNER, ORGANIZATION_MEMBER], ownerAffiliations: [COLLABORATOR, OWNER, ORGANIZATION_MEMBER])"`
-		}
-	}
+			} `graphql:"repositories(first: $pageSize, after: $cursor)"`
+		} `graphql:"organization(login: $owner)"` // <-- $owner used here
+	}{}
 	variables := map[string]interface{}{
+		"owner":    githubv4.String(organizationName),
 		"pageSize": githubv4.Int(repoPageSize),
 		"cursor":   (*githubv4.String)(nil),
 	}
@@ -35,12 +36,12 @@ func GetRepositoryList(ctx context.Context, githubClient GitHubClient, stream *m
 		if err != nil {
 			return nil, err
 		}
-		for _, repo := range query.Viewer.Repositories.Nodes {
-			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, repo.Name)
+		for _, repo := range query.Organization.Repositories.Nodes {
+			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, organizationName, repo.Name)
 			if err != nil {
 				return nil, err
 			}
-			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, repo.Name)
+			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, organizationName, repo.Name)
 			value := models.Resource{
 				ID:   strconv.Itoa(repo.Id),
 				Name: repo.Name,
@@ -135,20 +136,16 @@ func GetRepositoryList(ctx context.Context, githubClient GitHubClient, stream *m
 				values = append(values, value)
 			}
 		}
-		if !query.Viewer.Repositories.PageInfo.HasNextPage {
+		if !query.Organization.Repositories.PageInfo.HasNextPage {
 			break
 		}
-		variables["cursor"] = githubv4.NewString(query.Viewer.Repositories.PageInfo.EndCursor)
+		variables["cursor"] = githubv4.NewString(query.Organization.Repositories.PageInfo.EndCursor)
 	}
 	return values, nil
 }
 
-func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, repo string) (*github.Repository, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	repository, _, err := client.Repositories.Get(ctx, owner, repo)
+func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, organizationName string, repo string) (*github.Repository, error) {
+	repository, _, err := client.Repositories.Get(ctx, organizationName, repo)
 	if err != nil {
 		if strings.Contains(err.Error(), "404") {
 			return nil, nil
@@ -161,15 +158,11 @@ func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, rep
 	return repository, nil
 }
 
-func GetRepositoryHooks(ctx context.Context, client *github.Client, repo string) ([]*github.Hook, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+func GetRepositoryHooks(ctx context.Context, client *github.Client, organizationName string, repo string) ([]*github.Hook, error) {
 	var repositoryHooks []*github.Hook
 	opt := &github.ListOptions{PerPage: pageSize}
 	for {
-		hooks, resp, err := client.Repositories.ListHooks(ctx, owner, repo, opt)
+		hooks, resp, err := client.Repositories.ListHooks(ctx, organizationName, repo, opt)
 		if err != nil && strings.Contains(err.Error(), "Not Found") {
 			return nil, nil
 		} else if err != nil {

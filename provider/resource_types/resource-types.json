@@ -120,18 +120,6 @@
     "Model": "CommunityProfile"
   },
   {
-    "ResourceName": "Github/Gist",
-    "Tags": {
-      "category": [
-        "Gist"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetGistList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_my_gist",
-    "Model": "Gist"
-  },
-  {
     "ResourceName": "Github/Gitignore",
     "Tags": {
       "category": [
@@ -346,42 +334,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_repository_vulnerability_alert",
     "Model": "RepoVulnerabilityAlert"
-  },
-  {
-    "ResourceName": "Github/Search/Code",
-    "Tags": {
-      "category": [
-        "Search"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllSearchCodes)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_search_code",
-    "Model": "SearchCode"
-  },
-  {
-    "ResourceName": "Github/Search/Commit",
-    "Tags": {
-      "category": [
-        "Search"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllSearchCommits)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_search_commit",
-    "Model": "SearchCommit"
-  },
-  {
-    "ResourceName": "Github/Search/Issue",
-    "Tags": {
-      "category": [
-        "Search"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllSearchIssues)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_search_issue",
-    "Model": "SearchIssue"
   },
   {
     "ResourceName": "Github/Star",

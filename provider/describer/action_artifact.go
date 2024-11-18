@@ -8,12 +8,9 @@ import (
 	"strconv"
 )
 
-func GetAllArtifacts(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllArtifacts(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
@@ -71,37 +68,4 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 		opts.Page = resp.NextPage
 	}
 	return values, nil
-}
-
-func GetArtifact(ctx context.Context, client *github.Client, repo string, artifactID int64) (*models.Resource, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	if artifactID == 0 || repo == "" {
-		return nil, nil
-	}
-	artifact, _, err := client.Actions.GetArtifact(ctx, owner, repo, artifactID)
-	if err != nil {
-		return nil, err
-	}
-	repoFullName := formRepositoryFullName(owner, repo)
-	value := models.Resource{
-		ID:   strconv.Itoa(int(artifact.GetID())),
-		Name: artifact.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.ArtifactDescription{
-				ID:                 artifact.GetID(),
-				NodeID:             artifact.GetNodeID(),
-				Name:               artifact.GetName(),
-				SizeInBytes:        artifact.GetSizeInBytes(),
-				ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
-				Expired:            artifact.GetExpired(),
-				CreatedAt:          artifact.GetCreatedAt(),
-				ExpiresAt:          artifact.GetExpiresAt(),
-				RepoFullName:       repoFullName,
-			},
-		},
-	}
-	return &value, nil
 }

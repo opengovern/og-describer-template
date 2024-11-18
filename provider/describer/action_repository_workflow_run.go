@@ -8,12 +8,9 @@ import (
 	"strconv"
 )
 
-func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
@@ -100,11 +97,8 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient GitHubClient, s
 	return values, nil
 }
 
-func GetRepoWorkflowRun(ctx context.Context, client *github.Client, repo string, workflowRunID int64) (*models.Resource, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+func GetRepoWorkflowRun(ctx context.Context, client *github.Client, organizationName string, repo string, workflowRunID int64) (*models.Resource, error) {
+	owner := organizationName
 	if workflowRunID == 0 || repo == "" {
 		return nil, nil
 	}

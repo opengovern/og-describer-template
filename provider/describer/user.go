@@ -10,21 +10,18 @@ import (
 	"strings"
 )
 
-func GetUser(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetUser(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
-	login, err := getOwnerName(ctx, githubClient.RestClient)
-	if err != nil {
-		return nil, nil
-	}
+
 	var query struct {
 		RateLimit steampipemodels.RateLimit
 		User      steampipemodels.UserWithCounts `graphql:"user(login: $login)"`
 	}
 	variables := map[string]interface{}{
-		"login": githubv4.String(login),
+		"login": githubv4.String(organizationName),
 	}
 	appendUserWithCountColumnIncludes(&variables, userCols())
-	err = client.Query(ctx, &query, variables)
+	err := client.Query(ctx, &query, variables)
 	if err != nil {
 		if strings.Contains(err.Error(), "Could not resolve to a User with the login of") {
 			return nil, nil

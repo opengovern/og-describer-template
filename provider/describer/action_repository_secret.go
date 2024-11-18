@@ -8,12 +8,9 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetAllSecrets(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllSecrets(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
@@ -65,30 +62,4 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 		opts.Page = resp.NextPage
 	}
 	return values, nil
-}
-
-func GetSecret(ctx context.Context, client *github.Client, repo, secretName string) (*models.Resource, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	if secretName == "" || repo == "" {
-		return nil, nil
-	}
-	secret, _, err := client.Actions.GetRepoSecret(ctx, owner, repo, secretName)
-	if err != nil {
-		return nil, err
-	}
-	repoFullName := formRepositoryFullName(owner, repo)
-	value := models.Resource{
-		ID:   secret.Name,
-		Name: secret.Name,
-		Description: JSONAllFieldsMarshaller{
-			Value: model.SecretDescription{
-				Secret:       secret,
-				RepoFullName: repoFullName,
-			},
-		},
-	}
-	return &value, nil
 }

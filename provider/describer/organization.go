@@ -11,95 +11,84 @@ import (
 	"strings"
 )
 
-func GetOrganizationList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetOrganizationList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit steampipemodels.RateLimit
 		Viewer    struct {
-			Organizations struct {
-				TotalCount int
-				PageInfo   steampipemodels.PageInfo
-				Nodes      []steampipemodels.OrganizationWithCounts
-			} `graphql:"organizations(first: $pageSize, after: $cursor)"`
+			Organization steampipemodels.OrganizationWithCounts `graphql:"organization(login: $name)"`
 		}
 	}
 	variables := map[string]interface{}{
-		"pageSize": githubv4.Int(pageSize),
-		"cursor":   (*githubv4.String)(nil),
+		"name": githubv4.String(organizationName),
 	}
 	appendOrganizationColumnIncludes(&variables, organizationCols())
 	var values []models.Resource
-	for {
-		err := client.Query(ctx, &query, variables)
-		if err != nil {
+	err := client.Query(ctx, &query, variables)
+	if err != nil {
+		return nil, err
+	}
+	org := query.Viewer.Organization
+	hooks, err := GetOrganizationHooks(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
+	additionalOrgInfo, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   strconv.Itoa(org.Id),
+		Name: org.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: model.OrganizationDescription{
+				Organization:                         org.Organization,
+				Hooks:                                hooks,
+				BillingEmail:                         additionalOrgInfo.GetBillingEmail(),
+				TwoFactorRequirementEnabled:          additionalOrgInfo.GetTwoFactorRequirementEnabled(),
+				DefaultRepoPermission:                additionalOrgInfo.GetDefaultRepoPermission(),
+				MembersAllowedRepositoryCreationType: additionalOrgInfo.GetMembersAllowedRepositoryCreationType(),
+				MembersCanCreateInternalRepos:        additionalOrgInfo.GetMembersCanCreateInternalRepos(),
+				MembersCanCreatePages:                additionalOrgInfo.GetMembersCanCreatePages(),
+				MembersCanCreatePrivateRepos:         additionalOrgInfo.GetMembersCanCreatePrivateRepos(),
+				MembersCanCreatePublicRepos:          additionalOrgInfo.GetMembersCanCreatePublicRepos(),
+				MembersCanCreateRepos:                additionalOrgInfo.GetMembersCanCreateRepos(),
+				MembersCanForkPrivateRepos:           additionalOrgInfo.GetMembersCanForkPrivateRepos(),
+				PlanFilledSeats:                      additionalOrgInfo.GetPlan().GetFilledSeats(),
+				PlanName:                             additionalOrgInfo.GetPlan().GetName(),
+				PlanPrivateRepos:                     int(additionalOrgInfo.GetPlan().GetPrivateRepos()),
+				PlanSeats:                            additionalOrgInfo.GetPlan().GetSeats(),
+				PlanSpace:                            additionalOrgInfo.GetPlan().GetSpace(),
+				Followers:                            additionalOrgInfo.GetFollowers(),
+				Following:                            additionalOrgInfo.GetFollowing(),
+				Collaborators:                        additionalOrgInfo.GetCollaborators(),
+				HasOrganizationProjects:              additionalOrgInfo.GetHasOrganizationProjects(),
+				HasRepositoryProjects:                additionalOrgInfo.GetHasRepositoryProjects(),
+				WebCommitSignoffRequired:             additionalOrgInfo.GetWebCommitSignoffRequired(),
+				MembersWithRoleTotalCount:            org.MembersWithRole.TotalCount,
+				PackagesTotalCount:                   org.Packages.TotalCount,
+				PinnableItemsTotalCount:              org.PinnableItems.TotalCount,
+				PinnedItemsTotalCount:                org.PinnedItems.TotalCount,
+				ProjectsTotalCount:                   org.Projects.TotalCount,
+				ProjectsV2TotalCount:                 org.ProjectsV2.TotalCount,
+				SponsoringTotalCount:                 org.Sponsoring.TotalCount,
+				SponsorsTotalCount:                   org.Sponsors.TotalCount,
+				TeamsTotalCount:                      org.Teams.TotalCount,
+				PrivateRepositoriesTotalCount:        org.PrivateRepositories.TotalCount,
+				PublicRepositoriesTotalCount:         org.PublicRepositories.TotalCount,
+				RepositoriesTotalCount:               org.Repositories.TotalCount,
+				RepositoriesTotalDiskUsage:           org.Repositories.TotalDiskUsage,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
 			return nil, err
 		}
-		for _, org := range query.Viewer.Organizations.Nodes {
-			hooks, err := GetOrganizationHooks(ctx, githubClient.RestClient, org)
-			if err != nil {
-				return nil, err
-			}
-			additionalOrgInfo, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
-			if err != nil {
-				return nil, err
-			}
-			value := models.Resource{
-				ID:   strconv.Itoa(org.Id),
-				Name: org.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.OrganizationDescription{
-						Organization:                         org.Organization,
-						Hooks:                                hooks,
-						BillingEmail:                         additionalOrgInfo.GetBillingEmail(),
-						TwoFactorRequirementEnabled:          additionalOrgInfo.GetTwoFactorRequirementEnabled(),
-						DefaultRepoPermission:                additionalOrgInfo.GetDefaultRepoPermission(),
-						MembersAllowedRepositoryCreationType: additionalOrgInfo.GetMembersAllowedRepositoryCreationType(),
-						MembersCanCreateInternalRepos:        additionalOrgInfo.GetMembersCanCreateInternalRepos(),
-						MembersCanCreatePages:                additionalOrgInfo.GetMembersCanCreatePages(),
-						MembersCanCreatePrivateRepos:         additionalOrgInfo.GetMembersCanCreatePrivateRepos(),
-						MembersCanCreatePublicRepos:          additionalOrgInfo.GetMembersCanCreatePublicRepos(),
-						MembersCanCreateRepos:                additionalOrgInfo.GetMembersCanCreateRepos(),
-						MembersCanForkPrivateRepos:           additionalOrgInfo.GetMembersCanForkPrivateRepos(),
-						PlanFilledSeats:                      additionalOrgInfo.GetPlan().GetFilledSeats(),
-						PlanName:                             additionalOrgInfo.GetPlan().GetName(),
-						PlanPrivateRepos:                     int(additionalOrgInfo.GetPlan().GetPrivateRepos()),
-						PlanSeats:                            additionalOrgInfo.GetPlan().GetSeats(),
-						PlanSpace:                            additionalOrgInfo.GetPlan().GetSpace(),
-						Followers:                            additionalOrgInfo.GetFollowers(),
-						Following:                            additionalOrgInfo.GetFollowing(),
-						Collaborators:                        additionalOrgInfo.GetCollaborators(),
-						HasOrganizationProjects:              additionalOrgInfo.GetHasOrganizationProjects(),
-						HasRepositoryProjects:                additionalOrgInfo.GetHasRepositoryProjects(),
-						WebCommitSignoffRequired:             additionalOrgInfo.GetWebCommitSignoffRequired(),
-						MembersWithRoleTotalCount:            org.MembersWithRole.TotalCount,
-						PackagesTotalCount:                   org.Packages.TotalCount,
-						PinnableItemsTotalCount:              org.PinnableItems.TotalCount,
-						PinnedItemsTotalCount:                org.PinnedItems.TotalCount,
-						ProjectsTotalCount:                   org.Projects.TotalCount,
-						ProjectsV2TotalCount:                 org.ProjectsV2.TotalCount,
-						SponsoringTotalCount:                 org.Sponsoring.TotalCount,
-						SponsorsTotalCount:                   org.Sponsors.TotalCount,
-						TeamsTotalCount:                      org.Teams.TotalCount,
-						PrivateRepositoriesTotalCount:        org.PrivateRepositories.TotalCount,
-						PublicRepositoriesTotalCount:         org.PublicRepositories.TotalCount,
-						RepositoriesTotalCount:               org.Repositories.TotalCount,
-						RepositoriesTotalDiskUsage:           org.Repositories.TotalDiskUsage,
-					},
-				},
-			}
-			if stream != nil {
-				if err := (*stream)(value); err != nil {
-					return nil, err
-				}
-			} else {
-				values = append(values, value)
-			}
-		}
-		if !query.Viewer.Organizations.PageInfo.HasNextPage {
-			break
-		}
-		variables["cursor"] = githubv4.NewString(query.Viewer.Organizations.PageInfo.EndCursor)
+	} else {
+		values = append(values, value)
 	}
+
 	return values, nil
 }
 

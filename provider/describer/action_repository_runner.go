@@ -8,12 +8,9 @@ import (
 	"strconv"
 )
 
-func GetAllRunners(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRunners(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil
@@ -64,30 +61,4 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 		opts.Page = resp.NextPage
 	}
 	return values, nil
-}
-
-func GetRunner(ctx context.Context, client *github.Client, repo string, runnerID int64) (*models.Resource, error) {
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	if runnerID == 0 || repo == "" {
-		return nil, nil
-	}
-	runner, _, err := client.Actions.GetRunner(ctx, owner, repo, runnerID)
-	if err != nil {
-		return nil, err
-	}
-	repoFullName := formRepositoryFullName(owner, repo)
-	value := models.Resource{
-		ID:   strconv.Itoa(int(runner.GetID())),
-		Name: runner.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.RunnerDescription{
-				Runner:       runner,
-				RepoFullName: repoFullName,
-			},
-		},
-	}
-	return &value, nil
 }

@@ -128,18 +128,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  nil,
 	},
 
-	"Github/Gist": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Gist",
-		Tags: map[string][]string{
-			"category": {"Gist"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetGistList),
-		GetDescriber:  nil,
-	},
-
 	"Github/Gitignore": {
 		IntegrationType: configs.IntegrationName,
 		ResourceName:    "Github/Gitignore",
@@ -353,42 +341,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetAllRepositoriesVulnerabilities),
-		GetDescriber:  nil,
-	},
-
-	"Github/Search/Code": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Search/Code",
-		Tags: map[string][]string{
-			"category": {"Search"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllSearchCodes),
-		GetDescriber:  nil,
-	},
-
-	"Github/Search/Commit": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Search/Commit",
-		Tags: map[string][]string{
-			"category": {"Search"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllSearchCommits),
-		GetDescriber:  nil,
-	},
-
-	"Github/Search/Issue": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Search/Issue",
-		Tags: map[string][]string{
-			"category": {"Search"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllSearchIssues),
 		GetDescriber:  nil,
 	},
 

@@ -152,13 +152,6 @@ type GitIgnoreDescription struct {
 	*github.Gitignore
 }
 
-type GistDescription struct {
-	*github.Gist
-	OwnerID    int
-	OwnerLogin string
-	OwnerType  string
-}
-
 type IssueDescription struct {
 	Id                      int
 	NodeId                  string

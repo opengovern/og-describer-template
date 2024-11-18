@@ -9,20 +9,14 @@ import (
 	"strconv"
 )
 
-func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
-	client := githubClient.RestClient
-	organizations, err := getOrganizations(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+
 	var values []models.Resource
-	for _, org := range organizations {
-		orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, org.GetLogin())
-		if err != nil {
-			return nil, err
-		}
-		values = append(values, orgValues...)
+	orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, organizationName)
+	if err != nil {
+		return nil, err
 	}
+	values = append(values, orgValues...)
 	return values, nil
 }
 

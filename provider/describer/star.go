@@ -8,7 +8,7 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetStarList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetStarList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit steampipemodels.RateLimit
@@ -21,6 +21,9 @@ func GetStarList(ctx context.Context, githubClient GitHubClient, stream *models.
 					Node      struct {
 						NameWithOwner string
 						Url           string
+						Owner         struct {
+							Login string
+						}
 					} `graphql:"node @include(if:$includeStarNode)"`
 				} `graphql:"edges @include(if:$includeStarEdges)"`
 			} `graphql:"starredRepositories(first: $pageSize, after: $cursor)"`

@@ -12,7 +12,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func DescribeByGithub(describe func(context.Context, describer.GitHubClient, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
+func DescribeByGithub(describe func(context.Context, describer.GitHubClient, string, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
 	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 		ctx = describer.WithTriggerType(ctx, triggerType)
 
@@ -36,8 +36,10 @@ func DescribeByGithub(describe func(context.Context, describer.GitHubClient, *mo
 			RestClient:    restClient,
 			GraphQLClient: graphQLClient,
 		}
+
+		organizationName := additionalParameters["OrganizationName"]
 		var values []model.Resource
-		result, err := describe(ctx, client, stream)
+		result, err := describe(ctx, client, organizationName, stream)
 		if err != nil {
 			return nil, err
 		}

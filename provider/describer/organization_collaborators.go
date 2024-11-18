@@ -15,20 +15,13 @@ type CollaboratorEdge struct {
 	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
 }
 
-func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
-	client := githubClient.RestClient
-	organizations, err := getOrganizations(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var values []models.Resource
-	for _, org := range organizations {
-		orgValues, err := GetOrganizationCollaborators(ctx, githubClient, stream, org.GetLogin())
-		if err != nil {
-			return nil, err
-		}
-		values = append(values, orgValues...)
+	orgValues, err := GetOrganizationCollaborators(ctx, githubClient, stream, organizationName)
+	if err != nil {
+		return nil, err
 	}
+	values = append(values, orgValues...)
 	return values, nil
 }
 

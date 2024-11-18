@@ -8,19 +8,16 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetAllRepositoriesRuleSets(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRepositoriesRuleSets(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
-	repositories, err := getRepositories(ctx, client, owner)
+
+	repositories, err := getRepositories(ctx, client, organizationName)
 	if err != nil {
 		return nil, nil
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, owner, repo.GetName())
+		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err
 		}

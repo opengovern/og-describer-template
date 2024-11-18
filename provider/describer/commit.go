@@ -8,12 +8,9 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetAllCommits(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllCommits(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	owner, err := getOwnerName(ctx, client)
-	if err != nil {
-		return nil, nil
-	}
+	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
 	if err != nil {
 		return nil, nil

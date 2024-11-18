@@ -4,29 +4,41 @@ import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
+	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetLicenseList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetLicenseList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
+
 	var query struct {
-		RateLimit steampipemodels.RateLimit
-		Licenses  []steampipemodels.License `graphql:"licenses"`
+		RateLimit  steampipemodels.RateLimit
+		Repository struct {
+			LicenseInfo steampipemodels.License
+		} `graphql:"repository(owner: $owner, name: $repoName)"`
 	}
-	variables := map[string]interface{}{}
-	appendLicenseColumnIncludes(&variables, licenseCols())
-	err := client.Query(ctx, &query, variables)
+	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
+
 	var values []models.Resource
-	for _, license := range query.Licenses {
+	for _, r := range repositories {
+		variables := map[string]interface{}{
+			"owner":    githubv4.String(organizationName),
+			"repoName": githubv4.String(r.GetName()),
+		}
+		appendLicenseColumnIncludes(&variables, licenseCols())
+		err := client.Query(ctx, &query, variables)
+		if err != nil {
+			return nil, err
+		}
 		value := models.Resource{
-			ID:   license.Key,
-			Name: license.Name,
+			ID:   query.Repository.LicenseInfo.Key,
+			Name: query.Repository.LicenseInfo.Name,
 			Description: JSONAllFieldsMarshaller{
 				Value: model.LicenseDescription{
-					License: license,
+					License: query.Repository.LicenseInfo,
 				},
 			},
 		}
@@ -38,5 +50,6 @@ func GetLicenseList(ctx context.Context, githubClient GitHubClient, stream *mode
 			values = append(values, value)
 		}
 	}
+
 	return values, nil
 }

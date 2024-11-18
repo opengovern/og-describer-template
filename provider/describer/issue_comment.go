@@ -9,9 +9,9 @@ import (
 	"strconv"
 )
 
-func GetAllIssueComments(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllIssueComments(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
-	issues, err := getIssues(ctx, client)
+	issues, err := getIssues(ctx, organizationName, client)
 	if err != nil {
 		return nil, nil
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 )
 
-func GetGitIgnoreTemplateList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender) ([]models.Resource, error) {
+func GetGitIgnoreTemplateList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	gitIgnores, _, err := client.Gitignores.List(ctx)
 	if err != nil {

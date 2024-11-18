@@ -39,5 +39,9 @@ func AdjustResource(job describe.DescribeJob, resource *model.Resource) error {
 func GetAdditionalParameters(job describe.DescribeJob) (map[string]string, error) {
 	additionalParameters := make(map[string]string)
 
+	if _, ok := job.IntegrationLabels["OrganizationName"]; ok {
+		additionalParameters["OrganizationName"] = job.IntegrationLabels["OrganizationName"]
+	}
+
 	return additionalParameters, nil
 }
