@@ -23,7 +23,7 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-const PluginPath = "../../../../steampipe-plugin-aws/aws" // TODO: change to steampipe plugin
+const PluginPath = "../../../../steampipe-plugin-github/github" // TODO: change to steampipe plugin
 
 type IntegrationType struct {
 	Name            string

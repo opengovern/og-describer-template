@@ -23,59 +23,11 @@ type Artifact struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
 	Description     github.ArtifactDescription `json:"description"`
-	DescribedBy     int                        `json:"described_by"`
+	Metadata        github.Metadata            `json:"metadata"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *Artifact) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.ArtifactDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type ArtifactHit struct {
@@ -274,59 +226,11 @@ type Runner struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
 	Description     github.RunnerDescription `json:"description"`
-	DescribedBy     int                      `json:"described_by"`
+	Metadata        github.Metadata          `json:"metadata"`
+	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
 	IntegrationType string                   `json:"integration_type"`
 	IntegrationID   string                   `json:"integration_id"`
-}
-
-func (r *Runner) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RunnerDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RunnerHit struct {
@@ -525,59 +429,11 @@ type Secret struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
 	Description     github.SecretDescription `json:"description"`
-	DescribedBy     int                      `json:"described_by"`
+	Metadata        github.Metadata          `json:"metadata"`
+	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
 	IntegrationType string                   `json:"integration_type"`
 	IntegrationID   string                   `json:"integration_id"`
-}
-
-func (r *Secret) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.SecretDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type SecretHit struct {
@@ -776,59 +632,11 @@ type WorkflowRun struct {
 	ResourceID      string                        `json:"resource_id"`
 	PlatformID      string                        `json:"platform_id"`
 	Description     github.WorkflowRunDescription `json:"description"`
-	DescribedBy     int                           `json:"described_by"`
+	Metadata        github.Metadata               `json:"metadata"`
+	DescribedBy     string                        `json:"described_by"`
 	ResourceType    string                        `json:"resource_type"`
 	IntegrationType string                        `json:"integration_type"`
 	IntegrationID   string                        `json:"integration_id"`
-}
-
-func (r *WorkflowRun) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.WorkflowRunDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type WorkflowRunHit struct {
@@ -1035,59 +843,11 @@ type AuditLog struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
 	Description     github.AuditLogDescription `json:"description"`
-	DescribedBy     int                        `json:"described_by"`
+	Metadata        github.Metadata            `json:"metadata"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *AuditLog) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.AuditLogDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AuditLogHit struct {
@@ -1288,59 +1048,11 @@ type Blob struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
 	Description     github.BlobDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
 	IntegrationType string                 `json:"integration_type"`
 	IntegrationID   string                 `json:"integration_id"`
-}
-
-func (r *Blob) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.BlobDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type BlobHit struct {
@@ -1541,59 +1253,11 @@ type Branch struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
 	Description     github.BranchDescription `json:"description"`
-	DescribedBy     int                      `json:"described_by"`
+	Metadata        github.Metadata          `json:"metadata"`
+	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
 	IntegrationType string                   `json:"integration_type"`
 	IntegrationID   string                   `json:"integration_id"`
-}
-
-func (r *Branch) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.BranchDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type BranchHit struct {
@@ -1792,59 +1456,11 @@ type BranchProtection struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
 	Description     github.BranchProtectionDescription `json:"description"`
-	DescribedBy     int                                `json:"described_by"`
+	Metadata        github.Metadata                    `json:"metadata"`
+	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
-}
-
-func (r *BranchProtection) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.BranchProtectionDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type BranchProtectionHit struct {
@@ -2039,59 +1655,11 @@ type Commit struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
 	Description     github.CommitDescription `json:"description"`
-	DescribedBy     int                      `json:"described_by"`
+	Metadata        github.Metadata          `json:"metadata"`
+	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
 	IntegrationType string                   `json:"integration_type"`
 	IntegrationID   string                   `json:"integration_id"`
-}
-
-func (r *Commit) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.CommitDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type CommitHit struct {
@@ -2286,59 +1854,11 @@ type CommunityProfile struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
 	Description     github.CommunityProfileDescription `json:"description"`
-	DescribedBy     int                                `json:"described_by"`
+	Metadata        github.Metadata                    `json:"metadata"`
+	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
-}
-
-func (r *CommunityProfile) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.CommunityProfileDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type CommunityProfileHit struct {
@@ -2533,59 +2053,11 @@ type GitIgnore struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
 	Description     github.GitIgnoreDescription `json:"description"`
-	DescribedBy     int                         `json:"described_by"`
+	Metadata        github.Metadata             `json:"metadata"`
+	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
-}
-
-func (r *GitIgnore) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.GitIgnoreDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type GitIgnoreHit struct {
@@ -2774,120 +2246,72 @@ func GetGitIgnore(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 // ==========================  END: GitIgnore =============================
 
-// ==========================  START: Gist =============================
+// ==========================  START: Issue =============================
 
-type Gist struct {
-	ResourceID      string                 `json:"resource_id"`
-	PlatformID      string                 `json:"platform_id"`
-	Description     github.GistDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
-	ResourceType    string                 `json:"resource_type"`
-	IntegrationType string                 `json:"integration_type"`
-	IntegrationID   string                 `json:"integration_id"`
+type Issue struct {
+	ResourceID      string                  `json:"resource_id"`
+	PlatformID      string                  `json:"platform_id"`
+	Description     github.IssueDescription `json:"description"`
+	Metadata        github.Metadata         `json:"metadata"`
+	DescribedBy     string                  `json:"described_by"`
+	ResourceType    string                  `json:"resource_type"`
+	IntegrationType string                  `json:"integration_type"`
+	IntegrationID   string                  `json:"integration_id"`
 }
 
-func (r *Gist) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.GistDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type GistHit struct {
+type IssueHit struct {
 	ID      string        `json:"_id"`
 	Score   float64       `json:"_score"`
 	Index   string        `json:"_index"`
 	Type    string        `json:"_type"`
 	Version int64         `json:"_version,omitempty"`
-	Source  Gist          `json:"_source"`
+	Source  Issue         `json:"_source"`
 	Sort    []interface{} `json:"sort"`
 }
 
-type GistHits struct {
+type IssueHits struct {
 	Total essdk.SearchTotal `json:"total"`
-	Hits  []GistHit         `json:"hits"`
+	Hits  []IssueHit        `json:"hits"`
 }
 
-type GistSearchResponse struct {
-	PitID string   `json:"pit_id"`
-	Hits  GistHits `json:"hits"`
+type IssueSearchResponse struct {
+	PitID string    `json:"pit_id"`
+	Hits  IssueHits `json:"hits"`
 }
 
-type GistPaginator struct {
+type IssuePaginator struct {
 	paginator *essdk.BaseESPaginator
 }
 
-func (k Client) NewGistPaginator(filters []essdk.BoolFilter, limit *int64) (GistPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_gist", filters, limit)
+func (k Client) NewIssuePaginator(filters []essdk.BoolFilter, limit *int64) (IssuePaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_issue", filters, limit)
 	if err != nil {
-		return GistPaginator{}, err
+		return IssuePaginator{}, err
 	}
 
-	p := GistPaginator{
+	p := IssuePaginator{
 		paginator: paginator,
 	}
 
 	return p, nil
 }
 
-func (p GistPaginator) HasNext() bool {
+func (p IssuePaginator) HasNext() bool {
 	return !p.paginator.Done()
 }
 
-func (p GistPaginator) Close(ctx context.Context) error {
+func (p IssuePaginator) Close(ctx context.Context) error {
 	return p.paginator.Deallocate(ctx)
 }
 
-func (p GistPaginator) NextPage(ctx context.Context) ([]Gist, error) {
-	var response GistSearchResponse
+func (p IssuePaginator) NextPage(ctx context.Context) ([]Issue, error) {
+	var response IssueSearchResponse
 	err := p.paginator.Search(ctx, &response)
 	if err != nil {
 		return nil, err
 	}
 
-	var values []Gist
+	var values []Issue
 	for _, hit := range response.Hits.Hits {
 		values = append(values, hit.Source)
 	}
@@ -2902,52 +2326,54 @@ func (p GistPaginator) NextPage(ctx context.Context) ([]Gist, error) {
 	return values, nil
 }
 
-var listGistFilters = map[string]string{}
+var listIssueFilters = map[string]string{
+	"repository_full_name": "Repo.NameWithOwner",
+}
 
-func ListGist(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListGist")
+func ListIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListIssue")
 	runtime.GC()
 
 	// create service
 	cfg := essdk.GetConfig(d.Connection)
 	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist NewClientCached", "error", err)
+		plugin.Logger(ctx).Error("ListIssue NewClientCached", "error", err)
 		return nil, err
 	}
 	k := Client{Client: ke}
 
 	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist NewSelfClientCached", "error", err)
+		plugin.Logger(ctx).Error("ListIssue NewSelfClientCached", "error", err)
 		return nil, err
 	}
 	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
 		return nil, err
 	}
 	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
 		return nil, err
 	}
 
-	paginator, err := k.NewGistPaginator(essdk.BuildFilter(ctx, d.QueryContext, listGistFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListGist NewGistPaginator", "error", err)
+		plugin.Logger(ctx).Error("ListIssue NewIssuePaginator", "error", err)
 		return nil, err
 	}
 
 	for paginator.HasNext() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
-			plugin.Logger(ctx).Error("ListGist paginator.NextPage", "error", err)
+			plugin.Logger(ctx).Error("ListIssue paginator.NextPage", "error", err)
 			return nil, err
 		}
 
@@ -2964,10 +2390,12 @@ func ListGist(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	return nil, nil
 }
 
-var getGistFilters = map[string]string{}
+var getIssueFilters = map[string]string{
+	"repository_full_name": "Repo.NameWithOwner",
+}
 
-func GetGist(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetGist")
+func GetIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetIssue")
 	runtime.GC()
 	// create service
 	cfg := essdk.GetConfig(d.Connection)
@@ -2995,7 +2423,7 @@ func GetGist(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewGistPaginator(essdk.BuildFilter(ctx, d.QueryContext, getGistFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3019,7 +2447,405 @@ func GetGist(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	return nil, nil
 }
 
-// ==========================  END: Gist =============================
+// ==========================  END: Issue =============================
+
+// ==========================  START: IssueComment =============================
+
+type IssueComment struct {
+	ResourceID      string                         `json:"resource_id"`
+	PlatformID      string                         `json:"platform_id"`
+	Description     github.IssueCommentDescription `json:"description"`
+	Metadata        github.Metadata                `json:"metadata"`
+	DescribedBy     string                         `json:"described_by"`
+	ResourceType    string                         `json:"resource_type"`
+	IntegrationType string                         `json:"integration_type"`
+	IntegrationID   string                         `json:"integration_id"`
+}
+
+type IssueCommentHit struct {
+	ID      string        `json:"_id"`
+	Score   float64       `json:"_score"`
+	Index   string        `json:"_index"`
+	Type    string        `json:"_type"`
+	Version int64         `json:"_version,omitempty"`
+	Source  IssueComment  `json:"_source"`
+	Sort    []interface{} `json:"sort"`
+}
+
+type IssueCommentHits struct {
+	Total essdk.SearchTotal `json:"total"`
+	Hits  []IssueCommentHit `json:"hits"`
+}
+
+type IssueCommentSearchResponse struct {
+	PitID string           `json:"pit_id"`
+	Hits  IssueCommentHits `json:"hits"`
+}
+
+type IssueCommentPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewIssueCommentPaginator(filters []essdk.BoolFilter, limit *int64) (IssueCommentPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_issue_comment", filters, limit)
+	if err != nil {
+		return IssueCommentPaginator{}, err
+	}
+
+	p := IssueCommentPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p IssueCommentPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p IssueCommentPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p IssueCommentPaginator) NextPage(ctx context.Context) ([]IssueComment, error) {
+	var response IssueCommentSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []IssueComment
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listIssueCommentFilters = map[string]string{}
+
+func ListIssueComment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListIssueComment")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewIssueCommentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueCommentFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListIssueComment NewIssueCommentPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListIssueComment paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getIssueCommentFilters = map[string]string{}
+
+func GetIssueComment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetIssueComment")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewIssueCommentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueCommentFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: IssueComment =============================
+
+// ==========================  START: License =============================
+
+type License struct {
+	ResourceID      string                    `json:"resource_id"`
+	PlatformID      string                    `json:"platform_id"`
+	Description     github.LicenseDescription `json:"description"`
+	Metadata        github.Metadata           `json:"metadata"`
+	DescribedBy     string                    `json:"described_by"`
+	ResourceType    string                    `json:"resource_type"`
+	IntegrationType string                    `json:"integration_type"`
+	IntegrationID   string                    `json:"integration_id"`
+}
+
+type LicenseHit struct {
+	ID      string        `json:"_id"`
+	Score   float64       `json:"_score"`
+	Index   string        `json:"_index"`
+	Type    string        `json:"_type"`
+	Version int64         `json:"_version,omitempty"`
+	Source  License       `json:"_source"`
+	Sort    []interface{} `json:"sort"`
+}
+
+type LicenseHits struct {
+	Total essdk.SearchTotal `json:"total"`
+	Hits  []LicenseHit      `json:"hits"`
+}
+
+type LicenseSearchResponse struct {
+	PitID string      `json:"pit_id"`
+	Hits  LicenseHits `json:"hits"`
+}
+
+type LicensePaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewLicensePaginator(filters []essdk.BoolFilter, limit *int64) (LicensePaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_license", filters, limit)
+	if err != nil {
+		return LicensePaginator{}, err
+	}
+
+	p := LicensePaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p LicensePaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p LicensePaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p LicensePaginator) NextPage(ctx context.Context) ([]License, error) {
+	var response LicenseSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []License
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listLicenseFilters = map[string]string{}
+
+func ListLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListLicense")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, listLicenseFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListLicense NewLicensePaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListLicense paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getLicenseFilters = map[string]string{}
+
+func GetLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetLicense")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, getLicenseFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: License =============================
 
 // ==========================  START: Organization =============================
 
@@ -3027,59 +2853,11 @@ type Organization struct {
 	ResourceID      string                         `json:"resource_id"`
 	PlatformID      string                         `json:"platform_id"`
 	Description     github.OrganizationDescription `json:"description"`
-	DescribedBy     int                            `json:"described_by"`
+	Metadata        github.Metadata                `json:"metadata"`
+	DescribedBy     string                         `json:"described_by"`
 	ResourceType    string                         `json:"resource_type"`
 	IntegrationType string                         `json:"integration_type"`
 	IntegrationID   string                         `json:"integration_id"`
-}
-
-func (r *Organization) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.OrganizationDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type OrganizationHit struct {
@@ -3274,59 +3052,11 @@ type OrgCollaborators struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
 	Description     github.OrgCollaboratorsDescription `json:"description"`
-	DescribedBy     int                                `json:"described_by"`
+	Metadata        github.Metadata                    `json:"metadata"`
+	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
-}
-
-func (r *OrgCollaborators) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.OrgCollaboratorsDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type OrgCollaboratorsHit struct {
@@ -3521,59 +3251,11 @@ type OrgAlertDependabot struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
 	Description     github.OrgAlertDependabotDescription `json:"description"`
-	DescribedBy     int                                  `json:"described_by"`
+	Metadata        github.Metadata                      `json:"metadata"`
+	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
-}
-
-func (r *OrgAlertDependabot) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.OrgAlertDependabotDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type OrgAlertDependabotHit struct {
@@ -3796,59 +3478,11 @@ type OrgExternalIdentity struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
 	Description     github.OrgExternalIdentityDescription `json:"description"`
-	DescribedBy     int                                   `json:"described_by"`
+	Metadata        github.Metadata                       `json:"metadata"`
+	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
-}
-
-func (r *OrgExternalIdentity) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.OrgExternalIdentityDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type OrgExternalIdentityHit struct {
@@ -4043,59 +3677,11 @@ type OrgMembers struct {
 	ResourceID      string                       `json:"resource_id"`
 	PlatformID      string                       `json:"platform_id"`
 	Description     github.OrgMembersDescription `json:"description"`
-	DescribedBy     int                          `json:"described_by"`
+	Metadata        github.Metadata              `json:"metadata"`
+	DescribedBy     string                       `json:"described_by"`
 	ResourceType    string                       `json:"resource_type"`
 	IntegrationType string                       `json:"integration_type"`
 	IntegrationID   string                       `json:"integration_id"`
-}
-
-func (r *OrgMembers) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.OrgMembersDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type OrgMembersHit struct {
@@ -4290,59 +3876,11 @@ type PullRequest struct {
 	ResourceID      string                        `json:"resource_id"`
 	PlatformID      string                        `json:"platform_id"`
 	Description     github.PullRequestDescription `json:"description"`
-	DescribedBy     int                           `json:"described_by"`
+	Metadata        github.Metadata               `json:"metadata"`
+	DescribedBy     string                        `json:"described_by"`
 	ResourceType    string                        `json:"resource_type"`
 	IntegrationType string                        `json:"integration_type"`
 	IntegrationID   string                        `json:"integration_id"`
-}
-
-func (r *PullRequest) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.PullRequestDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type PullRequestHit struct {
@@ -4543,59 +4081,11 @@ type Repository struct {
 	ResourceID      string                       `json:"resource_id"`
 	PlatformID      string                       `json:"platform_id"`
 	Description     github.RepositoryDescription `json:"description"`
-	DescribedBy     int                          `json:"described_by"`
+	Metadata        github.Metadata              `json:"metadata"`
+	DescribedBy     string                       `json:"described_by"`
 	ResourceType    string                       `json:"resource_type"`
 	IntegrationType string                       `json:"integration_type"`
 	IntegrationID   string                       `json:"integration_id"`
-}
-
-func (r *Repository) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepositoryDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepositoryHit struct {
@@ -4790,59 +4280,11 @@ type RepoCollaborators struct {
 	ResourceID      string                              `json:"resource_id"`
 	PlatformID      string                              `json:"platform_id"`
 	Description     github.RepoCollaboratorsDescription `json:"description"`
-	DescribedBy     int                                 `json:"described_by"`
+	Metadata        github.Metadata                     `json:"metadata"`
+	DescribedBy     string                              `json:"described_by"`
 	ResourceType    string                              `json:"resource_type"`
 	IntegrationType string                              `json:"integration_type"`
 	IntegrationID   string                              `json:"integration_id"`
-}
-
-func (r *RepoCollaborators) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoCollaboratorsDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoCollaboratorsHit struct {
@@ -5037,59 +4479,11 @@ type RepoAlertDependabot struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
 	Description     github.RepoAlertDependabotDescription `json:"description"`
-	DescribedBy     int                                   `json:"described_by"`
+	Metadata        github.Metadata                       `json:"metadata"`
+	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
-}
-
-func (r *RepoAlertDependabot) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoAlertDependabotDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoAlertDependabotHit struct {
@@ -5284,59 +4678,11 @@ type RepoDeployment struct {
 	ResourceID      string                           `json:"resource_id"`
 	PlatformID      string                           `json:"platform_id"`
 	Description     github.RepoDeploymentDescription `json:"description"`
-	DescribedBy     int                              `json:"described_by"`
+	Metadata        github.Metadata                  `json:"metadata"`
+	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
 	IntegrationType string                           `json:"integration_type"`
 	IntegrationID   string                           `json:"integration_id"`
-}
-
-func (r *RepoDeployment) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoDeploymentDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoDeploymentHit struct {
@@ -5531,59 +4877,11 @@ type RepoEnvironment struct {
 	ResourceID      string                            `json:"resource_id"`
 	PlatformID      string                            `json:"platform_id"`
 	Description     github.RepoEnvironmentDescription `json:"description"`
-	DescribedBy     int                               `json:"described_by"`
+	Metadata        github.Metadata                   `json:"metadata"`
+	DescribedBy     string                            `json:"described_by"`
 	ResourceType    string                            `json:"resource_type"`
 	IntegrationType string                            `json:"integration_type"`
 	IntegrationID   string                            `json:"integration_id"`
-}
-
-func (r *RepoEnvironment) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoEnvironmentDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoEnvironmentHit struct {
@@ -5778,59 +5076,11 @@ type RepoRuleSet struct {
 	ResourceID      string                        `json:"resource_id"`
 	PlatformID      string                        `json:"platform_id"`
 	Description     github.RepoRuleSetDescription `json:"description"`
-	DescribedBy     int                           `json:"described_by"`
+	Metadata        github.Metadata               `json:"metadata"`
+	DescribedBy     string                        `json:"described_by"`
 	ResourceType    string                        `json:"resource_type"`
 	IntegrationType string                        `json:"integration_type"`
 	IntegrationID   string                        `json:"integration_id"`
-}
-
-func (r *RepoRuleSet) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoRuleSetDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoRuleSetHit struct {
@@ -6025,59 +5275,11 @@ type RepoSBOM struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
 	Description     github.RepoSBOMDescription `json:"description"`
-	DescribedBy     int                        `json:"described_by"`
+	Metadata        github.Metadata            `json:"metadata"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *RepoSBOM) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoSBOMDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoSBOMHit struct {
@@ -6278,59 +5480,11 @@ type RepoVulnerabilityAlert struct {
 	ResourceID      string                                   `json:"resource_id"`
 	PlatformID      string                                   `json:"platform_id"`
 	Description     github.RepoVulnerabilityAlertDescription `json:"description"`
-	DescribedBy     int                                      `json:"described_by"`
+	Metadata        github.Metadata                          `json:"metadata"`
+	DescribedBy     string                                   `json:"described_by"`
 	ResourceType    string                                   `json:"resource_type"`
 	IntegrationType string                                   `json:"integration_type"`
 	IntegrationID   string                                   `json:"integration_id"`
-}
-
-func (r *RepoVulnerabilityAlert) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.RepoVulnerabilityAlertDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type RepoVulnerabilityAlertHit struct {
@@ -6525,59 +5679,11 @@ type Star struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
 	Description     github.StarDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
 	IntegrationType string                 `json:"integration_type"`
 	IntegrationID   string                 `json:"integration_id"`
-}
-
-func (r *Star) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.StarDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type StarHit struct {
@@ -6766,1561 +5872,17 @@ func GetStar(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 
 // ==========================  END: Star =============================
 
-// ==========================  START: Issue =============================
-
-type Issue struct {
-	ResourceID      string                  `json:"resource_id"`
-	PlatformID      string                  `json:"platform_id"`
-	Description     github.IssueDescription `json:"description"`
-	DescribedBy     int                     `json:"described_by"`
-	ResourceType    string                  `json:"resource_type"`
-	IntegrationType string                  `json:"integration_type"`
-	IntegrationID   string                  `json:"integration_id"`
-}
-
-func (r *Issue) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.IssueDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type IssueHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  Issue         `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type IssueHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []IssueHit        `json:"hits"`
-}
-
-type IssueSearchResponse struct {
-	PitID string    `json:"pit_id"`
-	Hits  IssueHits `json:"hits"`
-}
-
-type IssuePaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewIssuePaginator(filters []essdk.BoolFilter, limit *int64) (IssuePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_issue", filters, limit)
-	if err != nil {
-		return IssuePaginator{}, err
-	}
-
-	p := IssuePaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p IssuePaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p IssuePaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p IssuePaginator) NextPage(ctx context.Context) ([]Issue, error) {
-	var response IssueSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []Issue
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listIssueFilters = map[string]string{
-	"repository_full_name": "Repo.NameWithOwner",
-}
-
-func ListIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListIssue")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssue NewIssuePaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListIssue paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getIssueFilters = map[string]string{
-	"repository_full_name": "Repo.NameWithOwner",
-}
-
-func GetIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetIssue")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: Issue =============================
-
-// ==========================  START: IssueComment =============================
-
-type IssueComment struct {
-	ResourceID      string                         `json:"resource_id"`
-	PlatformID      string                         `json:"platform_id"`
-	Description     github.IssueCommentDescription `json:"description"`
-	DescribedBy     int                            `json:"described_by"`
-	ResourceType    string                         `json:"resource_type"`
-	IntegrationType string                         `json:"integration_type"`
-	IntegrationID   string                         `json:"integration_id"`
-}
-
-func (r *IssueComment) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.IssueCommentDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type IssueCommentHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  IssueComment  `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type IssueCommentHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []IssueCommentHit `json:"hits"`
-}
-
-type IssueCommentSearchResponse struct {
-	PitID string           `json:"pit_id"`
-	Hits  IssueCommentHits `json:"hits"`
-}
-
-type IssueCommentPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewIssueCommentPaginator(filters []essdk.BoolFilter, limit *int64) (IssueCommentPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_issue_comment", filters, limit)
-	if err != nil {
-		return IssueCommentPaginator{}, err
-	}
-
-	p := IssueCommentPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p IssueCommentPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p IssueCommentPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p IssueCommentPaginator) NextPage(ctx context.Context) ([]IssueComment, error) {
-	var response IssueCommentSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []IssueComment
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listIssueCommentFilters = map[string]string{}
-
-func ListIssueComment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListIssueComment")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewIssueCommentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueCommentFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListIssueComment NewIssueCommentPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListIssueComment paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getIssueCommentFilters = map[string]string{}
-
-func GetIssueComment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetIssueComment")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewIssueCommentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueCommentFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: IssueComment =============================
-
-// ==========================  START: License =============================
-
-type License struct {
-	ResourceID      string                    `json:"resource_id"`
-	PlatformID      string                    `json:"platform_id"`
-	Description     github.LicenseDescription `json:"description"`
-	DescribedBy     int                       `json:"described_by"`
-	ResourceType    string                    `json:"resource_type"`
-	IntegrationType string                    `json:"integration_type"`
-	IntegrationID   string                    `json:"integration_id"`
-}
-
-func (r *License) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.LicenseDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type LicenseHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  License       `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type LicenseHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []LicenseHit      `json:"hits"`
-}
-
-type LicenseSearchResponse struct {
-	PitID string      `json:"pit_id"`
-	Hits  LicenseHits `json:"hits"`
-}
-
-type LicensePaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewLicensePaginator(filters []essdk.BoolFilter, limit *int64) (LicensePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_license", filters, limit)
-	if err != nil {
-		return LicensePaginator{}, err
-	}
-
-	p := LicensePaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p LicensePaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p LicensePaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p LicensePaginator) NextPage(ctx context.Context) ([]License, error) {
-	var response LicenseSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []License
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listLicenseFilters = map[string]string{}
-
-func ListLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListLicense")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, listLicenseFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListLicense NewLicensePaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListLicense paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getLicenseFilters = map[string]string{}
-
-func GetLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetLicense")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, getLicenseFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: License =============================
-
-// ==========================  START: SearchCode =============================
-
-type SearchCode struct {
-	ResourceID      string                       `json:"resource_id"`
-	PlatformID      string                       `json:"platform_id"`
-	Description     github.SearchCodeDescription `json:"description"`
-	DescribedBy     int                          `json:"described_by"`
-	ResourceType    string                       `json:"resource_type"`
-	IntegrationType string                       `json:"integration_type"`
-	IntegrationID   string                       `json:"integration_id"`
-}
-
-func (r *SearchCode) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.SearchCodeDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type SearchCodeHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  SearchCode    `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type SearchCodeHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []SearchCodeHit   `json:"hits"`
-}
-
-type SearchCodeSearchResponse struct {
-	PitID string         `json:"pit_id"`
-	Hits  SearchCodeHits `json:"hits"`
-}
-
-type SearchCodePaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewSearchCodePaginator(filters []essdk.BoolFilter, limit *int64) (SearchCodePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_search_code", filters, limit)
-	if err != nil {
-		return SearchCodePaginator{}, err
-	}
-
-	p := SearchCodePaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p SearchCodePaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p SearchCodePaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p SearchCodePaginator) NextPage(ctx context.Context) ([]SearchCode, error) {
-	var response SearchCodeSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []SearchCode
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listSearchCodeFilters = map[string]string{
-	"sha": "SHA",
-}
-
-func ListSearchCode(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListSearchCode")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewSearchCodePaginator(essdk.BuildFilter(ctx, d.QueryContext, listSearchCodeFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCode NewSearchCodePaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListSearchCode paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getSearchCodeFilters = map[string]string{
-	"sha": "SHA",
-}
-
-func GetSearchCode(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetSearchCode")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewSearchCodePaginator(essdk.BuildFilter(ctx, d.QueryContext, getSearchCodeFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: SearchCode =============================
-
-// ==========================  START: SearchCommit =============================
-
-type SearchCommit struct {
-	ResourceID      string                         `json:"resource_id"`
-	PlatformID      string                         `json:"platform_id"`
-	Description     github.SearchCommitDescription `json:"description"`
-	DescribedBy     int                            `json:"described_by"`
-	ResourceType    string                         `json:"resource_type"`
-	IntegrationType string                         `json:"integration_type"`
-	IntegrationID   string                         `json:"integration_id"`
-}
-
-func (r *SearchCommit) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.SearchCommitDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type SearchCommitHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  SearchCommit  `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type SearchCommitHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []SearchCommitHit `json:"hits"`
-}
-
-type SearchCommitSearchResponse struct {
-	PitID string           `json:"pit_id"`
-	Hits  SearchCommitHits `json:"hits"`
-}
-
-type SearchCommitPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewSearchCommitPaginator(filters []essdk.BoolFilter, limit *int64) (SearchCommitPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_search_commit", filters, limit)
-	if err != nil {
-		return SearchCommitPaginator{}, err
-	}
-
-	p := SearchCommitPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p SearchCommitPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p SearchCommitPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p SearchCommitPaginator) NextPage(ctx context.Context) ([]SearchCommit, error) {
-	var response SearchCommitSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []SearchCommit
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listSearchCommitFilters = map[string]string{
-	"sha": "SHA",
-	"url": "URL",
-}
-
-func ListSearchCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListSearchCommit")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewSearchCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, listSearchCommitFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchCommit NewSearchCommitPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListSearchCommit paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getSearchCommitFilters = map[string]string{
-	"sha": "SHA",
-	"url": "URL",
-}
-
-func GetSearchCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetSearchCommit")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewSearchCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, getSearchCommitFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: SearchCommit =============================
-
-// ==========================  START: SearchIssue =============================
-
-type SearchIssue struct {
-	ResourceID      string                        `json:"resource_id"`
-	PlatformID      string                        `json:"platform_id"`
-	Description     github.SearchIssueDescription `json:"description"`
-	DescribedBy     int                           `json:"described_by"`
-	ResourceType    string                        `json:"resource_type"`
-	IntegrationType string                        `json:"integration_type"`
-	IntegrationID   string                        `json:"integration_id"`
-}
-
-func (r *SearchIssue) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.SearchIssueDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type SearchIssueHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  SearchIssue   `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type SearchIssueHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []SearchIssueHit  `json:"hits"`
-}
-
-type SearchIssueSearchResponse struct {
-	PitID string          `json:"pit_id"`
-	Hits  SearchIssueHits `json:"hits"`
-}
-
-type SearchIssuePaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewSearchIssuePaginator(filters []essdk.BoolFilter, limit *int64) (SearchIssuePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_search_issue", filters, limit)
-	if err != nil {
-		return SearchIssuePaginator{}, err
-	}
-
-	p := SearchIssuePaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p SearchIssuePaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p SearchIssuePaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p SearchIssuePaginator) NextPage(ctx context.Context) ([]SearchIssue, error) {
-	var response SearchIssueSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []SearchIssue
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listSearchIssueFilters = map[string]string{}
-
-func ListSearchIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListSearchIssue")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewSearchIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, listSearchIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListSearchIssue NewSearchIssuePaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListSearchIssue paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getSearchIssueFilters = map[string]string{}
-
-func GetSearchIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetSearchIssue")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewSearchIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, getSearchIssueFilters, "github", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: SearchIssue =============================
-
 // ==========================  START: Stargazer =============================
 
 type Stargazer struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
 	Description     github.StargazerDescription `json:"description"`
-	DescribedBy     int                         `json:"described_by"`
+	Metadata        github.Metadata             `json:"metadata"`
+	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
-}
-
-func (r *Stargazer) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.StargazerDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type StargazerHit struct {
@@ -8515,59 +6077,11 @@ type Tag struct {
 	ResourceID      string                `json:"resource_id"`
 	PlatformID      string                `json:"platform_id"`
 	Description     github.TagDescription `json:"description"`
-	DescribedBy     int                   `json:"described_by"`
+	Metadata        github.Metadata       `json:"metadata"`
+	DescribedBy     string                `json:"described_by"`
 	ResourceType    string                `json:"resource_type"`
 	IntegrationType string                `json:"integration_type"`
 	IntegrationID   string                `json:"integration_id"`
-}
-
-func (r *Tag) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TagDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TagHit struct {
@@ -8762,59 +6276,11 @@ type Team struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
 	Description     github.TeamDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
 	IntegrationType string                 `json:"integration_type"`
 	IntegrationID   string                 `json:"integration_id"`
-}
-
-func (r *Team) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TeamDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TeamHit struct {
@@ -9009,59 +6475,11 @@ type TeamMembers struct {
 	ResourceID      string                        `json:"resource_id"`
 	PlatformID      string                        `json:"platform_id"`
 	Description     github.TeamMembersDescription `json:"description"`
-	DescribedBy     int                           `json:"described_by"`
+	Metadata        github.Metadata               `json:"metadata"`
+	DescribedBy     string                        `json:"described_by"`
 	ResourceType    string                        `json:"resource_type"`
 	IntegrationType string                        `json:"integration_type"`
 	IntegrationID   string                        `json:"integration_id"`
-}
-
-func (r *TeamMembers) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TeamMembersDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TeamMembersHit struct {
@@ -9256,59 +6674,11 @@ type TeamRepository struct {
 	ResourceID      string                           `json:"resource_id"`
 	PlatformID      string                           `json:"platform_id"`
 	Description     github.TeamRepositoryDescription `json:"description"`
-	DescribedBy     int                              `json:"described_by"`
+	Metadata        github.Metadata                  `json:"metadata"`
+	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
 	IntegrationType string                           `json:"integration_type"`
 	IntegrationID   string                           `json:"integration_id"`
-}
-
-func (r *TeamRepository) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TeamRepositoryDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TeamRepositoryHit struct {
@@ -9503,59 +6873,11 @@ type TrafficViewDaily struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
 	Description     github.TrafficViewDailyDescription `json:"description"`
-	DescribedBy     int                                `json:"described_by"`
+	Metadata        github.Metadata                    `json:"metadata"`
+	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
-}
-
-func (r *TrafficViewDaily) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TrafficViewDailyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TrafficViewDailyHit struct {
@@ -9750,59 +7072,11 @@ type TrafficViewWeekly struct {
 	ResourceID      string                              `json:"resource_id"`
 	PlatformID      string                              `json:"platform_id"`
 	Description     github.TrafficViewWeeklyDescription `json:"description"`
-	DescribedBy     int                                 `json:"described_by"`
+	Metadata        github.Metadata                     `json:"metadata"`
+	DescribedBy     string                              `json:"described_by"`
 	ResourceType    string                              `json:"resource_type"`
 	IntegrationType string                              `json:"integration_type"`
 	IntegrationID   string                              `json:"integration_id"`
-}
-
-func (r *TrafficViewWeekly) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TrafficViewWeeklyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TrafficViewWeeklyHit struct {
@@ -9997,59 +7271,11 @@ type Tree struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
 	Description     github.TreeDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
 	IntegrationType string                 `json:"integration_type"`
 	IntegrationID   string                 `json:"integration_id"`
-}
-
-func (r *Tree) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.TreeDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type TreeHit struct {
@@ -10258,59 +7484,11 @@ type User struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
 	Description     github.UserDescription `json:"description"`
-	DescribedBy     int                    `json:"described_by"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
 	IntegrationType string                 `json:"integration_type"`
 	IntegrationID   string                 `json:"integration_id"`
-}
-
-func (r *User) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.UserDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type UserHit struct {
@@ -10519,59 +7697,11 @@ type Workflow struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
 	Description     github.WorkflowDescription `json:"description"`
-	DescribedBy     int                        `json:"described_by"`
+	Metadata        github.Metadata            `json:"metadata"`
+	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *Workflow) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := githubDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(github.WorkflowDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type WorkflowHit struct {

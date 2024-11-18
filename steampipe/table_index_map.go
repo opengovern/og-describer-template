@@ -1,8 +1,6 @@
 package steampipe
 
-import (
-	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
-)
+import opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
 var Map = map[string]string{
 	"Github/Actions/Artifact":                "github_actions_artifact",
@@ -15,7 +13,6 @@ var Map = map[string]string{
 	"Github/Branch/Protection":               "github_branch_protection",
 	"Github/Commit":                          "github_commit",
 	"Github/CommunityProfile":                "github_community_profile",
-	"Github/Gist":                            "github_my_gist",
 	"Github/Gitignore":                       "github_gitignore",
 	"Github/Issue":                           "github_my_issue",
 	"Github/Issue/Comment":                   "github_issue_comment",
@@ -34,9 +31,6 @@ var Map = map[string]string{
 	"Github/Repository/Ruleset":              "github_repository_ruleset",
 	"Github/Repository/SBOM":                 "github_repository_sbom",
 	"Github/Repository/VulnerabilityAlert":   "github_repository_vulnerability_alert",
-	"Github/Search/Code":                     "github_search_code",
-	"Github/Search/Commit":                   "github_search_commit",
-	"Github/Search/Issue":                    "github_search_issue",
 	"Github/Star":                            "github_my_star",
 	"Github/Stargazer":                       "github_stargazer",
 	"Github/Tag":                             "github_tag",
@@ -61,7 +55,6 @@ var DescriptionMap = map[string]interface{}{
 	"Github/Branch/Protection":               opengovernance.BranchProtection{},
 	"Github/Commit":                          opengovernance.Commit{},
 	"Github/CommunityProfile":                opengovernance.CommunityProfile{},
-	"Github/Gist":                            opengovernance.Gist{},
 	"Github/Gitignore":                       opengovernance.GitIgnore{},
 	"Github/Issue":                           opengovernance.Issue{},
 	"Github/Issue/Comment":                   opengovernance.IssueComment{},
@@ -80,9 +73,6 @@ var DescriptionMap = map[string]interface{}{
 	"Github/Repository/Ruleset":              opengovernance.RepoRuleSet{},
 	"Github/Repository/SBOM":                 opengovernance.RepoSBOM{},
 	"Github/Repository/VulnerabilityAlert":   opengovernance.RepoVulnerabilityAlert{},
-	"Github/Search/Code":                     opengovernance.SearchCode{},
-	"Github/Search/Commit":                   opengovernance.SearchCommit{},
-	"Github/Search/Issue":                    opengovernance.SearchIssue{},
 	"Github/Star":                            opengovernance.Star{},
 	"Github/Stargazer":                       opengovernance.Stargazer{},
 	"Github/Tag":                             opengovernance.Tag{},
@@ -107,7 +97,6 @@ var ReverseMap = map[string]string{
 	"github_branch_protection":               "Github/Branch/Protection",
 	"github_commit":                          "Github/Commit",
 	"github_community_profile":               "Github/CommunityProfile",
-	"github_my_gist":                         "Github/Gist",
 	"github_gitignore":                       "Github/Gitignore",
 	"github_my_issue":                        "Github/Issue",
 	"github_issue_comment":                   "Github/Issue/Comment",
@@ -126,9 +115,6 @@ var ReverseMap = map[string]string{
 	"github_repository_ruleset":              "Github/Repository/Ruleset",
 	"github_repository_sbom":                 "Github/Repository/SBOM",
 	"github_repository_vulnerability_alert":  "Github/Repository/VulnerabilityAlert",
-	"github_search_code":                     "Github/Search/Code",
-	"github_search_commit":                   "Github/Search/Commit",
-	"github_search_issue":                    "Github/Search/Issue",
 	"github_my_star":                         "Github/Star",
 	"github_stargazer":                       "Github/Stargazer",
 	"github_tag":                             "Github/Tag",

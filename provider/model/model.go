@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+type Metadata struct{}
+
 type ArtifactDescription struct {
 	ID                 int64
 	NodeID             string
