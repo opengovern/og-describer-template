@@ -6,6 +6,9 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/golang-jwt/jwt/v5"
 	describepkg "github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/vault"
@@ -16,8 +19,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/credentials/oauth"
 	"google.golang.org/grpc/metadata"
-	"os"
-	"time"
 
 	"go.uber.org/zap"
 )
@@ -44,7 +45,7 @@ func getJWTAuthToken() (string, error) {
 	}
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
-		"email": "describe-worker@kaytu.io",
+		"email": "describe-worker@opengovernance.io",
 	}).SignedString(pk)
 	if err != nil {
 		return "", fmt.Errorf("JWT token generation failed %v", err)
