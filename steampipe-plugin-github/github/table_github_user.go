@@ -13,9 +13,7 @@ func tableGitHubUser() *plugin.Table {
 		Name:        "github_user",
 		Description: "GitHub Users are user accounts in GitHub.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.SingleColumn("login"),
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           opengovernance.ListUser,
+			Hydrate: opengovernance.ListUser,
 		},
 		Columns: commonColumns(tableGitHubUserColumns()),
 	}

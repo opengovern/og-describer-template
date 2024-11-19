@@ -16,9 +16,7 @@ func tableGitHubTag() *plugin.Table {
 		Name:        "github_tag",
 		Description: "Tags for commits in the given repository.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.SingleColumn("repository_full_name"),
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           opengovernance.ListTag,
+			Hydrate: opengovernance.ListTag,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "repository_full_name", Type: proto.ColumnType_STRING,

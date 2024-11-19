@@ -28,19 +28,7 @@ func tableGitHubRepositoryCollaborator() *plugin.Table {
 		Name:        "github_repository_collaborator",
 		Description: "Collaborators are users that have contributed to the repository.",
 		List: &plugin.ListConfig{
-			Hydrate:           opengovernance.ListRepoCollaborators,
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			KeyColumns: []*plugin.KeyColumn{
-				{
-					Name:    "repository_full_name",
-					Require: plugin.Required,
-				},
-				{
-					Name:       "affiliation",
-					Require:    plugin.Optional,
-					CacheMatch: "exact",
-				},
-			},
+			Hydrate: opengovernance.ListRepoCollaborators,
 		},
 		Columns: commonColumns(gitHubRepositoryCollaboratorColumns()),
 	}

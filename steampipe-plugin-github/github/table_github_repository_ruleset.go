@@ -17,9 +17,6 @@ func tableGitHubRepositoryRuleset() *plugin.Table {
 		Description: "Retrieve the rulesets of a specified GitHub repository.",
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListRepoRuleSet,
-			KeyColumns: []*plugin.KeyColumn{
-				{Name: "repository_full_name", Require: plugin.Required},
-			},
 		},
 		Columns: gitHubRulesetColumns(),
 	}

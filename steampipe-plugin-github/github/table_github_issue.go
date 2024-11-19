@@ -237,7 +237,8 @@ func tableGitHubIssue() *plugin.Table {
 			Hydrate: opengovernance.ListIssue,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetIssue,
+			KeyColumns: plugin.AllColumns([]string{"repository_full_name", "number"}),
+			Hydrate:    opengovernance.GetIssue,
 		},
 		Columns: commonColumns(gitHubIssueColumns()),
 	}

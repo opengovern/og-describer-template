@@ -230,12 +230,7 @@ func tableGitHubPullRequest() *plugin.Table {
 		Name:        "github_pull_request",
 		Description: "GitHub Pull requests let you tell others about changes you've pushed to a branch in a repository on GitHub. Once a pull request is opened, you can discuss and review the potential changes with collaborators and add follow-up commits before your changes are merged into the base branch.",
 		List: &plugin.ListConfig{
-			KeyColumns: []*plugin.KeyColumn{
-				{Name: "repository_full_name", Require: plugin.Required},
-				{Name: "state", Require: plugin.Optional},
-			},
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           opengovernance.ListPullRequest,
+			Hydrate: opengovernance.ListPullRequest,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "number"}),

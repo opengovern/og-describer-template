@@ -42,9 +42,6 @@ func tableGitHubOrganizationMember() *plugin.Table {
 		Name:        "github_organization_member",
 		Description: "GitHub members for a given organization. GitHub Users are user accounts in GitHub.",
 		List: &plugin.ListConfig{
-			KeyColumns: []*plugin.KeyColumn{
-				{Name: "organization", Require: plugin.Required},
-			},
 			Hydrate: opengovernance.ListOrgMembers,
 		},
 		Columns: commonColumns(gitHubOrganizationMemberColumns()),

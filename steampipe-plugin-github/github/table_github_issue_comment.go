@@ -164,9 +164,7 @@ func tableGitHubIssueComment() *plugin.Table {
 		Name:        "github_issue_comment",
 		Description: "GitHub Issue Comments are the responses/comments on GitHub Issues.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "number"}),
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           opengovernance.ListIssueComment,
+			Hydrate: opengovernance.ListIssueComment,
 		},
 		Columns: commonColumns(sharedCommentsColumns()),
 	}
