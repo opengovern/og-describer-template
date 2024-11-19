@@ -120,6 +120,18 @@
     "Model": "GitIgnore"
   },
   {
+    "ResourceName": "Github/Issue",
+    "Tags": {
+      "category": [
+        "Issue"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetIssueList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_issue",
+    "Model": "Issue"
+  },
+  {
     "ResourceName": "Github/Issue/Comment",
     "Tags": {
       "category": [
@@ -142,6 +154,18 @@
     "GetDescriber": "",
     "SteampipeTable": "github_license",
     "Model": "License"
+  },
+  {
+    "ResourceName": "Github/Organization",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetOrganizationList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization",
+    "Model": "Organization"
   },
   {
     "ResourceName": "Github/Organization/Collaborator",
@@ -202,6 +226,30 @@
     "GetDescriber": "",
     "SteampipeTable": "github_pull_request",
     "Model": "PullRequest"
+  },
+  {
+    "ResourceName": "Github/Release",
+    "Tags": {
+      "category": [
+        "Release"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetReleaseList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_release",
+    "Model": "Release"
+  },
+  {
+    "ResourceName": "Github/Repository",
+    "Tags": {
+      "category": [
+        "Repository"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetRepositoryList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_repository",
+    "Model": "Repository"
   },
   {
     "ResourceName": "Github/Repository/Collaborator",
@@ -312,6 +360,18 @@
     "Model": "Tag"
   },
   {
+    "ResourceName": "Github/Team",
+    "Tags": {
+      "category": [
+        "Team"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetTeamList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_team",
+    "Model": "Team"
+  },
+  {
     "ResourceName": "Github/Team/Member",
     "Tags": {
       "category": [
@@ -394,6 +454,18 @@
     "GetDescriber": "",
     "SteampipeTable": "github_workflow",
     "Model": "Workflow"
+  },
+  {
+    "ResourceName": "Github/CodeOwner",
+    "Tags": {
+      "category": [
+        "code_owner"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.ListCodeOwners)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_code_owner",
+    "Model": "CodeOwner"
   }
 
 ]

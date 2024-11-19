@@ -1,8 +1,6 @@
 package github
 
 import (
-	"context"
-
 	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -45,13 +43,4 @@ func tableGitHubBranch() *plugin.Table {
 				Description: "Branch protection rule if protected."},
 		}),
 	}
-}
-
-// HasValue Note: if useful to other tables, move to utils.go
-func HasValue(_ context.Context, input *transform.TransformData) (interface{}, error) {
-	if input.Value == nil || input.Value.(string) == "" {
-		return false, nil
-	}
-
-	return true, nil
 }

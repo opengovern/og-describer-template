@@ -56,6 +56,7 @@ func GetIssueList(ctx context.Context, githubClient GitHubClient, organizationNa
 					Name: issue.Title,
 					Description: JSONAllFieldsMarshaller{
 						Value: model.IssueDescription{
+							RepositoryFullName:      r.GetFullName(),
 							Id:                      issue.Id,
 							NodeId:                  issue.NodeId,
 							Number:                  issue.Number,

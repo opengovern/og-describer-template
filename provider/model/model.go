@@ -155,6 +155,7 @@ type GitIgnoreDescription struct {
 }
 
 type IssueDescription struct {
+	RepositoryFullName      string
 	Id                      int
 	NodeId                  string
 	Number                  int
@@ -451,6 +452,11 @@ type RepositoryDescription struct {
 	NetworkCount                  int
 }
 
+type ReleaseDescription struct {
+	github.RepositoryRelease
+	RepositoryFullName string
+}
+
 type RepoCollaboratorsDescription struct {
 	Affiliation  string
 	RepoFullName string
@@ -682,4 +688,14 @@ type WorkflowDescription struct {
 	WorkFlowFileContent     string
 	WorkFlowFileContentJson *github.RepositoryContent
 	Pipeline                *goPipeline.Pipeline
+}
+
+type CodeOwnerDescription struct {
+	RepositoryFullName string
+	LineNumber         int64
+	Pattern            string
+	Users              []string
+	Teams              []string
+	PreComments        []string
+	LineComment        string
 }

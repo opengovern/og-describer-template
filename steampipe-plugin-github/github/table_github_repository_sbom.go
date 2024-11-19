@@ -1,7 +1,6 @@
 package github
 
 import (
-	"context"
 	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -13,86 +12,58 @@ func tableGitHubRepositorySbom() *plugin.Table {
 		Name:        "github_repository_sbom",
 		Description: "Get the software bill of materials (SBOM) for a repository.",
 		List: &plugin.ListConfig{
-			KeyColumns: []*plugin.KeyColumn{
-				{
-					Name:    "repository_full_name",
-					Require: plugin.Required,
-				},
-			},
-			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           opengovernance.ListRepoSBOM,
+			Hydrate: opengovernance.ListRepoSBOM,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "repository_full_name",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromQual("repository_full_name"),
+				Transform:   transform.FromField("Description.RepositoryFullName"),
 				Description: "The full name of the repository (login/repo-name).",
 			},
 			{
 				Name:        "spdx_id",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("SPDXID"),
+				Transform:   transform.FromField("Description.SPDXID"),
 				Description: "The SPDX identifier for the SPDX document.",
 			},
 			{
 				Name:        "spdx_version",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("SPDXVersion"),
+				Transform:   transform.FromField("Description.SPDXVersion"),
 				Description: "The version of the SPDX specification that this document conforms to.",
 			},
 			{
 				Name:        "creation_info",
 				Type:        proto.ColumnType_JSON,
+				Transform:   transform.FromField("Description.CreationInfo"),
 				Description: "It represents when the SBOM was created and who created it.",
 			},
 			{
 				Name:        "name",
 				Type:        proto.ColumnType_STRING,
 				Description: "The name of the SPDX document.",
-			},
+				Transform:   transform.FromField("Description.Name")},
 			{
 				Name:        "data_license",
 				Type:        proto.ColumnType_STRING,
 				Description: "The license under which the SPDX document is licensed.",
-			},
+				Transform:   transform.FromField("Description.DataLicense")},
 			{
 				Name:        "document_describes",
 				Type:        proto.ColumnType_JSON,
 				Description: "The name of the repository that the SPDX document describes.",
-			},
+				Transform:   transform.FromField("Description.DocumentDescribes")},
 			{
 				Name:        "document_namespace",
 				Type:        proto.ColumnType_STRING,
 				Description: "The namespace for the SPDX document.",
-			},
+				Transform:   transform.FromField("Description.DocumentNamespace")},
 			{
 				Name:        "packages",
 				Type:        proto.ColumnType_JSON,
 				Description: "Array of packages in SPDX format.",
-			},
+				Transform:   transform.FromField("Description.Packages")},
 		}),
 	}
-}
-
-// // LIST FUNCTION
-func listRepositorySboms(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	var owner, repo string
-
-	logger := plugin.Logger(ctx)
-
-	fullName := d.EqualsQualString("repository_full_name")
-	owner, repo = parseRepoFullName(fullName)
-	logger.Trace("tableGitHubRepositorySbomList", "owner", owner, "repo", repo)
-
-	client := connect(ctx, d)
-	sbom, _, err := client.DependencyGraph.GetSBOM(ctx, owner, repo)
-	if err != nil {
-		logger.Error("github_repository_sbom.listRepositorySboms", "api_error", err)
-		return nil, err
-	}
-
-	d.StreamListItem(ctx, sbom.SBOM)
-
-	return sbom, nil
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func commonColumns(c []*plugin.Column) []*plugin.Column {
-	return append([]*plugin.Column{
+	return append(c, []*plugin.Column{
 		{
 			Name:        "og_account_id",
 			Type:        proto.ColumnType_STRING,
@@ -37,7 +37,7 @@ func commonColumns(c []*plugin.Column) []*plugin.Column {
 			Description: "The full model description of the resource",
 			Transform:   transform.FromField("Description").Transform(marshalJSON),
 		},
-	}, c...)
+	}...)
 }
 
 func marshalJSON(_ context.Context, d *transform.TransformData) (interface{}, error) {

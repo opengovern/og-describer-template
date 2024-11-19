@@ -1,10 +1,8 @@
 package github
 
 import (
-	"context"
 	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
-	"github.com/google/go-github/v55/github"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -13,149 +11,155 @@ import (
 func gitHubDependabotAlertColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
+			Name:        "repository_full_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.RepoFullName"),
+			Description: "Full name of the repository that contains the blob.",
+		},
+		{
 			Name:        "alert_number",
 			Type:        proto.ColumnType_INT,
 			Description: "The security alert number.",
-			Transform:   transform.FromField("Number"),
+			Transform:   transform.FromField("Description.AlertNumber"),
 		},
 		{
 			Name:        "state",
 			Type:        proto.ColumnType_STRING,
 			Description: "The state of the Dependabot alert.",
-		},
+			Transform:   transform.FromField("Description.State")},
 		{
 			Name:        "dependency_package_ecosystem",
 			Type:        proto.ColumnType_STRING,
 			Description: "The package's language or package management ecosystem.",
-			Transform:   transform.FromField("Dependency.Package.Ecosystem"),
-		},
+			Transform:   transform.FromField("Description.DependencyPackageEcosystem")},
+
 		{
 			Name:        "dependency_package_name",
 			Type:        proto.ColumnType_STRING,
 			Description: "The unique package name within its ecosystem.",
-			Transform:   transform.FromField("Dependency.Package.Name"),
+			Transform:   transform.FromField("Description.DependencyPackageName"),
 		},
 		{
 			Name:        "dependency_manifest_path",
 			Type:        proto.ColumnType_STRING,
 			Description: "The unique manifestation path within the ecosystem.",
-			Transform:   transform.FromField("Dependency.ManifestPath"),
+			Transform:   transform.FromField("Description.DependencyManifestPath"),
 		},
 		{
 			Name:        "dependency_scope",
 			Type:        proto.ColumnType_STRING,
 			Description: "The execution scope of the vulnerable dependency.",
-			Transform:   transform.FromField("Dependency.Scope"),
+			Transform:   transform.FromField("Description.DependencyScope"),
 		},
 		{
 			Name:        "security_advisory_ghsa_id",
 			Type:        proto.ColumnType_STRING,
 			Description: "The unique GitHub Security Advisory ID assigned to the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.GHSAID"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryGHSAID"),
 		},
 		{
 			Name:        "security_advisory_cve_id",
 			Type:        proto.ColumnType_STRING,
 			Description: "The unique CVE ID assigned to the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.CVEID"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryCVEID"),
 		},
 		{
 			Name:        "security_advisory_summary",
 			Type:        proto.ColumnType_STRING,
 			Description: "A short, plain text summary of the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.Summary"),
+			Transform:   transform.FromField("Description.SecurityAdvisorySummary"),
 		},
 		{
 			Name:        "security_advisory_description",
 			Type:        proto.ColumnType_STRING,
 			Description: "A long-form Markdown-supported description of the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.Description"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryDescription"),
 		},
 		{
 			Name:        "security_advisory_severity",
 			Type:        proto.ColumnType_STRING,
 			Description: "The severity of the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.Severity"),
+			Transform:   transform.FromField("Description.SecurityAdvisorySeverity"),
 		},
 		{
 			Name:        "security_advisory_cvss_score",
 			Type:        proto.ColumnType_DOUBLE,
 			Description: "The overall CVSS score of the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.CVSS.Score"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryCVSSScore"),
 		},
 		{
 			Name:        "security_advisory_cvss_vector_string",
 			Type:        proto.ColumnType_STRING,
 			Description: "The full CVSS vector string for the advisory.",
-			Transform:   transform.FromField("SecurityAdvisory.CVSS.VectorString"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryCVSSVector"),
 		},
 		{
 			Name:        "security_advisory_cwes",
 			Type:        proto.ColumnType_JSON,
 			Description: "The associated CWEs",
-			Transform:   transform.FromField("SecurityAdvisory.CWEs"),
+			Transform:   transform.FromField("Description.SecurityAdvisoryCWEs"),
 		},
 		{
 			Name:        "security_advisory_published_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was published.",
-			Transform:   transform.FromField("SecurityAdvisory.PublishedAt").NullIfZero().Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryPublishedAt").Transform(convertTimestamp),
 		},
 		{
 			Name:        "security_advisory_updated_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was last modified.",
-			Transform:   transform.FromField("SecurityAdvisory.UpdatedAt").NullIfZero().Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryUpdatedAt").Transform(convertTimestamp),
 		},
 		{
 			Name:        "security_advisory_withdrawn_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was withdrawn.",
-			Transform:   transform.FromField("SecurityAdvisory.WithdrawnAt").NullIfZero().Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryWithdrawnAt").Transform(convertTimestamp),
 		},
 		{
 			Name:        "url",
 			Type:        proto.ColumnType_STRING,
 			Description: "The REST API URL of the alert resource.",
-		},
+			Transform:   transform.FromField("Description.URL")},
 		{
 			Name:        "html_url",
 			Type:        proto.ColumnType_STRING,
 			Description: "The GitHub URL of the alert resource.",
-		},
+			Transform:   transform.FromField("Description.HTMLURL")},
 		{
 			Name:        "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was created.",
-			Transform:   transform.FromField("CreatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
 		},
 		{
 			Name:        "updated_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was last updated.",
-			Transform:   transform.FromField("UpdatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
 		},
 		{
 			Name:        "dismissed_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was dismissed.",
-			Transform:   transform.FromField("DismissedAt").NullIfZero().Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.DismissedAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "dismissed_reason",
 			Type:        proto.ColumnType_STRING,
 			Description: "The reason that the alert was dismissed.",
-		},
+			Transform:   transform.FromField("Description.DismissedReason")},
 		{
 			Name:        "dismissed_comment",
 			Type:        proto.ColumnType_STRING,
 			Description: "An optional comment associated with the alert's dismissal.",
-		},
+			Transform:   transform.FromField("Description.DismissedComment")},
 		{
 			Name:        "fixed_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was no longer detected and was considered fixed.",
-			Transform:   transform.FromField("FixedAt").NullIfZero().Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.FixedAt").NullIfZero().Transform(convertTimestamp),
 		},
 	}
 }
@@ -165,34 +169,7 @@ func tableGitHubOrganizationDependabotAlert() *plugin.Table {
 		Name:        "github_organization_dependabot_alert",
 		Description: "Dependabot alerts from an organization.",
 		List: &plugin.ListConfig{
-			KeyColumns: []*plugin.KeyColumn{
-				{
-					Name:    "organization",
-					Require: plugin.Required,
-				},
-				{
-					Name:    "state",
-					Require: plugin.Optional,
-				},
-				{
-					Name:    "security_advisory_severity",
-					Require: plugin.Optional,
-				},
-				{
-					Name:    "dependency_package_ecosystem",
-					Require: plugin.Optional,
-				},
-				{
-					Name:    "dependency_package_name",
-					Require: plugin.Optional,
-				},
-				{
-					Name:    "dependency_scope",
-					Require: plugin.Optional,
-				},
-			},
-			ShouldIgnoreError: isNotFoundError([]string{"404", "403"}),
-			Hydrate:           opengovernance.ListOrgAlertDependabot,
+			Hydrate: opengovernance.ListOrgAlertDependabot,
 		},
 		Columns: commonColumns(append(
 			gitHubDependabotAlertColumns(),
@@ -206,67 +183,4 @@ func tableGitHubOrganizationDependabotAlert() *plugin.Table {
 			}...,
 		)),
 	}
-}
-
-func tableGitHubOrganizationDependabotAlertList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	quals := d.EqualsQuals
-
-	org := quals["organization"].GetStringValue()
-
-	opt := &github.ListAlertsOptions{
-		ListCursorOptions: github.ListCursorOptions{First: 100},
-	}
-
-	if quals["state"] != nil {
-		state := quals["state"].GetStringValue()
-		opt.State = &state
-	}
-	if quals["security_advisory_severity"] != nil {
-		severity := quals["security_advisory_severity"].GetStringValue()
-		opt.Severity = &severity
-	}
-	if quals["dependency_package_ecosystem"] != nil {
-		ecosystem := quals["dependency_package_ecosystem"].GetStringValue()
-		opt.Ecosystem = &ecosystem
-	}
-	if quals["dependency_package_name"] != nil {
-		packageName := quals["dependency_package_name"].GetStringValue()
-		opt.Package = &packageName
-	}
-	if quals["dependency_scope"] != nil {
-		scope := quals["dependency_scope"].GetStringValue()
-		opt.Scope = &scope
-	}
-
-	client := connect(ctx, d)
-	limit := d.QueryContext.Limit
-	if limit != nil {
-		if *limit < int64(opt.ListCursorOptions.First) {
-			opt.ListCursorOptions.First = int(*limit)
-		}
-	}
-
-	for {
-		alerts, resp, err := client.Dependabot.ListOrgAlerts(ctx, org, opt)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, i := range alerts {
-			d.StreamListItem(ctx, i)
-
-			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.RowsRemaining(ctx) == 0 {
-				return nil, nil
-			}
-		}
-
-		if resp.After == "" {
-			break
-		}
-
-		opt.ListCursorOptions.After = resp.After
-	}
-
-	return nil, nil
 }

@@ -146,6 +146,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
+	"Github/Issue": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Issue",
+		Tags:                 map[string][]string{
+            "category": {"Issue"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetIssueList),
+		GetDescriber:         nil,
+	},
+
 	"Github/Issue/Comment": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Issue/Comment",
@@ -171,6 +185,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetLicenseList),
+		GetDescriber:         nil,
+	},
+
+	"Github/Organization": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Organization",
+		Tags:                 map[string][]string{
+            "category": {"Organization"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetOrganizationList),
 		GetDescriber:         nil,
 	},
 
@@ -241,6 +269,34 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllPullRequests),
+		GetDescriber:         nil,
+	},
+
+	"Github/Release": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Release",
+		Tags:                 map[string][]string{
+            "category": {"Release"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetReleaseList),
+		GetDescriber:         nil,
+	},
+
+	"Github/Repository": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Repository",
+		Tags:                 map[string][]string{
+            "category": {"Repository"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetRepositoryList),
 		GetDescriber:         nil,
 	},
 
@@ -370,6 +426,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
+	"Github/Team": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Team",
+		Tags:                 map[string][]string{
+            "category": {"Team"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetTeamList),
+		GetDescriber:         nil,
+	},
+
 	"Github/Team/Member": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Team/Member",
@@ -465,6 +535,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllWorkflows),
+		GetDescriber:         nil,
+	},
+
+	"Github/CodeOwner": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/CodeOwner",
+		Tags:                 map[string][]string{
+            "category": {"code_owner"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.ListCodeOwners),
 		GetDescriber:         nil,
 	},
 }
