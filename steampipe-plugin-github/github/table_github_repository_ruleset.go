@@ -38,7 +38,7 @@ func gitHubRulesetColumns() []*plugin.Column {
 			Description: "The ID of the ruleset."},
 		{Name: "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
-			Transform:   transform.FromField("Description.CreatedAt").Transform(convertRulesetTimestamp),
+			Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertRulesetTimestamp),
 			Description: "The date and time when the ruleset was created."},
 		{Name: "database_id",
 			Type:        proto.ColumnType_INT,

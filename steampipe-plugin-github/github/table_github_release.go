@@ -39,7 +39,7 @@ func tableGitHubRelease() *plugin.Table {
 				Transform:   transform.FromField("Description.Body"),
 				Description: "Text describing the contents of the tag."},
 			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
+				Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp),
 				Description: "Time when the release was created."},
 			{Name: "draft", Type: proto.ColumnType_BOOL,
 				Transform: transform.FromField("Description.Draft"),

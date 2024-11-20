@@ -58,7 +58,7 @@ func sharedCommentsColumns() []*plugin.Column {
 		{
 			Name:        "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
-			Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp),
 			Description: "Timestamp when comment was created."},
 		{
 			Name:      "created_via_email",
@@ -99,19 +99,19 @@ func sharedCommentsColumns() []*plugin.Column {
 		{
 			Name:      "last_edited_at",
 			Type:      proto.ColumnType_TIMESTAMP,
-			Transform: transform.FromField("Description.LastEditedAt").Transform(convertTimestamp),
+			Transform: transform.FromField("Description.LastEditedAt").NullIfZero().Transform(convertTimestamp),
 
 			Description: "Timestamp when comment was last edited."},
 		{
 			Name:      "published_at",
 			Type:      proto.ColumnType_TIMESTAMP,
-			Transform: transform.FromField("Description.PublishedAt").Transform(convertTimestamp),
+			Transform: transform.FromField("Description.PublishedAt").NullIfZero().Transform(convertTimestamp),
 
 			Description: "Timestamp when comment was published."},
 		{
 			Name:      "updated_at",
 			Type:      proto.ColumnType_TIMESTAMP,
-			Transform: transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
+			Transform: transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 
 			Description: "Timestamp when comment was last updated."},
 		{

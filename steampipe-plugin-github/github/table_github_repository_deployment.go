@@ -23,7 +23,7 @@ func gitHubRepositoryDeploymentColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.CommitSha"),
 			Description: "SHA of the commit the deployment is using."},
 		{Name: "created_at", Type: proto.ColumnType_TIMESTAMP,
-			Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp),
 			Description: "Timestamp when the deployment was created."},
 		{Name: "creator", Type: proto.ColumnType_JSON,
 			Transform:   transform.FromField("Description.Creator"),
@@ -56,7 +56,7 @@ func gitHubRepositoryDeploymentColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.Task"),
 			Description: "The deployment task."},
 		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP,
-			Transform:   transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 			Description: "Timestamp when the deployment was last updated."},
 	}
 }

@@ -51,13 +51,13 @@ func tableGitHubActionsRepositorySecret() *plugin.Table {
 			{
 				Name:        "created_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
+				Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp),
 				Description: "Time when the secret was created.",
 			},
 			{
 				Name:        "updated_at",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
+				Transform:   transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 				Description: "Time when the secret was updated.",
 			},
 		}),

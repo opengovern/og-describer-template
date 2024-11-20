@@ -97,19 +97,19 @@ func gitHubDependabotAlertColumns() []*plugin.Column {
 			Name:        "security_advisory_published_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was published.",
-			Transform:   transform.FromField("Description.SecurityAdvisoryPublishedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryPublishedAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "security_advisory_updated_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was last modified.",
-			Transform:   transform.FromField("Description.SecurityAdvisoryUpdatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryUpdatedAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "security_advisory_withdrawn_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the advisory was withdrawn.",
-			Transform:   transform.FromField("Description.SecurityAdvisoryWithdrawnAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.SecurityAdvisoryWithdrawnAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "url",
@@ -125,13 +125,13 @@ func gitHubDependabotAlertColumns() []*plugin.Column {
 			Name:        "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was created.",
-			Transform:   transform.FromField("Description.CreatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "updated_at",
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "The time that the alert was last updated.",
-			Transform:   transform.FromField("Description.UpdatedAt").Transform(convertTimestamp),
+			Transform:   transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 		},
 		{
 			Name:        "dismissed_at",

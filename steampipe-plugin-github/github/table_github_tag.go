@@ -25,7 +25,7 @@ func tableGitHubTag() *plugin.Table {
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the tag.",
 				Transform: transform.FromField("Description.Name")},
 			{Name: "tagger_date", Type: proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.TaggerDate"),
+				Transform:   transform.FromField("Description.TaggerDate").NullIfZero().Transform(convertTimestamp),
 				Description: "Date the tag was created."},
 			{Name: "tagger_name", Type: proto.ColumnType_STRING, Description: "Name of user whom created the tag.",
 				Transform: transform.FromField("Description.TaggerName")},

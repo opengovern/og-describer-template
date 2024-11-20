@@ -21,7 +21,7 @@ func tableGitHubStargazer() *plugin.Table {
 				Transform:   transform.FromField("Description.RepoFullName"),
 				Description: "Full name of the repository that contains the stargazer."},
 			{Name: "starred_at", Type: proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("Description.StarredAt").Transform(convertTimestamp),
+				Transform:   transform.FromField("Description.StarredAt").NullIfZero().Transform(convertTimestamp),
 				Description: "Time when the stargazer was created."},
 			{Name: "user_login", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.UserLogin"),
