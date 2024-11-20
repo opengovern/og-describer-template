@@ -16,15 +16,15 @@ type GitHubClient struct {
 }
 
 const (
-	maxPagesCount            = 100
-	pageSize                 = 100
+	maxPagesCount            = 30
+	pageSize                 = 30
 	pullRequestsPageSize     = 25
 	repoPageSize             = 15
 	issuePageSize            = 50
 	orgPageSize              = 10
-	orgCollaboratorsPageSize = 50
-	releasePageSize          = 100
-	teamMembersPageSize      = 50
+	orgCollaboratorsPageSize = 30
+	releasePageSize          = 20
+	teamMembersPageSize      = 30
 )
 
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
