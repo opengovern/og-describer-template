@@ -12,6 +12,19 @@ import (
 func GetAllRepositoriesEnvironments(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
+	var repositoryName string
+	if value := ctx.Value(paramKeyRepoName); value != nil {
+		repositoryName = value.(string)
+	}
+
+	if repositoryName != "" {
+		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		return repoValues, nil
+	}
+
 	repositories, err := getRepositories(ctx, client, organizationName)
 	if err != nil {
 		return nil, nil

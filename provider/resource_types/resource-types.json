@@ -7,7 +7,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllArtifacts)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetArtifact)",
     "SteampipeTable": "github_actions_artifact",
     "Model": "Artifact"
   },
@@ -19,7 +19,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllRunners)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetActionRunner)",
     "SteampipeTable": "github_actions_repository_runner",
     "Model": "Runner"
   },
@@ -31,7 +31,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllSecrets)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepoActionSecret)",
     "SteampipeTable": "github_actions_repository_secret",
     "Model": "Secret"
   },
@@ -43,7 +43,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllWorkflowRuns)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepoWorkflowRun)",
     "SteampipeTable": "github_actions_repository_workflow_run",
     "Model": "WorkflowRun"
   },
@@ -55,7 +55,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllBlobs)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetBlob)",
     "SteampipeTable": "github_blob",
     "Model": "Blob"
   },
@@ -67,7 +67,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllBranches)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetBlob)",
     "SteampipeTable": "github_branch",
     "Model": "Branch"
   },
@@ -91,7 +91,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllCommits)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryCommit)",
     "SteampipeTable": "github_commit",
     "Model": "Commit"
   },
@@ -115,7 +115,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetGitIgnoreTemplateList)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetGitignoreTemplate)",
     "SteampipeTable": "github_gitignore",
     "Model": "GitIgnore"
   },
@@ -127,7 +127,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetIssueList)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetIssue)",
     "SteampipeTable": "github_issue",
     "Model": "Issue"
   },
@@ -151,7 +151,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetLicenseList)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetLicense)",
     "SteampipeTable": "github_license",
     "Model": "License"
   },
@@ -222,8 +222,8 @@
         "PullRequest"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllPullRequests)",
-    "GetDescriber": "",
+    "ListDescriber": "DescribeByGithub(describer.ListRepositoryPullRequests)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryPullRequest)",
     "SteampipeTable": "github_pull_request",
     "Model": "PullRequest"
   },
@@ -451,7 +451,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllWorkflows)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryWorkflow)",
     "SteampipeTable": "github_workflow",
     "Model": "Workflow"
   },

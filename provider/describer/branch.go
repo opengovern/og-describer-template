@@ -91,3 +91,61 @@ func GetRepositoryBranches(ctx context.Context, githubClient GitHubClient, strea
 	}
 	return values, nil
 }
+
+func GetRepositoryBranch(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, branchName string, stream *models.StreamSender) (*models.Resource, error) {
+	branchInfo, _, err := githubClient.RestClient.Repositories.GetBranch(ctx, organizationName, repositoryName, branchName, true)
+	if err != nil {
+		return nil, err
+	}
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+
+	id := fmt.Sprintf("%s/%s/%s", organizationName, repositoryName, branchInfo.GetName())
+	value := models.Resource{
+		ID:   id,
+		Name: branchInfo.GetName(),
+		Description: JSONAllFieldsMarshaller{
+			Value: model.BranchDescription{
+				Name: branchInfo.GetName(),
+				Commit: steampipemodels.BaseCommit{
+					BasicCommit: steampipemodels.BasicCommit{
+						Sha: branchInfo.GetCommit().GetSHA(),
+						Url: branchInfo.GetCommit().GetURL(),
+						Author: steampipemodels.GitActor{
+							Name:      branchInfo.GetCommit().GetAuthor().GetName(),
+							Email:     branchInfo.GetCommit().GetAuthor().GetEmail(),
+							AvatarUrl: branchInfo.GetCommit().GetAuthor().GetAvatarURL(),
+							User: steampipemodels.BasicUser{
+								Login: branchInfo.GetCommit().GetAuthor().GetLogin(),
+								Email: branchInfo.GetCommit().GetAuthor().GetEmail(),
+								Url:   branchInfo.GetCommit().GetAuthor().GetURL(),
+							},
+						},
+						Message: branchInfo.GetCommit().GetCommit().GetMessage(),
+						Committer: steampipemodels.GitActor{
+							Name:      branchInfo.GetCommit().GetCommitter().GetName(),
+							Email:     branchInfo.GetCommit().GetCommitter().GetEmail(),
+							AvatarUrl: branchInfo.GetCommit().GetCommitter().GetAvatarURL(),
+							User: steampipemodels.BasicUser{
+								Login: branchInfo.GetCommit().GetCommitter().GetLogin(),
+								Email: branchInfo.GetCommit().GetCommitter().GetEmail(),
+								Url:   branchInfo.GetCommit().GetCommitter().GetURL(),
+							},
+						},
+						ShortSha: branchInfo.GetCommit().GetCommit().GetSHA(),
+					},
+					Status: steampipemodels.CommitStatus{
+						State: branchInfo.GetCommit().GetStats().String(),
+					},
+				},
+				RepoFullName: repoFullName,
+				Protected:    branchInfo.GetProtected(),
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+	return &value, nil
+}

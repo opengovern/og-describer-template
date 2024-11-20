@@ -26,7 +26,7 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	return values, nil
 }
 
-func GetRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func ListRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	states := []githubv4.PullRequestState{githubv4.PullRequestStateOpen, githubv4.PullRequestStateClosed, githubv4.PullRequestStateMerged}
 	var query struct {
@@ -151,4 +151,43 @@ func GetRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, s
 		variables["cursor"] = githubv4.NewString(query.Repository.PullRequests.PageInfo.EndCursor)
 	}
 	return values, nil
+}
+
+func GetRepositoryPullRequest(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.GraphQLClient
+
+	quals := d.EqualsQuals
+	number := int(quals["number"].GetInt64Value())
+	fullName := quals["repository_full_name"].GetStringValue()
+	owner, repo := parseRepoFullName(fullName)
+
+	client := connectV4(ctx, d)
+
+	var query struct {
+		RateLimit  models.RateLimit
+		Repository struct {
+			PullRequest models.PullRequest `graphql:"pullRequest(number: $number)"`
+		} `graphql:"repository(owner: $owner, name: $repo)"`
+	}
+
+	variables := map[string]interface{}{
+		"owner":  githubv4.String(owner),
+		"repo":   githubv4.String(repo),
+		"number": githubv4.Int(number),
+	}
+	appendPullRequestColumnIncludes(&variables, d.QueryContext.Columns)
+
+	err := client.Query(ctx, &query, variables)
+	plugin.Logger(ctx).Debug(rateLimitLogString("github_pull_request", &query.RateLimit))
+	if err != nil {
+		plugin.Logger(ctx).Error("github_pull_request", "api_error", err)
+		return nil, err
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
 }

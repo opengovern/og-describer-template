@@ -69,3 +69,40 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 	}
 	return values, nil
 }
+
+func GetArtifact(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.RestClient
+	artifactID, err := strconv.ParseInt(resourceID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+	artifact, _, err := client.Actions.GetArtifact(ctx, organizationName, repositoryName, artifactID)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   strconv.Itoa(int(artifact.GetID())),
+		Name: artifact.GetName(),
+		Description: JSONAllFieldsMarshaller{
+			Value: model.ArtifactDescription{
+				ID:                 artifact.GetID(),
+				NodeID:             artifact.GetNodeID(),
+				Name:               artifact.GetName(),
+				SizeInBytes:        artifact.GetSizeInBytes(),
+				ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
+				Expired:            artifact.GetExpired(),
+				CreatedAt:          artifact.GetCreatedAt(),
+				ExpiresAt:          artifact.GetExpiresAt(),
+				RepoFullName:       repoFullName,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}

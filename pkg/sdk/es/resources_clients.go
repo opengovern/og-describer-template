@@ -3,6 +3,9 @@ package opengovernance
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	githubDescriber "github.com/opengovern/og-describer-github/provider/describer"
 	github "github.com/opengovern/og-describer-github/provider/model"
 	essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 	steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
@@ -3556,7 +3559,6 @@ var listOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
-	"repository_full_name":                 "Description.RepoFullName",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -3638,7 +3640,6 @@ var getOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
-	"repository_full_name":                 "Description.RepoFullName",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -4542,7 +4543,6 @@ var listRepositoryFilters = map[string]string{
 	"can_update_topics":                "Description.CanUpdateTopics",
 	"code_of_conduct":                  "Description.CodeOfConduct",
 	"contact_links":                    "Description.ContactLinks",
-	"created_at":                       "Description.CreatedAt",
 	"default_branch_ref":               "Description.DefaultBranchRef",
 	"delete_branch_on_merge":           "Description.DeleteBranchOnMerge",
 	"description":                      "Description.Description",
@@ -4681,7 +4681,6 @@ var getRepositoryFilters = map[string]string{
 	"can_update_topics":                "Description.CanUpdateTopics",
 	"code_of_conduct":                  "Description.CodeOfConduct",
 	"contact_links":                    "Description.ContactLinks",
-	"created_at":                       "Description.CreatedAt",
 	"default_branch_ref":               "Description.DefaultBranchRef",
 	"delete_branch_on_merge":           "Description.DeleteBranchOnMerge",
 	"description":                      "Description.Description",
@@ -6846,7 +6845,6 @@ var listTagFilters = map[string]string{
 	"message":              "Description.Message",
 	"name":                 "Description.Name",
 	"repository_full_name": "Description.RepositoryFullName",
-	"tagger_date":          "Description.TaggerDate",
 	"tagger_login":         "Description.TaggerLogin",
 	"tagger_name":          "Description.TaggerName",
 }
@@ -6916,7 +6914,6 @@ var getTagFilters = map[string]string{
 	"message":              "Description.Message",
 	"name":                 "Description.Name",
 	"repository_full_name": "Description.RepositoryFullName",
-	"tagger_date":          "Description.TaggerDate",
 	"tagger_login":         "Description.TaggerLogin",
 	"tagger_name":          "Description.TaggerName",
 }
@@ -7057,33 +7054,33 @@ func (p TeamPaginator) NextPage(ctx context.Context) ([]Team, error) {
 }
 
 var listTeamFilters = map[string]string{
-	"ancestors_total_count":    "Organization.AncestorsTotalCount",
-	"avatar_url":               "Organization.AvatarURL",
-	"can_administer":           "Organization.CanAdminister",
-	"can_subscribe":            "Organization.CanSubscribe",
-	"child_teams_total_count":  "Organization.ChildTeamsTotalCount",
-	"combined_slug":            "Organization.CombinedSlug",
-	"description":              "Organization.Description",
-	"discussions_total_count":  "Organization.DiscussionsTotalCount",
-	"discussions_url":          "Organization.DiscussionsURL",
-	"edit_team_url":            "Organization.EditTeamURL",
-	"id":                       "Organization.ID",
-	"invitations_total_count":  "Organization.InvitationsTotalCount",
-	"members_total_count":      "Organization.MembersTotalCount",
-	"members_url":              "Organization.MembersURL",
-	"name":                     "Organization.Name",
-	"new_team_url":             "Organization.NewTeamURL",
-	"node_id":                  "Organization.NodeID",
-	"organization":             "Organization.Organization",
-	"parent_team":              "Organization.ParentTeam",
-	"privacy":                  "Organization.Privacy",
-	"projects_v2_total_count":  "Organization.ProjectsV2TotalCount",
-	"repositories_total_count": "Organization.RepositoriesTotalCount",
-	"repositories_url":         "Organization.RepositoriesURL",
-	"slug":                     "Organization.Slug",
-	"subscription":             "Organization.Subscription",
-	"teams_url":                "Organization.TeamsURL",
-	"url":                      "Organization.URL",
+	"ancestors_total_count":    "Description.AncestorsTotalCount",
+	"avatar_url":               "Description.AvatarURL",
+	"can_administer":           "Description.CanAdminister",
+	"can_subscribe":            "Description.CanSubscribe",
+	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
+	"combined_slug":            "Description.CombinedSlug",
+	"description":              "Description.Description",
+	"discussions_total_count":  "Description.DiscussionsTotalCount",
+	"discussions_url":          "Description.DiscussionsURL",
+	"edit_team_url":            "Description.EditTeamURL",
+	"id":                       "Description.ID",
+	"invitations_total_count":  "Description.InvitationsTotalCount",
+	"members_total_count":      "Description.MembersTotalCount",
+	"members_url":              "Description.MembersURL",
+	"name":                     "Description.Name",
+	"new_team_url":             "Description.NewTeamURL",
+	"node_id":                  "Description.NodeID",
+	"organization":             "Description.Organization",
+	"parent_team":              "Description.ParentTeam",
+	"privacy":                  "Description.Privacy",
+	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
+	"repositories_total_count": "Description.RepositoriesTotalCount",
+	"repositories_url":         "Description.RepositoriesURL",
+	"slug":                     "Description.Slug",
+	"subscription":             "Description.Subscription",
+	"teams_url":                "Description.TeamsURL",
+	"url":                      "Description.URL",
 }
 
 func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -7147,33 +7144,33 @@ func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 }
 
 var getTeamFilters = map[string]string{
-	"ancestors_total_count":    "Organization.AncestorsTotalCount",
-	"avatar_url":               "Organization.AvatarURL",
-	"can_administer":           "Organization.CanAdminister",
-	"can_subscribe":            "Organization.CanSubscribe",
-	"child_teams_total_count":  "Organization.ChildTeamsTotalCount",
-	"combined_slug":            "Organization.CombinedSlug",
-	"description":              "Organization.Description",
-	"discussions_total_count":  "Organization.DiscussionsTotalCount",
-	"discussions_url":          "Organization.DiscussionsURL",
-	"edit_team_url":            "Organization.EditTeamURL",
-	"id":                       "Organization.ID",
-	"invitations_total_count":  "Organization.InvitationsTotalCount",
-	"members_total_count":      "Organization.MembersTotalCount",
-	"members_url":              "Organization.MembersURL",
-	"name":                     "Organization.Name",
-	"new_team_url":             "Organization.NewTeamURL",
-	"node_id":                  "Organization.NodeID",
-	"organization":             "Organization.Organization",
-	"parent_team":              "Organization.ParentTeam",
-	"privacy":                  "Organization.Privacy",
-	"projects_v2_total_count":  "Organization.ProjectsV2TotalCount",
-	"repositories_total_count": "Organization.RepositoriesTotalCount",
-	"repositories_url":         "Organization.RepositoriesURL",
-	"slug":                     "Organization.Slug",
-	"subscription":             "Organization.Subscription",
-	"teams_url":                "Organization.TeamsURL",
-	"url":                      "Organization.URL",
+	"ancestors_total_count":    "Description.AncestorsTotalCount",
+	"avatar_url":               "Description.AvatarURL",
+	"can_administer":           "Description.CanAdminister",
+	"can_subscribe":            "Description.CanSubscribe",
+	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
+	"combined_slug":            "Description.CombinedSlug",
+	"description":              "Description.Description",
+	"discussions_total_count":  "Description.DiscussionsTotalCount",
+	"discussions_url":          "Description.DiscussionsURL",
+	"edit_team_url":            "Description.EditTeamURL",
+	"id":                       "Description.ID",
+	"invitations_total_count":  "Description.InvitationsTotalCount",
+	"members_total_count":      "Description.MembersTotalCount",
+	"members_url":              "Description.MembersURL",
+	"name":                     "Description.Name",
+	"new_team_url":             "Description.NewTeamURL",
+	"node_id":                  "Description.NodeID",
+	"organization":             "Description.Organization",
+	"parent_team":              "Description.ParentTeam",
+	"privacy":                  "Description.Privacy",
+	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
+	"repositories_total_count": "Description.RepositoriesTotalCount",
+	"repositories_url":         "Description.RepositoriesURL",
+	"slug":                     "Description.Slug",
+	"subscription":             "Description.Subscription",
+	"teams_url":                "Description.TeamsURL",
+	"url":                      "Description.URL",
 }
 
 func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8891,7 +8888,13 @@ func (p CodeOwnerPaginator) NextPage(ctx context.Context) ([]CodeOwner, error) {
 }
 
 var listCodeOwnerFilters = map[string]string{
-	"line": "LineNumber",
+	"line":                 "Description.LineNumber",
+	"line_comment":         "Description.LineComment",
+	"pattern":              "Description.Pattern",
+	"pre_comments":         "Description.PreComments",
+	"repository_full_name": "Description.RepositoryFullName",
+	"teams":                "Description.Teams",
+	"users":                "Description.Users",
 }
 
 func ListCodeOwner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8955,7 +8958,13 @@ func ListCodeOwner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 }
 
 var getCodeOwnerFilters = map[string]string{
-	"line": "LineNumber",
+	"line":                 "Description.LineNumber",
+	"line_comment":         "Description.LineComment",
+	"pattern":              "Description.Pattern",
+	"pre_comments":         "Description.PreComments",
+	"repository_full_name": "Description.RepositoryFullName",
+	"teams":                "Description.Teams",
+	"users":                "Description.Users",
 }
 
 func GetCodeOwner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {

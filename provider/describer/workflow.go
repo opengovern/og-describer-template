@@ -120,3 +120,53 @@ func decodeFileContentToPipeline(contentDetails FileContent) (*goPipeline.Pipeli
 	}
 	return pipeline, nil
 }
+
+func GetRepositoryWorkflow(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.RestClient
+	workflowID, err := strconv.ParseInt(resourceID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+	workflow, _, err := client.Actions.GetWorkflowByID(ctx, organizationName, repositoryName, workflowID)
+	if err != nil {
+		return nil, err
+	}
+	fileContent, err := getWorkflowFileContent(ctx, client, workflow, organizationName, repositoryName)
+	if err != nil {
+		return nil, err
+	}
+	content, err := fileContent.GetContent()
+	if err != nil {
+		return nil, err
+	}
+	fileContentBasic := FileContent{
+		Repository: repositoryName,
+		FilePath:   fileContent.GetPath(),
+		Content:    content,
+	}
+	pipeline, err := decodeFileContentToPipeline(fileContentBasic)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   strconv.Itoa(int(workflow.GetID())),
+		Name: workflow.GetName(),
+		Description: JSONAllFieldsMarshaller{
+			Value: model.WorkflowDescription{
+				Workflow:                workflow,
+				RepositoryFullName:      repoFullName,
+				WorkFlowFileContent:     content,
+				WorkFlowFileContentJson: fileContent,
+				Pipeline:                pipeline,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}

@@ -97,7 +97,7 @@ func GetRepositoryWorkflowRuns(ctx context.Context, githubClient GitHubClient, s
 	return values, nil
 }
 
-func GetRepoWorkflowRun(ctx context.Context, client *github.Client, organizationName string, repo string, workflowRunID int64) (*models.Resource, error) {
+func GetRepoWorkflowRun(ctx context.Context, client *github.Client, organizationName string, repo string, workflowRunID int64, stream *models.StreamSender) (*models.Resource, error) {
 	owner := organizationName
 	if workflowRunID == 0 || repo == "" {
 		return nil, nil
@@ -148,6 +148,11 @@ func GetRepoWorkflowRun(ctx context.Context, client *github.Client, organization
 				RepoFullName:       repoFullName,
 			},
 		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
 	}
 	return &value, nil
 }

@@ -53,3 +53,38 @@ func GetLicenseList(ctx context.Context, githubClient GitHubClient, organization
 
 	return values, nil
 }
+
+func GetLicense(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.GraphQLClient
+
+	variables := map[string]interface{}{
+		"key": githubv4.String(resourceID),
+	}
+
+	var query struct {
+		RateLimit steampipemodels.RateLimit
+		License   steampipemodels.License `graphql:"license(key: $key)"`
+	}
+	appendLicenseColumnIncludes(&variables, licenseCols())
+
+	err := client.Query(ctx, &query, variables)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   query.License.Key,
+		Name: query.License.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: model.LicenseDescription{
+				License: query.License,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}
