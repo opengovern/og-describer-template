@@ -22,6 +22,7 @@ import (
 
 var (
 	resourceID string
+	PatToken   = os.Getenv("PAT_TOKEN")
 )
 
 // getDescriberCmd represents the describer command
@@ -51,8 +52,12 @@ var getDescriberCmd = &cobra.Command{
 		ctx := context.Background()
 		logger, _ := zap.NewProduction()
 
-		// TODO: Set the credentials
-		creds := configs.IntegrationCredentials{}
+		creds, err := provider.AccountCredentialsFromMap(map[string]any{
+			"pat_token": PatToken,
+		})
+		if err != nil {
+			return fmt.Errorf(" account credentials: %w", err)
+		}
 
 		additionalParameters, err := provider.GetAdditionalParameters(job)
 		if err != nil {
