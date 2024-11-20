@@ -15,7 +15,7 @@ func GetReleaseList(ctx context.Context, githubClient GitHubClient, organization
 	}
 
 	var values []models.Resource
-	opts := &github.ListOptions{PerPage: 100}
+	opts := &github.ListOptions{PerPage: releasePageSize}
 	for _, r := range repositories {
 		for {
 			releases, resp, err := githubClient.RestClient.Repositories.ListReleases(ctx, organizationName, r.GetName(), opts)

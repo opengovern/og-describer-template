@@ -21,8 +21,10 @@ import (
 )
 
 var (
-	resourceID string
-	PatToken   = os.Getenv("PAT_TOKEN")
+	resourceID       string
+	PatToken         = os.Getenv("PAT_TOKEN")
+	RepositoryName   = os.Getenv("REPOSITORY_NAME")
+	OrganizationName = os.Getenv("ORGANIZATION_NAME")
 )
 
 // getDescriberCmd represents the describer command
@@ -38,14 +40,16 @@ var getDescriberCmd = &cobra.Command{
 		defer file.Close() // Ensure the file is closed at the end
 
 		job := describe.DescribeJob{
-			JobID:                  uint(uuid.New().ID()),
-			ResourceType:           resourceType,
-			IntegrationID:          "",
-			ProviderID:             "",
-			DescribedAt:            time.Now().UnixMilli(),
-			IntegrationType:        configs.IntegrationTypeLower,
-			CipherText:             "",
-			IntegrationLabels:      nil,
+			JobID:           uint(uuid.New().ID()),
+			ResourceType:    resourceType,
+			IntegrationID:   "",
+			ProviderID:      "",
+			DescribedAt:     time.Now().UnixMilli(),
+			IntegrationType: configs.IntegrationTypeLower,
+			CipherText:      "",
+			IntegrationLabels: map[string]string{
+				"OrganizationName": OrganizationName,
+			},
 			IntegrationAnnotations: nil,
 		}
 
@@ -64,6 +68,7 @@ var getDescriberCmd = &cobra.Command{
 			return err
 		}
 		plg := steampipe.Plugin()
+		additionalParameters["RepositoryName"] = RepositoryName
 
 		f := func(resource model.Resource) error {
 			if resource.Description == nil {

@@ -38,22 +38,28 @@ var describerCmd = &cobra.Command{
 		defer file.Close() // Ensure the file is closed at the end
 
 		job := describe.DescribeJob{
-			JobID:                  uint(uuid.New().ID()),
-			ResourceType:           resourceType,
-			IntegrationID:          "",
-			ProviderID:             "",
-			DescribedAt:            time.Now().UnixMilli(),
-			IntegrationType:        configs.IntegrationTypeLower,
-			CipherText:             "",
-			IntegrationLabels:      nil,
+			JobID:           uint(uuid.New().ID()),
+			ResourceType:    resourceType,
+			IntegrationID:   "",
+			ProviderID:      "",
+			DescribedAt:     time.Now().UnixMilli(),
+			IntegrationType: configs.IntegrationTypeLower,
+			CipherText:      "",
+			IntegrationLabels: map[string]string{
+				"OrganizationName": OrganizationName,
+			},
 			IntegrationAnnotations: nil,
 		}
 
 		ctx := context.Background()
 		logger, _ := zap.NewProduction()
 
-		// TODO: Set the credentials
-		creds := configs.IntegrationCredentials{}
+		creds, err := provider.AccountCredentialsFromMap(map[string]any{
+			"pat_token": PatToken,
+		})
+		if err != nil {
+			return fmt.Errorf(" account credentials: %w", err)
+		}
 
 		additionalParameters, err := provider.GetAdditionalParameters(job)
 		if err != nil {
