@@ -18,11 +18,12 @@ type GitHubClient struct {
 const (
 	maxPagesCount            = 100
 	pageSize                 = 100
-	pullRequestsPageSize     = 75
-	repoPageSize             = 50
+	pullRequestsPageSize     = 25
+	repoPageSize             = 15
 	issuePageSize            = 50
 	orgPageSize              = 10
 	orgCollaboratorsPageSize = 50
+	releasePageSize          = 100
 	teamMembersPageSize      = 50
 )
 
