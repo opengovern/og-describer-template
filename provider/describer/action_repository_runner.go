@@ -62,3 +62,33 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 	}
 	return values, nil
 }
+
+func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.RestClient
+	runnerID, err := strconv.ParseInt(resourceID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+	runner, _, err := client.Actions.GetRunner(ctx, organizationName, repositoryName, runnerID)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   strconv.Itoa(int(runner.GetID())),
+		Name: runner.GetName(),
+		Description: JSONAllFieldsMarshaller{
+			Value: model.RunnerDescription{
+				Runner:       runner,
+				RepoFullName: repoFullName,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}

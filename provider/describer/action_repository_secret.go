@@ -63,3 +63,30 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 	}
 	return values, nil
 }
+
+func GetRepoActionSecret(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	client := githubClient.RestClient
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+	secret, _, err := client.Actions.GetRepoSecret(ctx, organizationName, repositoryName, resourceID)
+	if err != nil {
+		return nil, err
+	}
+	id := fmt.Sprintf("%s/%s/%s", organizationName, repositoryName, secret.Name)
+	value := models.Resource{
+		ID:   id,
+		Name: secret.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: model.SecretDescription{
+				Secret:       secret,
+				RepoFullName: repoFullName,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}

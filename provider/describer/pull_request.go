@@ -17,7 +17,7 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err
 		}
@@ -26,7 +26,7 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	return values, nil
 }
 
-func GetRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func ListRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	states := []githubv4.PullRequestState{githubv4.PullRequestStateOpen, githubv4.PullRequestStateClosed, githubv4.PullRequestStateMerged}
 	var query struct {

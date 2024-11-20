@@ -88,3 +88,50 @@ func GetRepositoryCommits(ctx context.Context, githubClient GitHubClient, stream
 	}
 	return values, nil
 }
+
+func GetRepositoryCommit(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+
+	var query struct {
+		RateLimit  steampipemodels.RateLimit
+		Repository struct {
+			Object struct {
+				Commit steampipemodels.Commit `graphql:"... on Commit"`
+			} `graphql:"object(oid: $sha)"`
+		} `graphql:"repository(owner: $owner, name: $name)"`
+	}
+
+	variables := map[string]interface{}{
+		"owner": githubv4.String(organizationName),
+		"name":  githubv4.String(repositoryName),
+		"sha":   githubv4.GitObjectID(resourceID),
+	}
+
+	client := githubClient.GraphQLClient
+	appendCommitColumnIncludes(&variables, commitCols())
+
+	err := client.Query(ctx, &query, variables)
+	if err != nil {
+		return nil, err
+	}
+
+	value := models.Resource{
+		ID:   query.Repository.Object.Commit.Sha,
+		Name: query.Repository.Object.Commit.Sha,
+		Description: JSONAllFieldsMarshaller{
+			Value: model.CommitDescription{
+				Commit:         query.Repository.Object.Commit,
+				RepoFullName:   repoFullName,
+				AuthorLogin:    query.Repository.Object.Commit.Author.User.Login,
+				CommitterLogin: query.Repository.Object.Commit.Committer.User.Login,
+			},
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
+}

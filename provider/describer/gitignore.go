@@ -14,7 +14,7 @@ func GetGitIgnoreTemplateList(ctx context.Context, githubClient GitHubClient, or
 	}
 	var values []models.Resource
 	for _, gitIgnore := range gitIgnores {
-		repoValue, err := GetGitignoreTemplate(ctx, githubClient, gitIgnore)
+		repoValue, err := GetGitignoreTemplate(ctx, githubClient, "", "", gitIgnore, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -29,7 +29,7 @@ func GetGitIgnoreTemplateList(ctx context.Context, githubClient GitHubClient, or
 	return values, nil
 }
 
-func GetGitignoreTemplate(ctx context.Context, githubClient GitHubClient, gitIgnoreName string) (*models.Resource, error) {
+func GetGitignoreTemplate(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, gitIgnoreName string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	gitIgnore, _, err := client.Gitignores.Get(ctx, gitIgnoreName)
 	if err != nil {
@@ -43,6 +43,11 @@ func GetGitignoreTemplate(ctx context.Context, githubClient GitHubClient, gitIgn
 				Gitignore: gitIgnore,
 			},
 		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
 	}
 	return &value, nil
 }

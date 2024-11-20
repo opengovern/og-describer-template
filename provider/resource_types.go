@@ -17,7 +17,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllArtifacts),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetArtifact),
 	},
 
 	"Github/Actions/Repository/Runner": {
@@ -31,7 +31,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllRunners),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetActionRunner),
 	},
 
 	"Github/Actions/Repository/Secret": {
@@ -45,7 +45,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllSecrets),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetRepoActionSecret),
 	},
 
 	"Github/Actions/Repository/Workflow_run": {
@@ -59,7 +59,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllWorkflowRuns),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetRepoWorkflowRun),
 	},
 
 	"Github/Blob": {
@@ -73,7 +73,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllBlobs),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetBlob),
 	},
 
 	"Github/Branch": {
@@ -87,7 +87,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllBranches),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetBlob),
 	},
 
 	"Github/Branch/Protection": {
@@ -115,7 +115,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllCommits),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetRepositoryCommit),
 	},
 
 	"Github/CommunityProfile": {
@@ -143,7 +143,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetGitIgnoreTemplateList),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetGitignoreTemplate),
 	},
 
 	"Github/Issue": {
@@ -157,7 +157,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetIssueList),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetIssue),
 	},
 
 	"Github/Issue/Comment": {
@@ -185,7 +185,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetLicenseList),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetLicense),
 	},
 
 	"Github/Organization": {
@@ -535,7 +535,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllWorkflows),
-		GetDescriber:         nil,
+		GetDescriber:         DescribeSingleByRepo(describer.GetRepositoryWorkflow),
 	},
 
 	"Github/CodeOwner": {

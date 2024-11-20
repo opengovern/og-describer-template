@@ -9,6 +9,19 @@ import (
 func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
+	var repositoryName string
+	if value := ctx.Value(paramKeyRepoName); value != nil {
+		repositoryName = value.(string)
+	}
+
+	if repositoryName != "" {
+		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		return []models.Resource{*repoValue}, nil
+	}
+
 	repositories, err := getRepositories(ctx, client, organizationName)
 	if err != nil {
 		return nil, nil

@@ -32,7 +32,7 @@ func GetRepositoryBlobs(ctx context.Context, githubClient GitHubClient, stream *
 	}
 	var values []models.Resource
 	for _, sha := range fileSHAs {
-		blobValue, err := GetBlob(ctx, githubClient, owner, repo, sha)
+		blobValue, err := GetBlob(ctx, githubClient, owner, repo, sha, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -47,7 +47,7 @@ func GetRepositoryBlobs(ctx context.Context, githubClient GitHubClient, stream *
 	return values, nil
 }
 
-func GetBlob(ctx context.Context, githubClient GitHubClient, owner, repo, sha string) (*models.Resource, error) {
+func GetBlob(ctx context.Context, githubClient GitHubClient, owner, repo, sha string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	blob, _, err := client.Git.GetBlob(ctx, owner, repo, sha)
 	if err != nil {
@@ -65,6 +65,11 @@ func GetBlob(ctx context.Context, githubClient GitHubClient, owner, repo, sha st
 					RepoFullName: repoFullName,
 				},
 			},
+		}
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
 		}
 	}
 	return &value, nil
