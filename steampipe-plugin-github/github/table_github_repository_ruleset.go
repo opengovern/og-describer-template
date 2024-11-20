@@ -18,7 +18,7 @@ func tableGitHubRepositoryRuleset() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListRepoRuleSet,
 		},
-		Columns: gitHubRulesetColumns(),
+		Columns: commonColumns(gitHubRulesetColumns()),
 	}
 }
 

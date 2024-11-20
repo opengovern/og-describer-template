@@ -11,12 +11,6 @@ import (
 func gitHubDependabotAlertColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
-			Name:        "repository_full_name",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.RepoFullName"),
-			Description: "Full name of the repository that contains the blob.",
-		},
-		{
 			Name:        "alert_number",
 			Type:        proto.ColumnType_INT,
 			Description: "The security alert number.",

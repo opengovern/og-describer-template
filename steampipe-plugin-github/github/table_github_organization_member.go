@@ -3,8 +3,6 @@ package github
 import (
 	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 
-	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
-
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -29,12 +27,6 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 	}
 
 	return append(tableCols, sharedUserColumns()...)
-}
-
-type memberWithRole struct {
-	HasTwoFactorEnabled *bool
-	Role                *string
-	Node                models.User
 }
 
 func tableGitHubOrganizationMember() *plugin.Table {
