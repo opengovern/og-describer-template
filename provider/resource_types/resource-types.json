@@ -222,8 +222,8 @@
         "PullRequest"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.ListRepositoryPullRequests)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryPullRequest)",
+    "ListDescriber": "DescribeByGithub(describer.GetAllPullRequests)",
+    "GetDescriber": "",
     "SteampipeTable": "github_pull_request",
     "Model": "PullRequest"
   },

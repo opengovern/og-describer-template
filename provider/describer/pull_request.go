@@ -17,7 +17,7 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err
 		}
@@ -151,43 +151,4 @@ func ListRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, 
 		variables["cursor"] = githubv4.NewString(query.Repository.PullRequests.PageInfo.EndCursor)
 	}
 	return values, nil
-}
-
-func GetRepositoryPullRequest(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
-	client := githubClient.GraphQLClient
-
-	quals := d.EqualsQuals
-	number := int(quals["number"].GetInt64Value())
-	fullName := quals["repository_full_name"].GetStringValue()
-	owner, repo := parseRepoFullName(fullName)
-
-	client := connectV4(ctx, d)
-
-	var query struct {
-		RateLimit  models.RateLimit
-		Repository struct {
-			PullRequest models.PullRequest `graphql:"pullRequest(number: $number)"`
-		} `graphql:"repository(owner: $owner, name: $repo)"`
-	}
-
-	variables := map[string]interface{}{
-		"owner":  githubv4.String(owner),
-		"repo":   githubv4.String(repo),
-		"number": githubv4.Int(number),
-	}
-	appendPullRequestColumnIncludes(&variables, d.QueryContext.Columns)
-
-	err := client.Query(ctx, &query, variables)
-	plugin.Logger(ctx).Debug(rateLimitLogString("github_pull_request", &query.RateLimit))
-	if err != nil {
-		plugin.Logger(ctx).Error("github_pull_request", "api_error", err)
-		return nil, err
-	}
-	if stream != nil {
-		if err := (*stream)(value); err != nil {
-			return nil, err
-		}
-	}
-
-	return &value, nil
 }

@@ -268,8 +268,8 @@ var ResourceTypes = map[string]model.ResourceType{
         },
 		Annotations:          map[string]string{
         },
-		ListDescriber:        DescribeByGithub(describer.ListRepositoryPullRequests),
-		GetDescriber:         DescribeSingleByRepo(describer.GetRepositoryPullRequest),
+		ListDescriber:        DescribeByGithub(describer.GetAllPullRequests),
+		GetDescriber:         nil,
 	},
 
 	"Github/Release": {
