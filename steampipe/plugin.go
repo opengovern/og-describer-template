@@ -2,7 +2,7 @@ package steampipe
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-entraid/steampipe-plugin-azuread/azuread"
+	"github.com/opengovern/og-describer-entraid/steampipe-plugin-entraid/entraid"
 	"strings"
 
 	"go.uber.org/zap"
@@ -34,7 +34,7 @@ func ExtractTableName(resourceType string) string {
 }
 
 func Plugin() *plugin.Plugin {
-	return azuread.Plugin(buildContext())
+	return entraid.Plugin(buildContext())
 }
 
 func ExtractTagsAndNames(logger *zap.Logger, plg *plugin.Plugin, resourceType string, source interface{}) (map[string]string, string, error) {

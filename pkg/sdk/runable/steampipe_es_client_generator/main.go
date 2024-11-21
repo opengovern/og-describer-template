@@ -23,7 +23,7 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-const PluginPath = "../../../../steampipe-plugin-azuread/azuread"
+const PluginPath = "../../../../steampipe-plugin-entraid/entraid"
 
 type IntegrationType struct {
 	Name            string
