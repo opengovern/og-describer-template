@@ -27,7 +27,7 @@ func tableEntraIdDirectoryRole(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdDirectoryRole,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Type:        proto.ColumnType_STRING,

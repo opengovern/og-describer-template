@@ -3,7 +3,7 @@
     "ResourceName": "Microsoft.Entra/groups",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdGroup)",
@@ -15,7 +15,7 @@
     "ResourceName": "Microsoft.Entra/groupMemberships",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdGroupMembership)",
@@ -27,7 +27,7 @@
     "ResourceName": "Microsoft.Entra/devices",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdDevice)",
@@ -39,7 +39,7 @@
     "ResourceName": "Microsoft.Entra/signInReports",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdSignInReport)",
@@ -51,7 +51,7 @@
     "ResourceName": "Microsoft.Entra/applications",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdApplication)",
@@ -63,7 +63,7 @@
     "ResourceName": "Microsoft.Entra/appRegistrations",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdAppRegistration)",
@@ -75,7 +75,7 @@
     "ResourceName": "Microsoft.Entra/enterpriseApplication",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdEnterpriseApplication)",
@@ -87,7 +87,7 @@
     "ResourceName": "Microsoft.Entra/managedIdentity",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdManagedIdentity)",
@@ -99,7 +99,7 @@
     "ResourceName": "Microsoft.Entra/microsoftApplication",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdMicrosoftApplication)",
@@ -207,7 +207,7 @@
     "ResourceName": "Microsoft.Entra/users",
     "Tags": {
       "logo_uri": [
-        "https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"
       ]
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdUsers)",

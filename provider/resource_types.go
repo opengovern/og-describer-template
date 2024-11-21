@@ -1,8 +1,9 @@
 package provider
+
 import (
-	"github.com/opengovern/og-describer-entraid/provider/describer"
-	"github.com/opengovern/og-describer-entraid/provider/configs"
 	model "github.com/opengovern/og-describer-entraid/pkg/sdk/models"
+	"github.com/opengovern/og-describer-entraid/provider/configs"
+	"github.com/opengovern/og-describer-entraid/provider/describer"
 )
 var ResourceTypes = map[string]model.ResourceType{
 
@@ -10,7 +11,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/groups",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -24,7 +25,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/groupMemberships",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -38,7 +39,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/devices",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -52,7 +53,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/signInReports",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -66,7 +67,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/applications",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -80,7 +81,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/appRegistrations",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -94,7 +95,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/enterpriseApplication",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -108,7 +109,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/managedIdentity",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -122,7 +123,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/microsoftApplication",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
         },
 		Labels:               map[string]string{
         },
@@ -261,7 +262,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Microsoft.Entra/users",
 		Tags:                 map[string][]string{
-            "logo_uri": {"https://raw.githubusercontent.com/kaytu-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"},
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"},
         },
 		Labels:               map[string]string{
         },

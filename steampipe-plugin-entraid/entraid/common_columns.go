@@ -11,7 +11,7 @@ import (
 )
 
 // column definitions for the common columns
-func commonKaytuColumns() []*plugin.Column {
+func commonOGColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
 			Name:      "cloud_environment",
@@ -50,8 +50,8 @@ func commonKaytuColumns() []*plugin.Column {
 }
 
 // append the common azure columns onto the column list
-func azureKaytuColumns(columns []*plugin.Column) []*plugin.Column {
-	for _, c := range commonKaytuColumns() {
+func azureOGColumns(columns []*plugin.Column) []*plugin.Column {
+	for _, c := range commonOGColumns() {
 		found := false
 		for _, col := range columns {
 			if col.Name == c.Name {

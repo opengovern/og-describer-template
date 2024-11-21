@@ -20,7 +20,7 @@ func tableEntraIdServicePrincipal(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdServicePrincipal,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the service principal.", Transform: transform.FromField("Description.Id")},
 			{Name: "display_name", Type: proto.ColumnType_STRING, Description: "The display name for the service principal.", Transform: transform.FromField("Description.DisplayName")},
 			{Name: "app_id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the associated application (its appId property).", Transform: transform.FromField("Description.AppId")},

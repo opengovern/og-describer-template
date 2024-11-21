@@ -25,7 +25,7 @@ func tableEntraIdDirectoryAuditReport(_ context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListAdDirectoryAuditReport,
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Type:        proto.ColumnType_STRING,

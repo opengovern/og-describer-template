@@ -29,7 +29,7 @@ func tableEntraIdConditionalAccessPolicy(_ context.Context) *plugin.Table {
 			},
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Type:        proto.ColumnType_STRING,

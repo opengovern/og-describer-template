@@ -28,7 +28,7 @@ func tableEntraIdDevice(_ context.Context) *plugin.Table {
 			},
 		},
 
-		Columns: azureKaytuColumns([]*plugin.Column{
+		Columns: azureOGColumns([]*plugin.Column{
 
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the device. Inherited from directoryObject.", Transform: transform.FromField("Description.Id")},
 			{Name: "display_name", Type: proto.ColumnType_STRING, Description: "The name displayed for the device.", Transform: transform.FromField("Description.DisplayName")},
