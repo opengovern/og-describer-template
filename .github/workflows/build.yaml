@@ -46,17 +46,17 @@ jobs:
         run: |
           git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
       - name: Build AzureAd Plugin App
-        working-directory: ./steampipe-plugin-azuread
+        working-directory: ./steampipe-plugin-entraid
         run: make build
       - name: Pack Azure Plugin Build
-        working-directory: ./steampipe-plugin-azuread
+        working-directory: ./steampipe-plugin-entraid
         run: |
           tar -cvf build.tar build
       - name: Upload AzureAd Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: steampipe-plugin-azuread
-          path: ./steampipe-plugin-azuread/build.tar
+          name: steampipe-plugin-entraid
+          path: ./steampipe-plugin-entraid/build.tar
           retention-days: 1
       - name: Build Local Describer App
         working-directory: .
@@ -79,7 +79,7 @@ jobs:
           else
             echo "latest_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
           fi
-  deploy-azuread-plugin:
+  deploy-entraid-plugin:
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -92,7 +92,7 @@ jobs:
       - name: Download AzureAd Plugin Artifact
         uses: actions/download-artifact@v3
         with:
-          name: steampipe-plugin-azuread
+          name: steampipe-plugin-entraid
           path: .
       - name: Unpack AzureAd Plugin Artifact
         run: |
@@ -108,9 +108,9 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-azuread:0.0.1
-            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-azuread:${{ needs.build.outputs.latest_tag }}
-          file: steampipe-plugin-azuread/docker/Dockerfile
+            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-entraid:0.0.1
+            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-entraid:${{ needs.build.outputs.latest_tag }}
+          file: steampipe-plugin-entraid/docker/Dockerfile
           context: .
   deploy-local-describer:
     needs:
