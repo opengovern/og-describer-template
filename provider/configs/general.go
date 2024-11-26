@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"github.com/opengovern/opengovernance/services/integration/integration-type/entra-id-directory/configs"
+	"github.com/opengovern/opencomply/services/integration/integration-type/entra-id-directory/configs"
 )
 
 const (
