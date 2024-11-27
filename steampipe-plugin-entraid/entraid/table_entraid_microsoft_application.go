@@ -57,12 +57,12 @@ func tableEntraIdMicrosoftApplication(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("Metadata").Transform(marshalJSON),
 			},
 			{
-				Name:        "og_account_id",
+				Name:        "platform_account_id",
 				Type:        proto.ColumnType_STRING,
 				Description: "The Platform Account ID in which the resource is located.",
 				Transform:   transform.FromField("Metadata.SourceID")},
 			{
-				Name:        "og_resource_id",
+				Name:        "platform_resource_id",
 				Type:        proto.ColumnType_STRING,
 				Description: "The unique ID of the resource in opengovernance.",
 				Transform:   transform.FromField("ID")},
