@@ -6,7 +6,7 @@ brand_color: "#191717"
 display_name: "GitHub"
 short_name: "github"
 description: "Steampipe plugin for querying GitHub Repositories, Organizations, and other resources."
-og_description: "Use SQL to query repos, orgs and more from GitHub. Open source CLI. No DB required."
+platform_resource_description: "Use SQL to query repos, orgs and more from GitHub. Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/github-social-graphic.png"
 engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
