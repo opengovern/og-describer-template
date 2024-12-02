@@ -45,7 +45,7 @@ func getJWTAuthToken() (string, error) {
 	}
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
-		"email": "describe-worker@opengovernance.io",
+		"email": "describe-worker@opencomply.io",
 	}).SignedString(pk)
 	if err != nil {
 		return "", fmt.Errorf("JWT token generation failed %v", err)
