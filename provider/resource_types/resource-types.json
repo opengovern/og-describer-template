@@ -36,18 +36,6 @@
     "Model": "AdDevice"
   },
   {
-    "ResourceName": "Microsoft.Entra/signInReports",
-    "Tags": {
-      "logo_uri": [
-        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"
-      ]
-    },
-    "ListDescriber": "DescribeADByTenantID(describer.AdSignInReport)",
-    "GetDescriber": "",
-    "SteampipeTable": "azuread_sign_in_report",
-    "Model": "AdSignInReport"
-  },
-  {
     "ResourceName": "Microsoft.Entra/applications",
     "Tags": {
       "logo_uri": [
@@ -236,16 +224,5 @@
     "GetDescriber": "",
     "SteampipeTable": "azuread_directory_setting",
     "Model": "AdDirectorySetting"
-  },
-  {
-    "ResourceName": "Microsoft.Entra/directoryauditreport",
-    "Tags": {
-      "logo_uri": [
-      ]
-    },
-    "ListDescriber": "DescribeADByTenantID(describer.AdDirectoryAuditReport)",
-    "GetDescriber": "",
-    "SteampipeTable": "azuread_directory_audit_report",
-    "Model": "AdDirectoryAuditReport"
   }
 ]

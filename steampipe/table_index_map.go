@@ -8,7 +8,6 @@ var Map = map[string]string{
 	"Microsoft.Entra/groups":                    "entraid_group",
 	"Microsoft.Entra/groupMemberships":          "entraid_group_membership",
 	"Microsoft.Entra/devices":                   "entraid_device",
-	"Microsoft.Entra/signInReports":             "entraid_sign_in_report",
 	"Microsoft.Entra/applications":              "entraid_application",
 	"Microsoft.Entra/appRegistrations":          "entraid_app_registration",
 	"Microsoft.Entra/enterpriseApplication":     "entraid_enterprise_application",
@@ -26,14 +25,12 @@ var Map = map[string]string{
 	"Microsoft.Entra/users":                     "entraid_user",
 	"Microsoft.Entra/directoryroles":            "entraid_directory_role",
 	"Microsoft.Entra/directorysettings":         "entraid_directory_setting",
-	"Microsoft.Entra/directoryauditreport":      "entraid_directory_audit_report",
 }
 
 var DescriptionMap = map[string]interface{}{
 	"Microsoft.Entra/groups":                    opengovernance.AdGroup{},
 	"Microsoft.Entra/groupMemberships":          opengovernance.AdGroupMembership{},
 	"Microsoft.Entra/devices":                   opengovernance.AdDevice{},
-	"Microsoft.Entra/signInReports":             opengovernance.AdSignInReport{},
 	"Microsoft.Entra/applications":              opengovernance.AdApplication{},
 	"Microsoft.Entra/appRegistrations":          opengovernance.AdAppRegistration{},
 	"Microsoft.Entra/enterpriseApplication":     opengovernance.AdEnterpriseApplication{},
@@ -51,14 +48,12 @@ var DescriptionMap = map[string]interface{}{
 	"Microsoft.Entra/users":                     opengovernance.AdUsers{},
 	"Microsoft.Entra/directoryroles":            opengovernance.AdDirectoryRole{},
 	"Microsoft.Entra/directorysettings":         opengovernance.AdDirectorySetting{},
-	"Microsoft.Entra/directoryauditreport":      opengovernance.AdDirectoryAuditReport{},
 }
 
 var ReverseMap = map[string]string{
 	"entraid_group":                        "Microsoft.Entra/groups",
 	"entraid_group_membership":             "Microsoft.Entra/groupMemberships",
 	"entraid_device":                       "Microsoft.Entra/devices",
-	"entraid_sign_in_report":               "Microsoft.Entra/signInReports",
 	"entraid_application":                  "Microsoft.Entra/applications",
 	"entraid_app_registration":             "Microsoft.Entra/appRegistrations",
 	"entraid_enterprise_application":       "Microsoft.Entra/enterpriseApplication",
@@ -76,5 +71,4 @@ var ReverseMap = map[string]string{
 	"entraid_user":                         "Microsoft.Entra/users",
 	"entraid_directory_role":               "Microsoft.Entra/directoryroles",
 	"entraid_directory_setting":            "Microsoft.Entra/directorysettings",
-	"entraid_directory_audit_report":       "Microsoft.Entra/directoryauditreport",
 }

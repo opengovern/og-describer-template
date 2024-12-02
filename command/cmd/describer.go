@@ -4,16 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/opengovern/og-describer-template/pkg/describer"
-	model "github.com/opengovern/og-describer-template/pkg/sdk/models"
-	"github.com/opengovern/og-describer-template/provider"
-	"github.com/opengovern/og-describer-template/provider/configs"
-	"github.com/opengovern/og-describer-template/steampipe"
+	"github.com/opengovern/og-describer-entraid/pkg/describer"
+	model "github.com/opengovern/og-describer-entraid/pkg/sdk/models"
+	"github.com/opengovern/og-describer-entraid/provider"
+	"github.com/opengovern/og-describer-entraid/provider/configs"
+	"github.com/opengovern/og-describer-entraid/steampipe"
 	"github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/es"
+	configs2 "github.com/opengovern/opencomply/services/integration/integration-type/entra-id-directory/configs"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"golang.org/x/net/context"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
@@ -23,6 +25,7 @@ import (
 var (
 	resourceType string
 	outputFile   string
+	credentials  string
 )
 
 // describerCmd represents the describer command
@@ -52,8 +55,27 @@ var describerCmd = &cobra.Command{
 		ctx := context.Background()
 		logger, _ := zap.NewProduction()
 
-		// TODO: Set the credentials
-		creds := configs.IntegrationCredentials{}
+		credsFile, err := os.Open(credentials)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		// Read the file content
+		data, err := ioutil.ReadAll(credsFile)
+		if err != nil {
+			return err
+		}
+
+		// Unmarshal JSON into the struct
+		var credentialsJson configs2.IntegrationCredentials
+		err = json.Unmarshal(data, &credentialsJson)
+		if err != nil {
+			return err
+		}
+		creds := configs.IntegrationCredentials{
+			credentialsJson,
+		}
 
 		additionalParameters, err := provider.GetAdditionalParameters(job)
 		if err != nil {
@@ -153,6 +175,7 @@ var describerCmd = &cobra.Command{
 func init() {
 	describerCmd.Flags().StringVar(&resourceType, "resourceType", "", "Resource type")
 	describerCmd.Flags().StringVar(&outputFile, "outputFile", "output.json", "File to write JSON outputs")
+	describerCmd.Flags().StringVar(&credentials, "credentialsFile", "credentials.json", "File to write JSON outputs")
 }
 
 func trimJsonFromEmptyObjects(input []byte) ([]byte, error) {

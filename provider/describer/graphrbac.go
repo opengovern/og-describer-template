@@ -1915,6 +1915,9 @@ func AdAdminConsentRequestPolicy(ctx context.Context, cred *azidentity.ClientSec
 		})
 	}
 
+	if result.GetId() == nil {
+		return nil, nil
+	}
 	resource := models2.Resource{
 		ID:       *result.GetId(),
 		Location: "global",

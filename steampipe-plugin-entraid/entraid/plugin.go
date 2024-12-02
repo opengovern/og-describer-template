@@ -30,7 +30,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"entraid_app_registration":             tableEntraIdAppRegistration(ctx),
 			"entraid_authorization_policy":         tableEntraIdAuthorizationPolicy(ctx),
 			"entraid_conditional_access_policy":    tableEntraIdConditionalAccessPolicy(ctx),
-			"entraid_directory_audit_report":       tableEntraIdDirectoryAuditReport(ctx),
 			"entraid_directory_role":               tableEntraIdDirectoryRole(ctx),
 			"entraid_directory_setting":            tableEntraIdDirectorySetting(ctx),
 			"entraid_domain":                       tableEntraIdDomain(ctx),
@@ -45,7 +44,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"entraid_microsoft_application":        tableEntraIdMicrosoftApplication(ctx),
 			"entraid_user":                         tableEntraIdUser(ctx),
 			"entraid_device":                       tableEntraIdDevice(ctx),
-			"entraid_sign_in_report":               tableEntraIdSignInReport(ctx),
 			"entraid_user_registration_details":    tableEntraIdUserRegistrationDetails(ctx),
 		},
 	}
