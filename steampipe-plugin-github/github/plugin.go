@@ -30,7 +30,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"github_community_profile":               tableGitHubCommunityProfile(),
 			"github_gitignore":                       tableGitHubGitignore(),
 			"github_issue":                           tableGitHubIssue(),
-			"github_issue_comment":                   tableGitHubIssueComment(),
 			"github_license":                         tableGitHubLicense(),
 			"github_organization":                    tableGitHubOrganization(),
 			"github_organization_dependabot_alert":   tableGitHubOrganizationDependabotAlert(),

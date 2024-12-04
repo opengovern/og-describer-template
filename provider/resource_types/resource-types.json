@@ -132,18 +132,6 @@
     "Model": "Issue"
   },
   {
-    "ResourceName": "Github/Issue/Comment",
-    "Tags": {
-      "category": [
-        "Issue"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllIssueComments)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_issue_comment",
-    "Model": "IssueComment"
-  },
-  {
     "ResourceName": "Github/License",
     "Tags": {
       "category": [

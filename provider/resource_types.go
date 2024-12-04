@@ -160,20 +160,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetIssue),
 	},
 
-	"Github/Issue/Comment": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Issue/Comment",
-		Tags:                 map[string][]string{
-            "category": {"Issue"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllIssueComments),
-		GetDescriber:         nil,
-	},
-
 	"Github/License": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/License",
