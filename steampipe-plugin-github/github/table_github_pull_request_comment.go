@@ -17,7 +17,7 @@ func tableGitHubPullRequestComment() *plugin.Table {
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			Hydrate:           tableGitHubRepositoryPullRequestCommentList,
 		},
-		Columns: commonColumns(sharedCommentsColumns()),
+		//Columns: commonColumns(sharedCommentsColumns()),
 	}
 }
 
