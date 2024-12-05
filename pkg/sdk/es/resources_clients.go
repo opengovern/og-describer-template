@@ -156,10 +156,10 @@ var listAdUsersFilters = map[string]string{
 	"job_title":                             "Description.JobTitle",
 	"last_sign_in_date_time":                "Description.LastSignInDateTime",
 	"mail":                                  "Description.Mail",
-	"platform_account_id":                   "Metadata.SourceID",
-	"platform_resource_id":                  "ID",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
+	"platform_account_id":                   "Metadata.SourceID",
+	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
 	"usage_location":                        "Description.UsageLocation",
@@ -185,9 +185,9 @@ func ListAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListAdUsers NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdUsers GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdUsers GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -201,7 +201,7 @@ func ListAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUsersFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUsersFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUsers NewAdUsersPaginator", "error", err)
 		return nil, err
@@ -237,10 +237,10 @@ var getAdUsersFilters = map[string]string{
 	"job_title":                             "Description.JobTitle",
 	"last_sign_in_date_time":                "Description.LastSignInDateTime",
 	"mail":                                  "Description.Mail",
-	"platform_account_id":                   "Metadata.SourceID",
-	"platform_resource_id":                  "ID",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
+	"platform_account_id":                   "Metadata.SourceID",
+	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
 	"usage_location":                        "Description.UsageLocation",
@@ -263,7 +263,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -277,7 +277,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUsersFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUsersFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -450,8 +450,6 @@ var listAdGroupFilters = map[string]string{
 	"membership_rule":                  "Description.MembershipRule",
 	"membership_rule_processing_state": "Description.MembershipRuleProcessingState",
 	"nested_groups":                    "Description.NestedGroups",
-	"platform_account_id":              "Metadata.SourceID",
-	"platform_resource_id":             "ID",
 	"on_premises_domain_name":          "Description.OnPremisesDomainName",
 	"on_premises_last_sync_date_time":  "Description.OnPremisesLastSyncDateTime",
 	"on_premises_net_bios_name":        "Description.OnPremisesNetBiosName",
@@ -459,6 +457,8 @@ var listAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
+	"platform_account_id":              "Metadata.SourceID",
+	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
 	"resource_behavior_options":        "Description.ResourceBehaviorOptions",
@@ -487,9 +487,9 @@ func ListAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListAdGroup NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdGroup GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdGroup GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -503,7 +503,7 @@ func ListAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroup NewAdGroupPaginator", "error", err)
 		return nil, err
@@ -547,8 +547,6 @@ var getAdGroupFilters = map[string]string{
 	"membership_rule":                  "Description.MembershipRule",
 	"membership_rule_processing_state": "Description.MembershipRuleProcessingState",
 	"nested_groups":                    "Description.NestedGroups",
-	"platform_account_id":              "Metadata.SourceID",
-	"platform_resource_id":             "ID",
 	"on_premises_domain_name":          "Description.OnPremisesDomainName",
 	"on_premises_last_sync_date_time":  "Description.OnPremisesLastSyncDateTime",
 	"on_premises_net_bios_name":        "Description.OnPremisesNetBiosName",
@@ -556,6 +554,8 @@ var getAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
+	"platform_account_id":              "Metadata.SourceID",
+	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
 	"resource_behavior_options":        "Description.ResourceBehaviorOptions",
@@ -581,7 +581,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -595,7 +595,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -769,10 +769,10 @@ var listAdServicePrincipalFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -799,9 +799,9 @@ func ListAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdServicePrincipal NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdServicePrincipal GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdServicePrincipal GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -815,7 +815,7 @@ func ListAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdServicePrincipalFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdServicePrincipalFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdServicePrincipal NewAdServicePrincipalPaginator", "error", err)
 		return nil, err
@@ -860,10 +860,10 @@ var getAdServicePrincipalFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -887,7 +887,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -901,7 +901,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdServicePrincipalFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdServicePrincipalFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1096,9 +1096,9 @@ func ListAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		plugin.Logger(ctx).Error("ListAdApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -1112,7 +1112,7 @@ func ListAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		return nil, err
 	}
 
-	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdApplication NewAdApplicationPaginator", "error", err)
 		return nil, err
@@ -1175,7 +1175,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1189,7 +1189,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1371,9 +1371,9 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		plugin.Logger(ctx).Error("ListAdDirectoryRole NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryRole GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdDirectoryRole GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -1387,7 +1387,7 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectoryRoleFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectoryRoleFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectoryRole NewAdDirectoryRolePaginator", "error", err)
 		return nil, err
@@ -1437,7 +1437,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1451,7 +1451,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectoryRoleFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectoryRoleFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1634,9 +1634,9 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdDirectorySetting NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectorySetting GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdDirectorySetting GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -1650,7 +1650,7 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectorySettingFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectorySettingFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectorySetting NewAdDirectorySettingPaginator", "error", err)
 		return nil, err
@@ -1701,7 +1701,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1715,7 +1715,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectorySettingFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectorySettingFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1740,284 +1740,6 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 }
 
 // ==========================  END: AdDirectorySetting =============================
-
-// ==========================  START: AdDirectoryAuditReport =============================
-
-type AdDirectoryAuditReport struct {
-	ResourceID      string                                    `json:"resource_id"`
-	PlatformID      string                                    `json:"platform_id"`
-	Description     entraid.AdDirectoryAuditReportDescription `json:"description"`
-	Metadata        entraid.Metadata                          `json:"metadata"`
-	DescribedBy     string                                    `json:"described_by"`
-	ResourceType    string                                    `json:"resource_type"`
-	IntegrationType string                                    `json:"integration_type"`
-	IntegrationID   string                                    `json:"integration_id"`
-}
-
-func (r *AdDirectoryAuditReport) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdDirectoryAuditReportDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type AdDirectoryAuditReportHit struct {
-	ID      string                 `json:"_id"`
-	Score   float64                `json:"_score"`
-	Index   string                 `json:"_index"`
-	Type    string                 `json:"_type"`
-	Version int64                  `json:"_version,omitempty"`
-	Source  AdDirectoryAuditReport `json:"_source"`
-	Sort    []interface{}          `json:"sort"`
-}
-
-type AdDirectoryAuditReportHits struct {
-	Total essdk.SearchTotal           `json:"total"`
-	Hits  []AdDirectoryAuditReportHit `json:"hits"`
-}
-
-type AdDirectoryAuditReportSearchResponse struct {
-	PitID string                     `json:"pit_id"`
-	Hits  AdDirectoryAuditReportHits `json:"hits"`
-}
-
-type AdDirectoryAuditReportPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewAdDirectoryAuditReportPaginator(filters []essdk.BoolFilter, limit *int64) (AdDirectoryAuditReportPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_directoryauditreport", filters, limit)
-	if err != nil {
-		return AdDirectoryAuditReportPaginator{}, err
-	}
-
-	p := AdDirectoryAuditReportPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p AdDirectoryAuditReportPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p AdDirectoryAuditReportPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p AdDirectoryAuditReportPaginator) NextPage(ctx context.Context) ([]AdDirectoryAuditReport, error) {
-	var response AdDirectoryAuditReportSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []AdDirectoryAuditReport
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listAdDirectoryAuditReportFilters = map[string]string{
-	"activity_date_time":    "Description.ActivityDateTime",
-	"activity_display_name": "Description.ActivityDisplayName",
-	"additional_details":    "Description.AdditionalDetails",
-	"category":              "Description.Category",
-	"correlation_id":        "Description.CorrelationId",
-	"id":                    "Description.Id",
-	"initiated_by":          "Description.InitiatedBy",
-	"logged_by_service":     "Description.LoggedByService",
-	"operation_type":        "Description.OperationType",
-	"result":                "Description.Result",
-	"result_reason":         "Description.ResultReason",
-	"target_resources":      "Description.TargetResources",
-	"tenant_id":             "Description.TenantID",
-	"title":                 "Description.Id",
-}
-
-func ListAdDirectoryAuditReport(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListAdDirectoryAuditReport")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewAdDirectoryAuditReportPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectoryAuditReportFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDirectoryAuditReport NewAdDirectoryAuditReportPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListAdDirectoryAuditReport paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getAdDirectoryAuditReportFilters = map[string]string{
-	"activity_date_time":    "Description.ActivityDateTime",
-	"activity_display_name": "Description.ActivityDisplayName",
-	"additional_details":    "Description.AdditionalDetails",
-	"category":              "Description.Category",
-	"correlation_id":        "Description.CorrelationId",
-	"id":                    "Description.Id",
-	"initiated_by":          "Description.InitiatedBy",
-	"logged_by_service":     "Description.LoggedByService",
-	"operation_type":        "Description.OperationType",
-	"result":                "Description.Result",
-	"result_reason":         "Description.ResultReason",
-	"target_resources":      "Description.TargetResources",
-	"tenant_id":             "Description.TenantID",
-	"title":                 "Description.Id",
-}
-
-func GetAdDirectoryAuditReport(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetAdDirectoryAuditReport")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewAdDirectoryAuditReportPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectoryAuditReportFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: AdDirectoryAuditReport =============================
 
 // ==========================  START: AdDomain =============================
 
@@ -2179,9 +1901,9 @@ func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdDomain NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDomain GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdDomain GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -2195,7 +1917,7 @@ func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDomainFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDomainFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDomain NewAdDomainPaginator", "error", err)
 		return nil, err
@@ -2249,7 +1971,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2263,7 +1985,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDomainFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDomainFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2421,9 +2143,9 @@ func (p AdTenantPaginator) NextPage(ctx context.Context) ([]AdTenant, error) {
 var listAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
+	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
 	"platform_account_id":      "Metadata.SourceID",
 	"platform_resource_id":     "ID",
-	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
 	"verified_domains":         "Description.VerifiedDomains",
@@ -2447,9 +2169,9 @@ func ListAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdTenant NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdTenant GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdTenant GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -2463,7 +2185,7 @@ func ListAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdTenantFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdTenantFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdTenant NewAdTenantPaginator", "error", err)
 		return nil, err
@@ -2492,9 +2214,9 @@ func ListAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 var getAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
+	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
 	"platform_account_id":      "Metadata.SourceID",
 	"platform_resource_id":     "ID",
-	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
 	"verified_domains":         "Description.VerifiedDomains",
@@ -2515,7 +2237,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2529,7 +2251,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdTenantFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdTenantFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2712,9 +2434,9 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdIdentityProvider NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdIdentityProvider GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdIdentityProvider GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -2728,7 +2450,7 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdIdentityProviderFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdIdentityProviderFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdIdentityProvider NewAdIdentityProviderPaginator", "error", err)
 		return nil, err
@@ -2779,7 +2501,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2793,7 +2515,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdIdentityProviderFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdIdentityProviderFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2975,9 +2697,9 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -2991,7 +2713,7 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 		return nil, err
 	}
 
-	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdSecurityDefaultsPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdSecurityDefaultsPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy NewAdSecurityDefaultsPolicyPaginator", "error", err)
 		return nil, err
@@ -3041,7 +2763,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3055,7 +2777,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdSecurityDefaultsPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdSecurityDefaultsPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3243,9 +2965,9 @@ func ListAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plug
 		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -3259,7 +2981,7 @@ func ListAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plug
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAuthorizationPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAuthorizationPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy NewAdAuthorizationPolicyPaginator", "error", err)
 		return nil, err
@@ -3315,7 +3037,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3329,7 +3051,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAuthorizationPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAuthorizationPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3527,9 +3249,9 @@ func ListAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *
 		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -3543,7 +3265,7 @@ func ListAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *
 		return nil, err
 	}
 
-	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdConditionalAccessPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdConditionalAccessPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy NewAdConditionalAccessPolicyPaginator", "error", err)
 		return nil, err
@@ -3609,7 +3331,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3623,7 +3345,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdConditionalAccessPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdConditionalAccessPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3807,9 +3529,9 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -3823,7 +3545,7 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAdminConsentRequestPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAdminConsentRequestPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy NewAdAdminConsentRequestPolicyPaginator", "error", err)
 		return nil, err
@@ -3875,7 +3597,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3889,7 +3611,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAdminConsentRequestPolicyFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAdminConsentRequestPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3914,304 +3636,6 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 }
 
 // ==========================  END: AdAdminConsentRequestPolicy =============================
-
-// ==========================  START: AdSignInReport =============================
-
-type AdSignInReport struct {
-	ResourceID      string                            `json:"resource_id"`
-	PlatformID      string                            `json:"platform_id"`
-	Description     entraid.AdSignInReportDescription `json:"description"`
-	Metadata        entraid.Metadata                  `json:"metadata"`
-	DescribedBy     string                            `json:"described_by"`
-	ResourceType    string                            `json:"resource_type"`
-	IntegrationType string                            `json:"integration_type"`
-	IntegrationID   string                            `json:"integration_id"`
-}
-
-func (r *AdSignInReport) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdSignInReportDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
-}
-
-type AdSignInReportHit struct {
-	ID      string         `json:"_id"`
-	Score   float64        `json:"_score"`
-	Index   string         `json:"_index"`
-	Type    string         `json:"_type"`
-	Version int64          `json:"_version,omitempty"`
-	Source  AdSignInReport `json:"_source"`
-	Sort    []interface{}  `json:"sort"`
-}
-
-type AdSignInReportHits struct {
-	Total essdk.SearchTotal   `json:"total"`
-	Hits  []AdSignInReportHit `json:"hits"`
-}
-
-type AdSignInReportSearchResponse struct {
-	PitID string             `json:"pit_id"`
-	Hits  AdSignInReportHits `json:"hits"`
-}
-
-type AdSignInReportPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewAdSignInReportPaginator(filters []essdk.BoolFilter, limit *int64) (AdSignInReportPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_signinreports", filters, limit)
-	if err != nil {
-		return AdSignInReportPaginator{}, err
-	}
-
-	p := AdSignInReportPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p AdSignInReportPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p AdSignInReportPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p AdSignInReportPaginator) NextPage(ctx context.Context) ([]AdSignInReport, error) {
-	var response AdSignInReportSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []AdSignInReport
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listAdSignInReportFilters = map[string]string{
-	"app_display_name":                    "Description.AppDisplayName",
-	"app_id":                              "Description.AppId",
-	"applied_conditional_access_policies": "Description.AppliedConditionalAccessPolicies",
-	"client_app_used":                     "Description.ClientAppUsed",
-	"conditional_access_status":           "Description.ConditionalAccessStatus",
-	"correlation_id":                      "Description.CorrelationId",
-	"created_date_time":                   "Description.CreatedDateTime",
-	"device_detail":                       "Description.DeviceDetail",
-	"id":                                  "Description.Id",
-	"ip_address":                          "Description.IpAddress",
-	"is_interactive":                      "Description.IsInteractive",
-	"location":                            "Description.Location",
-	"resource_display_name":               "Description.ResourceDisplayName",
-	"resource_id":                         "Description.ResourceId",
-	"risk_detail":                         "Description.RiskDetail",
-	"risk_level_aggregated":               "Description.RiskLevelAggregated",
-	"risk_level_during_sign_in":           "Description.RiskLevelDuringSignIn",
-	"risk_state":                          "Description.RiskState",
-	"status":                              "Description.Status",
-	"tenant_id":                           "Description.TenantID",
-	"title":                               "Description.Id",
-	"user_display_name":                   "Description.UserDisplayName",
-	"user_id":                             "Description.UserId",
-	"user_principal_name":                 "Description.UserPrincipalName",
-}
-
-func ListAdSignInReport(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListAdSignInReport")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewAdSignInReportPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdSignInReportFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListAdSignInReport NewAdSignInReportPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListAdSignInReport paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getAdSignInReportFilters = map[string]string{
-	"app_display_name":                    "Description.AppDisplayName",
-	"app_id":                              "Description.AppId",
-	"applied_conditional_access_policies": "Description.AppliedConditionalAccessPolicies",
-	"client_app_used":                     "Description.ClientAppUsed",
-	"conditional_access_status":           "Description.ConditionalAccessStatus",
-	"correlation_id":                      "Description.CorrelationId",
-	"created_date_time":                   "Description.CreatedDateTime",
-	"device_detail":                       "Description.DeviceDetail",
-	"id":                                  "Description.Id",
-	"ip_address":                          "Description.IpAddress",
-	"is_interactive":                      "Description.IsInteractive",
-	"location":                            "Description.Location",
-	"resource_display_name":               "Description.ResourceDisplayName",
-	"resource_id":                         "Description.ResourceId",
-	"risk_detail":                         "Description.RiskDetail",
-	"risk_level_aggregated":               "Description.RiskLevelAggregated",
-	"risk_level_during_sign_in":           "Description.RiskLevelDuringSignIn",
-	"risk_state":                          "Description.RiskState",
-	"status":                              "Description.Status",
-	"tenant_id":                           "Description.TenantID",
-	"title":                               "Description.Id",
-	"user_display_name":                   "Description.UserDisplayName",
-	"user_id":                             "Description.UserId",
-	"user_principal_name":                 "Description.UserPrincipalName",
-}
-
-func GetAdSignInReport(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetAdSignInReport")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewAdSignInReportPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdSignInReportFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: AdSignInReport =============================
 
 // ==========================  START: AdDevice =============================
 
@@ -4378,9 +3802,9 @@ func ListAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdDevice NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdDevice GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdDevice GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -4394,7 +3818,7 @@ func ListAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDeviceFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDeviceFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDevice NewAdDevicePaginator", "error", err)
 		return nil, err
@@ -4453,7 +3877,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4467,7 +3891,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDeviceFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDeviceFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4661,9 +4085,9 @@ func ListAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *
 		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -4677,7 +4101,7 @@ func ListAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *
 		return nil, err
 	}
 
-	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUserRegistrationDetailsFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUserRegistrationDetailsFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails NewAdUserRegistrationDetailsPaginator", "error", err)
 		return nil, err
@@ -4739,7 +4163,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4753,7 +4177,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUserRegistrationDetailsFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUserRegistrationDetailsFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4943,9 +4367,9 @@ func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdGroupMembership NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdGroupMembership GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdGroupMembership GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -4959,7 +4383,7 @@ func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupMembershipFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupMembershipFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroupMembership NewAdGroupMembershipPaginator", "error", err)
 		return nil, err
@@ -5017,7 +4441,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5031,7 +4455,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupMembershipFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupMembershipFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5226,9 +4650,9 @@ func ListAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdAppRegistration NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdAppRegistration GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdAppRegistration GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -5242,7 +4666,7 @@ func ListAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAppRegistrationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAppRegistrationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAppRegistration NewAdAppRegistrationPaginator", "error", err)
 		return nil, err
@@ -5305,7 +4729,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5319,7 +4743,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAppRegistrationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAppRegistrationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5493,10 +4917,10 @@ var listAdEnterpriseApplicationFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -5523,9 +4947,9 @@ func ListAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *pl
 		plugin.Logger(ctx).Error("ListAdEnterpriseApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdEnterpriseApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdEnterpriseApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -5539,7 +4963,7 @@ func ListAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *pl
 		return nil, err
 	}
 
-	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdEnterpriseApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdEnterpriseApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdEnterpriseApplication NewAdEnterpriseApplicationPaginator", "error", err)
 		return nil, err
@@ -5584,10 +5008,10 @@ var getAdEnterpriseApplicationFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -5611,7 +5035,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5625,7 +5049,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdEnterpriseApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdEnterpriseApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5800,10 +5224,10 @@ var listAdManagedIdentityFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"sign_in_audience":             "Description.SignInAudience",
@@ -5829,9 +5253,9 @@ func ListAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdManagedIdentity NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdManagedIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdManagedIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -5845,7 +5269,7 @@ func ListAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdManagedIdentityFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdManagedIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdManagedIdentity NewAdManagedIdentityPaginator", "error", err)
 		return nil, err
@@ -5891,10 +5315,10 @@ var getAdManagedIdentityFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"sign_in_audience":             "Description.SignInAudience",
@@ -5917,7 +5341,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5931,7 +5355,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdManagedIdentityFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdManagedIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6105,10 +5529,10 @@ var listAdMicrosoftApplicationFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -6135,9 +5559,9 @@ func ListAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 		plugin.Logger(ctx).Error("ListAdMicrosoftApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListAdMicrosoftApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyAccountID", "error", err)
+		plugin.Logger(ctx).Error("ListAdMicrosoftApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
@@ -6151,7 +5575,7 @@ func ListAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 		return nil, err
 	}
 
-	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdMicrosoftApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdMicrosoftApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdMicrosoftApplication NewAdMicrosoftApplicationPaginator", "error", err)
 		return nil, err
@@ -6196,10 +5620,10 @@ var getAdMicrosoftApplicationFilters = map[string]string{
 	"logout_url":                   "Description.LogoutUrl",
 	"notification_email_addresses": "Description.NotificationEmailAddresses",
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
-	"platform_account_id":          "Metadata.SourceID",
-	"platform_resource_id":         "ID",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
 	"service_principal_type":       "Description.ServicePrincipalType",
@@ -6223,7 +5647,7 @@ func GetAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plug
 	if err != nil {
 		return nil, err
 	}
-	accountId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyAccountID)
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -6237,7 +5661,7 @@ func GetAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plug
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdMicrosoftApplicationFilters, "entraid", accountId, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdMicrosoftApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}

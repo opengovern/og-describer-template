@@ -8,7 +8,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdGroup)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_group",
+    "SteampipeTable": "entraid_group",
     "Model": "AdGroup"
   },
   {
@@ -20,7 +20,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdGroupMembership)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_group_membership",
+    "SteampipeTable": "entraid_group_membership",
     "Model": "AdGroupMembership"
   },
   {
@@ -32,7 +32,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdDevice)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_device",
+    "SteampipeTable": "entraid_device",
     "Model": "AdDevice"
   },
   {
@@ -44,7 +44,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdApplication)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_application",
+    "SteampipeTable": "entraid_application",
     "Model": "AdApplication"
   },
   {
@@ -56,7 +56,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdAppRegistration)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_app_registration",
+    "SteampipeTable": "entraid_app_registration",
     "Model": "AdAppRegistration"
   },
   {
@@ -68,7 +68,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdEnterpriseApplication)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_enterprise_application",
+    "SteampipeTable": "entraid_enterprise_application",
     "Model": "AdEnterpriseApplication"
   },
   {
@@ -80,7 +80,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdManagedIdentity)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_managed_identity",
+    "SteampipeTable": "entraid_managed_identity",
     "Model": "AdManagedIdentity"
   },
   {
@@ -92,7 +92,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdMicrosoftApplication)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_microsoft_application",
+    "SteampipeTable": "entraid_microsoft_application",
     "Model": "AdMicrosoftApplication"
   },
   {
@@ -103,7 +103,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdDomain)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_domain",
+    "SteampipeTable": "entraid_domain",
     "Model": "AdDomain"
   },
   {
@@ -114,7 +114,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdTenant)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_tenant",
+    "SteampipeTable": "entraid_tenant",
     "Model": "AdTenant"
   },
   {
@@ -125,7 +125,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdIdentityProvider)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_identity_provider",
+    "SteampipeTable": "entraid_identity_provider",
     "Model": "AdIdentityProvider"
   },
   {
@@ -136,7 +136,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdSecurityDefaultsPolicy)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_security_defaults_policy",
+    "SteampipeTable": "entraid_security_defaults_policy",
     "Model": "AdSecurityDefaultsPolicy"
   },
   {
@@ -147,7 +147,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdAuthorizationPolicy)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_authorization_policy",
+    "SteampipeTable": "entraid_authorization_policy",
     "Model": "AdAuthorizationPolicy"
   },
   {
@@ -158,7 +158,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdConditionalAccessPolicy)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_conditional_access_policy",
+    "SteampipeTable": "entraid_conditional_access_policy",
     "Model": "AdConditionalAccessPolicy"
   },
   {
@@ -169,7 +169,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdAdminConsentRequestPolicy)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_admin_consent_request_policy",
+    "SteampipeTable": "entraid_admin_consent_request_policy",
     "Model": "AdAdminConsentRequestPolicy"
   },
   {
@@ -180,7 +180,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdUserRegistrationDetails)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_user_registration_details",
+    "SteampipeTable": "entraid_user_registration_details",
     "Model": "AdUserRegistrationDetails"
   },
   {
@@ -188,7 +188,7 @@
     "Tags": null,
     "ListDescriber": "DescribeADByTenantID(describer.AdServicePrinciple)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_service_principal",
+    "SteampipeTable": "entraid_service_principal",
     "Model": "AdServicePrincipal"
   },
   {
@@ -200,7 +200,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdUsers)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_user",
+    "SteampipeTable": "entraid_user",
     "Model": "AdUsers"
   },
   {
@@ -211,7 +211,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdDirectoryRole)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_directory_role",
+    "SteampipeTable": "entraid_directory_role",
     "Model": "AdDirectoryRole"
   },
   {
@@ -222,7 +222,7 @@
     },
     "ListDescriber": "DescribeADByTenantID(describer.AdDirectorySetting)",
     "GetDescriber": "",
-    "SteampipeTable": "azuread_directory_setting",
+    "SteampipeTable": "entraid_directory_setting",
     "Model": "AdDirectorySetting"
   }
 ]
