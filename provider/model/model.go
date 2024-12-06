@@ -701,10 +701,22 @@ type CodeOwnerDescription struct {
 }
 
 type PackageDescription struct {
-	ID         string           `json:"id"`
-	RegistryID string           `json:"registry_id"`
-	Name       string           `json:"name"`
-	URL        string           `json:"url"`
-	CreatedAt  github.Timestamp `json:"created_at"`
-	UpdatedAt  github.Timestamp `json:"updated_at"`
+	ID         string
+	RegistryID string
+	Name       string
+	URL        string
+	CreatedAt  github.Timestamp
+	UpdatedAt  github.Timestamp
+}
+
+type PackageVersionDescription struct {
+	ID            int
+	PackageType   string
+	PackageID     int
+	Version       string
+	Digest        *string
+	Size          int64
+	CreatedAt     github.Timestamp
+	UpdatedAt     github.Timestamp
+	DownloadCount int
 }

@@ -13,7 +13,6 @@ import (
 type GitHubClient struct {
 	RestClient    *github.Client
 	GraphQLClient *githubv4.Client
-	Token         string
 }
 
 const (
@@ -1442,6 +1441,34 @@ func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
 		}
 	}
 	return fileSHAs, nil
+}
+
+func getPackages(ctx context.Context, githubClient GitHubClient, organizationName string) ([]*github.Package, error) {
+	client := githubClient.RestClient
+	var packages []*github.Package
+	packageTypes := []string{"container", "maven", "npm", "rubygems", "nuget"}
+	for _, packageType := range packageTypes {
+		page := 1
+		for {
+			var opts = &github.PackageListOptions{
+				PackageType: &packageType,
+				ListOptions: github.ListOptions{
+					Page:    page,
+					PerPage: packagePageSize,
+				},
+			}
+			respPackages, resp, err := client.Organizations.ListPackages(ctx, organizationName, opts)
+			if err != nil {
+				return nil, err
+			}
+			packages = append(packages, respPackages...)
+			if resp.After == "" {
+				break
+			}
+			opts.ListOptions.Page += 1
+		}
+	}
+	return packages, nil
 }
 
 func formRepositoryFullName(owner, repo string) string {
