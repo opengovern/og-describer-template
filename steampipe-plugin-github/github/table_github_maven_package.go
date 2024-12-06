@@ -1,6 +1,7 @@
 package github
 
 import (
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -9,10 +10,10 @@ func tableGitHubMavenPackage() *plugin.Table {
 	return &plugin.Table{
 		Name: "github_maven_package",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListPackage,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetPackage,
 		},
 		Columns: []*plugin.Column{
 			// Basic details columns
