@@ -454,6 +454,77 @@
     "GetDescriber": "",
     "SteampipeTable": "github_code_owner",
     "Model": "CodeOwner"
+  },
+  {
+    "ResourceName": "Github/Package/Container",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetContainerPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetContainerPackage)",
+    "SteampipeTable": "github_container_package",
+    "Model": "Package"
+  },
+  {
+    "ResourceName": "Github/Package/Maven",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetMavenPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetMavenPackage)",
+    "SteampipeTable": "github_maven_package",
+    "Model": "Package"
+  },
+  {
+    "ResourceName": "Github/Package/NPM",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetNPMPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetNPMPackage)",
+    "SteampipeTable": "github_npm_package",
+    "Model": "Package"
+  },
+  {
+    "ResourceName": "Github/Package/RubyGems",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetRubyGemsPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRubyGemsPackage)",
+    "SteampipeTable": "github_rubygems_package",
+    "Model": "Package"
+  },
+  {
+    "ResourceName": "Github/Package/Nuget",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetNugetPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetNugetPackage)",
+    "SteampipeTable": "github_nuget_package",
+    "Model": "Package"
+  },
+  {
+    "ResourceName": "Github/Package/Version",
+    "Tags": {
+      "category": [
+        "package"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetAllPackageVersionList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_package_version",
+    "Model": "PackageVersion"
   }
-
 ]

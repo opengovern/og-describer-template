@@ -60,6 +60,12 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"github_tree":                            tableGitHubTree(),
 			"github_user":                            tableGitHubUser(),
 			"github_workflow":                        tableGitHubWorkflow(),
+			"github_container_package":               tableGitHubContainerPackage(),
+			"github_maven_package":                   tableGitHubMavenPackage(),
+			"github_npm_package":                     tableGitHubNPMPackage(),
+			"github_nuget_package":                   tableGitHubNugetPackage(),
+			"github_ruby_gems_package":               tableGitHubRubyGemsPackage(),
+			"github_package_version":                 tableGitHubPackageVersion(),
 		},
 	}
 	for key, table := range p.TableMap {
