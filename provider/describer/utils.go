@@ -26,6 +26,7 @@ const (
 	orgCollaboratorsPageSize = 30
 	releasePageSize          = 20
 	teamMembersPageSize      = 30
+	packagePageSize          = 100
 )
 
 func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
