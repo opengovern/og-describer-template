@@ -537,4 +537,88 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        DescribeByGithub(describer.ListCodeOwners),
 		GetDescriber:         nil,
 	},
+
+	"Github/Package/Container": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/Container",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetContainerPackageList),
+		GetDescriber:         DescribeSingleByRepo(describer.GetContainerPackage),
+	},
+
+	"Github/Package/Maven": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/Maven",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetMavenPackageList),
+		GetDescriber:         DescribeSingleByRepo(describer.GetMavenPackage),
+	},
+
+	"Github/Package/NPM": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/NPM",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetNPMPackageList),
+		GetDescriber:         DescribeSingleByRepo(describer.GetNPMPackage),
+	},
+
+	"Github/Package/RubyGems": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/RubyGems",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetRubyGemsPackageList),
+		GetDescriber:         DescribeSingleByRepo(describer.GetRubyGemsPackage),
+	},
+
+	"Github/Package/Nuget": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/Nuget",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetNugetPackageList),
+		GetDescriber:         DescribeSingleByRepo(describer.GetNugetPackage),
+	},
+
+	"Github/Package/Version": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/Package/Version",
+		Tags:                 map[string][]string{
+            "category": {"package"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.GetAllPackageVersionList),
+		GetDescriber:         nil,
+	},
 }

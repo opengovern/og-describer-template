@@ -43,6 +43,12 @@ var Map = map[string]string{
   "GithubUser": "github_user",
   "GithubWorkflow": "github_workflow",
   "Github/CodeOwner": "github_code_owner",
+  "Github/Package/Container": "github_container_package",
+  "Github/Package/Maven": "github_maven_package",
+  "Github/Package/NPM": "github_npm_package",
+  "Github/Package/RubyGems": "github_rubygems_package",
+  "Github/Package/Nuget": "github_nuget_package",
+  "Github/Package/Version": "github_package_version",
 }
 
 var DescriptionMap = map[string]interface{}{
@@ -84,6 +90,12 @@ var DescriptionMap = map[string]interface{}{
   "GithubUser": opengovernance.User{},
   "GithubWorkflow": opengovernance.Workflow{},
   "Github/CodeOwner": opengovernance.CodeOwner{},
+  "Github/Package/Container": opengovernance.Package{},
+  "Github/Package/Maven": opengovernance.Package{},
+  "Github/Package/NPM": opengovernance.Package{},
+  "Github/Package/RubyGems": opengovernance.Package{},
+  "Github/Package/Nuget": opengovernance.Package{},
+  "Github/Package/Version": opengovernance.PackageVersion{},
 }
 
 var ReverseMap = map[string]string{
@@ -125,4 +137,10 @@ var ReverseMap = map[string]string{
   "github_user": "GithubUser",
   "github_workflow": "GithubWorkflow",
   "github_code_owner": "Github/CodeOwner",
+  "github_container_package": "Github/Package/Container",
+  "github_maven_package": "Github/Package/Maven",
+  "github_npm_package": "Github/Package/NPM",
+  "github_rubygems_package": "Github/Package/RubyGems",
+  "github_nuget_package": "Github/Package/Nuget",
+  "github_package_version": "Github/Package/Version",
 }
