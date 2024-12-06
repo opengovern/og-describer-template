@@ -35,6 +35,7 @@ func DescribeByGithub(describe func(context.Context, describer.GitHubClient, str
 		client := describer.GitHubClient{
 			RestClient:    restClient,
 			GraphQLClient: graphQLClient,
+			Token:         cfg.IntegrationCredentials.PatToken,
 		}
 
 		organizationName := additionalParameters["OrganizationName"]

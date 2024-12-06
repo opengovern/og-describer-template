@@ -13,6 +13,7 @@ import (
 type GitHubClient struct {
 	RestClient    *github.Client
 	GraphQLClient *githubv4.Client
+	Token         string
 }
 
 const (
