@@ -496,9 +496,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"GithubUser": {
+	"Github/User": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "GithubUser",
+		ResourceName:         "Github/User",
 		Tags:                 map[string][]string{
             "category": {"user"},
         },
@@ -510,9 +510,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"GithubWorkflow": {
+	"Github/Workflow": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "GithubWorkflow",
+		ResourceName:         "Github/Workflow",
 		Tags:                 map[string][]string{
             "category": {"workflow"},
         },

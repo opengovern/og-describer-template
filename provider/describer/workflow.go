@@ -22,6 +22,9 @@ func GetAllWorkflows(ctx context.Context, githubClient GitHubClient, organizatio
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
+		if repo == nil {
+			continue
+		}
 		repoValues, err := GetRepositoryWorkflows(ctx, githubClient, stream, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err

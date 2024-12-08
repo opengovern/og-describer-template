@@ -420,7 +420,7 @@
     "Model": "Tree"
   },
   {
-    "ResourceName": "GithubUser",
+    "ResourceName": "Github/User",
     "Tags": {
       "category": [
         "user"
@@ -432,7 +432,7 @@
     "Model": "User"
   },
   {
-    "ResourceName": "GithubWorkflow",
+    "ResourceName": "Github/Workflow",
     "Tags": {
       "category": [
         "workflow"

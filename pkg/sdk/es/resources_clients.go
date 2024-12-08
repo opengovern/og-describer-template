@@ -8059,7 +8059,7 @@ type UserPaginator struct {
 }
 
 func (k Client) NewUserPaginator(filters []essdk.BoolFilter, limit *int64) (UserPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "githubuser", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_user", filters, limit)
 	if err != nil {
 		return UserPaginator{}, err
 	}
@@ -8372,7 +8372,7 @@ type WorkflowPaginator struct {
 }
 
 func (k Client) NewWorkflowPaginator(filters []essdk.BoolFilter, limit *int64) (WorkflowPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "githubworkflow", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_workflow", filters, limit)
 	if err != nil {
 		return WorkflowPaginator{}, err
 	}
