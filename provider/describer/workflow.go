@@ -51,23 +51,32 @@ func GetRepositoryWorkflows(ctx context.Context, githubClient GitHubClient, stre
 			return nil, err
 		}
 		for _, workflow := range workflows.Workflows {
+			if workflow == nil {
+				continue
+			}
+			var pipeline *goPipeline.Pipeline
+			var content string
+
 			fileContent, err := getWorkflowFileContent(ctx, client, workflow, owner, repo)
 			if err != nil {
 				return nil, err
 			}
-			content, err := fileContent.GetContent()
-			if err != nil {
-				return nil, err
+			if fileContent != nil {
+				content, err = fileContent.GetContent()
+				if err != nil {
+					return nil, err
+				}
+				fileContentBasic := FileContent{
+					Repository: repo,
+					FilePath:   fileContent.GetPath(),
+					Content:    content,
+				}
+				pipeline, err = decodeFileContentToPipeline(fileContentBasic)
+				if err != nil {
+					return nil, err
+				}
 			}
-			fileContentBasic := FileContent{
-				Repository: repo,
-				FilePath:   fileContent.GetPath(),
-				Content:    content,
-			}
-			pipeline, err := decodeFileContentToPipeline(fileContentBasic)
-			if err != nil {
-				return nil, err
-			}
+
 			value := models.Resource{
 				ID:   strconv.Itoa(int(workflow.GetID())),
 				Name: workflow.GetName(),
