@@ -56,7 +56,7 @@ func tableGitHubWorkflow() *plugin.Table {
 				Transform:   transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 				Description: "Time when the workflow was updated."},
 			{Name: "url", Type: proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.State"),
+				Transform:   transform.FromField("Description.URL"),
 				Description: "URL of the workflow."},
 			{Name: "workflow_file_content", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.WorkFlowFileContent"),
