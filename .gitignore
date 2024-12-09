@@ -3,3 +3,4 @@ og-describer-template
 .idea
 .env
 local/
+output.json
