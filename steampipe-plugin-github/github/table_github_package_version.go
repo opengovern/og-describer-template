@@ -14,7 +14,8 @@ func tableGitHubPackageVersion() *plugin.Table {
 			Hydrate: opengovernance.ListPackageVersion,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetPackageVersion,
+			KeyColumns: plugin.AllColumns([]string{"id"}),
+			Hydrate:    opengovernance.GetPackageVersion,
 		},
 		Columns: []*plugin.Column{
 			// Basic details columns

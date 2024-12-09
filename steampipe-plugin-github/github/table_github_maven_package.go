@@ -13,7 +13,8 @@ func tableGitHubMavenPackage() *plugin.Table {
 			Hydrate: opengovernance.ListPackage,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetPackage,
+			KeyColumns: plugin.AllColumns([]string{"id"}),
+			Hydrate:    opengovernance.GetPackage,
 		},
 		Columns: []*plugin.Column{
 			// Basic details columns

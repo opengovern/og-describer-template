@@ -13,9 +13,7 @@ func tableGitHubCommunityProfile() *plugin.Table {
 		Name:        "github_community_profile",
 		Description: "Community profile information for the given repository.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.SingleColumn("repository_full_name"),
-			Hydrate:           opengovernance.ListCommunityProfile,
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
+			Hydrate: opengovernance.ListCommunityProfile,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
