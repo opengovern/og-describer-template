@@ -710,13 +710,11 @@ type PackageDescription struct {
 }
 
 type PackageVersionDescription struct {
-	ID            int
-	PackageType   string
-	PackageID     int
-	Version       string
-	Digest        *string
-	Size          int64
-	CreatedAt     github.Timestamp
-	UpdatedAt     github.Timestamp
-	DownloadCount int
+	ID          int
+	Name        string
+	PackageName string
+	VersionURI  string
+	Digest      *string
+	CreatedAt   github.Timestamp
+	UpdatedAt   github.Timestamp
 }

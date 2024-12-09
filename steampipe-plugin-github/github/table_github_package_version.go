@@ -19,14 +19,12 @@ func tableGitHubPackageVersion() *plugin.Table {
 		Columns: []*plugin.Column{
 			// Basic details columns
 			{Name: "id", Type: proto.ColumnType_INT, Description: "Unique identifier for the package version."},
-			{Name: "packageType", Type: proto.ColumnType_STRING, Description: "Type of the package (e.g., binary, source, etc.)."},
-			{Name: "packageId", Type: proto.ColumnType_INT, Description: "ID of the associated package."},
-			{Name: "version", Type: proto.ColumnType_STRING, Description: "Version of the package."},
-			{Name: "digest", Type: proto.ColumnType_STRING, Description: "Digest of the package version, if available."},
-			{Name: "size", Type: proto.ColumnType_INT, Description: "Size of the package version in bytes."},
+			{Name: "name", Type: proto.ColumnType_INT, Description: "name and version of the package"},
+			{Name: "versionUri", Type: proto.ColumnType_STRING, Description: "version uri of the package."},
+			{Name: "digest", Type: proto.ColumnType_STRING, Description: "Digest of the package version"},
+			{Name: "packageName", Type: proto.ColumnType_INT, Description: "name of the package"},
 			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package version was created."},
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package version was last updated."},
-			{Name: "downloadCount", Type: proto.ColumnType_INT, Description: "Number of times the package version has been downloaded."},
 		},
 	}
 }

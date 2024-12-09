@@ -2,6 +2,7 @@ package describer
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
@@ -48,9 +49,10 @@ func GetPackageVersionList(ctx context.Context, githubClient GitHubClient, organ
 				Description: JSONAllFieldsMarshaller{
 					Value: model.PackageVersionDescription{
 						ID:          int(packageVersion.GetID()),
-						PackageType: packageType,
-						PackageID:   packageID,
-						Version:     packageVersion.GetVersion(),
+						Name:        fmt.Sprintf("%s:%s", packageName, packageVersion.GetVersion()),
+						VersionURI:  fmt.Sprintf("ghcr.io/%s/%s:%s", organizationName, packageName, packageVersion.GetVersion()),
+						PackageName: packageName,
+						Digest:      packageVersion.Name,
 						CreatedAt:   packageVersion.GetCreatedAt(),
 						UpdatedAt:   packageVersion.GetUpdatedAt(),
 					},
