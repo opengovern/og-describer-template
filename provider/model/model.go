@@ -683,7 +683,16 @@ type UserDescription struct {
 }
 
 type WorkflowDescription struct {
-	*github.Workflow
+	ID                      *int64
+	NodeID                  *string
+	Name                    *string
+	Path                    *string
+	State                   *string
+	CreatedAt               *github.Timestamp
+	UpdatedAt               *github.Timestamp
+	URL                     *string
+	HTMLURL                 *string
+	BadgeURL                *string
 	RepositoryFullName      string
 	WorkFlowFileContent     string
 	WorkFlowFileContentJson *github.RepositoryContent

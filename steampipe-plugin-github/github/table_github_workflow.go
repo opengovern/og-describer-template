@@ -21,10 +21,12 @@ func tableGitHubWorkflow() *plugin.Table {
 		},
 		Columns: commonColumns([]*plugin.Column{
 			// Top columns
-			{Name: "repository_full_name", Type: proto.ColumnType_STRING,
+			{
+				Name: "repository_full_name", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
 				Description: "Full name of the repository that contains the workflow."},
-			{Name: "name", Type: proto.ColumnType_STRING,
+			{
+				Name: "name", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Name"),
 				Description: "The name of the workflow."},
 			{Name: "id", Type: proto.ColumnType_INT,
