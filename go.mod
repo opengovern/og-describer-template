@@ -1,4 +1,4 @@
-module github.com/opengovern/og-describer-template
+module github.com/opengovern/og-describer-render
 
 go 1.22.0
 
