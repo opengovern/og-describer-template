@@ -51,21 +51,6 @@ func ListJobs(ctx context.Context, handler *RenderAPIHandler, stream *models.Str
 	}
 }
 
-func GetJob(ctx context.Context, handler *RenderAPIHandler, resourceID, serviceID string) (*models.Resource, error) {
-	job, err := processJob(ctx, handler, resourceID, serviceID)
-	if err != nil {
-		return nil, err
-	}
-	value := models.Resource{
-		ID:   job.ID,
-		Name: job.Status,
-		Description: JSONAllFieldsMarshaller{
-			Value: job,
-		},
-	}
-	return &value, nil
-}
-
 func processJobs(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var jobs []model.JobDescription
 	var jobListResponse []model.JobResponse
@@ -129,36 +114,4 @@ func processJobs(ctx context.Context, handler *RenderAPIHandler, serviceID strin
 		}(job)
 	}
 	return nil
-}
-
-func processJob(ctx context.Context, handler *RenderAPIHandler, resourceID, serviceID string) (*model.JobDescription, error) {
-	var job model.JobDescription
-	var resp *http.Response
-	baseURL := "https://api.render.com/v1/services/"
-
-	finalURL := fmt.Sprintf("%s%s/jobs/%s", baseURL, serviceID, resourceID)
-	req, err := http.NewRequest("GET", finalURL, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	requestFunc := func(req *http.Request) (*http.Response, error) {
-		var e error
-		resp, e = handler.Client.Do(req)
-		if e != nil {
-			return nil, fmt.Errorf("request execution failed: %w", e)
-		}
-		defer resp.Body.Close()
-
-		if e = json.NewDecoder(resp.Body).Decode(&job); e != nil {
-			return nil, fmt.Errorf("failed to decode response: %w", e)
-		}
-		return resp, e
-	}
-
-	err = handler.DoRequest(ctx, req, requestFunc)
-	if err != nil {
-		return nil, fmt.Errorf("error during request handling: %w", err)
-	}
-	return &job, nil
 }

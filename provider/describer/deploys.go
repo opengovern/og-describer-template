@@ -51,21 +51,6 @@ func ListDeploys(ctx context.Context, handler *RenderAPIHandler, stream *models.
 	}
 }
 
-func GetDeploy(ctx context.Context, handler *RenderAPIHandler, resourceID, serviceID string) (*models.Resource, error) {
-	deploy, err := processDeploy(ctx, handler, resourceID, serviceID)
-	if err != nil {
-		return nil, err
-	}
-	value := models.Resource{
-		ID:   deploy.ID,
-		Name: deploy.Status,
-		Description: JSONAllFieldsMarshaller{
-			Value: deploy,
-		},
-	}
-	return &value, nil
-}
-
 func processDeploys(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var deploys []model.DeployDescription
 	var deployListResponse []model.DeployResponse
@@ -129,36 +114,4 @@ func processDeploys(ctx context.Context, handler *RenderAPIHandler, serviceID st
 		}(deploy)
 	}
 	return nil
-}
-
-func processDeploy(ctx context.Context, handler *RenderAPIHandler, resourceID, serviceID string) (*model.DeployDescription, error) {
-	var deploy model.DeployDescription
-	var resp *http.Response
-	baseURL := "https://api.render.com/v1/services/"
-
-	finalURL := fmt.Sprintf("%s%s/deploys/%s", baseURL, serviceID, resourceID)
-	req, err := http.NewRequest("GET", finalURL, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	requestFunc := func(req *http.Request) (*http.Response, error) {
-		var e error
-		resp, e = handler.Client.Do(req)
-		if e != nil {
-			return nil, fmt.Errorf("request execution failed: %w", e)
-		}
-		defer resp.Body.Close()
-
-		if e = json.NewDecoder(resp.Body).Decode(&deploy); e != nil {
-			return nil, fmt.Errorf("failed to decode response: %w", e)
-		}
-		return resp, e
-	}
-
-	err = handler.DoRequest(ctx, req, requestFunc)
-	if err != nil {
-		return nil, fmt.Errorf("error during request handling: %w", err)
-	}
-	return &deploy, nil
 }

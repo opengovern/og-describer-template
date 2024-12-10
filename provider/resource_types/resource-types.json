@@ -9,7 +9,7 @@
   {
     "ResourceName": "Render/Deploy",
     "ListDescriber": "DescribeListByRender(describer.ListDeploys)",
-    "GetDescriber": "DescribeSingleByRender(describer.GetDeploy)",
+    "GetDescriber": "",
     "SteampipeTable": "render_deploy",
     "Model": "Deploy"
   },
@@ -37,14 +37,14 @@
   {
     "ResourceName": "Render/Header",
     "ListDescriber": "DescribeListByRender(describer.ListHeaders)",
-    "GetDescriber": "DescribeSingleByRender(describer.GetHeader)",
+    "GetDescriber": "",
     "SteampipeTable": "render_header",
     "Model": "Header"
   },
   {
     "ResourceName": "Render/Job",
     "ListDescriber": "DescribeListByRender(describer.ListJobs)",
-    "GetDescriber": "DescribeSingleByRender(describer.GetJob)",
+    "GetDescriber": "",
     "SteampipeTable": "render_job",
     "Model": "Job"
   },
@@ -65,7 +65,7 @@
   {
     "ResourceName": "Render/Route",
     "ListDescriber": "DescribeListByRender(describer.ListRoutes)",
-    "GetDescriber": "DescribeSingleByRender(describer.GetRoute)",
+    "GetDescriber": "",
     "SteampipeTable": "render_route",
     "Model": "Route"
   },

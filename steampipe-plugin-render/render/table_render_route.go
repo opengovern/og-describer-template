@@ -2,6 +2,7 @@ package render
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -11,10 +12,10 @@ func tableRenderRoute(ctx context.Context) *plugin.Table {
 		Name:        "render_route",
 		Description: "Information about route descriptions, including ID, type, source, destination, and priority.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListRoute,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetRoute,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

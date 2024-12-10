@@ -2,6 +2,7 @@ package render
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -11,10 +12,10 @@ func tableRenderEnvGroup(ctx context.Context) *plugin.Table {
 		Name:        "render_env_group",
 		Description: "Information about environment group descriptions, including ID, name, owner, service links, and timestamps.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListEnvGroup,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetEnvGroup,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

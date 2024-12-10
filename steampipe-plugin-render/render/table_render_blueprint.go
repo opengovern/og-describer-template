@@ -2,6 +2,7 @@ package render
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -11,10 +12,10 @@ func tableRenderBlueprint(ctx context.Context) *plugin.Table {
 		Name:        "render_blueprint",
 		Description: "Information about blueprint descriptions, including ID, name, status, and synchronization details.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListBlueprint,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetBlueprint,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

@@ -2,6 +2,7 @@ package render
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -11,10 +12,10 @@ func tableRenderHeader(ctx context.Context) *plugin.Table {
 		Name:        "render_header",
 		Description: "Information about header descriptions, including ID, path, name, and value.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListHeader,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetHeader,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

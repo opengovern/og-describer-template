@@ -2,6 +2,7 @@ package render
 
 import (
 	"context"
+	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -11,10 +12,10 @@ func tableRenderPostgres(ctx context.Context) *plugin.Table {
 		Name:        "render_postgres_instance",
 		Description: "Information about PostgreSQL database descriptions, including ID, configuration, status, and timestamps.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListPostgres,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.GetPostgres,
 		},
 		Columns: []*plugin.Column{
 			// Top columns
