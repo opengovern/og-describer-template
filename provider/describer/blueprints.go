@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func ListBluePrints(ctx context.Context, handler *RenderAPIHandler, stream *models.StreamSender) ([]models.Resource, error) {
+func ListBlueprints(ctx context.Context, handler *RenderAPIHandler, stream *models.StreamSender) ([]models.Resource, error) {
 	var wg sync.WaitGroup
 	renderChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
@@ -19,7 +19,7 @@ func ListBluePrints(ctx context.Context, handler *RenderAPIHandler, stream *mode
 	go func() {
 		defer close(renderChan)
 		defer close(errorChan)
-		if err := processBluePrints(ctx, handler, renderChan, &wg); err != nil {
+		if err := processBlueprints(ctx, handler, renderChan, &wg); err != nil {
 			errorChan <- err // Send error to the error channel
 		}
 		wg.Wait()
@@ -45,8 +45,8 @@ func ListBluePrints(ctx context.Context, handler *RenderAPIHandler, stream *mode
 	}
 }
 
-func GetBluePrint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*models.Resource, error) {
-	blueprint, err := processBluePrint(ctx, handler, resourceID)
+func GetBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*models.Resource, error) {
+	blueprint, err := processBlueprint(ctx, handler, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func GetBluePrint(ctx context.Context, handler *RenderAPIHandler, resourceID str
 	return &value, nil
 }
 
-func processBluePrints(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
+func processBlueprints(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var blueprints []model.BlueprintDescription
 	var blueprintListResponse []model.BlueprintResponse
 	var resp *http.Response
@@ -125,7 +125,7 @@ func processBluePrints(ctx context.Context, handler *RenderAPIHandler, renderCha
 	return nil
 }
 
-func processBluePrint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ProjectDescription, error) {
+func processBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ProjectDescription, error) {
 	var project model.ProjectDescription
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/blueprints/"

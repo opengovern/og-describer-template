@@ -1,9 +1,79 @@
 [
   {
-    "ResourceName": "AWS::Redshift::Snapshot",
-    "ListDescriber": "ParallelDescribeRegional(describer.RedshiftSnapshot)",
-    "GetDescriber": "ParallelDescribeRegionalSingleResource(describer.GetRedshiftSnapshot)",
-    "SteampipeTable": "aws_redshift_snapshot",
-    "Model": "RedshiftSnapshot"
+    "ResourceName": "Render/Blueprint",
+    "ListDescriber": "DescribeListByRender(describer.ListBlueprints)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetBlueprint)",
+    "SteampipeTable": "render_blueprint",
+    "Model": "Blueprint"
+  },
+  {
+    "ResourceName": "Render/Deploy",
+    "ListDescriber": "DescribeListByRender(describer.ListDeploys)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetDeploy)",
+    "SteampipeTable": "render_deploy",
+    "Model": "Deploy"
+  },
+  {
+    "ResourceName": "Render/Disk",
+    "ListDescriber": "DescribeListByRender(describer.ListDisks)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetDisk)",
+    "SteampipeTable": "render_disk",
+    "Model": "Disk"
+  },
+  {
+    "ResourceName": "Render/EnvGroup",
+    "ListDescriber": "DescribeListByRender(describer.ListEnvGroups)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetEnvGroup)",
+    "SteampipeTable": "render_env_group",
+    "Model": "EnvGroup"
+  },
+  {
+    "ResourceName": "Render/Environment",
+    "ListDescriber": "DescribeListByRender(describer.ListEnvironments)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetEnvironment)",
+    "SteampipeTable": "render_environment",
+    "Model": "Environment"
+  },
+  {
+    "ResourceName": "Render/Header",
+    "ListDescriber": "DescribeListByRender(describer.ListHeaders)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetHeader)",
+    "SteampipeTable": "render_header",
+    "Model": "Header"
+  },
+  {
+    "ResourceName": "Render/Job",
+    "ListDescriber": "DescribeListByRender(describer.ListJobs)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetJob)",
+    "SteampipeTable": "render_job",
+    "Model": "Job"
+  },
+  {
+    "ResourceName": "Render/PostgresInstance",
+    "ListDescriber": "DescribeListByRender(describer.ListPostgresInstances)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetPostgresInstance)",
+    "SteampipeTable": "render_postgres_instance",
+    "Model": "Postgres"
+  },
+  {
+    "ResourceName": "Render/Project",
+    "ListDescriber": "DescribeListByRender(describer.ListProjects)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetProject)",
+    "SteampipeTable": "render_project",
+    "Model": "Project"
+  },
+  {
+    "ResourceName": "Render/Route",
+    "ListDescriber": "DescribeListByRender(describer.ListRoutes)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetRoute)",
+    "SteampipeTable": "render_route",
+    "Model": "Route"
+  },
+  {
+    "ResourceName": "Render/Service",
+    "ListDescriber": "DescribeListByRender(describer.ListServices)",
+    "GetDescriber": "DescribeSingleByRender(describer.GetService)",
+    "SteampipeTable": "render_service",
+    "Model": "Service"
   }
 ]
