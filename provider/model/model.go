@@ -222,6 +222,11 @@ type ServiceLink struct {
 	Type string `json:"type"`
 }
 
+type EnvGroupResponse struct {
+	EnvGroup EnvGroupDescription `json:"envGroup"`
+	Cursor   string              `json:"cursor"`
+}
+
 type EnvGroupDescription struct {
 	ID            string        `json:"id"`
 	Name          string        `json:"name"`

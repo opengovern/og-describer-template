@@ -15,12 +15,18 @@ func ListEnvironments(ctx context.Context, handler *RenderAPIHandler, stream *mo
 	var wg sync.WaitGroup
 	renderChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
+	projects, err := getProjects(ctx, handler)
+	if err != nil {
+		return nil, err
+	}
 
 	go func() {
 		defer close(renderChan)
 		defer close(errorChan)
-		if err := processEnvironments(ctx, handler, renderChan, &wg); err != nil {
-			errorChan <- err // Send error to the error channel
+		for _, project := range projects {
+			if err := processEnvironments(ctx, handler, project.ID, renderChan, &wg); err != nil {
+				errorChan <- err // Send error to the error channel
+			}
 		}
 		wg.Wait()
 	}()
@@ -60,7 +66,7 @@ func GetEnvironment(ctx context.Context, handler *RenderAPIHandler, resourceID s
 	return &value, nil
 }
 
-func processEnvironments(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
+func processEnvironments(ctx context.Context, handler *RenderAPIHandler, projectID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var environments []model.EnvironmentDescription
 	var environmentListResponse []model.EnvironmentResponse
 	var resp *http.Response
@@ -69,6 +75,7 @@ func processEnvironments(ctx context.Context, handler *RenderAPIHandler, renderC
 
 	for {
 		params := url.Values{}
+		params.Set("projectId", projectID)
 		params.Set("limit", limit)
 		if cursor != "" {
 			params.Set("cursor", cursor)

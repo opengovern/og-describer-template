@@ -64,8 +64,7 @@ func processDeploys(ctx context.Context, handler *RenderAPIHandler, serviceID st
 		if cursor != "" {
 			params.Set("cursor", cursor)
 		}
-		finalURL := fmt.Sprintf("%s%sdeploys?%s", baseURL, serviceID, params.Encode())
-
+		finalURL := fmt.Sprintf("%s%s/deploys?%s", baseURL, serviceID, params.Encode())
 		req, err := http.NewRequest("GET", finalURL, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create request: %w", err)

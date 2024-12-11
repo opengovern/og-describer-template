@@ -53,7 +53,9 @@ var describerCmd = &cobra.Command{
 		logger, _ := zap.NewProduction()
 
 		// TODO: Set the credentials
-		creds := configs.IntegrationCredentials{}
+		creds := configs.IntegrationCredentials{
+			APIKey: "rnd_Uw1LgzMfbL1mPqbLNbkVjfnZDaWx",
+		}
 
 		additionalParameters, err := provider.GetAdditionalParameters(job)
 		if err != nil {

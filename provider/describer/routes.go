@@ -24,8 +24,10 @@ func ListRoutes(ctx context.Context, handler *RenderAPIHandler, stream *models.S
 		defer close(renderChan)
 		defer close(errorChan)
 		for _, service := range services {
-			if err := processRoutes(ctx, handler, service.ID, renderChan, &wg); err != nil {
-				errorChan <- err // Send error to the error channel
+			if service.Type == "static_site" {
+				if err := processRoutes(ctx, handler, service.ID, renderChan, &wg); err != nil {
+					errorChan <- err // Send error to the error channel
+				}
 			}
 		}
 		wg.Wait()
@@ -64,7 +66,7 @@ func processRoutes(ctx context.Context, handler *RenderAPIHandler, serviceID str
 		if cursor != "" {
 			params.Set("cursor", cursor)
 		}
-		finalURL := fmt.Sprintf("%s%sroutes?%s", baseURL, serviceID, params.Encode())
+		finalURL := fmt.Sprintf("%s%s/routes?%s", baseURL, serviceID, params.Encode())
 
 		req, err := http.NewRequest("GET", finalURL, nil)
 		if err != nil {

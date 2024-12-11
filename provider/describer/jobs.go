@@ -64,7 +64,7 @@ func processJobs(ctx context.Context, handler *RenderAPIHandler, serviceID strin
 		if cursor != "" {
 			params.Set("cursor", cursor)
 		}
-		finalURL := fmt.Sprintf("%s%sjobs?%s", baseURL, serviceID, params.Encode())
+		finalURL := fmt.Sprintf("%s%s/jobs?%s", baseURL, serviceID, params.Encode())
 
 		req, err := http.NewRequest("GET", finalURL, nil)
 		if err != nil {

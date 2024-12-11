@@ -24,8 +24,10 @@ func ListHeaders(ctx context.Context, handler *RenderAPIHandler, stream *models.
 		defer close(renderChan)
 		defer close(errorChan)
 		for _, service := range services {
-			if err := processHeaders(ctx, handler, service.ID, renderChan, &wg); err != nil {
-				errorChan <- err // Send error to the error channel
+			if service.Type == "static_site" {
+				if err := processHeaders(ctx, handler, service.ID, renderChan, &wg); err != nil {
+					errorChan <- err // Send error to the error channel
+				}
 			}
 		}
 		wg.Wait()
@@ -64,8 +66,7 @@ func processHeaders(ctx context.Context, handler *RenderAPIHandler, serviceID st
 		if cursor != "" {
 			params.Set("cursor", cursor)
 		}
-		finalURL := fmt.Sprintf("%s%sheaders?%s", baseURL, serviceID, params.Encode())
-
+		finalURL := fmt.Sprintf("%s%s/headers?%s", baseURL, serviceID, params.Encode())
 		req, err := http.NewRequest("GET", finalURL, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create request: %w", err)

@@ -159,3 +159,54 @@ func getServices(ctx context.Context, handler *RenderAPIHandler) ([]model.Servic
 	}
 	return services, nil
 }
+
+func getProjects(ctx context.Context, handler *RenderAPIHandler) ([]model.ProjectDescription, error) {
+	var projects []model.ProjectDescription
+	var projectListResponse []model.ProjectResponse
+	var resp *http.Response
+	baseURL := "https://api.render.com/v1/projects"
+	cursor := ""
+
+	for {
+		params := url.Values{}
+		params.Set("limit", limit)
+		if cursor != "" {
+			params.Set("cursor", cursor)
+		}
+		finalURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
+
+		req, err := http.NewRequest("GET", finalURL, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create request: %w", err)
+		}
+
+		requestFunc := func(req *http.Request) (*http.Response, error) {
+			var e error
+			resp, e = handler.Client.Do(req)
+			if e != nil {
+				return nil, fmt.Errorf("request execution failed: %w", e)
+			}
+			defer resp.Body.Close()
+
+			if e = json.NewDecoder(resp.Body).Decode(&projectListResponse); e != nil {
+				return nil, fmt.Errorf("failed to decode response: %w", e)
+			}
+			for i, projectResp := range projectListResponse {
+				projects = append(projects, projectResp.Project)
+				if i == len(projectListResponse)-1 {
+					cursor = projectResp.Cursor
+				}
+			}
+			return resp, nil
+		}
+		err = handler.DoRequest(ctx, req, requestFunc)
+		if err != nil {
+			return nil, fmt.Errorf("error during request handling: %w", err)
+		}
+
+		if len(projectListResponse) < 100 {
+			break
+		}
+	}
+	return projects, nil
+}
