@@ -118,34 +118,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetRepositoryCommit),
 	},
 
-	"Github/CommunityProfile": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/CommunityProfile",
-		Tags:                 map[string][]string{
-            "category": {"Community Profile"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllCommunityProfiles),
-		GetDescriber:         nil,
-	},
-
-	"Github/Gitignore": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Gitignore",
-		Tags:                 map[string][]string{
-            "category": {"Gitignore"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetGitIgnoreTemplateList),
-		GetDescriber:         DescribeSingleByRepo(describer.GetGitignoreTemplate),
-	},
-
 	"Github/Issue": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Issue",
@@ -384,20 +356,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Stargazer": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Stargazer",
-		Tags:                 map[string][]string{
-            "category": {"Stargazer"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllStargazers),
-		GetDescriber:         nil,
-	},
-
 	"Github/Tag": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Tag",
@@ -451,34 +409,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllTeamsRepositories),
-		GetDescriber:         nil,
-	},
-
-	"Github/Traffic/View/Daily": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Traffic/View/Daily",
-		Tags:                 map[string][]string{
-            "category": {"traffic_view"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllTrafficViewDailies),
-		GetDescriber:         nil,
-	},
-
-	"Github/Traffic/View/Weekly": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Traffic/View/Weekly",
-		Tags:                 map[string][]string{
-            "category": {"traffic_view"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllTrafficViewWeeklies),
 		GetDescriber:         nil,
 	},
 
@@ -580,20 +510,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Package/RubyGems": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Package/RubyGems",
-		Tags:                 map[string][]string{
-            "category": {"package"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetRubyGemsPackageList),
-		GetDescriber:         DescribeSingleByRepo(describer.GetRubyGemsPackage),
-	},
-
 	"Github/Package/Nuget": {
 		IntegrationType:      configs.IntegrationName,
 		ResourceName:         "Github/Package/Nuget",
@@ -606,20 +522,6 @@ var ResourceTypes = map[string]model.ResourceType{
         },
 		ListDescriber:        DescribeByGithub(describer.GetNugetPackageList),
 		GetDescriber:         DescribeSingleByRepo(describer.GetNugetPackage),
-	},
-
-	"Github/Package/Version": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Package/Version",
-		Tags:                 map[string][]string{
-            "category": {"package"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllPackageVersionList),
-		GetDescriber:         nil,
 	},
 
 	"Github/ArtifactDockerFile": {

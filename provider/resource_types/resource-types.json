@@ -96,30 +96,6 @@
     "Model": "Commit"
   },
   {
-    "ResourceName": "Github/CommunityProfile",
-    "Tags": {
-      "category": [
-        "Community Profile"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllCommunityProfiles)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_community_profile",
-    "Model": "CommunityProfile"
-  },
-  {
-    "ResourceName": "Github/Gitignore",
-    "Tags": {
-      "category": [
-        "Gitignore"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetGitIgnoreTemplateList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetGitignoreTemplate)",
-    "SteampipeTable": "github_gitignore",
-    "Model": "GitIgnore"
-  },
-  {
     "ResourceName": "Github/Issue",
     "Tags": {
       "category": [
@@ -324,18 +300,6 @@
     "Model": "RepoVulnerabilityAlert"
   },
   {
-    "ResourceName": "Github/Stargazer",
-    "Tags": {
-      "category": [
-        "Stargazer"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllStargazers)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_stargazer",
-    "Model": "Stargazer"
-  },
-  {
     "ResourceName": "Github/Tag",
     "Tags": {
       "category": [
@@ -382,30 +346,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_team_repository",
     "Model": "TeamRepository"
-  },
-  {
-    "ResourceName": "Github/Traffic/View/Daily",
-    "Tags": {
-      "category": [
-        "traffic_view"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTrafficViewDailies)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_traffic_view_daily",
-    "Model": "TrafficViewDaily"
-  },
-  {
-    "ResourceName": "Github/Traffic/View/Weekly",
-    "Tags": {
-      "category": [
-        "traffic_view"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTrafficViewWeeklies)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_traffic_view_weekly",
-    "Model": "TrafficViewWeekly"
   },
   {
     "ResourceName": "Github/Tree",
@@ -492,18 +432,6 @@
     "Model": "PackageDetail"
   },
   {
-    "ResourceName": "Github/Package/RubyGems",
-    "Tags": {
-      "category": [
-        "package"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetRubyGemsPackageList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRubyGemsPackage)",
-    "SteampipeTable": "github_rubygems_package",
-    "Model": "Package"
-  },
-  {
     "ResourceName": "Github/Package/Nuget",
     "Tags": {
       "category": [
@@ -514,18 +442,6 @@
     "GetDescriber": "DescribeSingleByRepo(describer.GetNugetPackage)",
     "SteampipeTable": "github_nuget_package",
     "Model": "Package"
-  },
-  {
-    "ResourceName": "Github/Package/Version",
-    "Tags": {
-      "category": [
-        "package"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllPackageVersionList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_package_version",
-    "Model": "PackageVersion"
   },
   {
     "ResourceName": "Github/ArtifactDockerFile",
