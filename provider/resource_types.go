@@ -621,4 +621,18 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        DescribeByGithub(describer.GetAllPackageVersionList),
 		GetDescriber:         nil,
 	},
+
+	"Github/ArtifactDockerFile": {
+		IntegrationType:      configs.IntegrationName,
+		ResourceName:         "Github/ArtifactDockerFile",
+		Tags:                 map[string][]string{
+            "category": {"artifact_dockerfile"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        DescribeByGithub(describer.ListArtifactDockerFiles),
+		GetDescriber:         nil,
+	},
 }

@@ -66,6 +66,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"github_nuget_package":                   tableGitHubNugetPackage(),
 			"github_ruby_gems_package":               tableGitHubRubyGemsPackage(),
 			"github_package_version":                 tableGitHubPackageVersion(),
+			"github_artifact_dockerfile":             tableGitHubArtifactDockerFile(),
 		},
 	}
 	for key, table := range p.TableMap {

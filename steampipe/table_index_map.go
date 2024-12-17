@@ -49,6 +49,7 @@ var Map = map[string]string{
   "Github/Package/RubyGems": "github_rubygems_package",
   "Github/Package/Nuget": "github_nuget_package",
   "Github/Package/Version": "github_package_version",
+  "Github/ArtifactDockerFile": "github_artifact_dockerfile",
 }
 
 var DescriptionMap = map[string]interface{}{
@@ -90,12 +91,13 @@ var DescriptionMap = map[string]interface{}{
   "Github/User": opengovernance.User{},
   "Github/Workflow": opengovernance.Workflow{},
   "Github/CodeOwner": opengovernance.CodeOwner{},
-  "Github/Package/Container": opengovernance.Package{},
+  "Github/Package/Container": opengovernance.PackageOutputVersion{},
   "Github/Package/Maven": opengovernance.Package{},
   "Github/Package/NPM": opengovernance.Package{},
   "Github/Package/RubyGems": opengovernance.Package{},
   "Github/Package/Nuget": opengovernance.Package{},
   "Github/Package/Version": opengovernance.PackageVersion{},
+  "Github/ArtifactDockerFile": opengovernance.ArtifactDockerFile{},
 }
 
 var ReverseMap = map[string]string{
@@ -143,4 +145,5 @@ var ReverseMap = map[string]string{
   "github_rubygems_package": "Github/Package/RubyGems",
   "github_nuget_package": "Github/Package/Nuget",
   "github_package_version": "Github/Package/Version",
+  "github_artifact_dockerfile": "Github/ArtifactDockerFile",
 }

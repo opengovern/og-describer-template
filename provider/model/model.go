@@ -709,6 +709,44 @@ type CodeOwnerDescription struct {
 	LineComment        string
 }
 
+type Owner struct {
+	Login string `json:"login"`
+}
+
+type Package struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	PackageType string `json:"package_type"`
+	Visibility  string `json:"visibility"`
+	HTMLURL     string `json:"html_url"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+	Owner       Owner  `json:"owner"`
+	URL         string `json:"url"`
+}
+
+type ContainerMetadata struct {
+	Container struct {
+		Tags []string `json:"tags"`
+	} `json:"container"`
+}
+
+type PackageOutputVersionDescription struct {
+	ID             int               `json:"id"`
+	Digest         string            `json:"digest"`
+	URL            string            `json:"url"`
+	PackageURI     string            `json:"package_uri"`
+	PackageHTMLURL string            `json:"package_html_url"`
+	CreatedAt      string            `json:"created_at"`
+	UpdatedAt      string            `json:"updated_at"`
+	HTMLURL        string            `json:"html_url"`
+	Name           string            `json:"name"`
+	MediaType      string            `json:"media_type"`
+	TotalSize      int64             `json:"total_size"`
+	Metadata       ContainerMetadata `json:"metadata"`
+	Manifest       interface{}       `json:"manifest"`
+}
+
 type PackageDescription struct {
 	ID         string
 	RegistryID string
@@ -716,6 +754,17 @@ type PackageDescription struct {
 	URL        string
 	CreatedAt  github.Timestamp
 	UpdatedAt  github.Timestamp
+}
+
+type PackageVersion struct {
+	ID             int               `json:"id"`
+	Name           string            `json:"name"`
+	URL            string            `json:"url"`
+	PackageHTMLURL string            `json:"package_html_url"`
+	CreatedAt      string            `json:"created_at"`
+	UpdatedAt      string            `json:"updated_at"`
+	HTMLURL        string            `json:"html_url"`
+	Metadata       ContainerMetadata `json:"metadata"`
 }
 
 type PackageVersionDescription struct {
@@ -726,4 +775,75 @@ type PackageVersionDescription struct {
 	Digest      *string
 	CreatedAt   github.Timestamp
 	UpdatedAt   github.Timestamp
+}
+
+type CodeSearchResult struct {
+	TotalCount        int             `json:"total_count"`
+	IncompleteResults bool            `json:"incomplete_results"`
+	Items             []CodeSearchHit `json:"items"`
+}
+
+type CodeSearchHit struct {
+	Name       string `json:"name"`
+	Path       string `json:"path"`
+	Sha        string `json:"sha"`
+	URL        string `json:"url"`
+	GitURL     string `json:"git_url"`
+	HTMLURL    string `json:"html_url"`
+	Repository struct {
+		ID       int    `json:"id"`
+		NodeID   string `json:"node_id"`
+		Name     string `json:"name"`
+		FullName string `json:"full_name"`
+		Private  bool   `json:"private"`
+		Owner    struct {
+			Login   string `json:"login"`
+			ID      int    `json:"id"`
+			NodeID  string `json:"node_id"`
+			URL     string `json:"url"`
+			HTMLURL string `json:"html_url"`
+			Type    string `json:"type"`
+		} `json:"owner"`
+		HTMLURL     string `json:"html_url"`
+		Description string `json:"description"`
+		Fork        bool   `json:"fork"`
+	} `json:"repository"`
+	Score float64 `json:"score"`
+}
+
+type ContentResponse struct {
+	Name     string `json:"name"`
+	Path     string `json:"path"`
+	Sha      string `json:"sha"`
+	Size     int    `json:"size"`
+	URL      string `json:"url"`
+	HTMLURL  string `json:"html_url"`
+	GitURL   string `json:"git_url"`
+	Type     string `json:"type"`
+	Content  string `json:"content"` // base64
+	Encoding string `json:"encoding"`
+}
+
+type CommitResponse struct {
+	Commit struct {
+		Author struct {
+			Date string `json:"date"`
+		} `json:"author"`
+		Committer struct {
+			Date string `json:"date"`
+		} `json:"committer"`
+	} `json:"commit"`
+}
+
+type ArtifactDockerFileDescription struct {
+	Sha                     string                 `json:"sha"`
+	Name                    string                 `json:"name"`
+	Path                    string                 `json:"path"`
+	LastUpdatedAt           string                 `json:"last_updated_at"`
+	GitURL                  string                 `json:"git_url"`
+	HTMLURL                 string                 `json:"html_url"`
+	URI                     string                 `json:"uri"` // Unique identifier
+	DockerfileContent       string                 `json:"dockerfile_content"`
+	DockerfileContentBase64 string                 `json:"dockerfile_content_base64"`
+	Repository              map[string]interface{} `json:"repository"`
 }

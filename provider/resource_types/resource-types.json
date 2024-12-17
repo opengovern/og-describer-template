@@ -465,7 +465,7 @@
     "ListDescriber": "DescribeByGithub(describer.GetContainerPackageList)",
     "GetDescriber": "DescribeSingleByRepo(describer.GetContainerPackage)",
     "SteampipeTable": "github_container_package",
-    "Model": "Package"
+    "Model": "PackageOutputVersion"
   },
   {
     "ResourceName": "Github/Package/Maven",
@@ -526,5 +526,17 @@
     "GetDescriber": "",
     "SteampipeTable": "github_package_version",
     "Model": "PackageVersion"
+  },
+  {
+    "ResourceName": "Github/ArtifactDockerFile",
+    "Tags": {
+      "category": [
+        "artifact_dockerfile"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.ListArtifactDockerFiles)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_artifact_dockerfile",
+    "Model": "ArtifactDockerFile"
   }
 ]

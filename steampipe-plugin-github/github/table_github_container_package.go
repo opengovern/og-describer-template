@@ -18,12 +18,19 @@ func tableGitHubContainerPackage() *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			// Basic details columns
-			{Name: "id", Type: proto.ColumnType_STRING, Description: "Unique identifier for the package."},
-			{Name: "registryId", Type: proto.ColumnType_STRING, Description: "Registry ID associated with the package."},
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the package."},
+			{Name: "id", Type: proto.ColumnType_INT, Description: "Unique identifier for the package."},
+			{Name: "digest", Type: proto.ColumnType_STRING, Description: "Digest of the package."},
 			{Name: "url", Type: proto.ColumnType_STRING, Description: "URL where the package can be accessed."},
-			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was created."},
-			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was last updated."},
+			{Name: "package_uri", Type: proto.ColumnType_STRING, Description: "URI of the package."},
+			{Name: "package_html_url", Type: proto.ColumnType_STRING, Description: "HTML URL of the package."},
+			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was created."},
+			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was last updated."},
+			{Name: "html_url", Type: proto.ColumnType_STRING, Description: "HTML URL for the package."},
+			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the package."},
+			{Name: "media_type", Type: proto.ColumnType_STRING, Description: "Media type of the package."},
+			{Name: "total_size", Type: proto.ColumnType_INT, Description: "Total size of the package."},
+			{Name: "metadata", Type: proto.ColumnType_JSON, Description: "Metadata of the package."},
+			{Name: "manifest", Type: proto.ColumnType_JSON, Description: "Manifest of the package."},
 		},
 	}
 }
