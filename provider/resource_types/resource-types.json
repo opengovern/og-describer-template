@@ -463,9 +463,9 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetContainerPackageList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetContainerPackage)",
+    "GetDescriber": "",
     "SteampipeTable": "github_container_package",
-    "Model": "PackageOutputVersion"
+    "Model": "ContainerPackage"
   },
   {
     "ResourceName": "Github/Package/Maven",
@@ -475,9 +475,9 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetMavenPackageList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetMavenPackage)",
+    "GetDescriber": "",
     "SteampipeTable": "github_maven_package",
-    "Model": "Package"
+    "Model": "PackageDetail"
   },
   {
     "ResourceName": "Github/Package/NPM",
@@ -487,9 +487,9 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetNPMPackageList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetNPMPackage)",
+    "GetDescriber": "",
     "SteampipeTable": "github_npm_package",
-    "Model": "Package"
+    "Model": "PackageDetail"
   },
   {
     "ResourceName": "Github/Package/RubyGems",

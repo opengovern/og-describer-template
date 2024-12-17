@@ -2,8 +2,11 @@ package describer
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/google/go-github/v55/github"
+	"github.com/opengovern/og-describer-github/provider/model"
+	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/shurcooL/githubv4"
 	"slices"
 	"strings"
@@ -1470,6 +1473,65 @@ func getPackages(ctx context.Context, githubClient GitHubClient, organizationNam
 		}
 	}
 	return packages, nil
+}
+
+func fetchAllPackages(sdk *resilientbridge.ResilientBridge, org, packageType string) ([]model.PackageListItem, error) {
+	var allPackages []model.PackageListItem
+	page := 1
+	perPage := 100
+
+	for {
+		endpoint := fmt.Sprintf("/orgs/%s/packages?package_type=%s&page=%d&per_page=%d", org, packageType, page, perPage)
+		listReq := &resilientbridge.NormalizedRequest{
+			Method:   "GET",
+			Endpoint: endpoint,
+			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+		}
+
+		listResp, err := sdk.Request("github", listReq)
+		if err != nil {
+			return nil, err
+		}
+		if listResp.StatusCode >= 400 {
+			return nil, err
+		}
+
+		var packages []model.PackageListItem
+		if err := json.Unmarshal(listResp.Data, &packages); err != nil {
+			return nil, err
+		}
+
+		if len(packages) == 0 {
+			break
+		}
+
+		allPackages = append(allPackages, packages...)
+		page++
+	}
+	return allPackages, nil
+}
+
+func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType, packageName string) (model.PackageDetailDescription, error) {
+	var pd model.PackageDetailDescription
+	endpoint := fmt.Sprintf("/orgs/%s/packages/%s/%s", org, packageType, packageName)
+	req := &resilientbridge.NormalizedRequest{
+		Method:   "GET",
+		Endpoint: endpoint,
+		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+	}
+
+	resp, err := sdk.Request("github", req)
+	if err != nil {
+		return pd, fmt.Errorf("error fetching package details: %w", err)
+	}
+	if resp.StatusCode >= 400 {
+		return pd, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+	}
+
+	if err := json.Unmarshal(resp.Data, &pd); err != nil {
+		return pd, fmt.Errorf("error parsing package details: %w", err)
+	}
+	return pd, nil
 }
 
 func formRepositoryFullName(owner, repo string) string {

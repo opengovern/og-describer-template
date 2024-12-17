@@ -2,87 +2,45 @@ package describer
 
 import (
 	"context"
-	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider/model"
+	resilientbridge "github.com/opengovern/resilient-bridge"
+	"github.com/opengovern/resilient-bridge/adapters"
 	"strconv"
 )
 
 func GetMavenPackageList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
-	client := githubClient.RestClient
-	page := 1
-	var values []models.Resource
-	for {
-		packageType := "maven"
-		var opts = &github.PackageListOptions{
-			PackageType: &packageType,
-			ListOptions: github.ListOptions{
-				Page:    page,
-				PerPage: packagePageSize,
-			},
-		}
-		respPackages, resp, err := client.Organizations.ListPackages(ctx, organizationName, opts)
-		if err != nil {
-			return nil, err
-		}
-		for _, packageData := range respPackages {
-			value := models.Resource{
-				ID:   strconv.Itoa(int(packageData.GetID())),
-				Name: packageData.GetName(),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.PackageDescription{
-						ID:         strconv.Itoa(int(packageData.GetID())),
-						RegistryID: packageData.Registry.GetURL(),
-						Name:       packageData.GetName(),
-						URL:        packageData.GetURL(),
-						CreatedAt:  packageData.GetCreatedAt(),
-						UpdatedAt:  packageData.GetUpdatedAt(),
-					},
-				},
-			}
-			if stream != nil {
-				if err := (*stream)(value); err != nil {
-					return nil, err
-				}
-			} else {
-				values = append(values, value)
-			}
-		}
-		if resp.After == "" {
-			break
-		}
-		opts.ListOptions.Page += 1
-	}
-
-	return values, nil
-}
-
-func GetMavenPackage(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
-	client := githubClient.RestClient
-	packageType := "maven"
-	respPackages, _, err := client.Organizations.GetPackage(ctx, organizationName, packageType, resourceID)
+	sdk := resilientbridge.NewResilientBridge()
+	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
+		UseProviderLimits: true,
+		MaxRetries:        3,
+		BaseBackoff:       0,
+	})
+	packages, err := fetchAllPackages(sdk, organizationName, "maven")
 	if err != nil {
 		return nil, err
 	}
-	value := models.Resource{
-		ID:   strconv.Itoa(int(respPackages.GetID())),
-		Name: respPackages.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.PackageDescription{
-				ID:         strconv.Itoa(int(respPackages.GetID())),
-				RegistryID: respPackages.Registry.GetURL(),
-				Name:       respPackages.GetName(),
-				URL:        respPackages.GetURL(),
-				CreatedAt:  respPackages.GetCreatedAt(),
-				UpdatedAt:  respPackages.GetUpdatedAt(),
-			},
-		},
-	}
-	if stream != nil {
-		if err := (*stream)(value); err != nil {
+
+	var values []models.Resource
+	for _, p := range packages {
+		fullDetails, err := fetchPackageDetails(sdk, organizationName, "maven", p.Name)
+		if err != nil {
 			return nil, err
+		}
+		value := models.Resource{
+			ID:   strconv.Itoa(fullDetails.ID),
+			Name: fullDetails.Name,
+			Description: JSONAllFieldsMarshaller{
+				Value: fullDetails,
+			},
+		}
+		if stream != nil {
+			if err := (*stream)(value); err != nil {
+				return nil, err
+			}
+		} else {
+			values = append(values, value)
 		}
 	}
 
-	return &value, nil
+	return values, nil
 }

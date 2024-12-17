@@ -8774,72 +8774,72 @@ func GetCodeOwner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 // ==========================  END: CodeOwner =============================
 
-// ==========================  START: PackageOutputVersion =============================
+// ==========================  START: ContainerPackage =============================
 
-type PackageOutputVersion struct {
-	ResourceID      string                                 `json:"resource_id"`
-	PlatformID      string                                 `json:"platform_id"`
-	Description     github.PackageOutputVersionDescription `json:"description"`
-	Metadata        github.Metadata                        `json:"metadata"`
-	DescribedBy     string                                 `json:"described_by"`
-	ResourceType    string                                 `json:"resource_type"`
-	IntegrationType string                                 `json:"integration_type"`
-	IntegrationID   string                                 `json:"integration_id"`
+type ContainerPackage struct {
+	ResourceID      string                             `json:"resource_id"`
+	PlatformID      string                             `json:"platform_id"`
+	Description     github.ContainerPackageDescription `json:"description"`
+	Metadata        github.Metadata                    `json:"metadata"`
+	DescribedBy     string                             `json:"described_by"`
+	ResourceType    string                             `json:"resource_type"`
+	IntegrationType string                             `json:"integration_type"`
+	IntegrationID   string                             `json:"integration_id"`
 }
 
-type PackageOutputVersionHit struct {
-	ID      string               `json:"_id"`
-	Score   float64              `json:"_score"`
-	Index   string               `json:"_index"`
-	Type    string               `json:"_type"`
-	Version int64                `json:"_version,omitempty"`
-	Source  PackageOutputVersion `json:"_source"`
-	Sort    []interface{}        `json:"sort"`
+type ContainerPackageHit struct {
+	ID      string           `json:"_id"`
+	Score   float64          `json:"_score"`
+	Index   string           `json:"_index"`
+	Type    string           `json:"_type"`
+	Version int64            `json:"_version,omitempty"`
+	Source  ContainerPackage `json:"_source"`
+	Sort    []interface{}    `json:"sort"`
 }
 
-type PackageOutputVersionHits struct {
-	Total essdk.SearchTotal         `json:"total"`
-	Hits  []PackageOutputVersionHit `json:"hits"`
+type ContainerPackageHits struct {
+	Total essdk.SearchTotal     `json:"total"`
+	Hits  []ContainerPackageHit `json:"hits"`
 }
 
-type PackageOutputVersionSearchResponse struct {
-	PitID string                   `json:"pit_id"`
-	Hits  PackageOutputVersionHits `json:"hits"`
+type ContainerPackageSearchResponse struct {
+	PitID string               `json:"pit_id"`
+	Hits  ContainerPackageHits `json:"hits"`
 }
 
-type PackageOutputVersionPaginator struct {
+type ContainerPackagePaginator struct {
 	paginator *essdk.BaseESPaginator
 }
 
-func (k Client) NewPackageOutputVersionPaginator(filters []essdk.BoolFilter, limit *int64) (PackageOutputVersionPaginator, error) {
+func (k Client) NewContainerPackagePaginator(filters []essdk.BoolFilter, limit *int64) (ContainerPackagePaginator, error) {
 	paginator, err := essdk.NewPaginator(k.ES(), "github_package_container", filters, limit)
 	if err != nil {
-		return PackageOutputVersionPaginator{}, err
+		return ContainerPackagePaginator{}, err
 	}
 
-	p := PackageOutputVersionPaginator{
+	p := ContainerPackagePaginator{
 		paginator: paginator,
 	}
 
 	return p, nil
 }
 
-func (p PackageOutputVersionPaginator) HasNext() bool {
+func (p ContainerPackagePaginator) HasNext() bool {
 	return !p.paginator.Done()
 }
 
-func (p PackageOutputVersionPaginator) Close(ctx context.Context) error {
+func (p ContainerPackagePaginator) Close(ctx context.Context) error {
 	return p.paginator.Deallocate(ctx)
 }
 
-func (p PackageOutputVersionPaginator) NextPage(ctx context.Context) ([]PackageOutputVersion, error) {
-	var response PackageOutputVersionSearchResponse
+func (p ContainerPackagePaginator) NextPage(ctx context.Context) ([]ContainerPackage, error) {
+	var response ContainerPackageSearchResponse
 	err := p.paginator.Search(ctx, &response)
 	if err != nil {
 		return nil, err
 	}
 
-	var values []PackageOutputVersion
+	var values []ContainerPackage
 	for _, hit := range response.Hits.Hits {
 		values = append(values, hit.Source)
 	}
@@ -8854,52 +8854,52 @@ func (p PackageOutputVersionPaginator) NextPage(ctx context.Context) ([]PackageO
 	return values, nil
 }
 
-var listPackageOutputVersionFilters = map[string]string{}
+var listContainerPackageFilters = map[string]string{}
 
-func ListPackageOutputVersion(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListPackageOutputVersion")
+func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListContainerPackage")
 	runtime.GC()
 
 	// create service
 	cfg := essdk.GetConfig(d.Connection)
 	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion NewClientCached", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage NewClientCached", "error", err)
 		return nil, err
 	}
 	k := Client{Client: ke}
 
 	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion NewSelfClientCached", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage NewSelfClientCached", "error", err)
 		return nil, err
 	}
 	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
 	}
 	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
 		return nil, err
 	}
 	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
 		return nil, err
 	}
 
-	paginator, err := k.NewPackageOutputVersionPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageOutputVersionFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, listContainerPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
-		plugin.Logger(ctx).Error("ListPackageOutputVersion NewPackageOutputVersionPaginator", "error", err)
+		plugin.Logger(ctx).Error("ListContainerPackage NewContainerPackagePaginator", "error", err)
 		return nil, err
 	}
 
 	for paginator.HasNext() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
-			plugin.Logger(ctx).Error("ListPackageOutputVersion paginator.NextPage", "error", err)
+			plugin.Logger(ctx).Error("ListContainerPackage paginator.NextPage", "error", err)
 			return nil, err
 		}
 
@@ -8916,10 +8916,10 @@ func ListPackageOutputVersion(ctx context.Context, d *plugin.QueryData, _ *plugi
 	return nil, nil
 }
 
-var getPackageOutputVersionFilters = map[string]string{}
+var getContainerPackageFilters = map[string]string{}
 
-func GetPackageOutputVersion(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetPackageOutputVersion")
+func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetContainerPackage")
 	runtime.GC()
 	// create service
 	cfg := essdk.GetConfig(d.Connection)
@@ -8947,7 +8947,7 @@ func GetPackageOutputVersion(ctx context.Context, d *plugin.QueryData, _ *plugin
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewPackageOutputVersionPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageOutputVersionFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, getContainerPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -8971,7 +8971,206 @@ func GetPackageOutputVersion(ctx context.Context, d *plugin.QueryData, _ *plugin
 	return nil, nil
 }
 
-// ==========================  END: PackageOutputVersion =============================
+// ==========================  END: ContainerPackage =============================
+
+// ==========================  START: PackageDetail =============================
+
+type PackageDetail struct {
+	ResourceID      string                          `json:"resource_id"`
+	PlatformID      string                          `json:"platform_id"`
+	Description     github.PackageDetailDescription `json:"description"`
+	Metadata        github.Metadata                 `json:"metadata"`
+	DescribedBy     string                          `json:"described_by"`
+	ResourceType    string                          `json:"resource_type"`
+	IntegrationType string                          `json:"integration_type"`
+	IntegrationID   string                          `json:"integration_id"`
+}
+
+type PackageDetailHit struct {
+	ID      string        `json:"_id"`
+	Score   float64       `json:"_score"`
+	Index   string        `json:"_index"`
+	Type    string        `json:"_type"`
+	Version int64         `json:"_version,omitempty"`
+	Source  PackageDetail `json:"_source"`
+	Sort    []interface{} `json:"sort"`
+}
+
+type PackageDetailHits struct {
+	Total essdk.SearchTotal  `json:"total"`
+	Hits  []PackageDetailHit `json:"hits"`
+}
+
+type PackageDetailSearchResponse struct {
+	PitID string            `json:"pit_id"`
+	Hits  PackageDetailHits `json:"hits"`
+}
+
+type PackageDetailPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewPackageDetailPaginator(filters []essdk.BoolFilter, limit *int64) (PackageDetailPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_package_npm", filters, limit)
+	if err != nil {
+		return PackageDetailPaginator{}, err
+	}
+
+	p := PackageDetailPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p PackageDetailPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p PackageDetailPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p PackageDetailPaginator) NextPage(ctx context.Context) ([]PackageDetail, error) {
+	var response PackageDetailSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []PackageDetail
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listPackageDetailFilters = map[string]string{}
+
+func ListPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListPackageDetail")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageDetailFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListPackageDetail NewPackageDetailPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListPackageDetail paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getPackageDetailFilters = map[string]string{}
+
+func GetPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetPackageDetail")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageDetailFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: PackageDetail =============================
 
 // ==========================  START: Package =============================
 

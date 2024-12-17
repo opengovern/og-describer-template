@@ -731,7 +731,7 @@ type ContainerMetadata struct {
 	} `json:"container"`
 }
 
-type PackageOutputVersionDescription struct {
+type ContainerPackageDescription struct {
 	ID             int               `json:"id"`
 	Digest         string            `json:"digest"`
 	URL            string            `json:"url"`
@@ -747,15 +747,6 @@ type PackageOutputVersionDescription struct {
 	Manifest       interface{}       `json:"manifest"`
 }
 
-type PackageDescription struct {
-	ID         string
-	RegistryID string
-	Name       string
-	URL        string
-	CreatedAt  github.Timestamp
-	UpdatedAt  github.Timestamp
-}
-
 type PackageVersion struct {
 	ID             int               `json:"id"`
 	Name           string            `json:"name"`
@@ -765,6 +756,75 @@ type PackageVersion struct {
 	UpdatedAt      string            `json:"updated_at"`
 	HTMLURL        string            `json:"html_url"`
 	Metadata       ContainerMetadata `json:"metadata"`
+}
+
+type OwnerDetail struct {
+	Login        string `json:"login"`
+	ID           int    `json:"id,omitempty"`
+	NodeID       string `json:"node_id,omitempty"`
+	HTMLURL      string `json:"html_url,omitempty"`
+	Type         string `json:"type,omitempty"`
+	UserViewType string `json:"user_view_type,omitempty"`
+	SiteAdmin    bool   `json:"site_admin,omitempty"`
+}
+
+type RepoOwnerDetail struct {
+	Login     string `json:"login"`
+	ID        int    `json:"id,omitempty"`
+	NodeID    string `json:"node_id,omitempty"`
+	HTMLURL   string `json:"html_url,omitempty"`
+	Type      string `json:"type,omitempty"`
+	SiteAdmin bool   `json:"site_admin,omitempty"`
+}
+
+type Repository struct {
+	ID          int             `json:"id"`
+	NodeID      string          `json:"node_id"`
+	Name        string          `json:"name"`
+	FullName    string          `json:"full_name"`
+	Private     bool            `json:"private"`
+	Owner       RepoOwnerDetail `json:"owner"`
+	HTMLURL     string          `json:"html_url"`
+	Description string          `json:"description"`
+	Fork        bool            `json:"fork"`
+	URL         string          `json:"url"`
+}
+
+type PackageListItem struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	PackageType string `json:"package_type"`
+	Visibility  string `json:"visibility"`
+	HTMLURL     string `json:"html_url"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+	Owner       struct {
+		Login string `json:"login"`
+	} `json:"owner"`
+	URL string `json:"url"`
+}
+
+type PackageDetailDescription struct {
+	ID           int         `json:"id"`
+	Name         string      `json:"name"`
+	PackageType  string      `json:"package_type"`
+	Owner        OwnerDetail `json:"owner"`
+	VersionCount int         `json:"version_count"`
+	Visibility   string      `json:"visibility"`
+	URL          string      `json:"url"`
+	CreatedAt    string      `json:"created_at"`
+	UpdatedAt    string      `json:"updated_at"`
+	Repository   Repository  `json:"repository"`
+	HTMLURL      string      `json:"html_url"`
+}
+
+type PackageDescription struct {
+	ID         string
+	RegistryID string
+	Name       string
+	URL        string
+	CreatedAt  github.Timestamp
+	UpdatedAt  github.Timestamp
 }
 
 type PackageVersionDescription struct {

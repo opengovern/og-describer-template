@@ -549,7 +549,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetContainerPackageList),
-		GetDescriber:         DescribeSingleByRepo(describer.GetContainerPackage),
+		GetDescriber:         nil,
 	},
 
 	"Github/Package/Maven": {
@@ -563,7 +563,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetMavenPackageList),
-		GetDescriber:         DescribeSingleByRepo(describer.GetMavenPackage),
+		GetDescriber:         nil,
 	},
 
 	"Github/Package/NPM": {
@@ -577,7 +577,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetNPMPackageList),
-		GetDescriber:         DescribeSingleByRepo(describer.GetNPMPackage),
+		GetDescriber:         nil,
 	},
 
 	"Github/Package/RubyGems": {

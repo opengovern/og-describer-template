@@ -25,7 +25,7 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 	if err != nil {
 		return nil, err
 	}
-	var allResults []model.PackageOutputVersionDescription
+	var allResults []model.ContainerPackageDescription
 	for _, p := range packages {
 		packageName := p.Name
 		versions, err := fetchVersions(sdk, organizationName, "container", packageName)
@@ -61,39 +61,9 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 	return values, nil
 }
 
-func GetContainerPackage(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
-	client := githubClient.RestClient
-	packageType := "container"
-	respPackages, _, err := client.Organizations.GetPackage(ctx, organizationName, packageType, resourceID)
-	if err != nil {
-		return nil, err
-	}
-	value := models.Resource{
-		ID:   strconv.Itoa(int(respPackages.GetID())),
-		Name: respPackages.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.PackageDescription{
-				ID:         strconv.Itoa(int(respPackages.GetID())),
-				RegistryID: respPackages.Registry.GetURL(),
-				Name:       respPackages.GetName(),
-				URL:        respPackages.GetURL(),
-				CreatedAt:  respPackages.GetCreatedAt(),
-				UpdatedAt:  respPackages.GetUpdatedAt(),
-			},
-		},
-	}
-	if stream != nil {
-		if err := (*stream)(value); err != nil {
-			return nil, err
-		}
-	}
-
-	return &value, nil
-}
-
-func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion) ([]model.PackageOutputVersionDescription, error) {
+func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion) ([]model.ContainerPackageDescription, error) {
 	// Each version can have multiple tags. We'll produce one output object per tag.
-	var results []model.PackageOutputVersionDescription
+	var results []model.ContainerPackageDescription
 	for _, tag := range version.Metadata.Container.Tags {
 		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, packageName, tag)
 		ov, err := fetchAndAssembleOutput(apiToken, version, imageRef)
@@ -105,7 +75,7 @@ func getVersionOutput(apiToken, org, packageName string, version model.PackageVe
 	return results, nil
 }
 
-func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, imageRef string) (*model.PackageOutputVersionDescription, error) {
+func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, imageRef string) (*model.ContainerPackageDescription, error) {
 	authOption := remote.WithAuth(&authn.Basic{
 		Username: "github",
 		Password: apiToken,
@@ -149,7 +119,7 @@ func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, image
 		return nil, err
 	}
 
-	return &model.PackageOutputVersionDescription{
+	return &model.ContainerPackageDescription{
 		ID:             version.ID,
 		Digest:         version.Name, // version digest from "name"
 		URL:            version.URL,
