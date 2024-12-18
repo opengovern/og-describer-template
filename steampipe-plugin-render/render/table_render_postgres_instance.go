@@ -15,7 +15,8 @@ func tableRenderPostgres(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListPostgres,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetPostgres,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetPostgres,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

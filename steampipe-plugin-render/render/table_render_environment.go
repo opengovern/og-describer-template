@@ -15,7 +15,8 @@ func tableRenderEnvironment(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListEnvironment,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetEnvironment,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetEnvironment,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

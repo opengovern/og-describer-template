@@ -15,7 +15,8 @@ func tableRenderService(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListService,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetService,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetService,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

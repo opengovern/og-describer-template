@@ -15,7 +15,8 @@ func tableRenderDisk(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListDisk,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetDisk,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetDisk,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

@@ -15,7 +15,8 @@ func tableRenderHeader(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListHeader,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetHeader,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetHeader,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

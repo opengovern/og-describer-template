@@ -15,7 +15,8 @@ func tableRenderBlueprint(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListBlueprint,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetBlueprint,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetBlueprint,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

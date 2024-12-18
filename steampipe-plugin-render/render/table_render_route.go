@@ -15,7 +15,8 @@ func tableRenderRoute(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListRoute,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetRoute,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetRoute,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

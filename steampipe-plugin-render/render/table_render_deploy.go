@@ -15,7 +15,8 @@ func tableRenderDeploy(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListDeploy,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetDeploy,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetDeploy,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

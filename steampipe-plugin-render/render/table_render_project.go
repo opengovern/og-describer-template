@@ -15,7 +15,8 @@ func tableRenderProject(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListProject,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetProject,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetProject,
 		},
 		Columns: []*plugin.Column{
 			// Top columns

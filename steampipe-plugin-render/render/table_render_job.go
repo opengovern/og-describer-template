@@ -15,7 +15,8 @@ func tableRenderJob(ctx context.Context) *plugin.Table {
 			Hydrate: opengovernance.ListJob,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate: opengovernance.GetJob,
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    opengovernance.GetJob,
 		},
 		Columns: []*plugin.Column{
 			// Top columns
