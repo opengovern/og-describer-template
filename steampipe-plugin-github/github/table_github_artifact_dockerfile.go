@@ -1,6 +1,7 @@
 package github
 
 import (
+	opengovernance "github.com/opengovern/og-describer-github/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -9,11 +10,11 @@ func tableGitHubArtifactDockerFile() *plugin.Table {
 	return &plugin.Table{
 		Name: "github_artifact_dockerfile",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListArtifactDockerFile,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.AllColumns([]string{"sha"}),
-			Hydrate:    nil,
+			Hydrate:    opengovernance.GetArtifactDockerFile,
 		},
 		Columns: []*plugin.Column{
 			// Basic details columns
