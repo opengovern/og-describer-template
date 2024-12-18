@@ -430,26 +430,26 @@ type RepositoryDescription struct {
 	StargazerCount                int
 	UpdatedAt                     steampipemodels.NullableTime
 	URL                           string
-	UsesCustomOpenGraphImage      bool
-	CanAdminister                 bool
-	CanCreateProjects             bool
-	CanSubscribe                  bool
-	CanUpdateTopics               bool
-	HasStarred                    bool
-	PossibleCommitEmails          []string
-	Subscription                  githubv4.SubscriptionState
-	Visibility                    githubv4.RepositoryVisibility
-	YourPermission                githubv4.RepositoryPermission
-	WebCommitSignOffRequired      bool
-	RepositoryTopicsTotalCount    int
-	OpenIssuesTotalCount          int
-	WatchersTotalCount            int
-	Hooks                         []*github.Hook
-	Topics                        []string
-	SubscribersCount              int
-	HasDownloads                  bool
-	HasPages                      bool
-	NetworkCount                  int
+	//UsesCustomOpenGraphImage      bool
+	//CanAdminister                 bool
+	//CanCreateProjects             bool
+	//CanSubscribe                  bool
+	//CanUpdateTopics               bool
+	//HasStarred                    bool
+	PossibleCommitEmails []string
+	//Subscription                  githubv4.SubscriptionState
+	Visibility githubv4.RepositoryVisibility
+	//YourPermission                githubv4.RepositoryPermission
+	WebCommitSignOffRequired   bool
+	RepositoryTopicsTotalCount int
+	OpenIssuesTotalCount       int
+	WatchersTotalCount         int
+	Hooks                      []*github.Hook
+	Topics                     []string
+	SubscribersCount           int
+	HasDownloads               bool
+	HasPages                   bool
+	NetworkCount               int
 }
 
 type ReleaseDescription struct {

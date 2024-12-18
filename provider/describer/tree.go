@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
+	"strings"
 )
 
 func GetAllTrees(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -32,6 +33,9 @@ func GetRepositoryTrees(ctx context.Context, githubClient GitHubClient, stream *
 	}
 	branch, _, err := client.Repositories.GetBranch(ctx, owner, repo, repository.GetDefaultBranch(), false)
 	if err != nil {
+		if strings.Contains(err.Error(), "404 Not Found") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	sha := branch.Commit.GetSHA()
