@@ -1370,6 +1370,7 @@ func pullRequestCols() []string {
 }
 
 func getRepositories(ctx context.Context, client *github.Client, owner string) ([]*github.Repository, error) {
+	var repositories []*github.Repository
 	opt := &github.RepositoryListByOrgOptions{
 		ListOptions: github.ListOptions{PerPage: maxPagesCount},
 	}
@@ -1378,11 +1379,13 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 		if err != nil {
 			return nil, err
 		}
+		repositories = append(repositories, repos...)
 		if resp.NextPage == 0 {
-			return repos, nil
+			break
 		}
 		opt.Page = resp.NextPage
 	}
+	return repositories, nil
 }
 
 func getIssues(ctx context.Context, orgName string, client *github.Client) ([]*github.Issue, error) {
