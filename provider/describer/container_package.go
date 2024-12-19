@@ -25,7 +25,7 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 	if err != nil {
 		return nil, err
 	}
-	var allResults []model.ContainerPackageDescription
+	var values []models.Resource
 	for _, p := range packages {
 		packageName := p.Name
 		versions, err := fetchVersions(sdk, organizationName, "container", packageName)
@@ -33,20 +33,31 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 			return nil, err
 		}
 		for _, v := range versions {
-			results, err := getVersionOutput(githubClient.Token, organizationName, packageName, v)
+			results, err := getVersionOutput(githubClient.Token, organizationName, packageName, v, stream)
 			if err != nil {
 				return nil, err
 			}
-			allResults = append(allResults, results...)
+			values = append(values, results...)
 		}
 	}
+
+	return values, nil
+}
+
+func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion, stream *models.StreamSender) ([]models.Resource, error) {
+	// Each version can have multiple tags. We'll produce one output object per tag.
 	var values []models.Resource
-	for _, result := range allResults {
+	for _, tag := range version.Metadata.Container.Tags {
+		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, packageName, tag)
+		ov, err := fetchAndAssembleOutput(apiToken, version, imageRef)
+		if err != nil {
+			return nil, err
+		}
 		value := models.Resource{
-			ID:   strconv.Itoa(result.ID),
-			Name: result.Name,
+			ID:   strconv.Itoa(ov.ID),
+			Name: ov.Name,
 			Description: JSONAllFieldsMarshaller{
-				Value: result,
+				Value: ov,
 			},
 		}
 		if stream != nil {
@@ -57,22 +68,7 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 			values = append(values, value)
 		}
 	}
-
 	return values, nil
-}
-
-func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion) ([]model.ContainerPackageDescription, error) {
-	// Each version can have multiple tags. We'll produce one output object per tag.
-	var results []model.ContainerPackageDescription
-	for _, tag := range version.Metadata.Container.Tags {
-		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, packageName, tag)
-		ov, err := fetchAndAssembleOutput(apiToken, version, imageRef)
-		if err != nil {
-			return nil, err
-		}
-		results = append(results, *ov)
-	}
-	return results, nil
 }
 
 func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, imageRef string) (*model.ContainerPackageDescription, error) {

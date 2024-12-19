@@ -20,33 +20,17 @@ func ListArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, org
 	if err != nil {
 		return nil, err
 	}
-	var artifacts []model.ArtifactDockerFileDescription
-	for _, repo := range repositories {
-		outputs := fetchArtifactDockerFiles(ctx, githubClient, repo.GetFullName())
-		artifacts = append(artifacts, outputs...)
-	}
+
 	var values []models.Resource
-	for _, artifact := range artifacts {
-		value := models.Resource{
-			ID:   artifact.URI,
-			Name: artifact.Name,
-			Description: JSONAllFieldsMarshaller{
-				Value: artifact,
-			},
-		}
-		if stream != nil {
-			if err := (*stream)(value); err != nil {
-				return nil, err
-			}
-		} else {
-			values = append(values, value)
-		}
+	for _, repo := range repositories {
+		repoValues := fetchArtifactDockerFiles(ctx, githubClient, stream, repo.GetFullName())
+		values = append(values, repoValues...)
 	}
 
 	return values, nil
 }
 
-func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, repoName string) []model.ArtifactDockerFileDescription {
+func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, repoName string) []models.Resource {
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false) // Disable debug
 
@@ -120,7 +104,7 @@ func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, re
 		page++
 	}
 
-	var outputs []model.ArtifactDockerFileDescription
+	var values []models.Resource
 
 	for _, item := range allItems {
 		contentReq := &resilientbridge.NormalizedRequest{
@@ -222,8 +206,21 @@ func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, re
 			Repository:              repoObj,
 		}
 
-		outputs = append(outputs, output)
+		value := models.Resource{
+			ID:   output.URI,
+			Name: output.Name,
+			Description: JSONAllFieldsMarshaller{
+				Value: output,
+			},
+		}
+		if stream != nil {
+			if err := (*stream)(value); err != nil {
+				return nil
+			}
+		} else {
+			values = append(values, value)
+		}
 	}
 
-	return outputs
+	return values
 }

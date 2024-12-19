@@ -5,7 +5,6 @@ import (
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
-	"strconv"
 )
 
 func GetNPMPackageList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -22,24 +21,11 @@ func GetNPMPackageList(ctx context.Context, githubClient GitHubClient, organizat
 
 	var values []models.Resource
 	for _, p := range packages {
-		fullDetails, err := fetchPackageDetails(sdk, organizationName, "npm", p.Name)
+		packageValue, err := fetchPackageDetails(sdk, organizationName, "npm", p.Name, stream)
 		if err != nil {
 			return nil, err
 		}
-		value := models.Resource{
-			ID:   strconv.Itoa(fullDetails.ID),
-			Name: fullDetails.Name,
-			Description: JSONAllFieldsMarshaller{
-				Value: fullDetails,
-			},
-		}
-		if stream != nil {
-			if err := (*stream)(value); err != nil {
-				return nil, err
-			}
-		} else {
-			values = append(values, value)
-		}
+		values = append(values, packageValue...)
 	}
 	return values, nil
 }

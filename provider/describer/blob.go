@@ -37,8 +37,8 @@ func GetRepositoryBlobs(ctx context.Context, githubClient GitHubClient, stream *
 		blobValue, err := GetBlob(ctx, githubClient, owner, repo, sha, nil)
 		if err != nil {
 			if strings.Contains(err.Error(), "404 Not Found") {
-			return nil, nil
-		}
+				return nil, nil
+			}
 			return nil, err
 		}
 		if stream != nil {

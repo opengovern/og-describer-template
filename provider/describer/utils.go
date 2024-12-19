@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/go-github/v55/github"
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/shurcooL/githubv4"
 	"slices"
+	"strconv"
 	"strings"
 )
 
@@ -191,7 +193,6 @@ func appendCommitColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeCommitStatus"] = githubv4.Boolean(slices.Contains(cols, "status"))
 	(*m)["includeCommitNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
 }
-
 
 func appendOrganizationColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeAnnouncement"] = githubv4.Boolean(slices.Contains(cols, "announcement"))
@@ -1370,7 +1371,7 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 		if err != nil {
 			return nil, err
 		}
-		
+
 		repositories = append(repositories, repos...)
 		if resp.NextPage == 0 {
 			break
@@ -1413,17 +1414,20 @@ func getOrganizations(ctx context.Context, client *github.Client) ([]*github.Org
 }
 
 func getTeams(ctx context.Context, client *github.Client) ([]*github.Team, error) {
+	var allTeams []*github.Team
 	opt := &github.ListOptions{PerPage: 10}
 	for {
 		teams, resp, err := client.Teams.ListUserTeams(ctx, opt)
 		if err != nil {
 			return nil, err
 		}
+		allTeams = append(allTeams, teams...)
 		if resp.NextPage == 0 {
-			return teams, nil
+			break
 		}
 		opt.Page = resp.NextPage
 	}
+	return allTeams, nil
 }
 
 func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
@@ -1506,7 +1510,7 @@ func fetchAllPackages(sdk *resilientbridge.ResilientBridge, org, packageType str
 	return allPackages, nil
 }
 
-func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType, packageName string) (model.PackageDetailDescription, error) {
+func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType, packageName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var pd model.PackageDetailDescription
 	endpoint := fmt.Sprintf("/orgs/%s/packages/%s/%s", org, packageType, packageName)
 	req := &resilientbridge.NormalizedRequest{
@@ -1517,16 +1521,34 @@ func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType,
 
 	resp, err := sdk.Request("github", req)
 	if err != nil {
-		return pd, fmt.Errorf("error fetching package details: %w", err)
+		return nil, fmt.Errorf("error fetching package details: %w", err)
 	}
 	if resp.StatusCode >= 400 {
-		return pd, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+		return nil, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
 	}
 
 	if err := json.Unmarshal(resp.Data, &pd); err != nil {
-		return pd, fmt.Errorf("error parsing package details: %w", err)
+		return nil, fmt.Errorf("error parsing package details: %w", err)
 	}
-	return pd, nil
+
+	var values []models.Resource
+
+	value := models.Resource{
+		ID:   strconv.Itoa(pd.ID),
+		Name: pd.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: pd,
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	} else {
+		values = append(values, value)
+	}
+
+	return values, nil
 }
 
 func formRepositoryFullName(owner, repo string) string {
