@@ -192,15 +192,6 @@ func appendCommitColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeCommitNodeId"] = githubv4.Boolean(slices.Contains(cols, "node_id"))
 }
 
-func appendCommunityProfileColumnIncludes(m *map[string]interface{}, cols []string) {
-	(*m)["includeCPLicense"] = githubv4.Boolean(slices.Contains(cols, "license_info"))
-	(*m)["includeCPCodeOfConduct"] = githubv4.Boolean(slices.Contains(cols, "code_of_conduct"))
-	(*m)["includeCPIssueTemplates"] = githubv4.Boolean(slices.Contains(cols, "issue_templates"))
-	(*m)["includeCPPullRequestTemplates"] = githubv4.Boolean(slices.Contains(cols, "pull_request_templates"))
-	(*m)["includeCPReadme"] = githubv4.Boolean(slices.Contains(cols, "readme"))
-	(*m)["includeCPContributing"] = githubv4.Boolean(slices.Contains(cols, "contributing"))
-	(*m)["includeCPSecurity"] = githubv4.Boolean(slices.Contains(cols, "security"))
-}
 
 func appendOrganizationColumnIncludes(m *map[string]interface{}, cols []string) {
 	(*m)["includeAnnouncement"] = githubv4.Boolean(slices.Contains(cols, "announcement"))
@@ -1379,6 +1370,7 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 		if err != nil {
 			return nil, err
 		}
+		
 		repositories = append(repositories, repos...)
 		if resp.NextPage == 0 {
 			break

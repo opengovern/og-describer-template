@@ -139,16 +139,6 @@ type CommitDescription struct {
 	CommitterLogin string
 }
 
-type CommunityProfileDescription struct {
-	RepoFullName         string
-	LicenseInfo          steampipemodels.BaseLicense
-	CodeOfConduct        steampipemodels.RepositoryCodeOfConduct
-	IssueTemplates       []steampipemodels.IssueTemplate
-	PullRequestTemplates []steampipemodels.PullRequestTemplate
-	ReadMe               steampipemodels.Blob
-	Contributing         steampipemodels.Blob
-	Security             steampipemodels.Blob
-}
 
 type GitIgnoreDescription struct {
 	*github.Gitignore
