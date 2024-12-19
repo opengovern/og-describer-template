@@ -1,7 +1,6 @@
 package describer
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/google/go-github/v55/github"
@@ -24,7 +23,6 @@ func GetReleaseList(ctx context.Context, githubClient GitHubClient, organization
 			if err != nil {
 				return nil, err
 			}
-			fmt.Println(releases)
 			for _, release := range releases {
 				if release == nil {
 					continue

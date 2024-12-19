@@ -2,7 +2,6 @@ package describer
 
 import (
 	"context"
-	"fmt"
 	"math"
 	"strconv"
 
@@ -20,8 +19,6 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	var values []models.Resource
 	for _, repo := range repositories {
 		repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
-		fmt.Println(repoValues)
-		fmt.Println(err)
 		if err != nil {
 			return nil, err
 		}
