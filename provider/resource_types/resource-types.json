@@ -140,11 +140,11 @@
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllOrganizationsCollaborators)",
     "GetDescriber": "",
-    "SteampipeTable": "github_organization_collaborators",
+    "SteampipeTable": "github_organization_collaborator",
     "Model": "OrgCollaborators"
   },
   {
-    "ResourceName": "Github/Organization/DependabotAlert",
+    "ResourceName": "Github/Organization/Dependabot/Alert",
     "Tags": {
       "category": [
         "Organization"
@@ -156,7 +156,7 @@
     "Model": "OrgAlertDependabot"
   },
   {
-    "ResourceName": "Github/Organization/ExternalIdentity",
+    "ResourceName": "Github/Organization/External/Identity",
     "Tags": {
       "category": [
         "Organization"
@@ -396,7 +396,7 @@
     "Model": "CodeOwner"
   },
   {
-    "ResourceName": "Github/Package/Container",
+    "ResourceName": "Github/Container/Package",
     "Tags": {
       "category": [
         "package"
@@ -420,7 +420,7 @@
     "Model": "PackageDetail"
   },
   {
-    "ResourceName": "Github/Package/NPM",
+    "ResourceName": "Github/NPM/Package",
     "Tags": {
       "category": [
         "package"
@@ -432,7 +432,7 @@
     "Model": "PackageDetail"
   },
   {
-    "ResourceName": "Github/Package/Nuget",
+    "ResourceName": "Github/Nuget/Package",
     "Tags": {
       "category": [
         "package"
@@ -444,7 +444,7 @@
     "Model": "Package"
   },
   {
-    "ResourceName": "Github/ArtifactDockerFile",
+    "ResourceName": "Github/Artifact/DockerFile",
     "Tags": {
       "category": [
         "artifact_dockerfile"

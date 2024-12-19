@@ -2838,7 +2838,7 @@ type OrgAlertDependabotPaginator struct {
 }
 
 func (k Client) NewOrgAlertDependabotPaginator(filters []essdk.BoolFilter, limit *int64) (OrgAlertDependabotPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_dependabotalert", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_dependabot_alert", filters, limit)
 	if err != nil {
 		return OrgAlertDependabotPaginator{}, err
 	}
@@ -3075,7 +3075,7 @@ type OrgExternalIdentityPaginator struct {
 }
 
 func (k Client) NewOrgExternalIdentityPaginator(filters []essdk.BoolFilter, limit *int64) (OrgExternalIdentityPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_externalidentity", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_external_identity", filters, limit)
 	if err != nil {
 		return OrgExternalIdentityPaginator{}, err
 	}
@@ -3867,10 +3867,6 @@ func (p RepositoryPaginator) NextPage(ctx context.Context) ([]Repository, error)
 var listRepositoryFilters = map[string]string{
 	"allow_update_branch":              "Description.AllowUpdateBranch",
 	"auto_merge_allowed":               "Description.AutoMergeAllowed",
-	"can_administer":                   "Description.CanAdminister",
-	"can_create_projects":              "Description.CanCreateProjects",
-	"can_subscribe":                    "Description.CanSubscribe",
-	"can_update_topics":                "Description.CanUpdateTopics",
 	"code_of_conduct":                  "Description.CodeOfConduct",
 	"contact_links":                    "Description.ContactLinks",
 	"default_branch_ref":               "Description.DefaultBranchRef",
@@ -3886,7 +3882,6 @@ var listRepositoryFilters = map[string]string{
 	"has_issues_enabled":               "Description.HasIssuesEnabled",
 	"has_pages":                        "Description.HasPages",
 	"has_projects_enabled":             "Description.HasProjectsEnabled",
-	"has_starred":                      "Description.HasStarred",
 	"has_vulnerability_alerts_enabled": "Description.HasVulnerabilityAlertsEnabled",
 	"has_wiki_enabled":                 "Description.HasWikiEnabled",
 	"homepage_url":                     "Description.HomepageURL",
@@ -3932,14 +3927,11 @@ var listRepositoryFilters = map[string]string{
 	"ssh_url":                          "Description.SSHURL",
 	"stargazer_count":                  "Description.StargazerCount",
 	"subscribers_count":                "Description.SubscribersCount",
-	"subscription":                     "Description.Subscription",
 	"topics":                           "Description.Topics",
 	"url":                              "Description.URL",
-	"uses_custom_open_graph_image":     "Description.UsesCustomOpenGraphImage",
 	"visibility":                       "Description.Visibility",
 	"watchers_total_count":             "Description.WatchersTotalCount",
 	"web_commit_signoff_required":      "Description.WebCommitSignOffRequired",
-	"your_permission":                  "Description.YourPermission",
 }
 
 func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -4005,10 +3997,6 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 var getRepositoryFilters = map[string]string{
 	"allow_update_branch":              "Description.AllowUpdateBranch",
 	"auto_merge_allowed":               "Description.AutoMergeAllowed",
-	"can_administer":                   "Description.CanAdminister",
-	"can_create_projects":              "Description.CanCreateProjects",
-	"can_subscribe":                    "Description.CanSubscribe",
-	"can_update_topics":                "Description.CanUpdateTopics",
 	"code_of_conduct":                  "Description.CodeOfConduct",
 	"contact_links":                    "Description.ContactLinks",
 	"default_branch_ref":               "Description.DefaultBranchRef",
@@ -4024,7 +4012,6 @@ var getRepositoryFilters = map[string]string{
 	"has_issues_enabled":               "Description.HasIssuesEnabled",
 	"has_pages":                        "Description.HasPages",
 	"has_projects_enabled":             "Description.HasProjectsEnabled",
-	"has_starred":                      "Description.HasStarred",
 	"has_vulnerability_alerts_enabled": "Description.HasVulnerabilityAlertsEnabled",
 	"has_wiki_enabled":                 "Description.HasWikiEnabled",
 	"homepage_url":                     "Description.HomepageURL",
@@ -4070,14 +4057,11 @@ var getRepositoryFilters = map[string]string{
 	"ssh_url":                          "Description.SSHURL",
 	"stargazer_count":                  "Description.StargazerCount",
 	"subscribers_count":                "Description.SubscribersCount",
-	"subscription":                     "Description.Subscription",
 	"topics":                           "Description.Topics",
 	"url":                              "Description.URL",
-	"uses_custom_open_graph_image":     "Description.UsesCustomOpenGraphImage",
 	"visibility":                       "Description.Visibility",
 	"watchers_total_count":             "Description.WatchersTotalCount",
 	"web_commit_signoff_required":      "Description.WebCommitSignOffRequired",
-	"your_permission":                  "Description.YourPermission",
 }
 
 func GetRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -7769,7 +7753,7 @@ type ContainerPackagePaginator struct {
 }
 
 func (k Client) NewContainerPackagePaginator(filters []essdk.BoolFilter, limit *int64) (ContainerPackagePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_package_container", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_container_package", filters, limit)
 	if err != nil {
 		return ContainerPackagePaginator{}, err
 	}
@@ -7968,7 +7952,7 @@ type PackageDetailPaginator struct {
 }
 
 func (k Client) NewPackageDetailPaginator(filters []essdk.BoolFilter, limit *int64) (PackageDetailPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_package_npm", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_npm_package", filters, limit)
 	if err != nil {
 		return PackageDetailPaginator{}, err
 	}
@@ -8167,7 +8151,7 @@ type PackagePaginator struct {
 }
 
 func (k Client) NewPackagePaginator(filters []essdk.BoolFilter, limit *int64) (PackagePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_package_nuget", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_nuget_package", filters, limit)
 	if err != nil {
 		return PackagePaginator{}, err
 	}
@@ -8366,7 +8350,7 @@ type ArtifactDockerFilePaginator struct {
 }
 
 func (k Client) NewArtifactDockerFilePaginator(filters []essdk.BoolFilter, limit *int64) (ArtifactDockerFilePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_artifactdockerfile", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_artifact_dockerfile", filters, limit)
 	if err != nil {
 		return ArtifactDockerFilePaginator{}, err
 	}

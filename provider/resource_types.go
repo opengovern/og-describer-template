@@ -174,9 +174,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Organization/DependabotAlert": {
+	"Github/Organization/Dependabot/Alert": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Organization/DependabotAlert",
+		ResourceName:         "Github/Organization/Dependabot/Alert",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
         },
@@ -188,9 +188,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Organization/ExternalIdentity": {
+	"Github/Organization/External/Identity": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Organization/ExternalIdentity",
+		ResourceName:         "Github/Organization/External/Identity",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
         },
@@ -468,9 +468,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Package/Container": {
+	"Github/Container/Package": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Package/Container",
+		ResourceName:         "Github/Container/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
         },
@@ -496,9 +496,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Package/NPM": {
+	"Github/NPM/Package": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Package/NPM",
+		ResourceName:         "Github/NPM/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
         },
@@ -510,9 +510,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Package/Nuget": {
+	"Github/Nuget/Package": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Package/Nuget",
+		ResourceName:         "Github/Nuget/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
         },
@@ -524,9 +524,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetNugetPackage),
 	},
 
-	"Github/ArtifactDockerFile": {
+	"Github/Artifact/DockerFile": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/ArtifactDockerFile",
+		ResourceName:         "Github/Artifact/DockerFile",
 		Tags:                 map[string][]string{
             "category": {"artifact_dockerfile"},
         },
