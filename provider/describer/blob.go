@@ -2,6 +2,8 @@ package describer
 
 import (
 	"context"
+	"strings"
+
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 )
@@ -34,6 +36,9 @@ func GetRepositoryBlobs(ctx context.Context, githubClient GitHubClient, stream *
 	for _, sha := range fileSHAs {
 		blobValue, err := GetBlob(ctx, githubClient, owner, repo, sha, nil)
 		if err != nil {
+			if strings.Contains(err.Error(), "404 Not Found") {
+			return nil, nil
+		}
 			return nil, err
 		}
 		if stream != nil {
