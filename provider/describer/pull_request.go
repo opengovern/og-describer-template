@@ -2,12 +2,14 @@ package describer
 
 import (
 	"context"
+	"fmt"
+	"math"
+	"strconv"
+
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"math"
-	"strconv"
 )
 
 func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -18,6 +20,8 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	var values []models.Resource
 	for _, repo := range repositories {
 		repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
+		fmt.Println(repoValues)
+		fmt.Println(err)
 		if err != nil {
 			return nil, err
 		}

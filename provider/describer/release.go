@@ -1,11 +1,13 @@
 package describer
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"golang.org/x/net/context"
-	"strconv"
 )
 
 func GetReleaseList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -22,6 +24,7 @@ func GetReleaseList(ctx context.Context, githubClient GitHubClient, organization
 			if err != nil {
 				return nil, err
 			}
+			fmt.Println(releases)
 			for _, release := range releases {
 				if release == nil {
 					continue

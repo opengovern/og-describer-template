@@ -53,7 +53,9 @@ func GetResources(
 	additionalParameters map[string]string,
 	stream *model.StreamSender,
 ) error {
-	_, err := describe(ctx, logger, cfg, resourceType, triggerType, additionalParameters, stream)
+	test, err := describe(ctx, logger, cfg, resourceType, triggerType, additionalParameters, stream)
+	fmt.Println("Error: ", err)
+	fmt.Println(test, err)
 	if err != nil {
 		return err
 	}
