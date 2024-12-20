@@ -1,3 +1,4 @@
+// artifact_dockerfile.go
 package describer
 
 import (
@@ -5,34 +6,148 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider/model"
-	resilientbridge "github.com/opengovern/resilient-bridge"
-	"github.com/opengovern/resilient-bridge/adapters"
 	"log"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider/model"
+	resilientbridge "github.com/opengovern/resilient-bridge"
+	"github.com/opengovern/resilient-bridge/adapters"
 )
 
-func ListArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+// MAX_RESULTS is the maximum number of Dockerfiles to collect or stream.
+const MAX_RESULTS = 500
+
+// ListDockerFile lists references to Dockerfiles in all repositories for the given organization.
+// If a stream is provided, results are streamed. If not, a slice of resources is returned.
+func ListDockerFile(
+	ctx context.Context,
+	githubClient GitHubClient,
+	organizationName string,
+	stream *models.StreamSender,
+) ([]models.Resource, error) {
+
 	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
 	}
 
-	var values []models.Resource
+	sdk := resilientbridge.NewResilientBridge()
+	sdk.SetDebug(false)
+	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
+		UseProviderLimits: true,
+		MaxRetries:        3,
+		BaseBackoff:       time.Second,
+	})
+
+	var allValues []models.Resource
+	totalCollected := 0
+	perPage := 100
+
+	// For each repository, search for Dockerfiles
 	for _, repo := range repositories {
-		repoValues := fetchArtifactDockerFiles(ctx, githubClient, stream, repo.GetFullName())
-		values = append(values, repoValues...)
+		if totalCollected >= MAX_RESULTS {
+			break
+		}
+
+		repoFullName := repo.GetFullName()
+		queryParts := []string{
+			fmt.Sprintf("repo:%s", repoFullName),
+			"filename:Dockerfile",
+		}
+		finalQuery := strings.Join(queryParts, " ")
+
+		page := 1
+		for totalCollected < MAX_RESULTS {
+			q := url.QueryEscape(finalQuery)
+			searchEndpoint := fmt.Sprintf("/search/code?q=%s&per_page=%d&page=%d", q, perPage, page)
+
+			searchReq := &resilientbridge.NormalizedRequest{
+				Method:   "GET",
+				Endpoint: searchEndpoint,
+				Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+			}
+
+			searchResp, err := sdk.Request("github", searchReq)
+			if err != nil {
+				log.Printf("Error searching code in %s: %v\n", repoFullName, err)
+				break
+			}
+
+			if searchResp.StatusCode >= 400 {
+				log.Printf("HTTP error %d searching code in %s: %s\n", searchResp.StatusCode, repoFullName, string(searchResp.Data))
+				break
+			}
+
+			var result model.CodeSearchResult
+			if err := json.Unmarshal(searchResp.Data, &result); err != nil {
+				log.Printf("Error parsing code search response for %s: %v\n", repoFullName, err)
+				break
+			}
+
+			// If no items returned, no more results
+			if len(result.Items) == 0 {
+				break
+			}
+
+			for _, item := range result.Items {
+				// Use item.Sha to link to a specific commit version of the file
+				dockerfileURI := fmt.Sprintf("https://github.com/%s/blob/%s/%s",
+					item.Repository.FullName,
+					item.Sha,
+					item.Path)
+
+				resource := models.Resource{
+					ID:   dockerfileURI,
+					Name: item.Name,
+					Description: JSONAllFieldsMarshaller{
+						Value: map[string]interface{}{
+							"repo_full_name": item.Repository.FullName,
+							"path":           item.Path,
+							"sha":            item.Sha,
+						},
+					},
+				}
+
+				totalCollected++
+				if stream != nil {
+					// Stream the resource
+					if err := (*stream)(resource); err != nil {
+						return nil, fmt.Errorf("error streaming resource: %w", err)
+					}
+				} else {
+					// Accumulate to return later
+					allValues = append(allValues, resource)
+				}
+
+				if totalCollected >= MAX_RESULTS {
+					break
+				}
+			}
+
+			if len(result.Items) < perPage {
+				// Fewer than perPage results means no more pages
+				break
+			}
+			page++
+		}
 	}
 
-	return values, nil
+	// If we streamed, return an empty slice since results are already sent via stream
+	if stream != nil {
+		return []models.Resource{}, nil
+	}
+
+	return allValues, nil
 }
 
-func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, repoName string) []models.Resource {
+// GetDockerfile fetches the details and content of a single Dockerfile given the repo and file path.
+// It returns a fully populated resource with Dockerfile content, line count checks, and last updated at info.
+func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationName, repoFullName, filePath string, stream *models.StreamSender) (*models.Resource, error) {
 	sdk := resilientbridge.NewResilientBridge()
-	sdk.SetDebug(false) // Disable debug
+	sdk.SetDebug(false)
 
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
 		UseProviderLimits: true,
@@ -40,187 +155,95 @@ func fetchArtifactDockerFiles(ctx context.Context, githubClient GitHubClient, st
 		BaseBackoff:       time.Second,
 	})
 
-	// Construct the query
-	queryParts := []string{
-		fmt.Sprintf("repo:%s", repoName),
-		"filename:Dockerfile",
+	// Fetch file content
+	contentEndpoint := fmt.Sprintf("/repos/%s/contents/%s", repoFullName, url.PathEscape(filePath))
+	contentReq := &resilientbridge.NormalizedRequest{
+		Method:   "GET",
+		Endpoint: contentEndpoint,
+		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
 	}
 
-	finalQuery := strings.Join(queryParts, " ")
+	contentResp, err := sdk.Request("github", contentReq)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching content for %s/%s: %w", repoFullName, filePath, err)
+	}
 
-	perPage := 100
-	page := 1
-	totalCollected := 0
+	if contentResp.StatusCode >= 400 {
+		return nil, fmt.Errorf("HTTP error %d fetching content for %s/%s: %s", contentResp.StatusCode, repoFullName, filePath, string(contentResp.Data))
+	}
 
-	var allItems []model.CodeSearchHit
+	var contentData model.ContentResponse
+	if err := json.Unmarshal(contentResp.Data, &contentData); err != nil {
+		return nil, fmt.Errorf("error parsing content response for %s/%s: %w", repoFullName, filePath, err)
+	}
 
-	for {
-		if totalCollected >= 500 {
-			break
-		}
-
-		q := url.QueryEscape(finalQuery)
-		searchEndpoint := fmt.Sprintf("/search/code?q=%s&per_page=%d&page=%d", q, perPage, page)
-
-		searchReq := &resilientbridge.NormalizedRequest{
-			Method:   "GET",
-			Endpoint: searchEndpoint,
-			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
-		}
-
-		searchResp, err := sdk.Request("github", searchReq)
+	var fileContent string
+	if contentData.Encoding == "base64" {
+		decoded, err := base64.StdEncoding.DecodeString(contentData.Content)
 		if err != nil {
-			log.Printf("Error searching code: %v\n", err)
-			break
+			return nil, fmt.Errorf("error decoding base64 content for %s/%s: %w", repoFullName, filePath, err)
 		}
-
-		if searchResp.StatusCode >= 400 {
-			log.Printf("HTTP error %d searching code: %s\n", searchResp.StatusCode, string(searchResp.Data))
-			break
-		}
-
-		var result model.CodeSearchResult
-		if err := json.Unmarshal(searchResp.Data, &result); err != nil {
-			log.Printf("Error parsing code search response: %v\n", err)
-			break
-		}
-
-		if len(result.Items) == 0 {
-			// No more results
-			break
-		}
-
-		for _, item := range result.Items {
-			allItems = append(allItems, item)
-			totalCollected++
-			if totalCollected >= 500 {
-				break
-			}
-		}
-
-		if totalCollected >= 500 || len(result.Items) < perPage {
-			break
-		}
-		page++
+		fileContent = string(decoded)
+	} else {
+		fileContent = contentData.Content
 	}
 
-	var values []models.Resource
+	lines := strings.Split(fileContent, "\n")
+	if len(lines) > 200 {
+		return nil, fmt.Errorf("skipping %s/%s: more than 200 lines (%d lines)", repoFullName, filePath, len(lines))
+	}
 
-	for _, item := range allItems {
-		contentReq := &resilientbridge.NormalizedRequest{
-			Method:   "GET",
-			Endpoint: strings.TrimPrefix(item.URL, "https://api.github.com"),
-			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
-		}
+	// Fetch last_updated_at via commits API
+	var lastUpdatedAt string
+	commitsEndpoint := fmt.Sprintf("/repos/%s/commits?path=%s&per_page=1", repoFullName, url.QueryEscape(filePath))
+	commitReq := &resilientbridge.NormalizedRequest{
+		Method:   "GET",
+		Endpoint: commitsEndpoint,
+		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+	}
 
-		contentResp, err := sdk.Request("github", contentReq)
-		if err != nil {
-			log.Printf("Error fetching content for %s/%s: %v\n", item.Repository.FullName, item.Path, err)
-			continue
-		}
-
-		if contentResp.StatusCode >= 400 {
-			log.Printf("HTTP error %d fetching content for %s/%s: %s\n", contentResp.StatusCode, item.Repository.FullName, item.Path, string(contentResp.Data))
-			continue
-		}
-
-		var contentData model.ContentResponse
-		if err := json.Unmarshal(contentResp.Data, &contentData); err != nil {
-			log.Printf("Error parsing content response for %s/%s: %v\n", item.Repository.FullName, item.Path, err)
-			continue
-		}
-
-		var fileContent string
-		if contentData.Encoding == "base64" {
-			decoded, err := base64.StdEncoding.DecodeString(contentData.Content)
-			if err != nil {
-				log.Printf("Error decoding base64 content for %s/%s: %v\n", item.Repository.FullName, item.Path, err)
-				continue
+	commitResp, err := sdk.Request("github", commitReq)
+	if err == nil && commitResp.StatusCode < 400 {
+		var commits []model.CommitResponse
+		if json.Unmarshal(commitResp.Data, &commits) == nil && len(commits) > 0 {
+			if commits[0].Commit.Author.Date != "" {
+				lastUpdatedAt = commits[0].Commit.Author.Date
+			} else if commits[0].Commit.Committer.Date != "" {
+				lastUpdatedAt = commits[0].Commit.Committer.Date
 			}
-			fileContent = string(decoded)
-		} else {
-			fileContent = contentData.Content
-		}
-
-		lines := strings.Split(fileContent, "\n")
-		if len(lines) > 200 {
-			// Skip if more than 200 lines
-			log.Printf("Skipping %s/%s: more than 200 lines (%d lines)\n", item.Repository.FullName, item.Path, len(lines))
-			continue
-		}
-
-		// Fetch last_updated_at via commits API
-		lastUpdatedAt := ""
-		if item.Repository.FullName != "" && item.Path != "" {
-			commitsEndpoint := fmt.Sprintf("/repos/%s/commits?path=%s&per_page=1", item.Repository.FullName, url.QueryEscape(item.Path))
-			commitReq := &resilientbridge.NormalizedRequest{
-				Method:   "GET",
-				Endpoint: commitsEndpoint,
-				Headers:  map[string]string{"Accept": "application/vnd.github+json"},
-			}
-
-			commitResp, err := sdk.Request("github", commitReq)
-			if err != nil {
-				log.Printf("Error fetching commits for %s/%s: %v\n", item.Repository.FullName, item.Path, err)
-			} else if commitResp.StatusCode < 400 {
-				var commits []model.CommitResponse
-				if err := json.Unmarshal(commitResp.Data, &commits); err == nil && len(commits) > 0 {
-					if commits[0].Commit.Author.Date != "" {
-						lastUpdatedAt = commits[0].Commit.Author.Date
-					} else if commits[0].Commit.Committer.Date != "" {
-						lastUpdatedAt = commits[0].Commit.Committer.Date
-					}
-				}
-			}
-		}
-
-		repoObj := map[string]interface{}{
-			"id":        item.Repository.ID,
-			"node_id":   item.Repository.NodeID,
-			"name":      item.Repository.Name,
-			"full_name": item.Repository.FullName,
-			"private":   item.Repository.Private,
-			"public":    !item.Repository.Private,
-			"owner": map[string]interface{}{
-				"login":    item.Repository.Owner.Login,
-				"id":       item.Repository.Owner.ID,
-				"node_id":  item.Repository.Owner.NodeID,
-				"html_url": item.Repository.Owner.HTMLURL,
-				"type":     item.Repository.Owner.Type,
-			},
-			"html_url":    item.Repository.HTMLURL,
-			"description": item.Repository.Description,
-			"fork":        item.Repository.Fork,
-		}
-
-		output := model.ArtifactDockerFileDescription{
-			Sha:                     item.Sha,
-			Name:                    item.Name,
-			Path:                    item.Path,
-			LastUpdatedAt:           lastUpdatedAt,
-			GitURL:                  item.GitURL,
-			HTMLURL:                 item.HTMLURL,
-			URI:                     item.HTMLURL, // Unique identifier
-			DockerfileContent:       fileContent,
-			DockerfileContentBase64: contentData.Content,
-			Repository:              repoObj,
-		}
-
-		value := models.Resource{
-			ID:   output.URI,
-			Name: output.Name,
-			Description: JSONAllFieldsMarshaller{
-				Value: output,
-			},
-		}
-		if stream != nil {
-			if err := (*stream)(value); err != nil {
-				return nil
-			}
-		} else {
-			values = append(values, value)
 		}
 	}
 
-	return values
+	repoObj := map[string]interface{}{
+		"full_name": repoFullName,
+	}
+
+	output := model.ArtifactDockerFileDescription{
+		Sha:                     contentData.Sha,
+		Name:                    contentData.Name,
+		Path:                    contentData.Path,
+		LastUpdatedAt:           lastUpdatedAt,
+		GitURL:                  contentData.GitURL,
+		HTMLURL:                 contentData.HTMLURL,
+		URI:                     contentData.HTMLURL,
+		DockerfileContent:       fileContent,
+		DockerfileContentBase64: contentData.Content,
+		Repository:              repoObj,
+	}
+
+	value := models.Resource{
+		ID:   output.URI,
+		Name: output.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: output,
+		},
+	}
+
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
+	return &value, nil
 }

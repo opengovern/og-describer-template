@@ -449,7 +449,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.ListArtifactDockerFiles),
-		GetDescriber:  nil,
+		ListDescriber: DescribeByGithub(describer.ListDockerFile),
+		GetDescriber:  DescribeSingleByRepo(describer.GetDockerfile),
 	},
 }
