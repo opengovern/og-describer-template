@@ -4,3 +4,5 @@ og-describer-template
 .env
 local/
 output.json
+.vscode
+.vscode/*
