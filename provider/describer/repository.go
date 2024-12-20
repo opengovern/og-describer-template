@@ -131,8 +131,15 @@ func GetRepositoryListWithOptions(
 	return allResources, nil
 }
 
-// GetRepositoryDetail returns details for a given repo
-func GetRepositoryDetail(ctx context.Context, githubClient GitHubClient, organizationName, repositoryName string) (*models.Resource, error) {
+// GetRepository returns details for a given repo
+func GetRepository(
+	ctx context.Context,
+	githubClient GitHubClient,
+	organizationName string,
+	repositoryName string,
+	resourceID string,
+	stream *models.StreamSender,
+) (*models.Resource, error) {
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
 		UseProviderLimits: true,
@@ -164,6 +171,14 @@ func GetRepositoryDetail(ctx context.Context, githubClient GitHubClient, organiz
 			Value: finalDetail,
 		},
 	}
+
+	// If a stream is provided, send the resource through the stream
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil, err
+		}
+	}
+
 	return &value, nil
 }
 

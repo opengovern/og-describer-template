@@ -1,6 +1,8 @@
+// describer.go
 package cmd
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -18,7 +20,6 @@ import (
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
-	"golang.org/x/net/context"
 )
 
 var (
@@ -31,6 +32,18 @@ var describerCmd = &cobra.Command{
 	Use:   "describer",
 	Short: "A brief description of your command",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		// Environment takes priority
+		orgEnv := os.Getenv("GITHUB_ORG")
+		patEnv := os.Getenv("GITHUB_PAT")
+
+		if orgEnv != "" {
+			OrganizationName = orgEnv
+		}
+
+		if patEnv != "" {
+			PatToken = patEnv
+		}
+
 		// Open the output file
 		file, err := os.Create(outputFile)
 		if err != nil {
@@ -47,7 +60,7 @@ var describerCmd = &cobra.Command{
 			IntegrationType: configs.IntegrationTypeLower,
 			CipherText:      "",
 			IntegrationLabels: map[string]string{
-				"OrganizationName": "opengovern",
+				"OrganizationName": OrganizationName,
 			},
 			IntegrationAnnotations: nil,
 		}
@@ -56,7 +69,7 @@ var describerCmd = &cobra.Command{
 		logger, _ := zap.NewProduction()
 
 		creds, err := provider.AccountCredentialsFromMap(map[string]any{
-			"pat_token": "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",
+			"pat_token": PatToken,
 		})
 		if err != nil {
 			return fmt.Errorf(" account credentials: %w", err)

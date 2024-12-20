@@ -222,7 +222,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations: map[string]string{},
 
 		ListDescriber: DescribeByGithub(describer.GetRepositoryList),
-		GetDescriber:  DescribeSingleByRepo(describer.GetRepositoryDetail),
+		GetDescriber:  DescribeSingleByRepo(describer.GetRepository),
 	},
 
 	"Github/Repository/Collaborator": {
