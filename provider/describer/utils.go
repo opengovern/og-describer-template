@@ -4,18 +4,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"slices"
+	"strconv"
+	"strings"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/shurcooL/githubv4"
-	"slices"
-	"strconv"
-	"strings"
 )
 
 // GitHubClient custom struct for defining both rest and graphql clients
 type GitHubClient struct {
+	SDK           *resilientbridge.ResilientBridge
 	RestClient    *github.Client
 	GraphQLClient *githubv4.Client
 	Token         string

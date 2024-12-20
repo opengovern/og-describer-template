@@ -2,10 +2,11 @@ package describer
 
 import (
 	"context"
+	"strconv"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
-	"strconv"
 )
 
 func GetAllRunners(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
