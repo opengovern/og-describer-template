@@ -44,8 +44,7 @@ func ListCommits(ctx context.Context, githubClient GitHubClient, organizationNam
 // GetRepositoryCommits fetches up to 50 commits for a single repository.
 // If a stream is provided, commits are streamed; otherwise, returns them as a slice.
 func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBridge, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
-	//const maxCommits = 50
-	const maxCommits = 25
+	maxCommits := 10
 	commits, err := fetchCommitList(sdk, owner, repo, maxCommits)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching commits list for %s/%s: %w", owner, repo, err)
