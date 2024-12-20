@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
@@ -11,7 +14,6 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
-	"strconv"
 )
 
 func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -47,8 +49,9 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion, stream *models.StreamSender) ([]models.Resource, error) {
 	// Each version can have multiple tags. We'll produce one output object per tag.
 	var values []models.Resource
+	normalizedPackageName := strings.ToLower(packageName)
 	for _, tag := range version.Metadata.Container.Tags {
-		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, packageName, tag)
+		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, normalizedPackageName, tag)
 		ov, err := fetchAndAssembleOutput(apiToken, version, imageRef)
 		if err != nil {
 			return nil, err

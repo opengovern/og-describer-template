@@ -43,7 +43,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllWorkflowRuns)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepoWorkflowRun)",
+    "GetDescriber": "",
     "SteampipeTable": "github_actions_repository_workflow_run",
     "Model": "WorkflowRun"
   },
@@ -90,8 +90,8 @@
         "Commit"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllCommits)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryCommit)",
+    "ListDescriber": "DescribeByGithub(describer.ListCommits)",
+    "GetDescriber": "",
     "SteampipeTable": "github_commit",
     "Model": "Commit"
   },
@@ -211,7 +211,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetRepositoryList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepository)",
+    "GetDescriber": "",
     "SteampipeTable": "github_repository",
     "Model": "Repository"
   },
@@ -334,18 +334,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_team_member",
     "Model": "TeamMembers"
-  },
-  {
-    "ResourceName": "Github/Team/Repository",
-    "Tags": {
-      "category": [
-        "team"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTeamsRepositories)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_team_repository",
-    "Model": "TeamRepository"
   },
   {
     "ResourceName": "Github/Tree",

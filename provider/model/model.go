@@ -5,6 +5,7 @@
 package model
 
 import (
+	"encoding/json"
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
@@ -36,42 +37,105 @@ type SecretDescription struct {
 	RepoFullName string
 }
 
-type WorkflowRunDescription struct {
-	ID                 int64
-	Name               string
-	NodeID             string
-	HeadBranch         string
-	HeadSHA            string
-	RunNumber          int
-	RunAttempt         int
-	Event              string
-	DisplayTitle       string
-	Status             string
-	Conclusion         string
-	WorkflowID         int64
-	CheckSuiteID       int64
-	CheckSuiteNodeID   string
-	URL                string
-	HTMLURL            string
-	PullRequests       []*github.PullRequest
-	CreatedAt          github.Timestamp
-	UpdatedAt          github.Timestamp
-	RunStartedAt       github.Timestamp
-	JobsURL            string
-	LogsURL            string
-	CheckSuiteURL      string
-	ArtifactsURL       string
-	CancelURL          string
-	RerunURL           string
-	PreviousAttemptURL string
-	HeadCommit         *github.HeadCommit
-	WorkflowURL        string
-	Repository         *github.Repository
-	HeadRepository     *github.Repository
-	Actor              *github.User
-	TriggeringActor    *github.User
-	RepoFullName       string
+type SimpleActor struct {
+	Login  string `json:"login"`
+	ID     int    `json:"id"`
+	NodeID string `json:"node_id"`
+	Type   string `json:"type"`
 }
+
+type SimpleRepo struct {
+	ID     int    `json:"id"`
+	NodeID string `json:"node_id"`
+}
+
+type CommitRefWorkflow struct {
+	ID string `json:"id"`
+}
+
+type WorkflowRunDescription struct {
+	ID                  int                `json:"id"`
+	Name                string             `json:"name"`
+	HeadBranch          string             `json:"head_branch"`
+	HeadSHA             string             `json:"head_sha"`
+	Status              string             `json:"status"`
+	Conclusion          string             `json:"conclusion"`
+	HTMLURL             string             `json:"html_url"`
+	WorkflowID          int                `json:"workflow_id"`
+	RunNumber           int                `json:"run_number"`
+	Event               string             `json:"event"`
+	CreatedAt           string             `json:"created_at"`
+	UpdatedAt           string             `json:"updated_at"`
+	RunAttempt          int                `json:"run_attempt"`
+	RunStartedAt        string             `json:"run_started_at"`
+	Actor               *SimpleActor       `json:"triggering_actor,omitempty"`
+	HeadCommit          *CommitRefWorkflow `json:"head_commit,omitempty"`
+	Repository          *SimpleRepo        `json:"repository,omitempty"`
+	HeadRepository      *SimpleRepo        `json:"head_repository,omitempty"`
+	ReferencedWorkflows []interface{}      `json:"referenced_workflows,omitempty"`
+	ArtifactCount       int                `json:"artifact_count"`
+	Artifacts           []WorkflowArtifact `json:"artifacts,omitempty"`
+}
+
+type WorkflowRunsResponse struct {
+	TotalCount   int                      `json:"total_count"`
+	WorkflowRuns []WorkflowRunDescription `json:"workflow_runs"`
+}
+
+type WorkflowArtifact struct {
+	ID                 int    `json:"id"`
+	NodeID             string `json:"node_id"`
+	Name               string `json:"name"`
+	SizeInBytes        int    `json:"size_in_bytes"`
+	URL                string `json:"url"`
+	ArchiveDownloadURL string `json:"archive_download_url"`
+	Expired            bool   `json:"expired"`
+	CreatedAt          string `json:"created_at"`
+	UpdatedAt          string `json:"updated_at"`
+	ExpiresAt          string `json:"expires_at"`
+}
+
+type ArtifactsResponse struct {
+	TotalCount int                `json:"total_count"`
+	Artifacts  []WorkflowArtifact `json:"artifacts"`
+}
+
+//type WorkflowRunDescription struct {
+//	ID                 int64
+//	Name               string
+//	NodeID             string
+//	HeadBranch         string
+//	HeadSHA            string
+//	RunNumber          int
+//	RunAttempt         int
+//	Event              string
+//	DisplayTitle       string
+//	Status             string
+//	Conclusion         string
+//	WorkflowID         int64
+//	CheckSuiteID       int64
+//	CheckSuiteNodeID   string
+//	URL                string
+//	HTMLURL            string
+//	PullRequests       []*github.PullRequest
+//	CreatedAt          github.Timestamp
+//	UpdatedAt          github.Timestamp
+//	RunStartedAt       github.Timestamp
+//	JobsURL            string
+//	LogsURL            string
+//	CheckSuiteURL      string
+//	ArtifactsURL       string
+//	CancelURL          string
+//	RerunURL           string
+//	PreviousAttemptURL string
+//	HeadCommit         *github.HeadCommit
+//	WorkflowURL        string
+//	Repository         *github.Repository
+//	HeadRepository     *github.Repository
+//	Actor              *github.User
+//	TriggeringActor    *github.User
+//	RepoFullName       string
+//}
 
 type AuditLogDescription struct {
 	ID            string
@@ -132,16 +196,71 @@ type BranchProtectionDescription struct {
 	BypassPullRequestAllowanceUsers []BranchUser
 }
 
-type CommitDescription struct {
-	steampipemodels.Commit
-	RepoFullName   string
-	AuthorLogin    string
-	CommitterLogin string
+type Parents []struct {
+	SHA string `json:"sha"`
 }
 
+type Tree struct {
+	SHA string `json:"sha"`
+}
 
-type GitIgnoreDescription struct {
-	*github.Gitignore
+type VerificationDetails struct {
+	Reason     string  `json:"reason"`
+	Signature  *string `json:"signature"`
+	VerifiedAt *string `json:"verified_at"`
+}
+
+type AdditionalDetails struct {
+	NodeID              string              `json:"node_id"`
+	Parents             Parents             `json:"parents"`
+	Tree                Tree                `json:"tree"`
+	VerificationDetails VerificationDetails `json:"verification_details"`
+}
+
+type Author struct {
+	Email   string `json:"email"`
+	HTMLURL string `json:"html_url"`
+	ID      int    `json:"id"`
+	Login   string `json:"login"`
+	Name    string `json:"name"`
+	NodeID  string `json:"node_id"`
+	Type    string `json:"type"`
+}
+
+type Changes struct {
+	Additions int `json:"additions"`
+	Deletions int `json:"deletions"`
+	Total     int `json:"total"`
+}
+
+type File struct {
+	Additions int    `json:"additions"`
+	Changes   int    `json:"changes"`
+	Deletions int    `json:"deletions"`
+	Filename  string `json:"filename"`
+	SHA       string `json:"sha"`
+	Status    string `json:"status"`
+}
+
+type Target struct {
+	Branch       string `json:"branch"`
+	Organization string `json:"organization"`
+	Repository   string `json:"repository"`
+}
+
+type CommitDescription struct {
+	AdditionalDetails AdditionalDetails `json:"additional_details"`
+	Author            Author            `json:"author"`
+	Changes           Changes           `json:"changes"`
+	CommentCount      int               `json:"comment_count"`
+	Date              string            `json:"date"`
+	Files             []File            `json:"files"`
+	HTMLURL           string            `json:"html_url"`
+	ID                string            `json:"id"`
+	IsVerified        bool              `json:"is_verified"`
+	Message           string            `json:"message"`
+	PullRequests      []int             `json:"pull_requests"`
+	Target            Target            `json:"target"`
 }
 
 type IssueDescription struct {
@@ -361,86 +480,294 @@ type PullRequestDescription struct {
 	AssigneesTotalCount      int
 }
 
-type RepositoryDescription struct {
-	ID                            int
-	NodeID                        string
-	Name                          string
-	AllowUpdateBranch             bool
-	ArchivedAt                    steampipemodels.NullableTime
-	AutoMergeAllowed              bool
-	CodeOfConduct                 steampipemodels.RepositoryCodeOfConduct
-	ContactLinks                  []steampipemodels.RepositoryContactLink
-	CreatedAt                     steampipemodels.NullableTime
-	DefaultBranchRef              steampipemodels.BasicRefWithBranchProtectionRule
-	DeleteBranchOnMerge           bool
-	Description                   string
-	DiskUsage                     int
-	ForkCount                     int
-	ForkingAllowed                bool
-	FundingLinks                  []steampipemodels.RepositoryFundingLinks
-	HasDiscussionsEnabled         bool
-	HasIssuesEnabled              bool
-	HasProjectsEnabled            bool
-	HasVulnerabilityAlertsEnabled bool
-	HasWikiEnabled                bool
-	HomepageURL                   string
-	InteractionAbility            steampipemodels.RepositoryInteractionAbility
-	IsArchived                    bool
-	IsBlankIssuesEnabled          bool
-	IsDisabled                    bool
-	IsEmpty                       bool
-	IsFork                        bool
-	IsInOrganization              bool
-	IsLocked                      bool
-	IsMirror                      bool
-	IsPrivate                     bool
-	IsSecurityPolicyEnabled       bool
-	IsTemplate                    bool
-	IsUserConfigurationRepository bool
-	IssueTemplates                []steampipemodels.IssueTemplate
-	LicenseInfo                   steampipemodels.BasicLicense
-	LockReason                    githubv4.LockReason
-	MergeCommitAllowed            bool
-	MergeCommitMessage            githubv4.MergeCommitMessage
-	MergeCommitTitle              githubv4.MergeCommitTitle
-	MirrorURL                     string
-	NameWithOwner                 string
-	OpenGraphImageURL             string
-	OwnerLogin                    string
-	PrimaryLanguage               steampipemodels.Language
-	ProjectsURL                   string
-	PullRequestTemplates          []steampipemodels.PullRequestTemplate
-	PushedAt                      steampipemodels.NullableTime
-	RebaseMergeAllowed            bool
-	SecurityPolicyURL             string
-	SquashMergeAllowed            bool
-	SquashMergeCommitMessage      githubv4.SquashMergeCommitMessage
-	SquashMergeCommitTitle        githubv4.SquashMergeCommitTitle
-	SSHURL                        string
-	StargazerCount                int
-	UpdatedAt                     steampipemodels.NullableTime
-	URL                           string
-	//UsesCustomOpenGraphImage      bool
-	//CanAdminister                 bool
-	//CanCreateProjects             bool
-	//CanSubscribe                  bool
-	//CanUpdateTopics               bool
-	//HasStarred                    bool
-	PossibleCommitEmails []string
-	//Subscription                  githubv4.SubscriptionState
-	Visibility githubv4.RepositoryVisibility
-	//YourPermission                githubv4.RepositoryPermission
-	WebCommitSignOffRequired   bool
-	RepositoryTopicsTotalCount int
-	OpenIssuesTotalCount       int
-	WatchersTotalCount         int
-	Hooks                      []*github.Hook
-	Topics                     []string
-	SubscribersCount           int
-	HasDownloads               bool
-	HasPages                   bool
-	NetworkCount               int
+type License struct {
+	Key    string `json:"key"`
+	Name   string `json:"name"`
+	SPDXID string `json:"spdx_id"`
+	URL    string `json:"url"`
+	NodeID string `json:"node_id"`
 }
+
+type Permissions struct {
+	Admin    bool `json:"admin"`
+	Maintain bool `json:"maintain"`
+	Push     bool `json:"push"`
+	Triage   bool `json:"triage"`
+	Pull     bool `json:"pull"`
+}
+
+type StatusObj struct {
+	Status string `json:"status"`
+}
+
+type RepoDetail struct {
+	ID                        int                    `json:"id"`
+	NodeID                    string                 `json:"node_id"`
+	Name                      string                 `json:"name"`
+	FullName                  string                 `json:"full_name"`
+	Private                   bool                   `json:"private"`
+	Owner                     *Owner                 `json:"owner"`
+	HTMLURL                   string                 `json:"html_url"`
+	Description               *string                `json:"description"`
+	Fork                      bool                   `json:"fork"`
+	CreatedAt                 string                 `json:"created_at"`
+	UpdatedAt                 string                 `json:"updated_at"`
+	PushedAt                  string                 `json:"pushed_at"`
+	GitURL                    string                 `json:"git_url"`
+	SSHURL                    string                 `json:"ssh_url"`
+	CloneURL                  string                 `json:"clone_url"`
+	SVNURL                    string                 `json:"svn_url"`
+	Homepage                  *string                `json:"homepage"`
+	Size                      int                    `json:"size"`
+	StargazersCount           int                    `json:"stargazers_count"`
+	WatchersCount             int                    `json:"watchers_count"`
+	Languages                 *string                `json:"languages"` // original string language field
+	HasIssues                 bool                   `json:"has_issues"`
+	HasProjects               bool                   `json:"has_projects"`
+	HasDownloads              bool                   `json:"has_downloads"`
+	HasWiki                   bool                   `json:"has_wiki"`
+	HasPages                  bool                   `json:"has_pages"`
+	HasDiscussions            bool                   `json:"has_discussions"`
+	ForksCount                int                    `json:"forks_count"`
+	MirrorURL                 *string                `json:"mirror_url"`
+	Archived                  bool                   `json:"archived"`
+	Disabled                  bool                   `json:"disabled"`
+	OpenIssuesCount           int                    `json:"open_issues_count"`
+	License                   *License               `json:"license"`
+	AllowForking              bool                   `json:"allow_forking"`
+	IsTemplate                bool                   `json:"is_template"`
+	WebCommitSignoffRequired  bool                   `json:"web_commit_signoff_required"`
+	Topics                    []string               `json:"topics"`
+	Visibility                string                 `json:"visibility"`
+	DefaultBranch             string                 `json:"default_branch"`
+	Permissions               *Permissions           `json:"permissions"`
+	AllowSquashMerge          bool                   `json:"allow_squash_merge"`
+	AllowMergeCommit          bool                   `json:"allow_merge_commit"`
+	AllowRebaseMerge          bool                   `json:"allow_rebase_merge"`
+	AllowAutoMerge            bool                   `json:"allow_auto_merge"`
+	DeleteBranchOnMerge       bool                   `json:"delete_branch_on_merge"`
+	AllowUpdateBranch         bool                   `json:"allow_update_branch"`
+	UseSquashPRTitleAsDefault bool                   `json:"use_squash_pr_title_as_default"`
+	SquashMergeCommitMessage  string                 `json:"squash_merge_commit_message"`
+	SquashMergeCommitTitle    string                 `json:"squash_merge_commit_title"`
+	MergeCommitMessage        string                 `json:"merge_commit_message"`
+	MergeCommitTitle          string                 `json:"merge_commit_title"`
+	CustomProperties          map[string]interface{} `json:"custom_properties"`
+	Organization              *Organization          `json:"organization"`
+	Parent                    *RepoDetail            `json:"parent"`
+	Source                    *RepoDetail            `json:"source"`
+	NetworkCount              int                    `json:"network_count"`
+	SubscribersCount          int                    `json:"subscribers_count"`
+	BlankIssuesEnabled        bool                   `json:"blank_issues_enabled"`
+	Locked                    bool                   `json:"locked"`
+
+	SecurityAndAnalysis *struct {
+		SecretScanning                    *StatusObj `json:"secret_scanning"`
+		SecretScanningPushProtection      *StatusObj `json:"secret_scanning_push_protection"`
+		DependabotSecurityUpdates         *StatusObj `json:"dependabot_security_updates"`
+		SecretScanningNonProviderPatterns *StatusObj `json:"secret_scanning_non_provider_patterns"`
+		SecretScanningValidityChecks      *StatusObj `json:"secret_scanning_validity_checks"`
+	} `json:"security_and_analysis"`
+}
+
+type RepositorySettings struct {
+	HasDiscussionsEnabled     bool                   `json:"has_discussions_enabled"`
+	HasIssuesEnabled          bool                   `json:"has_issues_enabled"`
+	HasProjectsEnabled        bool                   `json:"has_projects_enabled"`
+	HasWikiEnabled            bool                   `json:"has_wiki_enabled"`
+	MergeCommitAllowed        bool                   `json:"merge_commit_allowed"`
+	MergeCommitMessage        string                 `json:"merge_commit_message"`
+	MergeCommitTitle          string                 `json:"merge_commit_title"`
+	SquashMergeAllowed        bool                   `json:"squash_merge_allowed"`
+	SquashMergeCommitMessage  string                 `json:"squash_merge_commit_message"`
+	SquashMergeCommitTitle    string                 `json:"squash_merge_commit_title"`
+	HasDownloads              bool                   `json:"has_downloads"`
+	HasPages                  bool                   `json:"has_pages"`
+	WebCommitSignoffRequired  bool                   `json:"web_commit_signoff_required"`
+	MirrorURL                 *string                `json:"mirror_url"`
+	AllowAutoMerge            bool                   `json:"allow_auto_merge"`
+	DeleteBranchOnMerge       bool                   `json:"delete_branch_on_merge"`
+	AllowUpdateBranch         bool                   `json:"allow_update_branch"`
+	UseSquashPRTitleAsDefault bool                   `json:"use_squash_pr_title_as_default"`
+	CustomProperties          map[string]interface{} `json:"custom_properties"`
+	ForkingAllowed            bool                   `json:"forking_allowed"`
+	IsTemplate                bool                   `json:"is_template"`
+	AllowRebaseMerge          bool                   `json:"allow_rebase_merge"`
+	// Renamed fields:
+	Archived bool `json:"archived"`
+	Disabled bool `json:"disabled"`
+	Locked   bool `json:"locked"`
+}
+
+type SecuritySettings struct {
+	VulnerabilityAlertsEnabled               bool `json:"vulnerability_alerts_enabled"`
+	SecretScanningEnabled                    bool `json:"secret_scanning_enabled"`
+	SecretScanningPushProtectionEnabled      bool `json:"secret_scanning_push_protection_enabled"`
+	DependabotSecurityUpdatesEnabled         bool `json:"dependabot_security_updates_enabled"`
+	SecretScanningNonProviderPatternsEnabled bool `json:"secret_scanning_non_provider_patterns_enabled"`
+	SecretScanningValidityChecksEnabled      bool `json:"secret_scanning_validity_checks_enabled"`
+
+	// New field
+	PrivateVulnerabilityReportingEnabled bool `json:"private_vulnerability_reporting_enabled"`
+}
+
+type RepoURLs struct {
+	GitURL   string `json:"git_url"`
+	SSHURL   string `json:"ssh_url"`
+	CloneURL string `json:"clone_url"`
+	SVNURL   string `json:"svn_url"`
+	HTMLURL  string `json:"html_url"`
+}
+type Owner struct {
+	Login   string `json:"login"`
+	ID      int    `json:"id"`
+	NodeID  string `json:"node_id"`
+	HTMLURL string `json:"html_url"`
+	Type    string `json:"type"`
+}
+
+type Organization struct {
+	Login        string `json:"login"`
+	ID           int    `json:"id"`
+	NodeID       string `json:"node_id"`
+	HTMLURL      string `json:"html_url"`
+	Type         string `json:"type"`
+	UserViewType string `json:"user_view_type"`
+	SiteAdmin    bool   `json:"site_admin"`
+}
+
+type Metrics struct {
+	Stargazers   int `json:"stargazers"`
+	Forks        int `json:"forks"`
+	Subscribers  int `json:"subscribers"`
+	Size         int `json:"size"`
+	Tags         int `json:"tags"`
+	Commits      int `json:"commits"`
+	Issues       int `json:"issues"`
+	OpenIssues   int `json:"open_issues"`
+	Branches     int `json:"branches"`
+	PullRequests int `json:"pull_requests"`
+	Releases     int `json:"releases"`
+}
+
+type RepositoryDescription struct {
+	GitHubRepoID            int                    `json:"id"`
+	NodeID                  string                 `json:"node_id"`
+	Name                    string                 `json:"name"`
+	NameWithOwner           string                 `json:"name_with_owner"`
+	Description             *string                `json:"description"`
+	CreatedAt               string                 `json:"created_at"`
+	UpdatedAt               string                 `json:"updated_at"`
+	PushedAt                string                 `json:"pushed_at"`
+	IsActive                bool                   `json:"is_active"`
+	IsEmpty                 bool                   `json:"is_empty"`
+	IsFork                  bool                   `json:"is_fork"`
+	IsSecurityPolicyEnabled bool                   `json:"is_security_policy_enabled"`
+	Owner                   *Owner                 `json:"owner"`
+	HomepageURL             *string                `json:"homepage_url"`
+	LicenseInfo             json.RawMessage        `json:"license_info"`
+	Topics                  []string               `json:"topics"`
+	Visibility              string                 `json:"visibility"`
+	DefaultBranchRef        json.RawMessage        `json:"default_branch_ref"`
+	Permissions             *Permissions           `json:"permissions"`
+	Organization            *Organization          `json:"organization"`
+	Parent                  *RepositoryDescription `json:"parent"`
+	Source                  *RepositoryDescription `json:"source"`
+	Languages               map[string]int         `json:"language"`
+	RepositorySettings      RepositorySettings     `json:"repo_settings"`
+	SecuritySettings        SecuritySettings       `json:"security_settings"`
+	RepoURLs                RepoURLs               `json:"repo_urls"`
+	Metrics                 Metrics                `json:"metrics"`
+}
+
+type MinimalRepoInfo struct {
+	Name  string `json:"name"`
+	Owner struct {
+		Login string `json:"login"`
+	} `json:"owner"`
+}
+
+//type RepoDescription struct {
+//	github.Repository
+//	ID                            int
+//	NodeID                        string
+//	Name                          string
+//	NameWithOwner                 string
+//	Description                   string
+//	IsArchived                    bool
+//	IsEmpty                       bool
+//	IsFork                        bool
+//	IsSecurityPolicyEnabled       bool
+//	OwnerLogin                    string
+//	LicenseInfo                   steampipemodels.BasicLicense
+//	Visibility                    githubv4.RepositoryVisibility
+//	Topics                        []string
+//	DefaultBranchRef              steampipemodels.BasicRefWithBranchProtectionRule
+//	YourPermission                githubv4.RepositoryPermission
+//	CreatedAt                     steampipemodels.NullableTime
+//	UpdatedAt                     steampipemodels.NullableTime
+//	PushedAt                      steampipemodels.NullableTime
+//	AllowUpdateBranch             bool
+//	ArchivedAt                    steampipemodels.NullableTime
+//	AutoMergeAllowed              bool
+//	CodeOfConduct                 steampipemodels.RepositoryCodeOfConduct
+//	ContactLinks                  []steampipemodels.RepositoryContactLink
+//	DeleteBranchOnMerge           bool
+//	DiskUsage                     int
+//	ForkCount                     int
+//	ForkingAllowed                bool
+//	FundingLinks                  []steampipemodels.RepositoryFundingLinks
+//	HasDiscussionsEnabled         bool
+//	HasIssuesEnabled              bool
+//	HasProjectsEnabled            bool
+//	HasVulnerabilityAlertsEnabled bool
+//	HasWikiEnabled                bool
+//	HomepageURL                   string
+//	InteractionAbility            steampipemodels.RepositoryInteractionAbility
+//	IsBlankIssuesEnabled          bool
+//	IsDisabled                    bool
+//	IsInOrganization              bool
+//	IsLocked                      bool
+//	IsMirror                      bool
+//	IsPrivate                     bool
+//	IsTemplate                    bool
+//	IsUserConfigurationRepository bool
+//	IssueTemplates                []steampipemodels.IssueTemplate
+//	LockReason                    githubv4.LockReason
+//	MergeCommitAllowed            bool
+//	MergeCommitMessage            githubv4.MergeCommitMessage
+//	MergeCommitTitle              githubv4.MergeCommitTitle
+//	MirrorURL                     string
+//	OpenGraphImageURL             string
+//	PrimaryLanguage               steampipemodels.Language
+//	ProjectsURL                   string
+//	PullRequestTemplates          []steampipemodels.PullRequestTemplate
+//	RebaseMergeAllowed            bool
+//	SecurityPolicyURL             string
+//	SquashMergeAllowed            bool
+//	SquashMergeCommitMessage      githubv4.SquashMergeCommitMessage
+//	SquashMergeCommitTitle        githubv4.SquashMergeCommitTitle
+//	SSHURL                        string
+//	StargazerCount                int
+//	URL                           string
+//	//UsesCustomOpenGraphImage      bool
+//	//CanAdminister                 bool
+//	//CanCreateProjects             bool
+//	//CanSubscribe                  bool
+//	//CanUpdateTopics               bool
+//	//HasStarred                    bool
+//	PossibleCommitEmails []string
+//	//Subscription                  githubv4.SubscriptionState
+//	WebCommitSignOffRequired   bool
+//	RepositoryTopicsTotalCount int
+//	OpenIssuesTotalCount       int
+//	WatchersTotalCount         int
+//	Hooks                      []*github.Hook
+//	SubscribersCount           int
+//	HasDownloads               bool
+//	HasPages                   bool
+//	NetworkCount               int
+//}
 
 type ReleaseDescription struct {
 	github.RepositoryRelease
@@ -620,13 +947,6 @@ type TeamMembersDescription struct {
 	Role         githubv4.TeamMemberRole
 }
 
-type TeamRepositoryDescription struct {
-	RepositoryDescription
-	Organization string
-	Slug         string
-	Permission   githubv4.RepositoryPermission
-}
-
 type TrafficViewDailyDescription struct {
 	*github.TrafficData
 	RepositoryFullName string
@@ -699,20 +1019,20 @@ type CodeOwnerDescription struct {
 	LineComment        string
 }
 
-type Owner struct {
+type OwnerLogin struct {
 	Login string `json:"login"`
 }
 
 type Package struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	PackageType string `json:"package_type"`
-	Visibility  string `json:"visibility"`
-	HTMLURL     string `json:"html_url"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
-	Owner       Owner  `json:"owner"`
-	URL         string `json:"url"`
+	ID          int        `json:"id"`
+	Name        string     `json:"name"`
+	PackageType string     `json:"package_type"`
+	Visibility  string     `json:"visibility"`
+	HTMLURL     string     `json:"html_url"`
+	CreatedAt   string     `json:"created_at"`
+	UpdatedAt   string     `json:"updated_at"`
+	Owner       OwnerLogin `json:"owner"`
+	URL         string     `json:"url"`
 }
 
 type ContainerMetadata struct {

@@ -733,12 +733,7 @@ func (p WorkflowRunPaginator) NextPage(ctx context.Context) ([]WorkflowRun, erro
 	return values, nil
 }
 
-var listWorkflowRunFilters = map[string]string{
-	"actor":                  "Description.Actor",
-	"actor_login":            "Description.Actor.Login",
-	"triggering_actor":       "Description.TriggeringActor",
-	"triggering_actor_login": "Description.TriggeringActor.Login",
-}
+var listWorkflowRunFilters = map[string]string{}
 
 func ListWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListWorkflowRun")
@@ -800,12 +795,7 @@ func ListWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 	return nil, nil
 }
 
-var getWorkflowRunFilters = map[string]string{
-	"actor":                  "Description.Actor",
-	"actor_login":            "Description.Actor.Login",
-	"triggering_actor":       "Description.TriggeringActor",
-	"triggering_actor_login": "Description.TriggeringActor.Login",
-}
+var getWorkflowRunFilters = map[string]string{}
 
 func GetWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetWorkflowRun")
@@ -1576,30 +1566,13 @@ func (p CommitPaginator) NextPage(ctx context.Context) ([]Commit, error) {
 }
 
 var listCommitFilters = map[string]string{
-	"additions":             "Description.Additions",
-	"author":                "Description.Author",
-	"author_login":          "Description.AuthorLogin",
-	"authored_by_committer": "Description.AuthoredByCommitter",
-	"can_subscribe":         "Description.CanSubscribe",
-	"changed_files":         "Description.ChangedFiles",
-	"commit_url":            "Description.CommitUrl",
-	"committed_via_web":     "Description.CommittedViaWeb",
-	"committer":             "Description.Committer",
-	"committer_login":       "Description.CommitterLogin",
-	"deletions":             "Description.Deletions",
-	"message":               "Description.Message",
-	"message_headline":      "Description.MessageHeadline",
-	"node_id":               "Description.NodeId",
-	"repository_full_name":  "Description.RepoFullName",
-	"sha":                   "Description.Sha",
-	"short_sha":             "Description.ShortSha",
-	"signature":             "Description.Signature",
-	"status":                "Description.Status",
-	"subscription":          "Description.Subscription",
-	"tarball_url":           "Description.TarballUrl",
-	"tree_url":              "Description.TreeUrl",
-	"url":                   "Description.Url",
-	"zipball_url":           "Description.ZipballUrl",
+	"additional_details": "AdditionalDetails",
+	"author_email":       "Author.Email",
+	"author_name":        "Author.Name",
+	"changes":            "Changes",
+	"files":              "Files",
+	"pull_requests":      "PullRequests",
+	"target":             "Target",
 }
 
 func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1663,30 +1636,13 @@ func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 }
 
 var getCommitFilters = map[string]string{
-	"additions":             "Description.Additions",
-	"author":                "Description.Author",
-	"author_login":          "Description.AuthorLogin",
-	"authored_by_committer": "Description.AuthoredByCommitter",
-	"can_subscribe":         "Description.CanSubscribe",
-	"changed_files":         "Description.ChangedFiles",
-	"commit_url":            "Description.CommitUrl",
-	"committed_via_web":     "Description.CommittedViaWeb",
-	"committer":             "Description.Committer",
-	"committer_login":       "Description.CommitterLogin",
-	"deletions":             "Description.Deletions",
-	"message":               "Description.Message",
-	"message_headline":      "Description.MessageHeadline",
-	"node_id":               "Description.NodeId",
-	"repository_full_name":  "Description.RepoFullName",
-	"sha":                   "Description.Sha",
-	"short_sha":             "Description.ShortSha",
-	"signature":             "Description.Signature",
-	"status":                "Description.Status",
-	"subscription":          "Description.Subscription",
-	"tarball_url":           "Description.TarballUrl",
-	"tree_url":              "Description.TreeUrl",
-	"url":                   "Description.Url",
-	"zipball_url":           "Description.ZipballUrl",
+	"additional_details": "AdditionalDetails",
+	"author_email":       "Author.Email",
+	"author_name":        "Author.Name",
+	"changes":            "Changes",
+	"files":              "Files",
+	"pull_requests":      "PullRequests",
+	"target":             "Target",
 }
 
 func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3864,75 +3820,7 @@ func (p RepositoryPaginator) NextPage(ctx context.Context) ([]Repository, error)
 	return values, nil
 }
 
-var listRepositoryFilters = map[string]string{
-	"allow_update_branch":              "Description.AllowUpdateBranch",
-	"auto_merge_allowed":               "Description.AutoMergeAllowed",
-	"code_of_conduct":                  "Description.CodeOfConduct",
-	"contact_links":                    "Description.ContactLinks",
-	"default_branch_ref":               "Description.DefaultBranchRef",
-	"delete_branch_on_merge":           "Description.DeleteBranchOnMerge",
-	"description":                      "Description.Description",
-	"disk_usage":                       "Description.DiskUsage",
-	"fork_count":                       "Description.ForkCount",
-	"forking_allowed":                  "Description.ForkingAllowed",
-	"full_name":                        "Description.NameWithOwner",
-	"funding_links":                    "Description.FundingLinks",
-	"has_discussions_enabled":          "Description.HasDiscussionsEnabled",
-	"has_downloads":                    "Description.HasDownloads",
-	"has_issues_enabled":               "Description.HasIssuesEnabled",
-	"has_pages":                        "Description.HasPages",
-	"has_projects_enabled":             "Description.HasProjectsEnabled",
-	"has_vulnerability_alerts_enabled": "Description.HasVulnerabilityAlertsEnabled",
-	"has_wiki_enabled":                 "Description.HasWikiEnabled",
-	"homepage_url":                     "Description.HomepageURL",
-	"hooks":                            "Description.Hooks",
-	"id":                               "Description.Id",
-	"interaction_ability":              "Description.InteractionAbility",
-	"is_archived":                      "Description.IsArchived",
-	"is_blank_issues_enabled":          "Description.IsBlankIssuesEnabled",
-	"is_disabled":                      "Description.IsDisabled",
-	"is_empty":                         "Description.IsEmpty",
-	"is_fork":                          "Description.IsFork",
-	"is_in_organization":               "Description.IsInOrganization",
-	"is_locked":                        "Description.IsLocked",
-	"is_mirror":                        "Description.IsMirror",
-	"is_private":                       "Description.IsPrivate",
-	"is_security_policy_enabled":       "Description.IsSecurityPolicyEnabled",
-	"is_template":                      "Description.IsTemplate",
-	"is_user_configuration_repository": "Description.IsUserConfigurationRepository",
-	"issue_templates":                  "Description.IssueTemplates",
-	"license_info":                     "Description.LicenseInfo",
-	"lock_reason":                      "Description.LockReason",
-	"merge_commit_allowed":             "Description.MergeCommitAllowed",
-	"merge_commit_message":             "Description.MergeCommitMessage",
-	"merge_commit_title":               "Description.MergeCommitTitle",
-	"mirror_url":                       "Description.MirrorURL",
-	"name":                             "Description.Name",
-	"name_with_owner":                  "Description.NameWithOwner",
-	"network_count":                    "Description.NetworkCount",
-	"node_id":                          "Description.NodeId",
-	"open_graph_image_url":             "Description.OpenGraphImageURL",
-	"open_issues_total_count":          "Description.OpenIssuesTotalCount",
-	"owner_login":                      "Description.OwnerLogin",
-	"possible_commit_emails":           "Description.PossibleCommitEmails",
-	"primary_language":                 "Description.PrimaryLanguage",
-	"projects_url":                     "Description.ProjectsURL",
-	"pull_request_templates":           "Description.PullRequestTemplates",
-	"rebase_merge_allowed":             "Description.RebaseMergeAllowed",
-	"repository_topics_total_count":    "Description.RepositoryTopicsTotalCount",
-	"security_policy_url":              "Description.SecurityPolicyURL",
-	"squash_merge_allowed":             "Description.SquashMergeAllowed",
-	"squash_merge_commit_message":      "Description.SquashMergeCommitMessage",
-	"squash_merge_commit_title":        "Description.SquashMergeCommitTitle",
-	"ssh_url":                          "Description.SSHURL",
-	"stargazer_count":                  "Description.StargazerCount",
-	"subscribers_count":                "Description.SubscribersCount",
-	"topics":                           "Description.Topics",
-	"url":                              "Description.URL",
-	"visibility":                       "Description.Visibility",
-	"watchers_total_count":             "Description.WatchersTotalCount",
-	"web_commit_signoff_required":      "Description.WebCommitSignOffRequired",
-}
+var listRepositoryFilters = map[string]string{}
 
 func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListRepository")
@@ -3994,75 +3882,7 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	return nil, nil
 }
 
-var getRepositoryFilters = map[string]string{
-	"allow_update_branch":              "Description.AllowUpdateBranch",
-	"auto_merge_allowed":               "Description.AutoMergeAllowed",
-	"code_of_conduct":                  "Description.CodeOfConduct",
-	"contact_links":                    "Description.ContactLinks",
-	"default_branch_ref":               "Description.DefaultBranchRef",
-	"delete_branch_on_merge":           "Description.DeleteBranchOnMerge",
-	"description":                      "Description.Description",
-	"disk_usage":                       "Description.DiskUsage",
-	"fork_count":                       "Description.ForkCount",
-	"forking_allowed":                  "Description.ForkingAllowed",
-	"full_name":                        "Description.NameWithOwner",
-	"funding_links":                    "Description.FundingLinks",
-	"has_discussions_enabled":          "Description.HasDiscussionsEnabled",
-	"has_downloads":                    "Description.HasDownloads",
-	"has_issues_enabled":               "Description.HasIssuesEnabled",
-	"has_pages":                        "Description.HasPages",
-	"has_projects_enabled":             "Description.HasProjectsEnabled",
-	"has_vulnerability_alerts_enabled": "Description.HasVulnerabilityAlertsEnabled",
-	"has_wiki_enabled":                 "Description.HasWikiEnabled",
-	"homepage_url":                     "Description.HomepageURL",
-	"hooks":                            "Description.Hooks",
-	"id":                               "Description.Id",
-	"interaction_ability":              "Description.InteractionAbility",
-	"is_archived":                      "Description.IsArchived",
-	"is_blank_issues_enabled":          "Description.IsBlankIssuesEnabled",
-	"is_disabled":                      "Description.IsDisabled",
-	"is_empty":                         "Description.IsEmpty",
-	"is_fork":                          "Description.IsFork",
-	"is_in_organization":               "Description.IsInOrganization",
-	"is_locked":                        "Description.IsLocked",
-	"is_mirror":                        "Description.IsMirror",
-	"is_private":                       "Description.IsPrivate",
-	"is_security_policy_enabled":       "Description.IsSecurityPolicyEnabled",
-	"is_template":                      "Description.IsTemplate",
-	"is_user_configuration_repository": "Description.IsUserConfigurationRepository",
-	"issue_templates":                  "Description.IssueTemplates",
-	"license_info":                     "Description.LicenseInfo",
-	"lock_reason":                      "Description.LockReason",
-	"merge_commit_allowed":             "Description.MergeCommitAllowed",
-	"merge_commit_message":             "Description.MergeCommitMessage",
-	"merge_commit_title":               "Description.MergeCommitTitle",
-	"mirror_url":                       "Description.MirrorURL",
-	"name":                             "Description.Name",
-	"name_with_owner":                  "Description.NameWithOwner",
-	"network_count":                    "Description.NetworkCount",
-	"node_id":                          "Description.NodeId",
-	"open_graph_image_url":             "Description.OpenGraphImageURL",
-	"open_issues_total_count":          "Description.OpenIssuesTotalCount",
-	"owner_login":                      "Description.OwnerLogin",
-	"possible_commit_emails":           "Description.PossibleCommitEmails",
-	"primary_language":                 "Description.PrimaryLanguage",
-	"projects_url":                     "Description.ProjectsURL",
-	"pull_request_templates":           "Description.PullRequestTemplates",
-	"rebase_merge_allowed":             "Description.RebaseMergeAllowed",
-	"repository_topics_total_count":    "Description.RepositoryTopicsTotalCount",
-	"security_policy_url":              "Description.SecurityPolicyURL",
-	"squash_merge_allowed":             "Description.SquashMergeAllowed",
-	"squash_merge_commit_message":      "Description.SquashMergeCommitMessage",
-	"squash_merge_commit_title":        "Description.SquashMergeCommitTitle",
-	"ssh_url":                          "Description.SSHURL",
-	"stargazer_count":                  "Description.StargazerCount",
-	"subscribers_count":                "Description.SubscribersCount",
-	"topics":                           "Description.Topics",
-	"url":                              "Description.URL",
-	"visibility":                       "Description.Visibility",
-	"watchers_total_count":             "Description.WatchersTotalCount",
-	"web_commit_signoff_required":      "Description.WebCommitSignOffRequired",
-}
+var getRepositoryFilters = map[string]string{}
 
 func GetRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetRepository")
@@ -6542,205 +6362,6 @@ func GetTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 
 // ==========================  END: TeamMembers =============================
 
-// ==========================  START: TeamRepository =============================
-
-type TeamRepository struct {
-	ResourceID      string                           `json:"resource_id"`
-	PlatformID      string                           `json:"platform_id"`
-	Description     github.TeamRepositoryDescription `json:"description"`
-	Metadata        github.Metadata                  `json:"metadata"`
-	DescribedBy     string                           `json:"described_by"`
-	ResourceType    string                           `json:"resource_type"`
-	IntegrationType string                           `json:"integration_type"`
-	IntegrationID   string                           `json:"integration_id"`
-}
-
-type TeamRepositoryHit struct {
-	ID      string         `json:"_id"`
-	Score   float64        `json:"_score"`
-	Index   string         `json:"_index"`
-	Type    string         `json:"_type"`
-	Version int64          `json:"_version,omitempty"`
-	Source  TeamRepository `json:"_source"`
-	Sort    []interface{}  `json:"sort"`
-}
-
-type TeamRepositoryHits struct {
-	Total essdk.SearchTotal   `json:"total"`
-	Hits  []TeamRepositoryHit `json:"hits"`
-}
-
-type TeamRepositorySearchResponse struct {
-	PitID string             `json:"pit_id"`
-	Hits  TeamRepositoryHits `json:"hits"`
-}
-
-type TeamRepositoryPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewTeamRepositoryPaginator(filters []essdk.BoolFilter, limit *int64) (TeamRepositoryPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_team_repository", filters, limit)
-	if err != nil {
-		return TeamRepositoryPaginator{}, err
-	}
-
-	p := TeamRepositoryPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p TeamRepositoryPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p TeamRepositoryPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p TeamRepositoryPaginator) NextPage(ctx context.Context) ([]TeamRepository, error) {
-	var response TeamRepositorySearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []TeamRepository
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listTeamRepositoryFilters = map[string]string{}
-
-func ListTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListTeamRepository")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewTeamRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamRepositoryFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTeamRepository NewTeamRepositoryPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListTeamRepository paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getTeamRepositoryFilters = map[string]string{}
-
-func GetTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetTeamRepository")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewTeamRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamRepositoryFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: TeamRepository =============================
-
 // ==========================  START: Tree =============================
 
 type Tree struct {
@@ -7795,7 +7416,21 @@ func (p ContainerPackagePaginator) NextPage(ctx context.Context) ([]ContainerPac
 	return values, nil
 }
 
-var listContainerPackageFilters = map[string]string{}
+var listContainerPackageFilters = map[string]string{
+	"created_at":       "Description.CreatedAt",
+	"digest":           "Description.Digest",
+	"html_url":         "Description.HTMLURL",
+	"id":               "Description.ID",
+	"manifest":         "Description.Manifest",
+	"media_type":       "Description.MediaType",
+	"metadata":         "Description.Metadata",
+	"name":             "Description.Name",
+	"package_html_url": "Description.PackageHTMLURL",
+	"package_uri":      "Description.PackageURI",
+	"total_size":       "Description.TotalSize",
+	"updated_at":       "Description.UpdatedAt",
+	"url":              "Description.URL",
+}
 
 func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListContainerPackage")
@@ -7857,7 +7492,21 @@ func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	return nil, nil
 }
 
-var getContainerPackageFilters = map[string]string{}
+var getContainerPackageFilters = map[string]string{
+	"created_at":       "Description.CreatedAt",
+	"digest":           "Description.Digest",
+	"html_url":         "Description.HTMLURL",
+	"id":               "Description.ID",
+	"manifest":         "Description.Manifest",
+	"media_type":       "Description.MediaType",
+	"metadata":         "Description.Metadata",
+	"name":             "Description.Name",
+	"package_html_url": "Description.PackageHTMLURL",
+	"package_uri":      "Description.PackageURI",
+	"total_size":       "Description.TotalSize",
+	"updated_at":       "Description.UpdatedAt",
+	"url":              "Description.URL",
+}
 
 func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetContainerPackage")
@@ -8392,7 +8041,18 @@ func (p ArtifactDockerFilePaginator) NextPage(ctx context.Context) ([]ArtifactDo
 	return values, nil
 }
 
-var listArtifactDockerFileFilters = map[string]string{}
+var listArtifactDockerFileFilters = map[string]string{
+	"dockerfile_content":        "Description.DockerfileContent",
+	"dockerfile_content_base64": "Description.DockerfileContentBase64",
+	"git_url":                   "Description.GitURL",
+	"html_url":                  "Description.HTMLURL",
+	"last_updated_at":           "Description.LastUpdatedAt",
+	"name":                      "Description.Name",
+	"path":                      "Description.Path",
+	"repository":                "Description.Repository",
+	"sha":                       "Description.Sha",
+	"uri":                       "Description.URI",
+}
 
 func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListArtifactDockerFile")
@@ -8454,7 +8114,18 @@ func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	return nil, nil
 }
 
-var getArtifactDockerFileFilters = map[string]string{}
+var getArtifactDockerFileFilters = map[string]string{
+	"dockerfile_content":        "Description.DockerfileContent",
+	"dockerfile_content_base64": "Description.DockerfileContentBase64",
+	"git_url":                   "Description.GitURL",
+	"html_url":                  "Description.HTMLURL",
+	"last_updated_at":           "Description.LastUpdatedAt",
+	"name":                      "Description.Name",
+	"path":                      "Description.Path",
+	"repository":                "Description.Repository",
+	"sha":                       "Description.Sha",
+	"uri":                       "Description.URI",
+}
 
 func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetArtifactDockerFile")
