@@ -22,7 +22,7 @@ const MAX_RESULTS = 500
 
 // ListDockerFile lists references to Dockerfiles in all repositories for the given organization.
 // If a stream is provided, results are streamed. If not, a slice of resources is returned.
-func ListDockerFile(
+func ListArtifactDockerFiles(
 	ctx context.Context,
 	githubClient GitHubClient,
 	organizationName string,
