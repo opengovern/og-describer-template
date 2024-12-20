@@ -8,13 +8,15 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
 )
+
+// MAX_REPO as requested
+const MAX_REPO = 250
 
 // GetRepositoryList returns a list of all active (non-archived, non-disabled) repos in the organization.
 // By default, no excludes are applied, so this returns only active repositories.
@@ -24,8 +26,17 @@ func GetRepositoryList(ctx context.Context, githubClient GitHubClient, organizat
 }
 
 // GetRepositoryListWithOptions returns a list of all active repos in the organization with options to exclude archived or disabled.
-func GetRepositoryListWithOptions(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender, excludeArchived bool, excludeDisabled bool) ([]models.Resource, error) {
-	maxResults := 100
+// GetRepositoryListWithOptions fetches repositories for a given organization directly from the GitHub API using resilientbridge.
+// It paginates through the results up to MAX_REPO and does not rely on helper functions.
+// It does minimal processing: it only extracts 'id' and 'name' fields and stores the entire repo JSON as 'Description'.
+func GetRepositoryListWithOptions(
+	ctx context.Context,
+	githubClient GitHubClient,
+	organizationName string,
+	stream *models.StreamSender,
+	excludeArchived bool,
+	excludeDisabled bool,
+) ([]models.Resource, error) {
 
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
@@ -34,73 +45,94 @@ func GetRepositoryListWithOptions(ctx context.Context, githubClient GitHubClient
 		BaseBackoff:       0,
 	})
 
-	allRepos, err := _fetchOrgRepos(sdk, organizationName, maxResults)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching organization repositories: %w", err)
-	}
+	var allResources []models.Resource
+	perPage := 100
+	page := 1
 
-	// Filter repositories based on excludeArchived and excludeDisabled
-	var filteredRepos []model.MinimalRepoInfo
-	for _, r := range allRepos {
-		if excludeArchived && r.Archived {
-			continue
+	for len(allResources) < MAX_REPO {
+		endpoint := fmt.Sprintf("/orgs/%s/repos?per_page=%d&page=%d", organizationName, perPage, page)
+		req := &resilientbridge.NormalizedRequest{
+			Method:   "GET",
+			Endpoint: endpoint,
+			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
 		}
-		if excludeDisabled && r.Disabled {
-			continue
+
+		resp, err := sdk.Request("github", req)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching repos: %w", err)
 		}
-		filteredRepos = append(filteredRepos, r)
-	}
 
-	// Multi-threading (5 workers) for fetching repository details
-	concurrency := 5
-	results := make([]models.Resource, len(filteredRepos))
+		if resp.StatusCode != 200 {
+			return nil, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+		}
 
-	type job struct {
-		index int
-		repo  string
-	}
+		// Decode into a slice of generic maps to extract 'id', 'name', etc.
+		var repos []map[string]interface{}
+		if err := json.Unmarshal(resp.Data, &repos); err != nil {
+			return nil, fmt.Errorf("error decoding repos list: %w", err)
+		}
 
-	jobCh := make(chan job)
-	wg := sync.WaitGroup{}
+		if len(repos) == 0 {
+			// no more repos
+			break
+		}
 
-	worker := func() {
-		defer wg.Done()
-		for j := range jobCh {
-			value := _getRepositoriesDetail(ctx, sdk, organizationName, j.repo, stream)
-			if value != nil {
-				results[j.index] = *value
+		for _, r := range repos {
+			// Apply filters
+			if excludeArchived {
+				if archived, ok := r["archived"].(bool); ok && archived {
+					continue
+				}
+			}
+			if excludeDisabled {
+				if disabled, ok := r["disabled"].(bool); ok && disabled {
+					continue
+				}
+			}
+
+			var idStr string
+			if idVal, ok := r["id"]; ok {
+				idStr = fmt.Sprintf("%v", idVal)
+			}
+
+			var nameStr string
+			if nameVal, ok := r["name"].(string); ok {
+				nameStr = nameVal
+			}
+
+			// Marshal the entire repo object back into JSON for Description
+			rawData, err := json.Marshal(r)
+			if err != nil {
+				return nil, fmt.Errorf("error marshalling repo data: %w", err)
+			}
+
+			resource := models.Resource{
+				ID:   idStr,
+				Name: nameStr,
+				Description: JSONAllFieldsMarshaller{
+					Value: rawData,
+				},
+			}
+
+			allResources = append(allResources, resource)
+			if len(allResources) >= MAX_REPO {
+				break
 			}
 		}
-	}
 
-	// Start workers
-	for i := 0; i < concurrency; i++ {
-		wg.Add(1)
-		go worker()
-	}
-
-	// Send jobs
-	for i, r := range filteredRepos {
-		jobCh <- job{index: i, repo: r.Name}
-	}
-	close(jobCh)
-
-	// Wait for all workers to finish
-	wg.Wait()
-
-	// Filter out empty results in case some fetches failed
-	var finalResults []models.Resource
-	for _, res := range results {
-		if res.ID != "" {
-			finalResults = append(finalResults, res)
+		if len(repos) < perPage {
+			// no more pages
+			break
 		}
+
+		page++
 	}
 
-	return finalResults, nil
+	return allResources, nil
 }
 
-// GetRepositoryDetails returns details for a given repo
-func GetRepositoryDetails(ctx context.Context, githubClient GitHubClient, organizationName, repositoryName string) (*models.Resource, error) {
+// GetRepositoryDetail returns details for a given repo
+func GetRepositoryDetail(ctx context.Context, githubClient GitHubClient, organizationName, repositoryName string) (*models.Resource, error) {
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
 		UseProviderLimits: true,

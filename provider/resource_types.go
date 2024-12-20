@@ -218,10 +218,11 @@ var ResourceTypes = map[string]model.ResourceType{
 		Tags: map[string][]string{
 			"category": {"Repository"},
 		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
+		Labels:      map[string]string{},
+		Annotations: map[string]string{},
+
 		ListDescriber: DescribeByGithub(describer.GetRepositoryList),
-		GetDescriber:  nil,
+		GetDescriber:  DescribeSingleByRepo(describer.GetRepositoryDetail),
 	},
 
 	"Github/Repository/Collaborator": {
