@@ -1032,7 +1032,6 @@ type Package struct {
 	CreatedAt   string     `json:"created_at"`
 	UpdatedAt   string     `json:"updated_at"`
 	Owner       OwnerLogin `json:"owner"`
-	URL         string     `json:"url"`
 }
 
 type ContainerMetadata struct {
@@ -1044,7 +1043,6 @@ type ContainerMetadata struct {
 type ContainerPackageDescription struct {
 	ID             int               `json:"id"`
 	Digest         string            `json:"digest"`
-	URL            string            `json:"url"`
 	PackageURI     string            `json:"package_uri"`
 	PackageHTMLURL string            `json:"package_html_url"`
 	CreatedAt      string            `json:"created_at"`
@@ -1060,7 +1058,6 @@ type ContainerPackageDescription struct {
 type PackageVersion struct {
 	ID             int               `json:"id"`
 	Name           string            `json:"name"`
-	URL            string            `json:"url"`
 	PackageHTMLURL string            `json:"package_html_url"`
 	CreatedAt      string            `json:"created_at"`
 	UpdatedAt      string            `json:"updated_at"`

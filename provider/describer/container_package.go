@@ -4,9 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"strconv"
-	"strings"
-
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
@@ -14,6 +11,10 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
+	"log"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -23,39 +24,38 @@ func GetContainerPackageList(ctx context.Context, githubClient GitHubClient, org
 		MaxRetries:        3,
 		BaseBackoff:       0,
 	})
-	packages, err := fetchPackages(sdk, organizationName, "container")
-	if err != nil {
-		return nil, err
-	}
+
+	org := organizationName
+
+	packages := fetchPackages(sdk, org, "container")
+
+	maxVersions := 1
+
 	var values []models.Resource
+
 	for _, p := range packages {
 		packageName := p.Name
-		versions, err := fetchVersions(sdk, organizationName, "container", packageName)
-		if err != nil {
-			return nil, err
+		versions := fetchVersions(sdk, org, "container", packageName)
+		if len(versions) > maxVersions {
+			versions = versions[:maxVersions]
 		}
 		for _, v := range versions {
-			results, err := getVersionOutput(githubClient.Token, organizationName, packageName, v, stream)
-			if err != nil {
-				return nil, err
-			}
-			values = append(values, results...)
+			packageValues := getVersionOutput(githubClient.Token, org, packageName, v, stream)
+			values = append(values, packageValues...)
 		}
 	}
 
 	return values, nil
 }
 
-func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion, stream *models.StreamSender) ([]models.Resource, error) {
-	// Each version can have multiple tags. We'll produce one output object per tag.
+func getVersionOutput(apiToken, org, packageName string, version model.PackageVersion, stream *models.StreamSender) []models.Resource {
 	var values []models.Resource
 	normalizedPackageName := strings.ToLower(packageName)
+
 	for _, tag := range version.Metadata.Container.Tags {
-		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, normalizedPackageName, tag)
-		ov, err := fetchAndAssembleOutput(apiToken, version, imageRef)
-		if err != nil {
-			return nil, err
-		}
+		normalizedTag := strings.ToLower(tag)
+		imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, normalizedPackageName, normalizedTag)
+		ov := fetchAndAssembleOutput(apiToken, org, normalizedPackageName, version, imageRef)
 		value := models.Resource{
 			ID:   strconv.Itoa(ov.ID),
 			Name: ov.Name,
@@ -65,16 +65,16 @@ func getVersionOutput(apiToken, org, packageName string, version model.PackageVe
 		}
 		if stream != nil {
 			if err := (*stream)(value); err != nil {
-				return nil, err
+				return nil
 			}
 		} else {
 			values = append(values, value)
 		}
 	}
-	return values, nil
+	return values
 }
 
-func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, imageRef string) (*model.ContainerPackageDescription, error) {
+func fetchAndAssembleOutput(apiToken, org, packageName string, version model.PackageVersion, imageRef string) model.ContainerPackageDescription {
 	authOption := remote.WithAuth(&authn.Basic{
 		Username: "github",
 		Password: apiToken,
@@ -82,12 +82,12 @@ func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, image
 
 	ref, err := name.ParseReference(imageRef)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error parsing reference %s: %v", imageRef, err)
 	}
 
 	desc, err := remote.Get(ref, authOption)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error fetching manifest for %s: %v", imageRef, err)
 	}
 
 	var manifestStruct struct {
@@ -105,7 +105,7 @@ func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, image
 		} `json:"layers"`
 	}
 	if err := json.Unmarshal(desc.Manifest, &manifestStruct); err != nil {
-		return nil, err
+		log.Fatalf("Error unmarshaling manifest JSON: %v", err)
 	}
 
 	totalSize := manifestStruct.Config.Size
@@ -115,13 +115,12 @@ func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, image
 
 	var manifestInterface interface{}
 	if err := json.Unmarshal(desc.Manifest, &manifestInterface); err != nil {
-		return nil, err
+		log.Fatalf("Error unmarshaling manifest for output: %v", err)
 	}
 
-	return &model.ContainerPackageDescription{
+	return model.ContainerPackageDescription{
 		ID:             version.ID,
-		Digest:         version.Name, // version digest from "name"
-		URL:            version.URL,
+		Digest:         version.Name,
 		PackageURI:     imageRef,
 		PackageHTMLURL: version.PackageHTMLURL,
 		CreatedAt:      version.CreatedAt,
@@ -132,10 +131,10 @@ func fetchAndAssembleOutput(apiToken string, version model.PackageVersion, image
 		TotalSize:      totalSize,
 		Metadata:       version.Metadata,
 		Manifest:       manifestInterface,
-	}, nil
+	}
 }
 
-func fetchPackages(sdk *resilientbridge.ResilientBridge, org, packageType string) ([]model.Package, error) {
+func fetchPackages(sdk *resilientbridge.ResilientBridge, org, packageType string) []model.Package {
 	listReq := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
 		Endpoint: fmt.Sprintf("/orgs/%s/packages?package_type=%s", org, packageType),
@@ -143,36 +142,37 @@ func fetchPackages(sdk *resilientbridge.ResilientBridge, org, packageType string
 	}
 	listResp, err := sdk.Request("github", listReq)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error listing packages: %v", err)
 	}
 	if listResp.StatusCode >= 400 {
-		return nil, fmt.Errorf("HTTP error %d: %s", listResp.StatusCode, string(listResp.Data))
+		log.Fatalf("HTTP error %d: %s", listResp.StatusCode, string(listResp.Data))
 	}
 	var packages []model.Package
 	if err := json.Unmarshal(listResp.Data, &packages); err != nil {
-		return nil, fmt.Errorf("error parsing packages list response: %v", err)
+		log.Fatalf("Error parsing packages list response: %v", err)
 	}
-	return packages, nil
+	return packages
 }
 
-func fetchVersions(sdk *resilientbridge.ResilientBridge, org, packageType, packageName string) ([]model.PackageVersion, error) {
+func fetchVersions(sdk *resilientbridge.ResilientBridge, org, packageType, packageName string) []model.PackageVersion {
+	packageNameEncoded := url.PathEscape(packageName)
 	versionsReq := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
-		Endpoint: fmt.Sprintf("/orgs/%s/packages/%s/%s/versions", org, packageType, packageName),
+		Endpoint: fmt.Sprintf("/orgs/%s/packages/%s/%s/versions", org, packageType, packageNameEncoded),
 		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
 	}
 
 	versionsResp, err := sdk.Request("github", versionsReq)
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error listing package versions: %v", err)
 	}
 	if versionsResp.StatusCode >= 400 {
-		return nil, fmt.Errorf("HTTP error %d: %s", versionsResp.StatusCode, string(versionsResp.Data))
+		log.Fatalf("HTTP error %d: %s", versionsResp.StatusCode, string(versionsResp.Data))
 	}
 
 	var versions []model.PackageVersion
 	if err := json.Unmarshal(versionsResp.Data, &versions); err != nil {
-		return nil, fmt.Errorf("error parsing package versions response: %v", err)
+		log.Fatalf("Error parsing package versions response: %v", err)
 	}
-	return versions, nil
+	return versions
 }
