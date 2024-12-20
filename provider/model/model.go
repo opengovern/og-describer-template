@@ -6,11 +6,12 @@ package model
 
 import (
 	"encoding/json"
+	"time"
+
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"time"
 )
 
 type Metadata struct{}
@@ -681,8 +682,10 @@ type RepositoryDescription struct {
 }
 
 type MinimalRepoInfo struct {
-	Name  string `json:"name"`
-	Owner struct {
+	Name     string `json:"name"`
+	Archived bool   `json:"archived"`
+	Disabled bool   `json:"disabled"`
+	Owner    struct {
 		Login string `json:"login"`
 	} `json:"owner"`
 }

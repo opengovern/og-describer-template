@@ -4,44 +4,29 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider/model"
-	resilientbridge "github.com/opengovern/resilient-bridge"
-	"github.com/opengovern/resilient-bridge/adapters"
 	"log"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider/model"
+	resilientbridge "github.com/opengovern/resilient-bridge"
 )
 
 func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
-	client := githubClient.RestClient
-	owner := organizationName
-	repositories, err := getRepositories(ctx, client, owner)
+	// Retrieve only active (non-archived, non-disabled) repositories
+	repositories, err := GetRepositoryListWithOptions(ctx, githubClient, organizationName, nil, true, true)
 	if err != nil {
-		return nil, nil
+		return nil, fmt.Errorf("error fetching repositories for workflow runs: %w", err)
 	}
 
-	sdk := resilientbridge.NewResilientBridge()
-	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
-		UseProviderLimits: true,
-		MaxRetries:        3,
-		BaseBackoff:       0,
-	})
+	sdk := newResilientSDK(githubClient.Token)
 
 	var values []models.Resource
 	for _, repo := range repositories {
-		active, err := checkRepositoryActive(sdk, owner, repo.GetName())
-		if err != nil {
-			log.Fatalf("Error checking repository: %v", err)
-		}
-
-		if !active {
-			// Repository is archived or disabled, return 0 workflow runs
-			// No output needed, just exit gracefully.
-			continue
-		}
-		repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, owner, repo.GetName())
+		// repo.Name should be the repository name field from the returned resources
+		repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repo.Name)
 		if err != nil {
 			return nil, err
 		}

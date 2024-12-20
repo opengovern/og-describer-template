@@ -4,18 +4,27 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/google/go-github/v55/github"
-	"github.com/opengovern/og-describer-github/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/provider/model"
-	resilientbridge "github.com/opengovern/resilient-bridge"
-	"github.com/opengovern/resilient-bridge/adapters"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
+
+	"github.com/opengovern/og-describer-github/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/provider/model"
+	resilientbridge "github.com/opengovern/resilient-bridge"
+	"github.com/opengovern/resilient-bridge/adapters"
 )
 
+// GetRepositoryList returns a list of all active (non-archived, non-disabled) repos in the organization.
+// By default, no excludes are applied, so this returns only active repositories.
 func GetRepositoryList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+	// Call the helper with default options (no excludes)
+	return GetRepositoryListWithOptions(ctx, githubClient, organizationName, stream, false, false)
+}
+
+// GetRepositoryListWithOptions returns a list of all active repos in the organization with options to exclude archived or disabled.
+func GetRepositoryListWithOptions(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender, excludeArchived bool, excludeDisabled bool) ([]models.Resource, error) {
 	maxResults := 100
 
 	sdk := resilientbridge.NewResilientBridge()
@@ -25,439 +34,111 @@ func GetRepositoryList(ctx context.Context, githubClient GitHubClient, organizat
 		BaseBackoff:       0,
 	})
 
-	allRepos, err := fetchOrgRepos(sdk, organizationName, maxResults)
+	allRepos, err := _fetchOrgRepos(sdk, organizationName, maxResults)
 	if err != nil {
-		log.Fatalf("Error fetching organization repositories: %v", err)
+		return nil, fmt.Errorf("error fetching organization repositories: %w", err)
 	}
 
-	var values []models.Resource
+	// Filter repositories based on excludeArchived and excludeDisabled
+	var filteredRepos []model.MinimalRepoInfo
 	for _, r := range allRepos {
-		value := getRepositoriesDetail(ctx, sdk, organizationName, r.Name, stream)
-		values = append(values, *value)
+		if excludeArchived && r.Archived {
+			continue
+		}
+		if excludeDisabled && r.Disabled {
+			continue
+		}
+		filteredRepos = append(filteredRepos, r)
 	}
 
-	return values, nil
+	// Multi-threading (5 workers) for fetching repository details
+	concurrency := 5
+	results := make([]models.Resource, len(filteredRepos))
+
+	type job struct {
+		index int
+		repo  string
+	}
+
+	jobCh := make(chan job)
+	wg := sync.WaitGroup{}
+
+	worker := func() {
+		defer wg.Done()
+		for j := range jobCh {
+			value := _getRepositoriesDetail(ctx, sdk, organizationName, j.repo, stream)
+			if value != nil {
+				results[j.index] = *value
+			}
+		}
+	}
+
+	// Start workers
+	for i := 0; i < concurrency; i++ {
+		wg.Add(1)
+		go worker()
+	}
+
+	// Send jobs
+	for i, r := range filteredRepos {
+		jobCh <- job{index: i, repo: r.Name}
+	}
+	close(jobCh)
+
+	// Wait for all workers to finish
+	wg.Wait()
+
+	// Filter out empty results in case some fetches failed
+	var finalResults []models.Resource
+	for _, res := range results {
+		if res.ID != "" {
+			finalResults = append(finalResults, res)
+		}
+	}
+
+	return finalResults, nil
 }
 
-func getRepositoriesDetail(ctx context.Context, sdk *resilientbridge.ResilientBridge, organizationName, repo string, stream *models.StreamSender) *models.Resource {
-	repoDetail, err := fetchRepoDetails(sdk, organizationName, repo)
+// GetRepositoryDetails returns details for a given repo
+func GetRepositoryDetails(ctx context.Context, githubClient GitHubClient, organizationName, repositoryName string) (*models.Resource, error) {
+	sdk := resilientbridge.NewResilientBridge()
+	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
+		UseProviderLimits: true,
+		MaxRetries:        3,
+		BaseBackoff:       0,
+	})
+
+	repoDetail, err := _fetchRepoDetails(sdk, organizationName, repositoryName)
 	if err != nil {
-		log.Printf("Error fetching details for %s/%s: %v", organizationName, repo, err)
-		return nil
+		return nil, fmt.Errorf("error fetching repository details for %s/%s: %w", organizationName, repositoryName, err)
 	}
 
-	finalDetail := transformToFinalRepoDetail(repoDetail)
-	// Fetch languages
-	langs, err := fetchLanguages(sdk, organizationName, repo)
+	finalDetail := _transformToFinalRepoDetail(repoDetail)
+
+	langs, err := _fetchLanguages(sdk, organizationName, repositoryName)
 	if err == nil {
 		finalDetail.Languages = langs
 	}
 
-	// Enrich metrics
-	err = enrichRepoMetrics(sdk, organizationName, repo, finalDetail)
+	err = _enrichRepoMetrics(sdk, organizationName, repositoryName, finalDetail)
 	if err != nil {
-		log.Printf("Error enriching repo metrics for %s/%s: %v", organizationName, repo, err)
-	}
-
-	// **New addition: Fetch private vulnerability reporting status**
-	pvrEnabled, err := fetchPrivateVulnerabilityReporting(sdk, organizationName, repo)
-	if err != nil {
-		log.Printf("Error fetching private vulnerability reporting status for %s/%s: %v", organizationName, repo, err)
-	} else {
-		finalDetail.SecuritySettings.PrivateVulnerabilityReportingEnabled = pvrEnabled
+		log.Printf("Error enriching repo metrics for %s/%s: %v", organizationName, repositoryName, err)
 	}
 
 	value := models.Resource{
 		ID:   strconv.Itoa(finalDetail.GitHubRepoID),
 		Name: finalDetail.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: model.RepositoryDescription{
-				GitHubRepoID:            finalDetail.GitHubRepoID,
-				NodeID:                  finalDetail.NodeID,
-				Name:                    finalDetail.Name,
-				NameWithOwner:           finalDetail.NameWithOwner,
-				Description:             finalDetail.Description,
-				CreatedAt:               finalDetail.CreatedAt,
-				UpdatedAt:               finalDetail.UpdatedAt,
-				PushedAt:                finalDetail.PushedAt,
-				IsActive:                finalDetail.IsActive,
-				IsEmpty:                 finalDetail.IsEmpty,
-				IsFork:                  finalDetail.IsFork,
-				IsSecurityPolicyEnabled: finalDetail.IsSecurityPolicyEnabled,
-				Owner:                   finalDetail.Owner,
-				HomepageURL:             finalDetail.HomepageURL,
-				LicenseInfo:             finalDetail.LicenseInfo,
-				Topics:                  finalDetail.Topics,
-				Visibility:              finalDetail.Visibility,
-				DefaultBranchRef:        finalDetail.DefaultBranchRef,
-				Permissions:             finalDetail.Permissions,
-				Organization:            finalDetail.Organization,
-				Parent:                  finalDetail.Parent,
-				Source:                  finalDetail.Source,
-				Languages:               finalDetail.Languages,
-				RepositorySettings:      finalDetail.RepositorySettings,
-				SecuritySettings:        finalDetail.SecuritySettings,
-				RepoURLs:                finalDetail.RepoURLs,
-				Metrics:                 finalDetail.Metrics,
-			},
+			Value: finalDetail,
 		},
 	}
-	if stream != nil {
-		if err := (*stream)(value); err != nil {
-			return nil
-		}
-	}
-	return &value
+	return &value, nil
 }
 
-//func GetRepositoryList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
-//	client := githubClient.GraphQLClient
-//	query := struct {
-//		RateLimit    steampipemodels.RateLimit
-//		Organization struct {
-//			Repositories struct {
-//				PageInfo   steampipemodels.PageInfo
-//				TotalCount int
-//				Nodes      []steampipemodels.Repository
-//			} `graphql:"repositories(first: $pageSize, after: $cursor)"`
-//		} `graphql:"organization(login: $owner)"` // <-- $owner used here
-//	}{}
-//	variables := map[string]interface{}{
-//		"owner":    githubv4.String(organizationName),
-//		"pageSize": githubv4.Int(repoPageSize),
-//		"cursor":   (*githubv4.String)(nil),
-//	}
-//	columnNames := repositoryCols()
-//	appendRepoColumnIncludes(&variables, columnNames)
-//	var values []models.Resource
-//	for {
-//		err := client.Query(ctx, &query, variables)
-//		if err != nil {
-//			return nil, err
-//		}
-//		for _, repo := range query.Organization.Repositories.Nodes {
-//			hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, organizationName, repo.Name)
-//			if err != nil {
-//				return nil, err
-//			}
-//			additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, organizationName, repo.Name)
-//			value := models.Resource{
-//				ID:   strconv.Itoa(repo.Id),
-//				Name: repo.Name,
-//				Description: JSONAllFieldsMarshaller{
-//					Value: model.RepositoryDescription{
-//						ID:                            repo.Id,
-//						NodeID:                        repo.NodeId,
-//						Name:                          repo.Name,
-//						AllowUpdateBranch:             repo.AllowUpdateBranch,
-//						ArchivedAt:                    repo.ArchivedAt,
-//						AutoMergeAllowed:              repo.AutoMergeAllowed,
-//						CodeOfConduct:                 repo.CodeOfConduct,
-//						ContactLinks:                  repo.ContactLinks,
-//						CreatedAt:                     repo.CreatedAt,
-//						DefaultBranchRef:              repo.DefaultBranchRef,
-//						DeleteBranchOnMerge:           repo.DeleteBranchOnMerge,
-//						Description:                   repo.Description,
-//						DiskUsage:                     repo.DiskUsage,
-//						ForkCount:                     repo.ForkCount,
-//						ForkingAllowed:                repo.ForkingAllowed,
-//						FundingLinks:                  repo.FundingLinks,
-//						HasDiscussionsEnabled:         repo.HasDiscussionsEnabled,
-//						HasIssuesEnabled:              repo.HasIssuesEnabled,
-//						HasProjectsEnabled:            repo.HasProjectsEnabled,
-//						HasVulnerabilityAlertsEnabled: repo.HasVulnerabilityAlertsEnabled,
-//						HasWikiEnabled:                repo.HasWikiEnabled,
-//						HomepageURL:                   repo.HomepageUrl,
-//						InteractionAbility:            repo.InteractionAbility,
-//						IsArchived:                    repo.IsArchived,
-//						IsBlankIssuesEnabled:          repo.IsBlankIssuesEnabled,
-//						IsDisabled:                    repo.IsDisabled,
-//						IsEmpty:                       repo.IsEmpty,
-//						IsFork:                        repo.IsFork,
-//						IsInOrganization:              repo.IsInOrganization,
-//						IsLocked:                      repo.IsLocked,
-//						IsMirror:                      repo.IsMirror,
-//						IsPrivate:                     repo.IsPrivate,
-//						IsSecurityPolicyEnabled:       repo.IsSecurityPolicyEnabled,
-//						IsTemplate:                    repo.IsTemplate,
-//						IsUserConfigurationRepository: repo.IsUserConfigurationRepository,
-//						IssueTemplates:                repo.IssueTemplates,
-//						LicenseInfo:                   repo.LicenseInfo,
-//						LockReason:                    repo.LockReason,
-//						MergeCommitAllowed:            repo.MergeCommitAllowed,
-//						MergeCommitMessage:            repo.MergeCommitMessage,
-//						MergeCommitTitle:              repo.MergeCommitTitle,
-//						MirrorURL:                     repo.MirrorUrl,
-//						NameWithOwner:                 repo.NameWithOwner,
-//						OpenGraphImageURL:             repo.OpenGraphImageUrl,
-//						OwnerLogin:                    repo.Owner.Login,
-//						PrimaryLanguage:               repo.PrimaryLanguage,
-//						ProjectsURL:                   repo.ProjectsUrl,
-//						PullRequestTemplates:          repo.PullRequestTemplates,
-//						PushedAt:                      repo.PushedAt,
-//						RebaseMergeAllowed:            repo.RebaseMergeAllowed,
-//						SecurityPolicyURL:             repo.SecurityPolicyUrl,
-//						SquashMergeAllowed:            repo.SquashMergeAllowed,
-//						SquashMergeCommitMessage:      repo.SquashMergeCommitMessage,
-//						SquashMergeCommitTitle:        repo.SquashMergeCommitTitle,
-//						SSHURL:                        repo.SshUrl,
-//						StargazerCount:                repo.StargazerCount,
-//						UpdatedAt:                     repo.UpdatedAt,
-//						URL:                           repo.Url,
-//						// UsesCustomOpenGraphImage:      repo.UsesCustomOpenGraphImage,
-//						// CanAdminister:                 repo.CanAdminister,
-//						// CanCreateProjects:             repo.CanCreateProjects,
-//						// CanSubscribe:                  repo.CanSubscribe,
-//						// CanUpdateTopics:               repo.CanUpdateTopics,
-//						// HasStarred:                    repo.HasStarred,
-//						PossibleCommitEmails: repo.PossibleCommitEmails,
-//						// Subscription:                  repo.Subscription,
-//						Visibility: repo.Visibility,
-//						// YourPermission:                repo.YourPermission,
-//						WebCommitSignOffRequired:   repo.WebCommitSignoffRequired,
-//						RepositoryTopicsTotalCount: repo.RepositoryTopics.TotalCount,
-//						OpenIssuesTotalCount:       repo.OpenIssues.TotalCount,
-//						WatchersTotalCount:         repo.Watchers.TotalCount,
-//						Hooks:                      hooks,
-//						Topics:                     additionalRepoInfo.Topics,
-//						SubscribersCount:           additionalRepoInfo.GetSubscribersCount(),
-//						HasDownloads:               additionalRepoInfo.GetHasDownloads(),
-//						HasPages:                   additionalRepoInfo.GetHasPages(),
-//						NetworkCount:               additionalRepoInfo.GetNetworkCount(),
-//					},
-//				},
-//			}
-//			if stream != nil {
-//				if err := (*stream)(value); err != nil {
-//					return nil, err
-//				}
-//			} else {
-//				values = append(values, value)
-//			}
-//		}
-//		if !query.Organization.Repositories.PageInfo.HasNextPage {
-//			break
-//		}
-//		variables["cursor"] = githubv4.NewString(query.Organization.Repositories.PageInfo.EndCursor)
-//	}
-//	return values, nil
-//}
+// Utility/helper functions (prefixed with underscore)
 
-//func GetRepository(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
-//	client := githubClient.GraphQLClient
-//	query := struct {
-//		RateLimit    steampipemodels.RateLimit
-//		Organization struct {
-//			Repository steampipemodels.Repository `graphql:"repository(name: $repoName)"`
-//		} `graphql:"organization(login: $owner)"` // <-- $owner used here
-//	}{}
-//
-//	variables := map[string]interface{}{
-//		"owner":    githubv4.String(organizationName),
-//		"repoName": githubv4.String(repositoryName),
-//	}
-//
-//	columnNames := repositoryCols()
-//	appendRepoColumnIncludes(&variables, columnNames)
-//	err := client.Query(ctx, &query, variables)
-//	if err != nil {
-//		return nil, err
-//	}
-//	repo := query.Organization.Repository
-//	hooks, err := GetRepositoryHooks(ctx, githubClient.RestClient, organizationName, repo.Name)
-//	if err != nil {
-//		return nil, err
-//	}
-//	additionalRepoInfo, err := GetRepositoryAdditionalData(ctx, githubClient.RestClient, organizationName, repo.Name)
-//	value := models.Resource{
-//		ID:   strconv.Itoa(repo.Id),
-//		Name: repo.Name,
-//		Description: JSONAllFieldsMarshaller{
-//			Value: model.RepositoryDescription{
-//				ID:                            repo.Id,
-//				NodeID:                        repo.NodeId,
-//				Name:                          repo.Name,
-//				AllowUpdateBranch:             repo.AllowUpdateBranch,
-//				ArchivedAt:                    repo.ArchivedAt,
-//				AutoMergeAllowed:              repo.AutoMergeAllowed,
-//				CodeOfConduct:                 repo.CodeOfConduct,
-//				ContactLinks:                  repo.ContactLinks,
-//				CreatedAt:                     repo.CreatedAt,
-//				DefaultBranchRef:              repo.DefaultBranchRef,
-//				DeleteBranchOnMerge:           repo.DeleteBranchOnMerge,
-//				Description:                   repo.Description,
-//				DiskUsage:                     repo.DiskUsage,
-//				ForkCount:                     repo.ForkCount,
-//				ForkingAllowed:                repo.ForkingAllowed,
-//				FundingLinks:                  repo.FundingLinks,
-//				HasDiscussionsEnabled:         repo.HasDiscussionsEnabled,
-//				HasIssuesEnabled:              repo.HasIssuesEnabled,
-//				HasProjectsEnabled:            repo.HasProjectsEnabled,
-//				HasVulnerabilityAlertsEnabled: repo.HasVulnerabilityAlertsEnabled,
-//				HasWikiEnabled:                repo.HasWikiEnabled,
-//				HomepageURL:                   repo.HomepageUrl,
-//				InteractionAbility:            repo.InteractionAbility,
-//				IsArchived:                    repo.IsArchived,
-//				IsBlankIssuesEnabled:          repo.IsBlankIssuesEnabled,
-//				IsDisabled:                    repo.IsDisabled,
-//				IsEmpty:                       repo.IsEmpty,
-//				IsFork:                        repo.IsFork,
-//				IsInOrganization:              repo.IsInOrganization,
-//				IsLocked:                      repo.IsLocked,
-//				IsMirror:                      repo.IsMirror,
-//				IsPrivate:                     repo.IsPrivate,
-//				IsSecurityPolicyEnabled:       repo.IsSecurityPolicyEnabled,
-//				IsTemplate:                    repo.IsTemplate,
-//				IsUserConfigurationRepository: repo.IsUserConfigurationRepository,
-//				IssueTemplates:                repo.IssueTemplates,
-//				LicenseInfo:                   repo.LicenseInfo,
-//				LockReason:                    repo.LockReason,
-//				MergeCommitAllowed:            repo.MergeCommitAllowed,
-//				MergeCommitMessage:            repo.MergeCommitMessage,
-//				MergeCommitTitle:              repo.MergeCommitTitle,
-//				MirrorURL:                     repo.MirrorUrl,
-//				NameWithOwner:                 repo.NameWithOwner,
-//				OpenGraphImageURL:             repo.OpenGraphImageUrl,
-//				OwnerLogin:                    repo.Owner.Login,
-//				PrimaryLanguage:               repo.PrimaryLanguage,
-//				ProjectsURL:                   repo.ProjectsUrl,
-//				PullRequestTemplates:          repo.PullRequestTemplates,
-//				PushedAt:                      repo.PushedAt,
-//				RebaseMergeAllowed:            repo.RebaseMergeAllowed,
-//				SecurityPolicyURL:             repo.SecurityPolicyUrl,
-//				SquashMergeAllowed:            repo.SquashMergeAllowed,
-//				SquashMergeCommitMessage:      repo.SquashMergeCommitMessage,
-//				SquashMergeCommitTitle:        repo.SquashMergeCommitTitle,
-//				SSHURL:                        repo.SshUrl,
-//				StargazerCount:                repo.StargazerCount,
-//				UpdatedAt:                     repo.UpdatedAt,
-//				URL:                           repo.Url,
-//				// UsesCustomOpenGraphImage:      repo.UsesCustomOpenGraphImage,
-//				// CanAdminister:                 repo.CanAdminister,
-//				// CanCreateProjects:             repo.CanCreateProjects,
-//				// CanSubscribe:                  repo.CanSubscribe,
-//				// CanUpdateTopics:               repo.CanUpdateTopics,
-//				// HasStarred:                    repo.HasStarred,
-//				PossibleCommitEmails: repo.PossibleCommitEmails,
-//				// Subscription:                  repo.Subscription,
-//				Visibility: repo.Visibility,
-//				// YourPermission:                repo.YourPermission,
-//				WebCommitSignOffRequired:   repo.WebCommitSignoffRequired,
-//				RepositoryTopicsTotalCount: repo.RepositoryTopics.TotalCount,
-//				OpenIssuesTotalCount:       repo.OpenIssues.TotalCount,
-//				WatchersTotalCount:         repo.Watchers.TotalCount,
-//				Hooks:                      hooks,
-//				Topics:                     additionalRepoInfo.Topics,
-//				SubscribersCount:           additionalRepoInfo.GetSubscribersCount(),
-//				HasDownloads:               additionalRepoInfo.GetHasDownloads(),
-//				HasPages:                   additionalRepoInfo.GetHasPages(),
-//				NetworkCount:               additionalRepoInfo.GetNetworkCount(),
-//			},
-//		},
-//	}
-//	if stream != nil {
-//		if err := (*stream)(value); err != nil {
-//			return nil, err
-//		}
-//	}
-//
-//	return &value, nil
-//}
-
-func GetRepositoryAdditionalData(ctx context.Context, client *github.Client, organizationName string, repo string) (*github.Repository, error) {
-	repository, _, err := client.Repositories.Get(ctx, organizationName, repo)
-	if err != nil {
-		if strings.Contains(err.Error(), "404") {
-			return nil, nil
-		}
-		return nil, nil
-	}
-	if repository == nil {
-		return nil, nil
-	}
-	return repository, nil
-}
-
-func GetRepositoryHooks(ctx context.Context, client *github.Client, organizationName string, repo string) ([]*github.Hook, error) {
-	var repositoryHooks []*github.Hook
-	opt := &github.ListOptions{PerPage: pageSize}
-	for {
-		hooks, resp, err := client.Repositories.ListHooks(ctx, organizationName, repo, opt)
-		if err != nil && strings.Contains(err.Error(), "Not Found") {
-			return nil, nil
-		} else if err != nil {
-			return nil, err
-		}
-		repositoryHooks = append(repositoryHooks, hooks...)
-		if resp.NextPage == 0 {
-			break
-		}
-		opt.Page = resp.NextPage
-	}
-	return repositoryHooks, nil
-}
-
-func enrichRepoMetrics(sdk *resilientbridge.ResilientBridge, owner, repoName string, finalDetail *model.RepositoryDescription) error {
-	var dbObj map[string]string
-	if finalDetail.DefaultBranchRef != nil {
-		if err := json.Unmarshal(finalDetail.DefaultBranchRef, &dbObj); err != nil {
-			return err
-		}
-	}
-	defaultBranch := dbObj["name"]
-	if defaultBranch == "" {
-		defaultBranch = "main"
-	}
-
-	commitsCount, err := countCommits(sdk, owner, repoName, defaultBranch)
-	if err != nil {
-		return fmt.Errorf("counting commits: %w", err)
-	}
-	finalDetail.Metrics.Commits = commitsCount
-
-	issuesCount, err := countIssues(sdk, owner, repoName)
-	if err != nil {
-		return fmt.Errorf("counting issues: %w", err)
-	}
-	finalDetail.Metrics.Issues = issuesCount
-
-	branchesCount, err := countBranches(sdk, owner, repoName)
-	if err != nil {
-		return fmt.Errorf("counting branches: %w", err)
-	}
-	finalDetail.Metrics.Branches = branchesCount
-
-	prCount, err := countPullRequests(sdk, owner, repoName)
-	if err != nil {
-		return fmt.Errorf("counting PRs: %w", err)
-	}
-	finalDetail.Metrics.PullRequests = prCount
-
-	releasesCount, err := countReleases(sdk, owner, repoName)
-	if err != nil {
-		return fmt.Errorf("counting releases: %w", err)
-	}
-	finalDetail.Metrics.Releases = releasesCount
-
-	// New: Count tags
-	tagsCount, err := countTags(sdk, owner, repoName)
-	if err != nil {
-		return fmt.Errorf("counting tags: %w", err)
-	}
-	// Add "TotalTags" field to RepoMetrics struct and assign here
-	// You need to add the `TotalTags int `json:"total_tags"` field to RepoMetrics beforehand
-	finalDetail.Metrics.Tags = tagsCount
-
-	return nil
-}
-
-// New function countTags
-func countTags(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/tags?per_page=1", owner, repoName)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func fetchLanguages(sdk *resilientbridge.ResilientBridge, owner, repo string) (map[string]int, error) {
+// _fetchLanguages fetches repository languages.
+func _fetchLanguages(sdk *resilientbridge.ResilientBridge, owner, repo string) (map[string]int, error) {
 	req := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
 		Endpoint: fmt.Sprintf("/repos/%s/%s/languages", owner, repo),
@@ -480,58 +161,150 @@ func fetchLanguages(sdk *resilientbridge.ResilientBridge, owner, repo string) (m
 	return langs, nil
 }
 
-// The rest of the functions (parseScopeURL, fetchOrgRepos, fetchRepoDetails, transformToFinalRepoDetail,
-// enrichRepoMetrics, countCommits, countIssues, countBranches, countPullRequests, countReleases,
-// countItemsFromEndpoint, and parseLastPage) remain unchanged.
+// _enrichRepoMetrics enriches repo metrics such as commits, issues, branches, etc.
+func _enrichRepoMetrics(sdk *resilientbridge.ResilientBridge, owner, repoName string, finalDetail *model.RepositoryDescription) error {
+	var dbObj map[string]string
+	if finalDetail.DefaultBranchRef != nil {
+		if err := json.Unmarshal(finalDetail.DefaultBranchRef, &dbObj); err != nil {
+			return err
+		}
+	}
+	defaultBranch := dbObj["name"]
+	if defaultBranch == "" {
+		defaultBranch = "main"
+	}
 
-func parseScopeURL(repoURL string) (owner, repo string, err error) {
-	if !strings.HasPrefix(repoURL, "https://github.com/") {
-		return "", "", fmt.Errorf("URL must start with https://github.com/")
+	commitsCount, err := _countCommits(sdk, owner, repoName, defaultBranch)
+	if err != nil {
+		return fmt.Errorf("counting commits: %w", err)
 	}
-	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
-	if len(parts) == 0 || parts[0] == "" {
-		return "", "", fmt.Errorf("invalid URL format")
+	finalDetail.Metrics.Commits = commitsCount
+
+	issuesCount, err := _countIssues(sdk, owner, repoName)
+	if err != nil {
+		return fmt.Errorf("counting issues: %w", err)
 	}
-	owner = parts[0]
-	if len(parts) > 1 {
-		repo = parts[1]
+	finalDetail.Metrics.Issues = issuesCount
+
+	branchesCount, err := _countBranches(sdk, owner, repoName)
+	if err != nil {
+		return fmt.Errorf("counting branches: %w", err)
 	}
-	return owner, repo, nil
+	finalDetail.Metrics.Branches = branchesCount
+
+	prCount, err := _countPullRequests(sdk, owner, repoName)
+	if err != nil {
+		return fmt.Errorf("counting PRs: %w", err)
+	}
+	finalDetail.Metrics.PullRequests = prCount
+
+	releasesCount, err := _countReleases(sdk, owner, repoName)
+	if err != nil {
+		return fmt.Errorf("counting releases: %w", err)
+	}
+	finalDetail.Metrics.Releases = releasesCount
+
+	tagsCount, err := _countTags(sdk, owner, repoName)
+	if err != nil {
+		return fmt.Errorf("counting tags: %w", err)
+	}
+	finalDetail.Metrics.Tags = tagsCount
+
+	return nil
 }
 
-func fetchPrivateVulnerabilityReporting(sdk *resilientbridge.ResilientBridge, owner, repoName string) (bool, error) {
+func _countTags(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/tags?per_page=1", owner, repoName)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countCommits(sdk *resilientbridge.ResilientBridge, owner, repoName, defaultBranch string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/commits?sha=%s&per_page=1", owner, repoName, defaultBranch)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countIssues(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/issues?state=all&per_page=1", owner, repoName)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countBranches(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/branches?per_page=1", owner, repoName)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countPullRequests(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all&per_page=1", owner, repoName)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countReleases(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
+	endpoint := fmt.Sprintf("/repos/%s/%s/releases?per_page=1", owner, repoName)
+	return _countItemsFromEndpoint(sdk, endpoint)
+}
+
+func _countItemsFromEndpoint(sdk *resilientbridge.ResilientBridge, endpoint string) (int, error) {
 	req := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
-		Endpoint: fmt.Sprintf("/repos/%s/%s/private-vulnerability-reporting", owner, repoName),
+		Endpoint: endpoint,
 		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
 	}
 
 	resp, err := sdk.Request("github", req)
 	if err != nil {
-		return false, fmt.Errorf("error fetching private vulnerability reporting: %w", err)
+		return 0, fmt.Errorf("error fetching data: %w", err)
 	}
 
-	if resp.StatusCode == 404 {
-		// Endpoint returns 404 if private vulnerability reporting is not enabled
-		// or the resource is not found. Default to false.
-		return false, nil
+	if resp.StatusCode == 409 {
+		return 0, nil
 	}
 
 	if resp.StatusCode >= 400 {
-		return false, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+		return 0, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
 	}
 
-	var result struct {
-		Enabled bool `json:"enabled"`
-	}
-	if err := json.Unmarshal(resp.Data, &result); err != nil {
-		return false, fmt.Errorf("error decoding private vulnerability reporting status: %w", err)
+	var linkHeader string
+	for k, v := range resp.Headers {
+		if strings.ToLower(k) == "link" {
+			linkHeader = v
+			break
+		}
 	}
 
-	return result.Enabled, nil
+	if linkHeader == "" {
+		if len(resp.Data) > 2 {
+			var items []interface{}
+			if err := json.Unmarshal(resp.Data, &items); err != nil {
+				return 1, nil
+			}
+			return len(items), nil
+		}
+		return 0, nil
+	}
+
+	lastPage, err := _parseLastPage(linkHeader)
+	if err != nil {
+		return 0, fmt.Errorf("could not parse last page: %w", err)
+	}
+
+	return lastPage, nil
 }
 
-func fetchOrgRepos(sdk *resilientbridge.ResilientBridge, org string, maxResults int) ([]model.MinimalRepoInfo, error) {
+func _parseLastPage(linkHeader string) (int, error) {
+	re := regexp.MustCompile(`page=(\d+)>; rel="last"`)
+	matches := re.FindStringSubmatch(linkHeader)
+	if len(matches) < 2 {
+		return 1, nil
+	}
+	var lastPage int
+	_, err := fmt.Sscanf(matches[1], "%d", &lastPage)
+	if err != nil {
+		return 0, err
+	}
+	return lastPage, nil
+}
+
+func _fetchOrgRepos(sdk *resilientbridge.ResilientBridge, org string, maxResults int) ([]model.MinimalRepoInfo, error) {
 	var allRepos []model.MinimalRepoInfo
 	perPage := 100
 	page := 1
@@ -579,7 +352,7 @@ func fetchOrgRepos(sdk *resilientbridge.ResilientBridge, org string, maxResults 
 	return allRepos, nil
 }
 
-func fetchRepoDetails(sdk *resilientbridge.ResilientBridge, owner, repo string) (*model.RepoDetail, error) {
+func _fetchRepoDetails(sdk *resilientbridge.ResilientBridge, owner, repo string) (*model.RepoDetail, error) {
 	req := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
 		Endpoint: fmt.Sprintf("/repos/%s/%s", owner, repo),
@@ -600,17 +373,16 @@ func fetchRepoDetails(sdk *resilientbridge.ResilientBridge, owner, repo string) 
 	return &detail, nil
 }
 
-func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescription {
+func _transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescription {
 	var parent *model.RepositoryDescription
 	if detail.Parent != nil {
-		parent = transformToFinalRepoDetail(detail.Parent)
+		parent = _transformToFinalRepoDetail(detail.Parent)
 	}
 	var source *model.RepositoryDescription
 	if detail.Source != nil {
-		source = transformToFinalRepoDetail(detail.Source)
+		source = _transformToFinalRepoDetail(detail.Source)
 	}
 
-	// Owner: no user_view_type, no site_admin
 	var finalOwner *model.Owner
 	if detail.Owner != nil {
 		finalOwner = &model.Owner{
@@ -622,7 +394,6 @@ func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescr
 		}
 	}
 
-	// Organization: includes user_view_type, site_admin
 	var finalOrg *model.Organization
 	if detail.Organization != nil {
 		finalOrg = &model.Organization{
@@ -636,14 +407,10 @@ func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescr
 		}
 	}
 
-	// Prepare default_branch_ref as before
 	dbObj := map[string]string{"name": detail.DefaultBranch}
 	dbBytes, _ := json.Marshal(dbObj)
 
-	// Determine is_active: true if not archived and not disabled
 	isActive := !(detail.Archived || detail.Disabled)
-	//isInOrganization := (detail.Organization != nil && detail.Organization.Type == "Organization")
-	//isMirror := (detail.MirrorURL != nil)
 	isEmpty := (detail.Size == 0)
 
 	var licenseJSON json.RawMessage
@@ -653,32 +420,29 @@ func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescr
 	}
 
 	finalDetail := &model.RepositoryDescription{
-		GitHubRepoID:  detail.ID,
-		NodeID:        detail.NodeID,
-		Name:          detail.Name,
-		NameWithOwner: detail.FullName,
-		Description:   detail.Description,
-		CreatedAt:     detail.CreatedAt,
-		UpdatedAt:     detail.UpdatedAt,
-		PushedAt:      detail.PushedAt,
-		IsActive:      isActive,
-		IsEmpty:       isEmpty,
-		IsFork:        detail.Fork,
-		//IsInOrganization:        isInOrganization,
-		//IsMirror:                isMirror,
-		IsSecurityPolicyEnabled: false, // as before
-		//IsTemplate:              detail.IsTemplate,
-		Owner:            finalOwner,
-		HomepageURL:      detail.Homepage,
-		LicenseInfo:      licenseJSON,
-		Topics:           detail.Topics,
-		Visibility:       detail.Visibility,
-		DefaultBranchRef: dbBytes,
-		Permissions:      detail.Permissions,
-		Organization:     finalOrg,
-		Parent:           parent,
-		Source:           source,
-		Languages:        nil, // set after fetchLanguages
+		GitHubRepoID:            detail.ID,
+		NodeID:                  detail.NodeID,
+		Name:                    detail.Name,
+		NameWithOwner:           detail.FullName,
+		Description:             detail.Description,
+		CreatedAt:               detail.CreatedAt,
+		UpdatedAt:               detail.UpdatedAt,
+		PushedAt:                detail.PushedAt,
+		IsActive:                isActive,
+		IsEmpty:                 isEmpty,
+		IsFork:                  detail.Fork,
+		IsSecurityPolicyEnabled: false,
+		Owner:                   finalOwner,
+		HomepageURL:             detail.Homepage,
+		LicenseInfo:             licenseJSON,
+		Topics:                  detail.Topics,
+		Visibility:              detail.Visibility,
+		DefaultBranchRef:        dbBytes,
+		Permissions:             detail.Permissions,
+		Organization:            finalOrg,
+		Parent:                  parent,
+		Source:                  source,
+		Languages:               nil,
 		RepositorySettings: model.RepositorySettings{
 			HasDiscussionsEnabled:     detail.HasDiscussions,
 			HasIssuesEnabled:          detail.HasIssues,
@@ -713,7 +477,6 @@ func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescr
 			DependabotSecurityUpdatesEnabled:         false,
 			SecretScanningNonProviderPatternsEnabled: false,
 			SecretScanningValidityChecksEnabled:      false,
-			PrivateVulnerabilityReportingEnabled:     false,
 		},
 		RepoURLs: model.RepoURLs{
 			GitURL:   detail.GitURL,
@@ -727,99 +490,41 @@ func transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescr
 			Forks:       detail.ForksCount,
 			Subscribers: detail.SubscribersCount,
 			Size:        detail.Size,
-			// The rest (tags, commits, issues, open_issues, branches, pull_requests, releases)
-			// will be set after calling enrichRepoMetrics and assigning open issues from detail.
+			OpenIssues:  detail.OpenIssuesCount,
 		},
 	}
-
-	// Set open_issues before enrichRepoMetrics if needed:
-	finalDetail.Metrics.OpenIssues = detail.OpenIssuesCount
-
 	return finalDetail
 }
 
-func countCommits(sdk *resilientbridge.ResilientBridge, owner, repoName, defaultBranch string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/commits?sha=%s&per_page=1", owner, repoName, defaultBranch)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func countIssues(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/issues?state=all&per_page=1", owner, repoName)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func countBranches(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/branches?per_page=1", owner, repoName)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func countPullRequests(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/pulls?state=all&per_page=1", owner, repoName)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func countReleases(sdk *resilientbridge.ResilientBridge, owner, repoName string) (int, error) {
-	endpoint := fmt.Sprintf("/repos/%s/%s/releases?per_page=1", owner, repoName)
-	return countItemsFromEndpoint(sdk, endpoint)
-}
-
-func countItemsFromEndpoint(sdk *resilientbridge.ResilientBridge, endpoint string) (int, error) {
-	req := &resilientbridge.NormalizedRequest{
-		Method:   "GET",
-		Endpoint: endpoint,
-		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
-	}
-
-	resp, err := sdk.Request("github", req)
+func _getRepositoriesDetail(ctx context.Context, sdk *resilientbridge.ResilientBridge, organizationName, repo string, stream *models.StreamSender) *models.Resource {
+	repoDetail, err := _fetchRepoDetails(sdk, organizationName, repo)
 	if err != nil {
-		return 0, fmt.Errorf("error fetching data: %w", err)
+		log.Printf("Error fetching details for %s/%s: %v", organizationName, repo, err)
+		return nil
 	}
 
-	if resp.StatusCode == 409 {
-		return 0, nil
+	finalDetail := _transformToFinalRepoDetail(repoDetail)
+	langs, err := _fetchLanguages(sdk, organizationName, repo)
+	if err == nil {
+		finalDetail.Languages = langs
 	}
 
-	if resp.StatusCode >= 400 {
-		return 0, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+	err = _enrichRepoMetrics(sdk, organizationName, repo, finalDetail)
+	if err != nil {
+		log.Printf("Error enriching repo metrics for %s/%s: %v", organizationName, repo, err)
 	}
 
-	var linkHeader string
-	for k, v := range resp.Headers {
-		if strings.ToLower(k) == "link" {
-			linkHeader = v
-			break
+	value := models.Resource{
+		ID:   strconv.Itoa(finalDetail.GitHubRepoID),
+		Name: finalDetail.Name,
+		Description: JSONAllFieldsMarshaller{
+			Value: finalDetail,
+		},
+	}
+	if stream != nil {
+		if err := (*stream)(value); err != nil {
+			return nil
 		}
 	}
-
-	if linkHeader == "" {
-		if len(resp.Data) > 2 {
-			var items []interface{}
-			if err := json.Unmarshal(resp.Data, &items); err != nil {
-				return 1, nil
-			}
-			return len(items), nil
-		}
-		return 0, nil
-	}
-
-	lastPage, err := parseLastPage(linkHeader)
-	if err != nil {
-		return 0, fmt.Errorf("could not parse last page: %w", err)
-	}
-
-	return lastPage, nil
-}
-
-func parseLastPage(linkHeader string) (int, error) {
-	re := regexp.MustCompile(`page=(\d+)>; rel="last"`)
-	matches := re.FindStringSubmatch(linkHeader)
-	if len(matches) < 2 {
-		return 1, nil
-	}
-	var lastPage int
-	_, err := fmt.Sscanf(matches[1], "%d", &lastPage)
-	if err != nil {
-		return 0, err
-	}
-	return lastPage, nil
+	return &value
 }

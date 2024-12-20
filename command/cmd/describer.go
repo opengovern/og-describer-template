@@ -3,6 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/opengovern/og-describer-github/pkg/describer"
 	model "github.com/opengovern/og-describer-github/pkg/sdk/models"
@@ -14,10 +19,6 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"golang.org/x/net/context"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 var (
@@ -46,7 +47,7 @@ var describerCmd = &cobra.Command{
 			IntegrationType: configs.IntegrationTypeLower,
 			CipherText:      "",
 			IntegrationLabels: map[string]string{
-				"OrganizationName": OrganizationName,
+				"OrganizationName": "opengovern",
 			},
 			IntegrationAnnotations: nil,
 		}
@@ -55,7 +56,7 @@ var describerCmd = &cobra.Command{
 		logger, _ := zap.NewProduction()
 
 		creds, err := provider.AccountCredentialsFromMap(map[string]any{
-			"pat_token": PatToken,
+			"pat_token": "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",
 		})
 		if err != nil {
 			return fmt.Errorf(" account credentials: %w", err)
