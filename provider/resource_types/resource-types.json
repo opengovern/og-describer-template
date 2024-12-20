@@ -20,7 +20,7 @@
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllRunners)",
     "GetDescriber": "DescribeSingleByRepo(describer.GetActionRunner)",
-    "SteampipeTable": "github_actions_repository_runner",
+    "SteampipeTable": "github_actions_runner",
     "Model": "Runner"
   },
   {
@@ -32,7 +32,7 @@
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllSecrets)",
     "GetDescriber": "DescribeSingleByRepo(describer.GetRepoActionSecret)",
-    "SteampipeTable": "github_actions_repository_secret",
+    "SteampipeTable": "github_actions_secret",
     "Model": "Secret"
   },
   {
@@ -44,7 +44,7 @@
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllWorkflowRuns)",
     "GetDescriber": "",
-    "SteampipeTable": "github_actions_repository_workflow_run",
+    "SteampipeTable": "github_actions_workflow_run",
     "Model": "WorkflowRun"
   },
   {
@@ -371,18 +371,7 @@
     "SteampipeTable": "github_workflow",
     "Model": "Workflow"
   },
-  {
-    "ResourceName": "Github/CodeOwner",
-    "Tags": {
-      "category": [
-        "code_owner"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.ListCodeOwners)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_code_owner",
-    "Model": "CodeOwner"
-  },
+
   {
     "ResourceName": "Github/Container/Package",
     "Tags": {

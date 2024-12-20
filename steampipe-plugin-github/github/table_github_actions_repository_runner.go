@@ -10,7 +10,7 @@ import (
 
 func tableGitHubActionsRepositoryRunner() *plugin.Table {
 	return &plugin.Table{
-		Name:        "github_actions_repository_runner",
+		Name:        "github_actions_runner",
 		Description: "The runner is the application that runs a job from a GitHub Actions workflow",
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListRunner,

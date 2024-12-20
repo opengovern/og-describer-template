@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"slices"
+	"strconv"
+	"strings"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/shurcooL/githubv4"
-	"slices"
-	"strconv"
-	"strings"
 )
 
 // GitHubClient custom struct for defining both rest and graphql clients
@@ -744,19 +745,6 @@ func commitCols() []string {
 		"url",
 		"node_id",
 		"message_headline",
-	}
-}
-
-func communityCols() []string {
-	return []string{
-		"repository_full_name",
-		"code_of_conduct",
-		"contributing",
-		"issue_templates",
-		"pull_request_templates",
-		"license_info",
-		"readme",
-		"security",
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 
 func tableGitHubActionsRepositorySecret() *plugin.Table {
 	return &plugin.Table{
-		Name:        "github_actions_repository_secret",
+		Name:        "github_actions_secret",
 		Description: "Secrets are encrypted environment variables that you create in a repository",
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListSecret,

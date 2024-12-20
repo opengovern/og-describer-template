@@ -10,7 +10,7 @@ import (
 
 func tableGitHubActionsRepositoryWorkflowRun() *plugin.Table {
 	return &plugin.Table{
-		Name:        "github_actions_repository_workflow_run",
+		Name:        "github_actions_workflow_run",
 		Description: "WorkflowRun represents a repository action workflow run",
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListWorkflowRun,

@@ -267,7 +267,7 @@ type RunnerPaginator struct {
 }
 
 func (k Client) NewRunnerPaginator(filters []essdk.BoolFilter, limit *int64) (RunnerPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_repository_runner", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_runner", filters, limit)
 	if err != nil {
 		return RunnerPaginator{}, err
 	}
@@ -482,7 +482,7 @@ type SecretPaginator struct {
 }
 
 func (k Client) NewSecretPaginator(filters []essdk.BoolFilter, limit *int64) (SecretPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_repository_secret", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_secret", filters, limit)
 	if err != nil {
 		return SecretPaginator{}, err
 	}
@@ -691,7 +691,7 @@ type WorkflowRunPaginator struct {
 }
 
 func (k Client) NewWorkflowRunPaginator(filters []essdk.BoolFilter, limit *int64) (WorkflowRunPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_repository_workflow_run", filters, limit)
+	paginator, err := essdk.NewPaginator(k.ES(), "github_actions_workflow_run", filters, limit)
 	if err != nil {
 		return WorkflowRunPaginator{}, err
 	}
@@ -7120,7 +7120,7 @@ func GetWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 }
 
 // ==========================  END: Workflow =============================
-
+/*
 // ==========================  START: CodeOwner =============================
 
 type CodeOwner struct {
@@ -7335,7 +7335,7 @@ func GetCodeOwner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 }
 
 // ==========================  END: CodeOwner =============================
-
+*/
 // ==========================  START: ContainerPackage =============================
 
 type ContainerPackage struct {
