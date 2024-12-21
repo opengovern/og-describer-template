@@ -20,51 +20,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  DescribeSingleByRepo(describer.GetArtifact),
 	},
 
-<<<<<<< HEAD
 	"Github/Actions/Runner": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/Runner",
-		Tags:                 map[string][]string{
-            "category": {"Action"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllRunners),
-		GetDescriber:         DescribeSingleByRepo(describer.GetActionRunner),
-	},
-
-	"Github/Actions/Secret": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/Secret",
-		Tags:                 map[string][]string{
-            "category": {"Action"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllSecrets),
-		GetDescriber:         DescribeSingleByRepo(describer.GetRepoActionSecret),
-	},
-
-	"Github/Actions/WorkflowRun": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/WorkflowRun",
-		Tags:                 map[string][]string{
-            "category": {"Action"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetAllWorkflowRuns),
-		GetDescriber:         nil,
-=======
-	"Github/Actions/Repository/Runner": {
 		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Actions/Repository/Runner",
+		ResourceName:    "Github/Actions/Runner",
 		Tags: map[string][]string{
 			"category": {"Action"},
 		},
@@ -74,9 +32,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  DescribeSingleByRepo(describer.GetActionRunner),
 	},
 
-	"Github/Actions/Repository/Secret": {
+	"Github/Actions/Secret": {
 		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Actions/Repository/Secret",
+		ResourceName:    "Github/Actions/Secret",
 		Tags: map[string][]string{
 			"category": {"Action"},
 		},
@@ -86,9 +44,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  DescribeSingleByRepo(describer.GetRepoActionSecret),
 	},
 
-	"Github/Actions/Repository/Workflow_run": {
+	"Github/Actions/WorkflowRun": {
 		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Actions/Repository/Workflow_run",
+		ResourceName:    "Github/Actions/WorkflowRun",
 		Tags: map[string][]string{
 			"category": {"Action"},
 		},
@@ -96,7 +54,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetAllWorkflowRuns),
 		GetDescriber:  nil,
->>>>>>> 2f991e7 (updating container package)
 	},
 
 	"Github/Blob": {
@@ -264,7 +221,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetRepositoryList),
-		GetDescriber:  DescribeSingleByRepo(describer.GetRepository),
+		GetDescriber:  nil,
 	},
 
 	"Github/Repository/Collaborator": {
@@ -363,21 +320,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  nil,
 	},
 
-<<<<<<< HEAD
-=======
-	"Github/Team": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Team",
-		Tags: map[string][]string{
-			"category": {"Team"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetTeamList),
-		GetDescriber:  nil,
-	},
-
->>>>>>> 2f991e7 (updating container package)
 	"Github/Team/Member": {
 		IntegrationType: configs.IntegrationName,
 		ResourceName:    "Github/Team/Member",
