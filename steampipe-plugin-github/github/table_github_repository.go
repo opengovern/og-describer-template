@@ -8,7 +8,7 @@ import (
 )
 
 func sharedRepositoryColumns() []*plugin.Column {
-	return commonColumns([]*plugin.Column{
+	return []*plugin.Column{
 		{
 			Name:        "id",
 			Type:        proto.ColumnType_INT,
@@ -171,7 +171,7 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.Metrics"),
 			Description: "Metrics and statistics of the repository.",
 		},
-	})
+	}
 }
 
 func tableGitHubRepository() *plugin.Table {
