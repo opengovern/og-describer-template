@@ -1056,6 +1056,23 @@ type ContainerPackageDescription struct {
 	TotalSize      int64             `json:"total_size"`
 	Metadata       ContainerMetadata `json:"metadata"`
 	Manifest       interface{}       `json:"manifest"`
+
+	// -- Add these new fields/methods: --
+
+	// The GitHub "version.Name" or tag,
+	// if you want to store that separately from the real Docker digest.
+	GHVersionName string `json:"gh_version_name,omitempty"`
+
+	// When deduplicating, any subsequent tags for the same (ID,digest)
+	// can be appended here.
+	AdditionalPackageURIs []string `json:"additional_package_uris,omitempty"`
+}
+
+// Provide a helper so that code calling `cpd.ActualDigest()` compiles:
+func (c ContainerPackageDescription) ActualDigest() string {
+	// If you want the *Docker* digest, we simply return `c.Digest`
+	// because your code is already overwriting .Digest with the real Docker digest
+	return c.Digest
 }
 
 type PackageVersion struct {

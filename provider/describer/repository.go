@@ -171,6 +171,7 @@ func GetRepository(
 			Value: finalDetail,
 		},
 	}
+	fmt.Println(value)
 
 	// If a stream is provided, send the resource through the stream
 	if stream != nil {
