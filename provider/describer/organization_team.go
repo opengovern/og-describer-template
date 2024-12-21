@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func GetTeamList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetOrganizationTeamList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit steampipemodels.RateLimit

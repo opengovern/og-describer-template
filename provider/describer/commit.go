@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
@@ -21,7 +22,11 @@ import (
 // Otherwise, commits are collected and returned as a slice.
 func ListCommits(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	// Retrieve repositories while excluding archived and disabled ones
-	repos, err := GetRepositoryListWithOptions(ctx, githubClient, organizationName, nil, true, true)
+	//repos, err := GetRepositoryListWithOptions(ctx, githubClient, organizationName, nil, true, true)
+	//if err != nil {
+	//	return nil, err
+	//}
+	repos, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +36,7 @@ func ListCommits(ctx context.Context, githubClient GitHubClient, organizationNam
 	var values []models.Resource
 	for _, r := range repos {
 		// r.Name should correspond to the repository name
-		repoValues, err := GetRepositoryCommits(ctx, sdk, stream, organizationName, r.Name)
+		repoValues, err := GetRepositoryCommits(ctx, sdk, stream, organizationName, r.GetName())
 		if err != nil {
 			return nil, err
 		}
@@ -47,10 +52,18 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 	maxCommits := 10
 	commits, err := fetchCommitList(sdk, owner, repo, maxCommits)
 	if err != nil {
+		if strings.Contains(err.Error(), "client error: 409") {
+			return []models.Resource{}, nil
+		}
 		return nil, fmt.Errorf("error fetching commits list for %s/%s: %w", owner, repo, err)
 	}
 
-	// Determine concurrency level from env or default to 5
+	if len(commits) == 0 {
+		log.Printf("No commits found for %s/%s (possibly empty default branch).", owner, repo)
+		return nil, nil
+	}
+
+	// Determine concurrency level from env or default to 3
 	concurrency := 3
 	if cStr := os.Getenv("CONCURRENCY"); cStr != "" {
 		if cVal, err := strconv.Atoi(cStr); err == nil && cVal > 0 {
@@ -82,10 +95,9 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 				log.Printf("Error unmarshaling JSON for commit %s: %v", j.sha, err)
 				continue
 			}
-
 			value := models.Resource{
-				ID:   commit.ID,
-				Name: commit.ID,
+				ID:   commit.SHA,
+				Name: commit.SHA,
 				Description: JSONAllFieldsMarshaller{
 					Value: commit,
 				},
@@ -106,22 +118,16 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 
 	wg.Wait()
 
-	if stream != nil {
-		for _, res := range results {
-			if res.ID == "" {
-				continue
-			}
-			if err := (*stream)(res); err != nil {
-				return nil, err
-			}
-		}
-		return nil, nil
-	}
-
 	var finalResults []models.Resource
 	for _, res := range results {
 		if res.ID != "" {
-			finalResults = append(finalResults, res)
+			if stream != nil {
+				if err := (*stream)(res); err != nil {
+					return nil, err
+				}
+			} else {
+				finalResults = append(finalResults, res)
+			}
 		}
 	}
 	return finalResults, nil

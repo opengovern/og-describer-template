@@ -72,9 +72,9 @@ func gitHubTeamColumns() []*plugin.Column {
 	}
 }
 
-func tableGitHubTeam() *plugin.Table {
+func tableGitHubOrganizationTeam() *plugin.Table {
 	return &plugin.Table{
-		Name:        "github_team",
+		Name:        "github_organization_team",
 		Description: "GitHub Teams in a given organization. GitHub Teams are groups of organization members that reflect your company or group's structure with cascading access permissions and mentions.",
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListTeamMembers,

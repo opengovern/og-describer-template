@@ -56,18 +56,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  nil,
 	},
 
-	"Github/Blob": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Blob",
-		Tags: map[string][]string{
-			"category": {"Blob"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllBlobs),
-		GetDescriber:  DescribeSingleByRepo(describer.GetBlob),
-	},
-
 	"Github/Branch": {
 		IntegrationType: configs.IntegrationName,
 		ResourceName:    "Github/Branch",
@@ -77,7 +65,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetAllBranches),
-		GetDescriber:  DescribeSingleByRepo(describer.GetBlob),
+		GetDescriber:  nil,
 	},
 
 	"Github/Branch/Protection": {
@@ -164,18 +152,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:  nil,
 	},
 
-	"Github/Organization/External/Identity": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Organization/External/Identity",
-		Tags: map[string][]string{
-			"category": {"Organization"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllExternalIdentities),
-		GetDescriber:  nil,
-	},
-
 	"Github/Organization/Member": {
 		IntegrationType: configs.IntegrationName,
 		ResourceName:    "Github/Organization/Member",
@@ -185,6 +161,18 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetAllMembers),
+		GetDescriber:  nil,
+	},
+
+	"Github/Organization/Team": {
+		IntegrationType: configs.IntegrationName,
+		ResourceName:    "Github/Organization/Team",
+		Tags: map[string][]string{
+			"category": {"Organization"},
+		},
+		Labels:        map[string]string{},
+		Annotations:   map[string]string{},
+		ListDescriber: DescribeByGithub(describer.GetOrganizationTeamList),
 		GetDescriber:  nil,
 	},
 
@@ -221,7 +209,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetRepositoryList),
-		GetDescriber:  nil,
+		GetDescriber:  DescribeSingleByRepo(describer.GetRepository),
 	},
 
 	"Github/Repository/Collaborator": {
@@ -329,18 +317,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
 		ListDescriber: DescribeByGithub(describer.GetAllTeamsMembers),
-		GetDescriber:  nil,
-	},
-
-	"Github/Tree": {
-		IntegrationType: configs.IntegrationName,
-		ResourceName:    "Github/Tree",
-		Tags: map[string][]string{
-			"category": {"tree"},
-		},
-		Labels:        map[string]string{},
-		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describer.GetAllTrees),
 		GetDescriber:  nil,
 	},
 

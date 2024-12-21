@@ -896,221 +896,6 @@ func GetWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 
 // ==========================  END: WorkflowRun =============================
 
-// ==========================  START: Blob =============================
-
-type Blob struct {
-	ResourceID      string                 `json:"resource_id"`
-	PlatformID      string                 `json:"platform_id"`
-	Description     github.BlobDescription `json:"description"`
-	Metadata        github.Metadata        `json:"metadata"`
-	DescribedBy     string                 `json:"described_by"`
-	ResourceType    string                 `json:"resource_type"`
-	IntegrationType string                 `json:"integration_type"`
-	IntegrationID   string                 `json:"integration_id"`
-}
-
-type BlobHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  Blob          `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type BlobHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []BlobHit         `json:"hits"`
-}
-
-type BlobSearchResponse struct {
-	PitID string   `json:"pit_id"`
-	Hits  BlobHits `json:"hits"`
-}
-
-type BlobPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewBlobPaginator(filters []essdk.BoolFilter, limit *int64) (BlobPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_blob", filters, limit)
-	if err != nil {
-		return BlobPaginator{}, err
-	}
-
-	p := BlobPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p BlobPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p BlobPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p BlobPaginator) NextPage(ctx context.Context) ([]Blob, error) {
-	var response BlobSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []Blob
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listBlobFilters = map[string]string{
-	"blob_sha":             "Description.SHA",
-	"content":              "Description.Content",
-	"encoding":             "Description.Encoding",
-	"node_id":              "Description.NodeID",
-	"repository_full_name": "Description.RepoFullName",
-	"size":                 "Description.Size",
-	"url":                  "Description.URL",
-}
-
-func ListBlob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListBlob")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewBlobPaginator(essdk.BuildFilter(ctx, d.QueryContext, listBlobFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListBlob NewBlobPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListBlob paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getBlobFilters = map[string]string{
-	"blob_sha":             "Description.SHA",
-	"content":              "Description.Content",
-	"encoding":             "Description.Encoding",
-	"node_id":              "Description.NodeID",
-	"repository_full_name": "Description.RepoFullName",
-	"size":                 "Description.Size",
-	"url":                  "Description.URL",
-}
-
-func GetBlob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetBlob")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewBlobPaginator(essdk.BuildFilter(ctx, d.QueryContext, getBlobFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: Blob =============================
-
 // ==========================  START: Branch =============================
 
 type Branch struct {
@@ -1610,18 +1395,17 @@ func (p CommitPaginator) NextPage(ctx context.Context) ([]Commit, error) {
 }
 
 var listCommitFilters = map[string]string{
-	"additional_details": "Description.AdditionalDetails",
-	"author":             "Description.Author",
-	"changes":            "Description.Changes",
-	"comment_count":      "Description.CommentCount",
-	"date":               "Description.Date",
-	"files":              "Description.Files",
-	"html_url":           "Description.HTMLURL",
-	"id":                 "Description.ID",
-	"is_verified":        "Description.IsVerified",
-	"message":            "Description.Message",
-	"pull_requests":      "Description.PullRequests",
-	"target":             "Description.Target",
+	"author":        "Description.Author",
+	"comments_url":  "Description.CommentsURL",
+	"commit_detail": "Description.CommitDetail",
+	"commiter":      "Description.Committer",
+	"files":         "Description.Files",
+	"html_url":      "Description.HTMLURL",
+	"node_id":       "Description.NodeID",
+	"parents":       "Description.Parents",
+	"sha":           "Description.SHA",
+	"stats":         "Description.Stats",
+	"url":           "Description.URL",
 }
 
 func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1685,18 +1469,17 @@ func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 }
 
 var getCommitFilters = map[string]string{
-	"additional_details": "Description.AdditionalDetails",
-	"author":             "Description.Author",
-	"changes":            "Description.Changes",
-	"comment_count":      "Description.CommentCount",
-	"date":               "Description.Date",
-	"files":              "Description.Files",
-	"html_url":           "Description.HTMLURL",
-	"id":                 "Description.ID",
-	"is_verified":        "Description.IsVerified",
-	"message":            "Description.Message",
-	"pull_requests":      "Description.PullRequests",
-	"target":             "Description.Target",
+	"author":        "Description.Author",
+	"comments_url":  "Description.CommentsURL",
+	"commit_detail": "Description.CommitDetail",
+	"commiter":      "Description.Committer",
+	"files":         "Description.Files",
+	"html_url":      "Description.HTMLURL",
+	"node_id":       "Description.NodeID",
+	"parents":       "Description.Parents",
+	"sha":           "Description.SHA",
+	"stats":         "Description.Stats",
+	"url":           "Description.URL",
 }
 
 func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3046,221 +2829,6 @@ func GetOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 }
 
 // ==========================  END: OrgAlertDependabot =============================
-
-// ==========================  START: OrgExternalIdentity =============================
-
-type OrgExternalIdentity struct {
-	ResourceID      string                                `json:"resource_id"`
-	PlatformID      string                                `json:"platform_id"`
-	Description     github.OrgExternalIdentityDescription `json:"description"`
-	Metadata        github.Metadata                       `json:"metadata"`
-	DescribedBy     string                                `json:"described_by"`
-	ResourceType    string                                `json:"resource_type"`
-	IntegrationType string                                `json:"integration_type"`
-	IntegrationID   string                                `json:"integration_id"`
-}
-
-type OrgExternalIdentityHit struct {
-	ID      string              `json:"_id"`
-	Score   float64             `json:"_score"`
-	Index   string              `json:"_index"`
-	Type    string              `json:"_type"`
-	Version int64               `json:"_version,omitempty"`
-	Source  OrgExternalIdentity `json:"_source"`
-	Sort    []interface{}       `json:"sort"`
-}
-
-type OrgExternalIdentityHits struct {
-	Total essdk.SearchTotal        `json:"total"`
-	Hits  []OrgExternalIdentityHit `json:"hits"`
-}
-
-type OrgExternalIdentitySearchResponse struct {
-	PitID string                  `json:"pit_id"`
-	Hits  OrgExternalIdentityHits `json:"hits"`
-}
-
-type OrgExternalIdentityPaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewOrgExternalIdentityPaginator(filters []essdk.BoolFilter, limit *int64) (OrgExternalIdentityPaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_external_identity", filters, limit)
-	if err != nil {
-		return OrgExternalIdentityPaginator{}, err
-	}
-
-	p := OrgExternalIdentityPaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p OrgExternalIdentityPaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p OrgExternalIdentityPaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p OrgExternalIdentityPaginator) NextPage(ctx context.Context) ([]OrgExternalIdentity, error) {
-	var response OrgExternalIdentitySearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []OrgExternalIdentity
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listOrgExternalIdentityFilters = map[string]string{
-	"guid":                    "Description.Guid",
-	"organization":            "Description.Organization",
-	"organization_invitation": "Description.OrganizationInvitation",
-	"saml_identity":           "Description.SamlIdentity",
-	"scim_identity":           "Description.ScimIdentity",
-	"user_detail":             "Description.User",
-	"user_login":              "Description.User.Login",
-}
-
-func ListOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListOrgExternalIdentity")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewOrgExternalIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgExternalIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListOrgExternalIdentity NewOrgExternalIdentityPaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListOrgExternalIdentity paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getOrgExternalIdentityFilters = map[string]string{
-	"guid":                    "Description.Guid",
-	"organization":            "Description.Organization",
-	"organization_invitation": "Description.OrganizationInvitation",
-	"saml_identity":           "Description.SamlIdentity",
-	"scim_identity":           "Description.ScimIdentity",
-	"user_detail":             "Description.User",
-	"user_login":              "Description.User.Login",
-}
-
-func GetOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetOrgExternalIdentity")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewOrgExternalIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgExternalIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: OrgExternalIdentity =============================
 
 // ==========================  START: OrgMembers =============================
 
@@ -6010,6 +5578,261 @@ func GetTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (in
 
 // ==========================  END: Tag =============================
 
+// ==========================  START: Team =============================
+
+type Team struct {
+	ResourceID      string                 `json:"resource_id"`
+	PlatformID      string                 `json:"platform_id"`
+	Description     github.TeamDescription `json:"description"`
+	Metadata        github.Metadata        `json:"metadata"`
+	DescribedBy     string                 `json:"described_by"`
+	ResourceType    string                 `json:"resource_type"`
+	IntegrationType string                 `json:"integration_type"`
+	IntegrationID   string                 `json:"integration_id"`
+}
+
+type TeamHit struct {
+	ID      string        `json:"_id"`
+	Score   float64       `json:"_score"`
+	Index   string        `json:"_index"`
+	Type    string        `json:"_type"`
+	Version int64         `json:"_version,omitempty"`
+	Source  Team          `json:"_source"`
+	Sort    []interface{} `json:"sort"`
+}
+
+type TeamHits struct {
+	Total essdk.SearchTotal `json:"total"`
+	Hits  []TeamHit         `json:"hits"`
+}
+
+type TeamSearchResponse struct {
+	PitID string   `json:"pit_id"`
+	Hits  TeamHits `json:"hits"`
+}
+
+type TeamPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewTeamPaginator(filters []essdk.BoolFilter, limit *int64) (TeamPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_team", filters, limit)
+	if err != nil {
+		return TeamPaginator{}, err
+	}
+
+	p := TeamPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p TeamPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p TeamPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p TeamPaginator) NextPage(ctx context.Context) ([]Team, error) {
+	var response TeamSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []Team
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listTeamFilters = map[string]string{
+	"ancestors_total_count":    "Description.AncestorsTotalCount",
+	"avatar_url":               "Description.AvatarURL",
+	"can_administer":           "Description.CanAdminister",
+	"can_subscribe":            "Description.CanSubscribe",
+	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
+	"combined_slug":            "Description.CombinedSlug",
+	"description":              "Description.Description",
+	"discussions_total_count":  "Description.DiscussionsTotalCount",
+	"discussions_url":          "Description.DiscussionsURL",
+	"edit_team_url":            "Description.EditTeamURL",
+	"id":                       "Description.ID",
+	"invitations_total_count":  "Description.InvitationsTotalCount",
+	"members_total_count":      "Description.MembersTotalCount",
+	"members_url":              "Description.MembersURL",
+	"name":                     "Description.Name",
+	"new_team_url":             "Description.NewTeamURL",
+	"node_id":                  "Description.NodeID",
+	"organization":             "Description.Organization",
+	"parent_team":              "Description.ParentTeam",
+	"privacy":                  "Description.Privacy",
+	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
+	"repositories_total_count": "Description.RepositoriesTotalCount",
+	"repositories_url":         "Description.RepositoriesURL",
+	"slug":                     "Description.Slug",
+	"subscription":             "Description.Subscription",
+	"teams_url":                "Description.TeamsURL",
+	"url":                      "Description.URL",
+}
+
+func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListTeam")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListTeam NewTeamPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListTeam paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getTeamFilters = map[string]string{
+	"ancestors_total_count":    "Description.AncestorsTotalCount",
+	"avatar_url":               "Description.AvatarURL",
+	"can_administer":           "Description.CanAdminister",
+	"can_subscribe":            "Description.CanSubscribe",
+	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
+	"combined_slug":            "Description.CombinedSlug",
+	"description":              "Description.Description",
+	"discussions_total_count":  "Description.DiscussionsTotalCount",
+	"discussions_url":          "Description.DiscussionsURL",
+	"edit_team_url":            "Description.EditTeamURL",
+	"id":                       "Description.ID",
+	"invitations_total_count":  "Description.InvitationsTotalCount",
+	"members_total_count":      "Description.MembersTotalCount",
+	"members_url":              "Description.MembersURL",
+	"name":                     "Description.Name",
+	"new_team_url":             "Description.NewTeamURL",
+	"node_id":                  "Description.NodeID",
+	"organization":             "Description.Organization",
+	"parent_team":              "Description.ParentTeam",
+	"privacy":                  "Description.Privacy",
+	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
+	"repositories_total_count": "Description.RepositoriesTotalCount",
+	"repositories_url":         "Description.RepositoriesURL",
+	"slug":                     "Description.Slug",
+	"subscription":             "Description.Subscription",
+	"teams_url":                "Description.TeamsURL",
+	"url":                      "Description.URL",
+}
+
+func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetTeam")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: Team =============================
+
 // ==========================  START: TeamMembers =============================
 
 type TeamMembers struct {
@@ -6216,227 +6039,6 @@ func GetTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 // ==========================  END: TeamMembers =============================
-
-// ==========================  START: Tree =============================
-
-type Tree struct {
-	ResourceID      string                 `json:"resource_id"`
-	PlatformID      string                 `json:"platform_id"`
-	Description     github.TreeDescription `json:"description"`
-	Metadata        github.Metadata        `json:"metadata"`
-	DescribedBy     string                 `json:"described_by"`
-	ResourceType    string                 `json:"resource_type"`
-	IntegrationType string                 `json:"integration_type"`
-	IntegrationID   string                 `json:"integration_id"`
-}
-
-type TreeHit struct {
-	ID      string        `json:"_id"`
-	Score   float64       `json:"_score"`
-	Index   string        `json:"_index"`
-	Type    string        `json:"_type"`
-	Version int64         `json:"_version,omitempty"`
-	Source  Tree          `json:"_source"`
-	Sort    []interface{} `json:"sort"`
-}
-
-type TreeHits struct {
-	Total essdk.SearchTotal `json:"total"`
-	Hits  []TreeHit         `json:"hits"`
-}
-
-type TreeSearchResponse struct {
-	PitID string   `json:"pit_id"`
-	Hits  TreeHits `json:"hits"`
-}
-
-type TreePaginator struct {
-	paginator *essdk.BaseESPaginator
-}
-
-func (k Client) NewTreePaginator(filters []essdk.BoolFilter, limit *int64) (TreePaginator, error) {
-	paginator, err := essdk.NewPaginator(k.ES(), "github_tree", filters, limit)
-	if err != nil {
-		return TreePaginator{}, err
-	}
-
-	p := TreePaginator{
-		paginator: paginator,
-	}
-
-	return p, nil
-}
-
-func (p TreePaginator) HasNext() bool {
-	return !p.paginator.Done()
-}
-
-func (p TreePaginator) Close(ctx context.Context) error {
-	return p.paginator.Deallocate(ctx)
-}
-
-func (p TreePaginator) NextPage(ctx context.Context) ([]Tree, error) {
-	var response TreeSearchResponse
-	err := p.paginator.Search(ctx, &response)
-	if err != nil {
-		return nil, err
-	}
-
-	var values []Tree
-	for _, hit := range response.Hits.Hits {
-		values = append(values, hit.Source)
-	}
-
-	hits := int64(len(response.Hits.Hits))
-	if hits > 0 {
-		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
-	} else {
-		p.paginator.UpdateState(hits, nil, "")
-	}
-
-	return values, nil
-}
-
-var listTreeFilters = map[string]string{
-	"mode":                 "Description.Mode",
-	"path":                 "Description.Path",
-	"recursive":            "Description.Recursive",
-	"repository_full_name": "Description.RepositoryFullName",
-	"sha":                  "Description.SHA",
-	"size":                 "Description.Size",
-	"tree_sha":             "Description.TreeSHA",
-	"truncated":            "Description.Truncated",
-	"type":                 "Description.Type",
-	"url":                  "Description.URL",
-}
-
-func ListTree(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("ListTree")
-	runtime.GC()
-
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree NewClientCached", "error", err)
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree NewSelfClientCached", "error", err)
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
-		return nil, err
-	}
-
-	paginator, err := k.NewTreePaginator(essdk.BuildFilter(ctx, d.QueryContext, listTreeFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
-	if err != nil {
-		plugin.Logger(ctx).Error("ListTree NewTreePaginator", "error", err)
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			plugin.Logger(ctx).Error("ListTree paginator.NextPage", "error", err)
-			return nil, err
-		}
-
-		for _, v := range page {
-			d.StreamListItem(ctx, v)
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-var getTreeFilters = map[string]string{
-	"mode":                 "Description.Mode",
-	"path":                 "Description.Path",
-	"recursive":            "Description.Recursive",
-	"repository_full_name": "Description.RepositoryFullName",
-	"sha":                  "Description.SHA",
-	"size":                 "Description.Size",
-	"tree_sha":             "Description.TreeSHA",
-	"truncated":            "Description.Truncated",
-	"type":                 "Description.Type",
-	"url":                  "Description.URL",
-}
-
-func GetTree(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("GetTree")
-	runtime.GC()
-	// create service
-	cfg := essdk.GetConfig(d.Connection)
-	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
-	if err != nil {
-		return nil, err
-	}
-	k := Client{Client: ke}
-
-	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
-	if err != nil {
-		return nil, err
-	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
-	if err != nil {
-		return nil, err
-	}
-	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
-	if err != nil {
-		return nil, err
-	}
-	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
-	if err != nil {
-		return nil, err
-	}
-
-	limit := int64(1)
-	paginator, err := k.NewTreePaginator(essdk.BuildFilter(ctx, d.QueryContext, getTreeFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
-	if err != nil {
-		return nil, err
-	}
-
-	for paginator.HasNext() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, v := range page {
-			return v, nil
-		}
-	}
-
-	err = paginator.Close(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// ==========================  END: Tree =============================
 
 // ==========================  START: User =============================
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
-	"log"
 	"strconv"
 	"strings"
 
@@ -19,14 +18,13 @@ func GetAllWorkflows(ctx context.Context, githubClient GitHubClient, organizatio
 
 	repositories, err := getRepositories(ctx, client, organizationName)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
 		if repo == nil {
 			continue
 		}
-		log.Println(repo.GetName())
 		repoValues, err := GetRepositoryWorkflows(ctx, githubClient, stream, organizationName, repo.GetName())
 		if err != nil {
 			return nil, err

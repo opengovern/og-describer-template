@@ -48,18 +48,6 @@
     "Model": "WorkflowRun"
   },
   {
-    "ResourceName": "Github/Blob",
-    "Tags": {
-      "category": [
-        "Blob"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllBlobs)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetBlob)",
-    "SteampipeTable": "github_blob",
-    "Model": "Blob"
-  },
-  {
     "ResourceName": "Github/Branch",
     "Tags": {
       "category": [
@@ -67,7 +55,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetAllBranches)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetBlob)",
+    "GetDescriber": "",
     "SteampipeTable": "github_branch",
     "Model": "Branch"
   },
@@ -156,18 +144,6 @@
     "Model": "OrgAlertDependabot"
   },
   {
-    "ResourceName": "Github/Organization/External/Identity",
-    "Tags": {
-      "category": [
-        "Organization"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllExternalIdentities)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_organization_external_identity",
-    "Model": "OrgExternalIdentity"
-  },
-  {
     "ResourceName": "Github/Organization/Member",
     "Tags": {
       "category": [
@@ -178,6 +154,18 @@
     "GetDescriber": "",
     "SteampipeTable": "github_organization_member",
     "Model": "OrgMembers"
+  },
+  {
+    "ResourceName": "Github/Organization/Team",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describer.GetOrganizationTeamList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_team",
+    "Model": "Team"
   },
   {
     "ResourceName": "Github/PullRequest",
@@ -211,7 +199,7 @@
       ]
     },
     "ListDescriber": "DescribeByGithub(describer.GetRepositoryList)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByRepo(describer.GetRepository)",
     "SteampipeTable": "github_repository",
     "Model": "Repository"
   },
@@ -311,7 +299,6 @@
     "SteampipeTable": "github_tag",
     "Model": "Tag"
   },
-  
   {
     "ResourceName": "Github/Team/Member",
     "Tags": {
@@ -323,18 +310,6 @@
     "GetDescriber": "",
     "SteampipeTable": "github_team_member",
     "Model": "TeamMembers"
-  },
-  {
-    "ResourceName": "Github/Tree",
-    "Tags": {
-      "category": [
-        "tree"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTrees)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_tree",
-    "Model": "Tree"
   },
   {
     "ResourceName": "Github/User",

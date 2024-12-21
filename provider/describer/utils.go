@@ -1360,7 +1360,12 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 			return nil, err
 		}
 
-		repositories = append(repositories, repos...)
+		for _, r := range repos {
+			if r.GetArchived() || r.GetDisabled() {
+				continue
+			}
+			repositories = append(repositories, r)
+		}
 		if resp.NextPage == 0 {
 			break
 		}
