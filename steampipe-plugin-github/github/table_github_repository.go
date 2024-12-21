@@ -181,10 +181,6 @@ func tableGitHubRepository() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListRepository,
 		},
-		Get: &plugin.GetConfig{
-			KeyColumns: plugin.AllColumns([]string{"repository_full_name", "number"}),
-			Hydrate:    opengovernance.GetRepository,
-		},
-		Columns: commonColumns(gitHubIssueColumns()),
+		Columns: commonColumns(sharedRepositoryColumns()),
 	}
 }
