@@ -12,7 +12,7 @@
     "Model": "Artifact"
   },
   {
-    "ResourceName": "Github/Actions/Repository/Runner",
+    "ResourceName": "Github/Actions/Runner",
     "Tags": {
       "category": [
         "Action"
@@ -24,7 +24,7 @@
     "Model": "Runner"
   },
   {
-    "ResourceName": "Github/Actions/Repository/Secret",
+    "ResourceName": "Github/Actions/Secret",
     "Tags": {
       "category": [
         "Action"
@@ -36,7 +36,7 @@
     "Model": "Secret"
   },
   {
-    "ResourceName": "Github/Actions/Repository/Workflow_run",
+    "ResourceName": "Github/Actions/WorkflowRun",
     "Tags": {
       "category": [
         "Action"
@@ -311,18 +311,7 @@
     "SteampipeTable": "github_tag",
     "Model": "Tag"
   },
-  {
-    "ResourceName": "Github/Team",
-    "Tags": {
-      "category": [
-        "Team"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describer.GetTeamList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_team",
-    "Model": "Team"
-  },
+  
   {
     "ResourceName": "Github/Team/Member",
     "Tags": {

@@ -6,9 +6,9 @@ import (
 
 var Map = map[string]string{
   "Github/Actions/Artifact": "github_actions_artifact",
-  "Github/Actions/Repository/Runner": "github_actions_runner",
-  "Github/Actions/Repository/Secret": "github_actions_secret",
-  "Github/Actions/Repository/Workflow_run": "github_actions_workflow_run",
+  "Github/Actions/Runner": "github_actions_runner",
+  "Github/Actions/Secret": "github_actions_secret",
+  "Github/Actions/WorkflowRun": "github_actions_workflow_run",
   "Github/Blob": "github_blob",
   "Github/Branch": "github_branch",
   "Github/Branch/Protection": "github_branch_protection",
@@ -31,7 +31,6 @@ var Map = map[string]string{
   "Github/Repository/SBOM": "github_repository_sbom",
   "Github/Repository/VulnerabilityAlert": "github_repository_vulnerability_alert",
   "Github/Tag": "github_tag",
-  "Github/Team": "github_team",
   "Github/Team/Member": "github_team_member",
   "Github/Tree": "github_tree",
   "Github/User": "github_user",
@@ -45,9 +44,9 @@ var Map = map[string]string{
 
 var DescriptionMap = map[string]interface{}{
   "Github/Actions/Artifact": opengovernance.Artifact{},
-  "Github/Actions/Repository/Runner": opengovernance.Runner{},
-  "Github/Actions/Repository/Secret": opengovernance.Secret{},
-  "Github/Actions/Repository/Workflow_run": opengovernance.WorkflowRun{},
+  "Github/Actions/Runner": opengovernance.Runner{},
+  "Github/Actions/Secret": opengovernance.Secret{},
+  "Github/Actions/WorkflowRun": opengovernance.WorkflowRun{},
   "Github/Blob": opengovernance.Blob{},
   "Github/Branch": opengovernance.Branch{},
   "Github/Branch/Protection": opengovernance.BranchProtection{},
@@ -70,7 +69,6 @@ var DescriptionMap = map[string]interface{}{
   "Github/Repository/SBOM": opengovernance.RepoSBOM{},
   "Github/Repository/VulnerabilityAlert": opengovernance.RepoVulnerabilityAlert{},
   "Github/Tag": opengovernance.Tag{},
-  "Github/Team": opengovernance.Team{},
   "Github/Team/Member": opengovernance.TeamMembers{},
   "Github/Tree": opengovernance.Tree{},
   "Github/User": opengovernance.User{},
@@ -84,9 +82,9 @@ var DescriptionMap = map[string]interface{}{
 
 var ReverseMap = map[string]string{
   "github_actions_artifact": "Github/Actions/Artifact",
-  "github_actions_runner": "Github/Actions/Repository/Runner",
-  "github_actions_secret": "Github/Actions/Repository/Secret",
-  "github_actions_workflow_run": "Github/Actions/Repository/Workflow_run",
+  "github_actions_runner": "Github/Actions/Runner",
+  "github_actions_secret": "Github/Actions/Secret",
+  "github_actions_workflow_run": "Github/Actions/WorkflowRun",
   "github_blob": "Github/Blob",
   "github_branch": "Github/Branch",
   "github_branch_protection": "Github/Branch/Protection",
@@ -109,7 +107,6 @@ var ReverseMap = map[string]string{
   "github_repository_sbom": "Github/Repository/SBOM",
   "github_repository_vulnerability_alert": "Github/Repository/VulnerabilityAlert",
   "github_tag": "Github/Tag",
-  "github_team": "Github/Team",
   "github_team_member": "Github/Team/Member",
   "github_tree": "Github/Tree",
   "github_user": "Github/User",

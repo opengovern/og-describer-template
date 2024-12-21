@@ -20,9 +20,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetArtifact),
 	},
 
-	"Github/Actions/Repository/Runner": {
+	"Github/Actions/Runner": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/Repository/Runner",
+		ResourceName:         "Github/Actions/Runner",
 		Tags:                 map[string][]string{
             "category": {"Action"},
         },
@@ -34,9 +34,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetActionRunner),
 	},
 
-	"Github/Actions/Repository/Secret": {
+	"Github/Actions/Secret": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/Repository/Secret",
+		ResourceName:         "Github/Actions/Secret",
 		Tags:                 map[string][]string{
             "category": {"Action"},
         },
@@ -48,9 +48,9 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         DescribeSingleByRepo(describer.GetRepoActionSecret),
 	},
 
-	"Github/Actions/Repository/Workflow_run": {
+	"Github/Actions/WorkflowRun": {
 		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Actions/Repository/Workflow_run",
+		ResourceName:         "Github/Actions/WorkflowRun",
 		Tags:                 map[string][]string{
             "category": {"Action"},
         },
@@ -367,20 +367,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        DescribeByGithub(describer.GetAllTags),
-		GetDescriber:         nil,
-	},
-
-	"Github/Team": {
-		IntegrationType:      configs.IntegrationName,
-		ResourceName:         "Github/Team",
-		Tags:                 map[string][]string{
-            "category": {"Team"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        DescribeByGithub(describer.GetTeamList),
 		GetDescriber:         nil,
 	},
 
