@@ -5,6 +5,7 @@ import (
 	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableRenderBlueprint(ctx context.Context) *plugin.Table {
@@ -20,13 +21,13 @@ func tableRenderBlueprint(ctx context.Context) *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			// Top columns
-			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the blueprint."},
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the blueprint."},
-			{Name: "status", Type: proto.ColumnType_STRING, Description: "The current status of the blueprint (e.g., active, inactive)."},
-			{Name: "autoSync", Type: proto.ColumnType_BOOL, Description: "Indicates whether auto-sync is enabled for the blueprint."},
-			{Name: "repo", Type: proto.ColumnType_STRING, Description: "The repository associated with the blueprint."},
-			{Name: "branch", Type: proto.ColumnType_STRING, Description: "The branch in the repository for the blueprint."},
-			{Name: "lastSync", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last sync for the blueprint."},
+			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the blueprint.", Transform: transform.FromField("Description.ID")},
+			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the blueprint.", Transform: transform.FromField("Description.Name")},
+			{Name: "status", Type: proto.ColumnType_STRING, Description: "The current status of the blueprint (e.g., active, inactive).", Transform: transform.FromField("Description.Status")},
+			{Name: "autoSync", Type: proto.ColumnType_BOOL, Description: "Indicates whether auto-sync is enabled for the blueprint.", Transform: transform.FromField("Description.AutoSync")},
+			{Name: "repo", Type: proto.ColumnType_STRING, Description: "The repository associated with the blueprint.", Transform: transform.FromField("Description.Repo")},
+			{Name: "branch", Type: proto.ColumnType_STRING, Description: "The branch in the repository for the blueprint.", Transform: transform.FromField("Description.Branch")},
+			{Name: "lastSync", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last sync for the blueprint.", Transform: transform.FromField("Description.LastSync")},
 		},
 	}
 }

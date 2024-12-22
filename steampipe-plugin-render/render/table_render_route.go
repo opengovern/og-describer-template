@@ -5,6 +5,7 @@ import (
 	opengovernance "github.com/opengovern/og-describer-render/pkg/sdk/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableRenderRoute(ctx context.Context) *plugin.Table {
@@ -20,11 +21,11 @@ func tableRenderRoute(ctx context.Context) *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			// Top columns
-			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the route."},
-			{Name: "type", Type: proto.ColumnType_STRING, Description: "The type of the route."},
-			{Name: "source", Type: proto.ColumnType_STRING, Description: "The source of the route."},
-			{Name: "destination", Type: proto.ColumnType_STRING, Description: "The destination of the route."},
-			{Name: "priority", Type: proto.ColumnType_INT, Description: "The priority of the route."},
+			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the route.", Transform: transform.FromField("Description.ID")},
+			{Name: "type", Type: proto.ColumnType_STRING, Description: "The type of the route.", Transform: transform.FromField("Description.Type")},
+			{Name: "source", Type: proto.ColumnType_STRING, Description: "The source of the route.", Transform: transform.FromField("Description.Source")},
+			{Name: "destination", Type: proto.ColumnType_STRING, Description: "The destination of the route.", Transform: transform.FromField("Description.Destination")},
+			{Name: "priority", Type: proto.ColumnType_INT, Description: "The priority of the route.", Transform: transform.FromField("Description.Priority")},
 		},
 	}
 }
