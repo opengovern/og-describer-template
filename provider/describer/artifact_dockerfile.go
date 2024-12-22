@@ -28,12 +28,6 @@ func ListArtifactDockerFiles(
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {
-
-	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
-	}
-
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false)
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
@@ -41,6 +35,28 @@ func ListArtifactDockerFiles(
 		MaxRetries:        3,
 		BaseBackoff:       time.Second,
 	})
+
+	org := ctx.Value("organization")
+	if org != nil {
+		orgName := org.(string)
+		if orgName != "" {
+			organizationName = orgName
+		}
+	}
+
+	repo := ctx.Value("repository")
+	if repo != nil {
+		repoName := repo.(string)
+		if repoName != "" {
+			repoFullName := fmt.Sprintf("%s/%s", organizationName, repoName)
+			return fetchRepositoryDockerfiles(ctx, sdk, githubClient, organizationName, repoFullName, stream)
+		}
+	}
+
+	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
+	}
 
 	var allValues []models.Resource
 	totalCollected := 0
@@ -130,6 +146,87 @@ func ListArtifactDockerFiles(
 	// If we streamed, return an empty slice since results are already sent via stream
 	if stream != nil {
 		return []models.Resource{}, nil
+	}
+
+	return allValues, nil
+}
+
+func fetchRepositoryDockerfiles(ctx context.Context, sdk *resilientbridge.ResilientBridge, githubClient GitHubClient, organizationName, repoFullName string, stream *models.StreamSender) ([]models.Resource, error) {
+	var allValues []models.Resource
+	totalCollected := 0
+	perPage := 100
+
+	queryParts := []string{
+		fmt.Sprintf("repo:%s", repoFullName),
+		"filename:Dockerfile",
+	}
+	finalQuery := strings.Join(queryParts, " ")
+
+	page := 1
+	for totalCollected < MAX_RESULTS {
+		q := url.QueryEscape(finalQuery)
+		searchEndpoint := fmt.Sprintf("/search/code?q=%s&per_page=%d&page=%d", q, perPage, page)
+
+		searchReq := &resilientbridge.NormalizedRequest{
+			Method:   "GET",
+			Endpoint: searchEndpoint,
+			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+		}
+
+		searchResp, err := sdk.Request("github", searchReq)
+		if err != nil {
+			log.Printf("Error searching code in %s: %v\n", repoFullName, err)
+			break
+		}
+
+		if searchResp.StatusCode >= 400 {
+			log.Printf("HTTP error %d searching code in %s: %s\n", searchResp.StatusCode, repoFullName, string(searchResp.Data))
+			break
+		}
+
+		var result model.CodeSearchResult
+		if err := json.Unmarshal(searchResp.Data, &result); err != nil {
+			log.Printf("Error parsing code search response for %s: %v\n", repoFullName, err)
+			break
+		}
+
+		// If no items returned, no more results
+		if len(result.Items) == 0 {
+			break
+		}
+
+		for _, item := range result.Items {
+			resource, err := GetDockerfile(ctx, githubClient, organizationName, item.Repository.FullName, item.Path, stream)
+			if err != nil {
+				log.Printf("Skipping %s/%s: %v\n", item.Repository.FullName, item.Path, err)
+				continue
+			}
+			if resource == nil {
+				// Means it didn't stream anything or some unknown reason
+				continue
+			}
+
+			totalCollected++
+			if stream != nil {
+				// Stream the resource
+				if err := (*stream)(*resource); err != nil {
+					return nil, fmt.Errorf("error streaming resource: %w", err)
+				}
+			} else {
+				// Accumulate to return later
+				allValues = append(allValues, *resource)
+			}
+
+			if totalCollected >= MAX_RESULTS {
+				break
+			}
+		}
+
+		if len(result.Items) < perPage {
+			// Fewer than perPage results means no more pages
+			break
+		}
+		page++
 	}
 
 	return allValues, nil
