@@ -16,7 +16,7 @@ func tableGitHubNPMPackage() *plugin.Table {
 			KeyColumns: plugin.AllColumns([]string{"id"}),
 			Hydrate:    opengovernance.GetPackage,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Basic details columns
 			{Name: "id", Type: proto.ColumnType_INT, Description: "Unique identifier for the package."},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the package."},
@@ -30,6 +30,6 @@ func tableGitHubNPMPackage() *plugin.Table {
 			// Nested structure columns
 			{Name: "owner", Type: proto.ColumnType_JSON, Description: "Owner details of the package."},
 			{Name: "repository", Type: proto.ColumnType_JSON, Description: "Repository details associated with the package."},
-		},
+		}),
 	}
 }

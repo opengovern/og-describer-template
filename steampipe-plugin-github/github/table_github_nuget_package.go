@@ -16,7 +16,7 @@ func tableGitHubNugetPackage() *plugin.Table {
 			KeyColumns: plugin.AllColumns([]string{"id"}),
 			Hydrate:    opengovernance.GetPackage,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Basic details columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "Unique identifier for the package."},
 			{Name: "registryId", Type: proto.ColumnType_STRING, Description: "Registry ID associated with the package."},
@@ -24,6 +24,6 @@ func tableGitHubNugetPackage() *plugin.Table {
 			{Name: "url", Type: proto.ColumnType_STRING, Description: "URL where the package can be accessed."},
 			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was created."},
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was last updated."},
-		},
+		}),
 	}
 }

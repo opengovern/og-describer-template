@@ -20,7 +20,7 @@ func tableGitHubCommit() *plugin.Table {
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			Hydrate:           opengovernance.GetCommit,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "sha",
 				Type:        proto.ColumnType_STRING,
@@ -87,6 +87,6 @@ func tableGitHubCommit() *plugin.Table {
 				Transform:   transform.FromField("Description.Files"),
 				Description: "List of files changed in the commit.",
 			},
-		},
+		}),
 	}
 }
