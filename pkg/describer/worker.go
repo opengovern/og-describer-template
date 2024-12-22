@@ -69,7 +69,7 @@ func Do(ctx context.Context,
 	if err != nil {
 		return nil, fmt.Errorf("decrypt error: %w", err)
 	}
-	logger.Info("decrypted config", zap.Any("config", config))
+	// logger.Info("decrypted config", zap.Any("config", config))
 
 	return doDescribe(ctx, logger, job, config, grpcEndpoint, ingestionPipelineEndpoint, describeDeliverToken, useOpenSearch)
 }
