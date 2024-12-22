@@ -3,14 +3,13 @@ package describer
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
 	"strings"
 	"time"
-
-	"encoding/base64"
 
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
@@ -21,23 +20,14 @@ import (
 // MAX_RESULTS is the maximum number of Dockerfiles to collect or stream.
 const MAX_RESULTS = 500
 
-// ListArtifactDockerFiles searches for all Dockerfiles in an org’s repos,
-// then for each file found, it calls GetDockerFile(...) to fetch/stream
-// the *final* Dockerfile resource instead of returning a partial reference.
+// ListDockerFile lists references to Dockerfiles in all repositories for the given organization.
+// If a stream is provided, results are streamed. If not, a slice of resources is returned.
 func ListArtifactDockerFiles(
 	ctx context.Context,
 	githubClient GitHubClient,
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {
-
-	// 1) Enumerate all repositories.
-	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
-	}
-
-	// 2) Set up the resilient-bridge client
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false)
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
@@ -46,13 +36,33 @@ func ListArtifactDockerFiles(
 		BaseBackoff:       time.Second,
 	})
 
-	// We'll accumulate final Dockerfile resources here (only if no stream).
-	var allValues []models.Resource
+	org := ctx.Value("organization")
+	if org != nil {
+		orgName := org.(string)
+		if orgName != "" {
+			organizationName = orgName
+		}
+	}
 
+	repo := ctx.Value("repository")
+	if repo != nil {
+		repoName := repo.(string)
+		if repoName != "" {
+			repoFullName := fmt.Sprintf("%s/%s", organizationName, repoName)
+			return fetchRepositoryDockerfiles(ctx, sdk, githubClient, organizationName, repoFullName, stream)
+		}
+	}
+
+	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
+	}
+
+	var allValues []models.Resource
 	totalCollected := 0
 	perPage := 100
 
-	// 3) For each repository, search for Dockerfiles by code search
+	// For each repository, search for Dockerfiles
 	for _, repo := range repositories {
 		if totalCollected >= MAX_RESULTS {
 			break
@@ -81,6 +91,7 @@ func ListArtifactDockerFiles(
 				log.Printf("Error searching code in %s: %v\n", repoFullName, err)
 				break
 			}
+
 			if searchResp.StatusCode >= 400 {
 				log.Printf("HTTP error %d searching code in %s: %s\n", searchResp.StatusCode, repoFullName, string(searchResp.Data))
 				break
@@ -97,49 +108,42 @@ func ListArtifactDockerFiles(
 				break
 			}
 
-			// 4) For each search result referencing a Dockerfile,
-			//    call GetDockerFile(...) to get the final resource.
 			for _, item := range result.Items {
-				if totalCollected >= MAX_RESULTS {
-					break
-				}
-
-				finalResource, err := GetDockerfile(
-					ctx,
-					githubClient,
-					organizationName,
-					item.Repository.FullName, // e.g. "orgName/repoName"
-					item.Path,                // path to Dockerfile
-					stream,
-				)
+				resource, err := GetDockerfile(ctx, githubClient, organizationName, item.Repository.FullName, item.Path, stream)
 				if err != nil {
-					// e.g. if file was >200 lines, or some other fetch error
 					log.Printf("Skipping %s/%s: %v\n", item.Repository.FullName, item.Path, err)
 					continue
 				}
-				if finalResource == nil {
+				if resource == nil {
 					// Means it didn't stream anything or some unknown reason
 					continue
 				}
 
-				// If we have a stream, we've *already* streamed the final resource in GetDockerfile.
-				// If we do *not* have a stream, we accumulate to return later.
-				if stream == nil {
-					allValues = append(allValues, *finalResource)
+				totalCollected++
+				if stream != nil {
+					// Stream the resource
+					if err := (*stream)(*resource); err != nil {
+						return nil, fmt.Errorf("error streaming resource: %w", err)
+					}
+				} else {
+					// Accumulate to return later
+					allValues = append(allValues, *resource)
 				}
 
-				totalCollected++
+				if totalCollected >= MAX_RESULTS {
+					break
+				}
 			}
 
-			// 5) If fewer than perPage results, we're done with this repo
 			if len(result.Items) < perPage {
+				// Fewer than perPage results means no more pages
 				break
 			}
 			page++
 		}
 	}
 
-	// 6) If we streamed everything, return empty slice
+	// If we streamed, return an empty slice since results are already sent via stream
 	if stream != nil {
 		return []models.Resource{}, nil
 	}
@@ -147,8 +151,89 @@ func ListArtifactDockerFiles(
 	return allValues, nil
 }
 
-// GetDockerfile fetches the actual Dockerfile content, line-count checks, last-updated info, etc.
-// (Unmodified from your existing code; only repeated here for clarity.)
+func fetchRepositoryDockerfiles(ctx context.Context, sdk *resilientbridge.ResilientBridge, githubClient GitHubClient, organizationName, repoFullName string, stream *models.StreamSender) ([]models.Resource, error) {
+	var allValues []models.Resource
+	totalCollected := 0
+	perPage := 100
+
+	queryParts := []string{
+		fmt.Sprintf("repo:%s", repoFullName),
+		"filename:Dockerfile",
+	}
+	finalQuery := strings.Join(queryParts, " ")
+
+	page := 1
+	for totalCollected < MAX_RESULTS {
+		q := url.QueryEscape(finalQuery)
+		searchEndpoint := fmt.Sprintf("/search/code?q=%s&per_page=%d&page=%d", q, perPage, page)
+
+		searchReq := &resilientbridge.NormalizedRequest{
+			Method:   "GET",
+			Endpoint: searchEndpoint,
+			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+		}
+
+		searchResp, err := sdk.Request("github", searchReq)
+		if err != nil {
+			log.Printf("Error searching code in %s: %v\n", repoFullName, err)
+			break
+		}
+
+		if searchResp.StatusCode >= 400 {
+			log.Printf("HTTP error %d searching code in %s: %s\n", searchResp.StatusCode, repoFullName, string(searchResp.Data))
+			break
+		}
+
+		var result model.CodeSearchResult
+		if err := json.Unmarshal(searchResp.Data, &result); err != nil {
+			log.Printf("Error parsing code search response for %s: %v\n", repoFullName, err)
+			break
+		}
+
+		// If no items returned, no more results
+		if len(result.Items) == 0 {
+			break
+		}
+
+		for _, item := range result.Items {
+			resource, err := GetDockerfile(ctx, githubClient, organizationName, item.Repository.FullName, item.Path, stream)
+			if err != nil {
+				log.Printf("Skipping %s/%s: %v\n", item.Repository.FullName, item.Path, err)
+				continue
+			}
+			if resource == nil {
+				// Means it didn't stream anything or some unknown reason
+				continue
+			}
+
+			totalCollected++
+			if stream != nil {
+				// Stream the resource
+				if err := (*stream)(*resource); err != nil {
+					return nil, fmt.Errorf("error streaming resource: %w", err)
+				}
+			} else {
+				// Accumulate to return later
+				allValues = append(allValues, *resource)
+			}
+
+			if totalCollected >= MAX_RESULTS {
+				break
+			}
+		}
+
+		if len(result.Items) < perPage {
+			// Fewer than perPage results means no more pages
+			break
+		}
+		page++
+	}
+
+	return allValues, nil
+}
+
+// GetDockerfile fetches the details and content of a single Dockerfile given the repo and file path.
+// It returns a fully populated resource with Dockerfile content, line count checks, and last updated at info.
 func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationName, repoFullName, filePath string, stream *models.StreamSender) (*models.Resource, error) {
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false)
@@ -171,9 +256,9 @@ func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationN
 	if err != nil {
 		return nil, fmt.Errorf("error fetching content for %s/%s: %w", repoFullName, filePath, err)
 	}
+
 	if contentResp.StatusCode >= 400 {
-		return nil, fmt.Errorf("HTTP error %d fetching content for %s/%s: %s",
-			contentResp.StatusCode, repoFullName, filePath, string(contentResp.Data))
+		return nil, fmt.Errorf("HTTP error %d fetching content for %s/%s: %s", contentResp.StatusCode, repoFullName, filePath, string(contentResp.Data))
 	}
 
 	var contentData model.ContentResponse
@@ -194,12 +279,10 @@ func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationN
 
 	lines := strings.Split(fileContent, "\n")
 	if len(lines) > 200 {
-		// Example “business rule” => skip if >200 lines
-		return nil, fmt.Errorf("skipping %s/%s: more than 200 lines (%d lines)",
-			repoFullName, filePath, len(lines))
+		return nil, fmt.Errorf("skipping %s/%s: more than 200 lines (%d lines)", repoFullName, filePath, len(lines))
 	}
 
-	// Grab last_updated_at
+	// Fetch last_updated_at via commits API
 	var lastUpdatedAt string
 	commitsEndpoint := fmt.Sprintf("/repos/%s/commits?path=%s&per_page=1", repoFullName, url.QueryEscape(filePath))
 	commitReq := &resilientbridge.NormalizedRequest{
@@ -224,7 +307,6 @@ func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationN
 		"full_name": repoFullName,
 	}
 
-	// Final output describing this Dockerfile in detail
 	output := model.ArtifactDockerFileDescription{
 		Sha:                     contentData.Sha,
 		Name:                    contentData.Name,
@@ -246,13 +328,5 @@ func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationN
 		},
 	}
 
-	// Stream if provided
-	if stream != nil {
-		if err := (*stream)(value); err != nil {
-			return nil, err
-		}
-	}
-
-	// Return the final Dockerfile resource
 	return &value, nil
 }
