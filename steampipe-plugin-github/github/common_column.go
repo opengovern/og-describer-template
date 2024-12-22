@@ -16,7 +16,7 @@ func commonColumns(c []*plugin.Column) []*plugin.Column {
 		{
 			Name:        "platform_integration_id",
 			Type:        proto.ColumnType_STRING,
-			Description: "The Platform Account ID in which the resource is located.",
+			Description: "The Platform Integration ID in which the resource is located.",
 			Transform:   transform.FromField("IntegrationID"),
 		},
 		{
