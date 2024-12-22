@@ -51,6 +51,30 @@ func GetRepositoryListWithOptions(
 	perPage := 100
 	page := 1
 
+	org := ctx.Value("organization")
+	orgName := org.(string)
+	if orgName != "" {
+		organizationName = orgName
+	}
+
+	repo := ctx.Value("repository")
+	repoName := repo.(string)
+	if repoName != "" {
+		finalResource, err := GetRepository(
+			ctx,
+			githubClient,
+			organizationName,
+			repoName,
+			"", // pass along or just ""
+			stream,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching details for %s/%s: %v", organizationName, repoName, err)
+		}
+
+		return []models.Resource{*finalResource}, nil
+	}
+
 	for len(allFinalResources) < MAX_REPOS_TO_LIST {
 		endpoint := fmt.Sprintf("/orgs/%s/repos?per_page=%d&page=%d", organizationName, perPage, page)
 		req := &resilientbridge.NormalizedRequest{

@@ -28,12 +28,6 @@ func ListArtifactDockerFiles(
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {
-
-	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
-	}
-
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false)
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
@@ -41,6 +35,24 @@ func ListArtifactDockerFiles(
 		MaxRetries:        3,
 		BaseBackoff:       time.Second,
 	})
+
+	org := ctx.Value("organization")
+	orgName := org.(string)
+	if orgName != "" {
+		organizationName = orgName
+	}
+
+	repo := ctx.Value("repository")
+	repoName := repo.(string)
+	if repoName != "" {
+		repoFullName := fmt.Sprintf("%s/%s", organizationName, repoName)
+		return fetchRepositoryDockerfiles(sdk, repoFullName, stream)
+	}
+
+	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
+	}
 
 	var allValues []models.Resource
 	totalCollected := 0
@@ -103,10 +115,23 @@ func ListArtifactDockerFiles(
 					ID:   dockerfileURI,
 					Name: item.Name,
 					Description: JSONAllFieldsMarshaller{
-						Value: map[string]interface{}{
-							"repo_full_name": item.Repository.FullName,
-							"path":           item.Path,
-							"sha":            item.Sha,
+						Value: model.ArtifactDockerFileDescription{
+							Sha:     item.Sha,
+							Name:    item.Name,
+							Path:    item.Path,
+							GitURL:  item.GitURL,
+							HTMLURL: item.HTMLURL,
+							URI:     dockerfileURI,
+							Repository: map[string]interface{}{
+								"id":          item.Repository.ID,
+								"node_id":     item.Repository.NodeID,
+								"full_name":   item.Repository.FullName,
+								"description": item.Repository.Description,
+								"html_url":    item.Repository.HTMLURL,
+								"fork":        item.Repository.Fork,
+								"private":     item.Repository.Private,
+								"owner_login": item.Repository.Owner.Login,
+							},
 						},
 					},
 				}
@@ -138,6 +163,108 @@ func ListArtifactDockerFiles(
 	// If we streamed, return an empty slice since results are already sent via stream
 	if stream != nil {
 		return []models.Resource{}, nil
+	}
+
+	return allValues, nil
+}
+
+func fetchRepositoryDockerfiles(sdk *resilientbridge.ResilientBridge, repoFullName string, stream *models.StreamSender) ([]models.Resource, error) {
+	var allValues []models.Resource
+	totalCollected := 0
+	perPage := 100
+
+	queryParts := []string{
+		fmt.Sprintf("repo:%s", repoFullName),
+		"filename:Dockerfile",
+	}
+	finalQuery := strings.Join(queryParts, " ")
+
+	page := 1
+	for totalCollected < MAX_RESULTS {
+		q := url.QueryEscape(finalQuery)
+		searchEndpoint := fmt.Sprintf("/search/code?q=%s&per_page=%d&page=%d", q, perPage, page)
+
+		searchReq := &resilientbridge.NormalizedRequest{
+			Method:   "GET",
+			Endpoint: searchEndpoint,
+			Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+		}
+
+		searchResp, err := sdk.Request("github", searchReq)
+		if err != nil {
+			log.Printf("Error searching code in %s: %v\n", repoFullName, err)
+			break
+		}
+
+		if searchResp.StatusCode >= 400 {
+			log.Printf("HTTP error %d searching code in %s: %s\n", searchResp.StatusCode, repoFullName, string(searchResp.Data))
+			break
+		}
+
+		var result model.CodeSearchResult
+		if err := json.Unmarshal(searchResp.Data, &result); err != nil {
+			log.Printf("Error parsing code search response for %s: %v\n", repoFullName, err)
+			break
+		}
+
+		// If no items returned, no more results
+		if len(result.Items) == 0 {
+			break
+		}
+
+		for _, item := range result.Items {
+			// Use item.Sha to link to a specific commit version of the file
+			dockerfileURI := fmt.Sprintf("https://github.com/%s/blob/%s/%s",
+				item.Repository.FullName,
+				item.Sha,
+				item.Path)
+
+			resource := models.Resource{
+				ID:   dockerfileURI,
+				Name: item.Name,
+				Description: JSONAllFieldsMarshaller{
+					Value: model.ArtifactDockerFileDescription{
+						Sha:     item.Sha,
+						Name:    item.Name,
+						Path:    item.Path,
+						GitURL:  item.GitURL,
+						HTMLURL: item.HTMLURL,
+						URI:     dockerfileURI,
+						Repository: map[string]interface{}{
+							"id":          item.Repository.ID,
+							"node_id":     item.Repository.NodeID,
+							"full_name":   item.Repository.FullName,
+							"description": item.Repository.Description,
+							"html_url":    item.Repository.HTMLURL,
+							"fork":        item.Repository.Fork,
+							"private":     item.Repository.Private,
+							"owner_login": item.Repository.Owner.Login,
+						},
+					},
+				},
+			}
+
+			totalCollected++
+			if stream != nil {
+				// Stream the resource
+				if err := (*stream)(resource); err != nil {
+					return nil, fmt.Errorf("error streaming resource: %w", err)
+				}
+			} else {
+				// Accumulate to return later
+				allValues = append(allValues, resource)
+			}
+
+			if totalCollected >= MAX_RESULTS {
+				break
+			}
+		}
+
+		if len(result.Items) < perPage {
+			// Fewer than perPage results means no more pages
+			break
+		}
+		page++
 	}
 
 	return allValues, nil
@@ -194,41 +321,41 @@ func GetDockerfile(ctx context.Context, githubClient GitHubClient, organizationN
 	}
 
 	// Fetch last_updated_at via commits API
-	var lastUpdatedAt string
-	commitsEndpoint := fmt.Sprintf("/repos/%s/commits?path=%s&per_page=1", repoFullName, url.QueryEscape(filePath))
-	commitReq := &resilientbridge.NormalizedRequest{
-		Method:   "GET",
-		Endpoint: commitsEndpoint,
-		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
-	}
+	//var lastUpdatedAt string
+	//commitsEndpoint := fmt.Sprintf("/repos/%s/commits?path=%s&per_page=1", repoFullName, url.QueryEscape(filePath))
+	//commitReq := &resilientbridge.NormalizedRequest{
+	//	Method:   "GET",
+	//	Endpoint: commitsEndpoint,
+	//	Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+	//}
 
-	commitResp, err := sdk.Request("github", commitReq)
-	if err == nil && commitResp.StatusCode < 400 {
-		var commits []model.CommitResponse
-		if json.Unmarshal(commitResp.Data, &commits) == nil && len(commits) > 0 {
-			if commits[0].Commit.Author.Date != "" {
-				lastUpdatedAt = commits[0].Commit.Author.Date
-			} else if commits[0].Commit.Committer.Date != "" {
-				lastUpdatedAt = commits[0].Commit.Committer.Date
-			}
-		}
-	}
+	//commitResp, err := sdk.Request("github", commitReq)
+	//if err == nil && commitResp.StatusCode < 400 {
+	//	var commits []model.CommitResponse
+	//	if json.Unmarshal(commitResp.Data, &commits) == nil && len(commits) > 0 {
+	//		if commits[0].Commit.Author.Date != "" {
+	//			lastUpdatedAt = commits[0].Commit.Author.Date
+	//		} else if commits[0].Commit.Committer.Date != "" {
+	//			lastUpdatedAt = commits[0].Commit.Committer.Date
+	//		}
+	//	}
+	//}
 
 	repoObj := map[string]interface{}{
 		"full_name": repoFullName,
 	}
 
 	output := model.ArtifactDockerFileDescription{
-		Sha:                     contentData.Sha,
-		Name:                    contentData.Name,
-		Path:                    contentData.Path,
-		LastUpdatedAt:           lastUpdatedAt,
-		GitURL:                  contentData.GitURL,
-		HTMLURL:                 contentData.HTMLURL,
-		URI:                     contentData.HTMLURL,
-		DockerfileContent:       fileContent,
-		DockerfileContentBase64: contentData.Content,
-		Repository:              repoObj,
+		Sha:  contentData.Sha,
+		Name: contentData.Name,
+		Path: contentData.Path,
+		//LastUpdatedAt:           lastUpdatedAt,
+		GitURL:  contentData.GitURL,
+		HTMLURL: contentData.HTMLURL,
+		URI:     contentData.HTMLURL,
+		//DockerfileContent:       fileContent,
+		//DockerfileContentBase64: contentData.Content,
+		Repository: repoObj,
 	}
 
 	value := models.Resource{

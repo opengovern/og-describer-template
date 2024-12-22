@@ -7284,16 +7284,13 @@ func (p ArtifactDockerFilePaginator) NextPage(ctx context.Context) ([]ArtifactDo
 }
 
 var listArtifactDockerFileFilters = map[string]string{
-	"dockerfile_content":        "Description.DockerfileContent",
-	"dockerfile_content_base64": "Description.DockerfileContentBase64",
-	"git_url":                   "Description.GitURL",
-	"html_url":                  "Description.HTMLURL",
-	"last_updated_at":           "Description.LastUpdatedAt",
-	"name":                      "Description.Name",
-	"path":                      "Description.Path",
-	"repository":                "Description.Repository",
-	"sha":                       "Description.Sha",
-	"uri":                       "Description.URI",
+	"git_url":    "Description.GitURL",
+	"html_url":   "Description.HTMLURL",
+	"name":       "Description.Name",
+	"path":       "Description.Path",
+	"repository": "Description.Repository",
+	"sha":        "Description.Sha",
+	"uri":        "Description.URI",
 }
 
 func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -7357,16 +7354,13 @@ func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getArtifactDockerFileFilters = map[string]string{
-	"dockerfile_content":        "Description.DockerfileContent",
-	"dockerfile_content_base64": "Description.DockerfileContentBase64",
-	"git_url":                   "Description.GitURL",
-	"html_url":                  "Description.HTMLURL",
-	"last_updated_at":           "Description.LastUpdatedAt",
-	"name":                      "Description.Name",
-	"path":                      "Description.Path",
-	"repository":                "Description.Repository",
-	"sha":                       "Description.Sha",
-	"uri":                       "Description.URI",
+	"git_url":    "Description.GitURL",
+	"html_url":   "Description.HTMLURL",
+	"name":       "Description.Name",
+	"path":       "Description.Path",
+	"repository": "Description.Repository",
+	"sha":        "Description.Sha",
+	"uri":        "Description.URI",
 }
 
 func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {

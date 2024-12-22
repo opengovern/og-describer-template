@@ -859,7 +859,7 @@ type RepositoryDescription struct {
 	Parent                  *RepositoryDescription `json:"parent"`
 	Source                  *RepositoryDescription `json:"source"`
 	PrimaryLanguage         *string                `json:"primary_language,omitempty"`
-	Languages      map[string]int         `json:"languages,omitempty"`
+	Languages               map[string]int         `json:"languages,omitempty"`
 	RepositorySettings      RepositorySettings     `json:"repo_settings"`
 	SecuritySettings        SecuritySettings       `json:"security_settings"`
 	RepoURLs                RepoURLs               `json:"repo_urls"`
@@ -1326,14 +1326,14 @@ type CommitResponse struct {
 }
 
 type ArtifactDockerFileDescription struct {
-	Sha                     string                 `json:"sha"`
-	Name                    string                 `json:"name"`
-	Path                    string                 `json:"path"`
-	LastUpdatedAt           string                 `json:"last_updated_at"`
-	GitURL                  string                 `json:"git_url"`
-	HTMLURL                 string                 `json:"html_url"`
-	URI                     string                 `json:"uri"` // Unique identifier
-	DockerfileContent       string                 `json:"dockerfile_content"`
-	DockerfileContentBase64 string                 `json:"dockerfile_content_base64"`
-	Repository              map[string]interface{} `json:"repository"`
+	Sha  string `json:"sha"`
+	Name string `json:"name"`
+	Path string `json:"path"`
+	//LastUpdatedAt           string                 `json:"last_updated_at"`
+	GitURL  string `json:"git_url"`
+	HTMLURL string `json:"html_url"`
+	URI     string `json:"uri"` // Unique identifier
+	//DockerfileContent       string                 `json:"dockerfile_content"`
+	//DockerfileContentBase64 string                 `json:"dockerfile_content_base64"`
+	Repository map[string]interface{} `json:"repository"`
 }

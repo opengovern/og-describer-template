@@ -20,28 +20,84 @@ func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, organiza
 	if err != nil {
 		return nil, fmt.Errorf("error fetching repositories for workflow runs: %w", err)
 	}
-	log.Println(repositories)
 
 	sdk := newResilientSDK(githubClient.Token)
 
-	var values []models.Resource
-	for _, repo := range repositories {
-		// repo.Name should be the repository name field from the returned resources
-		repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repo.Name)
-		if err != nil {
-			return nil, err
-		}
-		values = append(values, repoValues...)
+	org := ctx.Value("organization")
+	orgName := org.(string)
+	if orgName != "" {
+		organizationName = orgName
 	}
-	return values, nil
+
+	repo := ctx.Value("repository")
+	repoName := repo.(string)
+
+	runNumberParam := ctx.Value("run_number")
+	runNumber := runNumberParam.(string)
+
+	if runNumber != "" {
+		runNumbers := parseRunNumberFlag(runNumber)
+
+		if repoName != "" {
+			var values []models.Resource
+			repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repoName, runNumbers)
+			if err != nil {
+				return nil, err
+			}
+			values = append(values, repoValues...)
+			return values, nil
+		} else {
+			var values []models.Resource
+			for _, repo := range repositories {
+				// repo.Name should be the repository name field from the returned resources
+				repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repo.Name, runNumbers)
+				if err != nil {
+					return nil, err
+				}
+				values = append(values, repoValues...)
+			}
+			return values, nil
+		}
+	} else {
+		if repoName != "" {
+			var values []models.Resource
+			repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repoName, nil)
+			if err != nil {
+				return nil, err
+			}
+			values = append(values, repoValues...)
+			return values, nil
+		} else {
+			var values []models.Resource
+			for _, repo := range repositories {
+				// repo.Name should be the repository name field from the returned resources
+				repoValues, err := GetRepositoryWorkflowRuns(ctx, sdk, stream, organizationName, repo.Name, nil)
+				if err != nil {
+					return nil, err
+				}
+				values = append(values, repoValues...)
+			}
+			return values, nil
+		}
+	}
 }
 
-func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.ResilientBridge, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.ResilientBridge, stream *models.StreamSender, owner, repo string, runNumbers []runNumberCriterion) ([]models.Resource, error) {
 	maxRuns := 50
 
 	runs, err := fetchWorkflowRuns(sdk, owner, repo, "", maxRuns)
 	if err != nil {
-		log.Fatalf("Error fetching workflow runs: %v", err)
+		return nil, fmt.Errorf("error fetching workflow runs: %v", err)
+	}
+
+	if runNumbers != nil {
+		if len(runNumbers) > 0 {
+			runs = filterRunsByNumber(runs, runNumbers)
+			if len(runs) == 0 {
+				log.Println("No runs found matching the specified run_number criteria.")
+				return []models.Resource{}, nil
+			}
+		}
 	}
 
 	var values []models.Resource

@@ -35,7 +35,11 @@ func GetContainerPackageList(
 		BaseBackoff:       0,
 	})
 
-	org := organizationName
+	organization := ctx.Value("organization")
+	org := organization.(string)
+	if org == "" {
+		org = organizationName
+	}
 
 	// [UPDATED] fetchPackages now does pagination
 	packages := fetchPackages(sdk, org, "container")
