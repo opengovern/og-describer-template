@@ -19,7 +19,7 @@ func tableRenderDeploy(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetDeploy,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the deployment.", Transform: transform.FromField("Description.ID")},
 			{Name: "commit", Type: proto.ColumnType_JSON, Description: "The commit details associated with the deployment.", Transform: transform.FromField("Description.Commit")},
@@ -29,6 +29,6 @@ func tableRenderDeploy(ctx context.Context) *plugin.Table {
 			{Name: "finishedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment finished.", Transform: transform.FromField("Description.FinishedAt")},
 			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment was created.", Transform: transform.FromField("Description.CreatedAt")},
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last update to the deployment.", Transform: transform.FromField("Description.UpdatedAt")},
-		},
+		}),
 	}
 }

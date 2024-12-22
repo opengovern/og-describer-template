@@ -19,7 +19,7 @@ func tableRenderJob(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetJob,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the job.", Transform: transform.FromField("Description.ID")},
 			{Name: "serviceId", Type: proto.ColumnType_STRING, Description: "The ID of the service associated with the job.", Transform: transform.FromField("Description.ServiceID")},
@@ -29,6 +29,6 @@ func tableRenderJob(ctx context.Context) *plugin.Table {
 			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the job was created.", Transform: transform.FromField("Description.CreatedAt")},
 			{Name: "startedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the job started.", Transform: transform.FromField("Description.StartedAt")},
 			{Name: "finishedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the job finished.", Transform: transform.FromField("Description.FinishedAt")},
-		},
+		}),
 	}
 }

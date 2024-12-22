@@ -19,7 +19,7 @@ func tableRenderEnvGroup(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetEnvGroup,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the environment group.", Transform: transform.FromField("Description.ID")},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the environment group.", Transform: transform.FromField("Description.Name")},
@@ -28,6 +28,6 @@ func tableRenderEnvGroup(ctx context.Context) *plugin.Table {
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last update to the environment group.", Transform: transform.FromField("Description.UpdatedAt")},
 			{Name: "serviceLinks", Type: proto.ColumnType_JSON, Description: "A list of service links associated with the environment group.", Transform: transform.FromField("Description.ServiceLinks")},
 			{Name: "environmentId", Type: proto.ColumnType_STRING, Description: "The ID of the associated environment.", Transform: transform.FromField("Description.EnvironmentID")},
-		},
+		}),
 	}
 }

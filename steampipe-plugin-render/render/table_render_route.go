@@ -19,13 +19,13 @@ func tableRenderRoute(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetRoute,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the route.", Transform: transform.FromField("Description.ID")},
 			{Name: "type", Type: proto.ColumnType_STRING, Description: "The type of the route.", Transform: transform.FromField("Description.Type")},
 			{Name: "source", Type: proto.ColumnType_STRING, Description: "The source of the route.", Transform: transform.FromField("Description.Source")},
 			{Name: "destination", Type: proto.ColumnType_STRING, Description: "The destination of the route.", Transform: transform.FromField("Description.Destination")},
 			{Name: "priority", Type: proto.ColumnType_INT, Description: "The priority of the route.", Transform: transform.FromField("Description.Priority")},
-		},
+		}),
 	}
 }

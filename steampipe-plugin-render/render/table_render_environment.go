@@ -19,7 +19,7 @@ func tableRenderEnvironment(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetEnvironment,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the environment.", Transform: transform.FromField("Description.ID")},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the environment.", Transform: transform.FromField("Description.Name")},
@@ -29,6 +29,6 @@ func tableRenderEnvironment(ctx context.Context) *plugin.Table {
 			{Name: "serviceIds", Type: proto.ColumnType_JSON, Description: "A list of service IDs associated with the environment.", Transform: transform.FromField("Description.ServiceIDs")},
 			{Name: "envGroupIds", Type: proto.ColumnType_JSON, Description: "A list of environment group IDs associated with the environment.", Transform: transform.FromField("Description.EnvGroupIDs")},
 			{Name: "protectedStatus", Type: proto.ColumnType_STRING, Description: "The protected status of the environment.", Transform: transform.FromField("Description.ProtectedStatus")},
-		},
+		}),
 	}
 }

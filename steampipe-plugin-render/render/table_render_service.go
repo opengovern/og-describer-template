@@ -19,7 +19,7 @@ func tableRenderService(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetService,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the service.", Transform: transform.FromField("Description.ID")},
 			{Name: "autoDeploy", Type: proto.ColumnType_STRING, Description: "Indicates whether the service deploys automatically.", Transform: transform.FromField("Description.AutoDeploy")},
@@ -41,6 +41,6 @@ func tableRenderService(ctx context.Context) *plugin.Table {
 			{Name: "type", Type: proto.ColumnType_STRING, Description: "The type of the service.", Transform: transform.FromField("Description.Type")},
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last update to the service.", Transform: transform.FromField("Description.UpdatedAt")},
 			{Name: "serviceDetails", Type: proto.ColumnType_JSON, Description: "The details of the service.", Transform: transform.FromField("Description.ServiceDetails")},
-		},
+		}),
 	}
 }

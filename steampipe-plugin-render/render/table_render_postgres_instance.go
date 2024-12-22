@@ -19,7 +19,7 @@ func tableRenderPostgres(ctx context.Context) *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    opengovernance.GetPostgres,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the PostgreSQL instance.", Transform: transform.FromField("Description.ID")},
 			{Name: "ipAllowList", Type: proto.ColumnType_JSON, Description: "A list of IP addresses allowed to access the PostgreSQL instance.", Transform: transform.FromField("Description.IPAllowList")},
@@ -43,6 +43,6 @@ func tableRenderPostgres(ctx context.Context) *plugin.Table {
 			{Name: "suspended", Type: proto.ColumnType_STRING, Description: "Indicates whether the PostgreSQL instance is suspended.", Transform: transform.FromField("Description.Suspended")},
 			{Name: "suspenders", Type: proto.ColumnType_JSON, Description: "A list of suspenders associated with the PostgreSQL instance.", Transform: transform.FromField("Description.Suspenders")},
 			{Name: "dashboardUrl", Type: proto.ColumnType_STRING, Description: "The URL of the PostgreSQL instance's dashboard.", Transform: transform.FromField("Description.DashboardURL")},
-		},
+		}),
 	}
 }
