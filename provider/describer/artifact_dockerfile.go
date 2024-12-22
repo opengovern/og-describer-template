@@ -45,6 +45,7 @@ func ListArtifactDockerFiles(
 	}
 
 	repo := ctx.Value("repository")
+	
 	if repo != nil {
 		repoName := repo.(string)
 		if repoName != "" {
