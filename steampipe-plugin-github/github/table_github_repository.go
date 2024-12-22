@@ -142,9 +142,15 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Description: "Source repository details if the repository is forked.",
 		},
 		{
-			Name:        "languages",
+			Name:        "primary_language",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.PrimaryLanguage"),
+			Description: "Primary language used in the repository.",
+		},
+		{
+			Name:        "language_breakdown",
 			Type:        proto.ColumnType_JSON,
-			Transform:   transform.FromField("Description.Languages"),
+			Transform:   transform.FromField("Description.LanguageBreakdown"),
 			Description: "Languages used in the repository along with their usage statistics.",
 		},
 		{

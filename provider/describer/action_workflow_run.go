@@ -20,6 +20,7 @@ func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, organiza
 	if err != nil {
 		return nil, fmt.Errorf("error fetching repositories for workflow runs: %w", err)
 	}
+	log.Println(repositories)
 
 	sdk := newResilientSDK(githubClient.Token)
 
