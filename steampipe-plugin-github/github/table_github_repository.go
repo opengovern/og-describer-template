@@ -148,9 +148,9 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Description: "Primary language used in the repository.",
 		},
 		{
-			Name:        "language_breakdown",
+			Name:        "languages",
 			Type:        proto.ColumnType_JSON,
-			Transform:   transform.FromField("Description.LanguageBreakdown"),
+			Transform:   transform.FromField("Description.Languages"),
 			Description: "Languages used in the repository along with their usage statistics.",
 		},
 		{

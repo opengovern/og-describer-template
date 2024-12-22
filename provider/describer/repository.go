@@ -163,7 +163,7 @@ func GetRepository(
 	// 3) Fetch /languages => map[string]int
 	langs, err := util_fetchLanguages(sdk, organizationName, repositoryName)
 	if err == nil && len(langs) > 0 {
-		finalDetail.LanguageBreakdown = langs
+		finalDetail.Languages = langs
 	}
 
 	// 4) Enrich with metrics
@@ -296,7 +296,7 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 		PrimaryLanguage: detail.PrimaryLanguage,
 
 		// We'll fill in LanguageBreakdown after calling /languages
-		LanguageBreakdown: nil,
+		Languages: nil,
 
 		RepositorySettings: model.RepositorySettings{
 			HasDiscussionsEnabled:     detail.HasDiscussions,

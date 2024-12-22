@@ -859,7 +859,7 @@ type RepositoryDescription struct {
 	Parent                  *RepositoryDescription `json:"parent"`
 	Source                  *RepositoryDescription `json:"source"`
 	PrimaryLanguage         *string                `json:"primary_language,omitempty"`
-	LanguageBreakdown       map[string]int         `json:"language_breakdown,omitempty"`
+	Languages      map[string]int         `json:"languages,omitempty"`
 	RepositorySettings      RepositorySettings     `json:"repo_settings"`
 	SecuritySettings        SecuritySettings       `json:"security_settings"`
 	RepoURLs                RepoURLs               `json:"repo_urls"`
