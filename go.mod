@@ -14,7 +14,7 @@ require (
 	github.com/nats-io/nats.go v1.36.0
 	github.com/opengovern/og-util v1.3.0
 	github.com/opengovern/opencomply v0.475.2
-	github.com/opengovern/resilient-bridge v0.0.0-20241223033931-10bfe34426cc
+	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.8.1
 	github.com/turbot/steampipe-plugin-github v1.0.0
