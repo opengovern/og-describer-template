@@ -13,7 +13,6 @@ func tableGitHubPullRequestComment() *plugin.Table {
 		Name:        "github_pull_request_comment",
 		Description: "Comments are the responses/comments on Pull Requests.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "number"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			Hydrate:           tableGitHubRepositoryPullRequestCommentList,
 		},

@@ -32,7 +32,6 @@ func tableGitHubPullRequestReview() *plugin.Table {
 		Name:        "github_pull_request_review",
 		Description: "Pull Request Reviews are groups of pull request review comments on a pull request.",
 		List: &plugin.ListConfig{
-			KeyColumns:        plugin.AllColumns([]string{"repository_full_name", "number"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			Hydrate:           tableGitHubRepositoryPullRequestReviewList,
 		},
