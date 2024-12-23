@@ -6,3 +6,5 @@ local/
 output.json
 .vscode
 .vscode/*
+
+output.json

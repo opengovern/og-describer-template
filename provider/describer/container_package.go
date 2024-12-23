@@ -244,8 +244,8 @@ func fetchAndAssembleOutput(
 		Username: "github",
 		Password: apiToken,
 	})
-
-	ref, err := name.ParseReference(imageRef)
+	imageRef = strings.ToLower(imageRef)
+	ref, err := name.ParseReference(imageRef,name.WeakValidation)
 	if err != nil {
 		return model.ContainerPackageDescription{},
 			fmt.Errorf("error parsing reference %s: %w", imageRef, err)
