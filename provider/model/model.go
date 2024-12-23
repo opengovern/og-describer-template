@@ -1336,4 +1336,5 @@ type ArtifactDockerFileDescription struct {
 	DockerfileContent       string                 `json:"dockerfile_content"`
 	DockerfileContentBase64 string                 `json:"dockerfile_content_base64"`
 	Repository              map[string]interface{} `json:"repository"`
+	Images                  []string               `json:"images"` // New field to store extracted base images
 }
