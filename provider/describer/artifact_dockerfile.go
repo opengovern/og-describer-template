@@ -8,16 +8,14 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
 	"strings"
 	"time"
-
-	"github.com/moby/buildkit/frontend/dockerfile/parser" // BuildKit Dockerfile parser
 
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
+	"github.com/opengovern/resilient-bridge/utils" // <-- The utils package for Dockerfile parsing
 )
 
 // MAX_RESULTS is the maximum number of Dockerfiles to collect/stream.
@@ -27,13 +25,14 @@ const MAX_RESULTS = 500
 const MAX_DOCKERFILE_LEN = 200
 
 // ListArtifactDockerFiles searches for all Dockerfiles in the specified organization.
-// If a stream is provided, results are streamed AND appended to the final return slice.
+// If a stream is provided, results are ALSO streamed, but we always return the final list in all cases.
 func ListArtifactDockerFiles(
 	ctx context.Context,
 	githubClient GitHubClient,
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {
+
 	sdk := resilientbridge.NewResilientBridge()
 	sdk.SetDebug(false)
 	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
@@ -42,14 +41,12 @@ func ListArtifactDockerFiles(
 		BaseBackoff:       time.Second,
 	})
 
-	// Check context for overrides
+	// Optional: override org/repo from ctx
 	if orgVal := ctx.Value("organization"); orgVal != nil {
 		if orgName, ok := orgVal.(string); ok && orgName != "" {
 			organizationName = orgName
 		}
 	}
-
-	// If a specific repository is set, only fetch Dockerfiles for that repo.
 	if repoVal := ctx.Value("repository"); repoVal != nil {
 		if repoName, ok := repoVal.(string); ok && repoName != "" {
 			repoFullName := fmt.Sprintf("%s/%s", organizationName, repoName)
@@ -123,13 +120,14 @@ func ListArtifactDockerFiles(
 					continue
 				}
 
-				// Always add to our slice
+				// Always add to our local slice
 				allValues = append(allValues, *resource)
 				totalCollected++
 
-				// If a stream is provided, also stream the resource
+				// If streaming is enabled, also stream
 				if stream != nil {
 					if err := (*stream)(*resource); err != nil {
+						// Return what we have so far plus the streaming error
 						return allValues, fmt.Errorf("error streaming resource: %w", err)
 					}
 				}
@@ -146,11 +144,11 @@ func ListArtifactDockerFiles(
 		}
 	}
 
-	// Return everything, regardless of streaming
+	// ALWAYS return allValues, even if we also streamed
 	return allValues, nil
 }
 
-// fetchRepositoryDockerfiles is the same logic as above but scoped to a single repo.
+// fetchRepositoryDockerfiles is the same logic as above, just scoped to a single repo.
 func fetchRepositoryDockerfiles(
 	ctx context.Context,
 	sdk *resilientbridge.ResilientBridge,
@@ -231,11 +229,13 @@ func fetchRepositoryDockerfiles(
 		page++
 	}
 
+	// ALWAYS return allValues
 	return allValues, nil
 }
 
-// GetDockerfile fetches details of a single Dockerfile, including content and metadata,
-// then **parses the Dockerfile from base64** to populate Images. If parsing fails, Images stays empty.
+// GetDockerfile fetches a single Dockerfile from GitHub, decodes the base64 content,
+// checks line count, then calls `utils.ExtractExternalBaseImagesFromBase64(...)`.
+// If parsing fails, `Images` remains empty.
 func GetDockerfile(
 	ctx context.Context,
 	githubClient GitHubClient,
@@ -251,7 +251,7 @@ func GetDockerfile(
 		BaseBackoff:       time.Second,
 	})
 
-	// 1) Fetch file content (including base64-encoded content)
+	// 1) Fetch file content from GitHub
 	contentEndpoint := fmt.Sprintf("/repos/%s/contents/%s", repoFullName, url.PathEscape(filePath))
 	contentReq := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
@@ -273,32 +273,28 @@ func GetDockerfile(
 		return nil, fmt.Errorf("error parsing content response for %s/%s: %w", repoFullName, filePath, err)
 	}
 
-	// 2) Extract the "base64" Dockerfile content from the JSON
-	//    We skip raw fileContent except for line-count check, if you still want that.
-	dockerB64 := contentData.Content
-	if dockerB64 == "" {
-		// Fallback if no content
-		return nil, fmt.Errorf("no base64 content found for %s/%s", repoFullName, filePath)
+	// 2) We rely on base64 content (contentData.Content). If it's empty, skip.
+	dockerfileB64 := contentData.Content
+	if dockerfileB64 == "" {
+		return nil, fmt.Errorf("no base64 content for %s/%s", repoFullName, filePath)
 	}
 
-	// 3) (Optional) decode just to do line count check (skip if huge)
-	decodedContent, err := base64.StdEncoding.DecodeString(dockerB64)
+	// 3) Decode just to do line count check
+	decoded, err := base64.StdEncoding.DecodeString(dockerfileB64)
 	if err != nil {
-		return nil, fmt.Errorf("error decoding base64 content for %s/%s: %w", repoFullName, filePath, err)
+		return nil, fmt.Errorf("error decoding base64 for %s/%s: %w", repoFullName, filePath, err)
 	}
-	lines := strings.Split(string(decodedContent), "\n")
+	lines := strings.Split(string(decoded), "\n")
 	if len(lines) > MAX_DOCKERFILE_LEN {
-		return nil, fmt.Errorf(
-			"skipping %s/%s: Dockerfile has %d lines, exceeds MAX_DOCKERFILE_LEN of %d",
-			repoFullName, filePath, len(lines), MAX_DOCKERFILE_LEN,
-		)
+		return nil, fmt.Errorf("skipping %s/%s: Dockerfile has %d lines (> %d)",
+			repoFullName, filePath, len(lines), MAX_DOCKERFILE_LEN)
 	}
 
-	// 4) Attempt to parse from base64 and collect external images
-	images, parseErr := extractExternalBaseImagesFromBase64(dockerB64)
+	// 4) Use the new utility function to parse the Dockerfile base64 content
+	images, parseErr := utils.ExtractExternalBaseImagesFromBase64(dockerfileB64)
 	if parseErr != nil {
-		log.Printf("Failed to parse Dockerfile for %s/%s: %v", repoFullName, filePath, parseErr)
-		images = []string{} // fail safe
+		log.Printf("Parsing error for Dockerfile at %s/%s: %v\n", repoFullName, filePath, parseErr)
+		images = []string{} // Fail-safe
 	}
 
 	// 5) Last updated time
@@ -321,11 +317,11 @@ func GetDockerfile(
 		}
 	}
 
+	// 6) Prepare the output struct
 	repoObj := map[string]interface{}{
 		"full_name": repoFullName,
 	}
 
-	// 6) Build the final output struct
 	output := model.ArtifactDockerFileDescription{
 		Sha:                     contentData.Sha,
 		Name:                    contentData.Name,
@@ -334,10 +330,10 @@ func GetDockerfile(
 		GitURL:                  contentData.GitURL,
 		HTMLURL:                 contentData.HTMLURL,
 		URI:                     contentData.HTMLURL,
-		DockerfileContent:       string(decodedContent), // if you want the raw decoded content
-		DockerfileContentBase64: dockerB64,
+		DockerfileContent:       string(decoded), // optional raw content
+		DockerfileContentBase64: dockerfileB64,
 		Repository:              repoObj,
-		Images:                  images,
+		Images:                  images, // results from the utility function
 	}
 
 	value := models.Resource{
@@ -348,160 +344,4 @@ func GetDockerfile(
 		},
 	}
 	return &value, nil
-}
-
-/*  ---------------------------------------------------------
-    Use the same logic as your working snippet, but generalized
-    to parse the Dockerfile from base64 content.
-    --------------------------------------------------------- */
-
-// fromInfo tracks a single FROM instruction (base image + optional alias).
-type fromInfo struct {
-	baseImage string
-	alias     string
-}
-
-// extractExternalBaseImagesFromBase64 decodes the Dockerfile from base64,
-// parses with BuildKit, collects base images, expands ARG references, and
-// filters out internal aliases.
-func extractExternalBaseImagesFromBase64(encodedDockerfile string) ([]string, error) {
-	// --- A: Decode base64 Dockerfile content ---
-	decoded, err := base64.StdEncoding.DecodeString(encodedDockerfile)
-	if err != nil {
-		return nil, fmt.Errorf("failed to base64-decode Dockerfile: %w", err)
-	}
-
-	// --- B: Parse with Docker BuildKit parser ---
-	res, err := parser.Parse(strings.NewReader(string(decoded)))
-	if err != nil {
-		return nil, fmt.Errorf("BuildKit parser error: %w", err)
-	}
-	if res == nil || res.AST == nil {
-		return nil, nil
-	}
-
-	// --- C: Collect top-level ARG instructions for naive variable expansion ---
-	argsMap := collectArgs(res.AST)
-
-	// --- D: Gather FROM instructions, expand them
-	var fromLines []fromInfo
-	stageAliases := make(map[string]bool)
-	for _, stmt := range res.AST.Children {
-		if strings.EqualFold(stmt.Value, "from") {
-			tokens := collectStatementTokens(stmt)
-			base, alias := parseFromLine(tokens, argsMap)
-			if alias != "" {
-				stageAliases[alias] = true
-			}
-			fromLines = append(fromLines, fromInfo{baseImage: base, alias: alias})
-		}
-	}
-
-	// --- E: Filter out references to internal aliases (FROM builder, etc.)
-	var external []string
-	for _, f := range fromLines {
-		// If the baseImage is itself a known alias, skip it
-		if stageAliases[f.baseImage] {
-			continue
-		}
-		external = append(external, f.baseImage)
-	}
-	return external, nil
-}
-
-// collectArgs gathers top-level ARG instructions from the AST
-func collectArgs(ast *parser.Node) map[string]string {
-	argsMap := make(map[string]string)
-	for _, stmt := range ast.Children {
-		if strings.EqualFold(stmt.Value, "arg") {
-			tokens := collectStatementTokens(stmt)
-			for _, t := range tokens {
-				k, v := parseArgKeyValue(t)
-				if k != "" && v != "" {
-					argsMap[k] = v
-				}
-			}
-		}
-	}
-	return argsMap
-}
-
-// collectStatementTokens flattens tokens for a single statement, stopping if we
-// hit another Dockerfile instruction. This matches your original snippet.
-func collectStatementTokens(stmt *parser.Node) []string {
-	var tokens []string
-	cur := stmt.Next
-	for cur != nil {
-		if isInstructionKeyword(cur.Value) {
-			break
-		}
-		tokens = append(tokens, cur.Value)
-		cur = cur.Next
-	}
-	return tokens
-}
-
-// parseFromLine processes tokens from a FROM statement, e.g. ["--platform=${PLATFORM}", "${GO_IMAGE}", "AS", "builder"]
-// returns (baseImage, alias).
-func parseFromLine(tokens []string, argsMap map[string]string) (string, string) {
-	var base, alias string
-	for i := 0; i < len(tokens); i++ {
-		t := tokens[i]
-		if strings.HasPrefix(t, "--") {
-			// e.g. --platform=...
-			continue
-		}
-		if strings.EqualFold(t, "AS") && i+1 < len(tokens) {
-			alias = tokens[i+1]
-			break
-		}
-		base = expandArgs(t, argsMap)
-	}
-	return base, alias
-}
-
-// parseArgKeyValue splits "KEY=VALUE". If no '=', we get (KEY, "").
-func parseArgKeyValue(argToken string) (string, string) {
-	parts := strings.SplitN(argToken, "=", 2)
-	if len(parts) == 1 {
-		return parts[0], ""
-	}
-	return parts[0], parts[1]
-}
-
-// expandArgs does a naive expansion of $VAR / ${VAR} with known defaults in argsMap.
-// If no default is found, we leave it as ${VAR}.
-func expandArgs(input string, argsMap map[string]string) string {
-	return os.Expand(input, func(key string) string {
-		if val, ok := argsMap[key]; ok {
-			return val
-		}
-		return fmt.Sprintf("${%s}", key)
-	})
-}
-
-// isInstructionKeyword checks if a token is recognized as a Dockerfile instruction.
-func isInstructionKeyword(s string) bool {
-	switch strings.ToUpper(s) {
-	case "ADD",
-		"ARG",
-		"CMD",
-		"COPY",
-		"ENTRYPOINT",
-		"ENV",
-		"EXPOSE",
-		"FROM",
-		"HEALTHCHECK",
-		"LABEL",
-		"MAINTAINER",
-		"ONBUILD",
-		"RUN",
-		"SHELL",
-		"STOPSIGNAL",
-		"USER",
-		"VOLUME",
-		"WORKDIR":
-		return true
-	}
-	return false
 }
