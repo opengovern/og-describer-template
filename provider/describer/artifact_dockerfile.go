@@ -15,17 +15,17 @@ import (
 	"github.com/opengovern/og-describer-github/provider/model"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
-	"github.com/opengovern/resilient-bridge/utils" // <-- The utils package for Dockerfile parsing
+	"github.com/opengovern/resilient-bridge/utils" // <--- calls ExtractExternalBaseImagesFromBase64
 )
 
-// MAX_RESULTS is the maximum number of Dockerfiles to collect/stream.
+// MAX_RESULTS is the maximum number of Dockerfiles to collect or stream.
 const MAX_RESULTS = 500
 
 // MAX_DOCKERFILE_LEN is the maximum allowed number of lines in a Dockerfile.
 const MAX_DOCKERFILE_LEN = 200
 
-// ListArtifactDockerFiles searches for all Dockerfiles in the specified organization.
-// If a stream is provided, results are ALSO streamed, but we always return the final list in all cases.
+// ListArtifactDockerFiles searches for all Dockerfiles in the specified organization,
+// streaming each Dockerfile as it’s processed, and returning the final slice.
 func ListArtifactDockerFiles(
 	ctx context.Context,
 	githubClient GitHubClient,
@@ -41,7 +41,7 @@ func ListArtifactDockerFiles(
 		BaseBackoff:       time.Second,
 	})
 
-	// Optional: override org/repo from ctx
+	// Override org/repo if set in context
 	if orgVal := ctx.Value("organization"); orgVal != nil {
 		if orgName, ok := orgVal.(string); ok && orgName != "" {
 			organizationName = orgName
@@ -54,7 +54,7 @@ func ListArtifactDockerFiles(
 		}
 	}
 
-	// Otherwise, fetch all repos in the org.
+	// Otherwise list all repos in the org
 	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching repositories for org %s: %w", organizationName, err)
@@ -64,7 +64,7 @@ func ListArtifactDockerFiles(
 	totalCollected := 0
 	perPage := 100
 
-	// For each repository, search for Dockerfiles
+	// For each repository, find Dockerfiles
 	for _, repo := range repositories {
 		if totalCollected >= MAX_RESULTS {
 			break
@@ -110,6 +110,7 @@ func ListArtifactDockerFiles(
 				break
 			}
 
+			// Process each search result
 			for _, item := range result.Items {
 				resource, err := GetDockerfile(ctx, githubClient, organizationName, item.Repository.FullName, item.Path, stream)
 				if err != nil {
@@ -120,14 +121,13 @@ func ListArtifactDockerFiles(
 					continue
 				}
 
-				// Always add to our local slice
+				// 1) Add to local slice
 				allValues = append(allValues, *resource)
 				totalCollected++
 
-				// If streaming is enabled, also stream
+				// 2) Stream the resource *now*, just like repository.go
 				if stream != nil {
 					if err := (*stream)(*resource); err != nil {
-						// Return what we have so far plus the streaming error
 						return allValues, fmt.Errorf("error streaming resource: %w", err)
 					}
 				}
@@ -138,17 +138,18 @@ func ListArtifactDockerFiles(
 			}
 
 			if len(result.Items) < perPage {
+				// No more pages
 				break
 			}
 			page++
 		}
 	}
 
-	// ALWAYS return allValues, even if we also streamed
+	// Return everything, even if we streamed
 	return allValues, nil
 }
 
-// fetchRepositoryDockerfiles is the same logic as above, just scoped to a single repo.
+// fetchRepositoryDockerfiles is the same logic but limited to a single repo.
 func fetchRepositoryDockerfiles(
 	ctx context.Context,
 	sdk *resilientbridge.ResilientBridge,
@@ -199,6 +200,7 @@ func fetchRepositoryDockerfiles(
 			break
 		}
 
+		// Process each Dockerfile search result
 		for _, item := range result.Items {
 			resource, err := GetDockerfile(ctx, githubClient, organizationName, item.Repository.FullName, item.Path, stream)
 			if err != nil {
@@ -212,6 +214,7 @@ func fetchRepositoryDockerfiles(
 			allValues = append(allValues, *resource)
 			totalCollected++
 
+			// Stream each Dockerfile now
 			if stream != nil {
 				if err := (*stream)(*resource); err != nil {
 					return allValues, fmt.Errorf("error streaming resource: %w", err)
@@ -229,13 +232,12 @@ func fetchRepositoryDockerfiles(
 		page++
 	}
 
-	// ALWAYS return allValues
 	return allValues, nil
 }
 
 // GetDockerfile fetches a single Dockerfile from GitHub, decodes the base64 content,
-// checks line count, then calls `utils.ExtractExternalBaseImagesFromBase64(...)`.
-// If parsing fails, `Images` remains empty.
+// checks line count, uses utils.ExtractExternalBaseImagesFromBase64 to parse images.
+// If parsing fails, Images remains empty.
 func GetDockerfile(
 	ctx context.Context,
 	githubClient GitHubClient,
@@ -273,10 +275,11 @@ func GetDockerfile(
 		return nil, fmt.Errorf("error parsing content response for %s/%s: %w", repoFullName, filePath, err)
 	}
 
-	// 2) We rely on base64 content (contentData.Content). If it's empty, skip.
+	// 2) We rely on base64 content (contentData.Content).
 	dockerfileB64 := contentData.Content
 	if dockerfileB64 == "" {
-		return nil, fmt.Errorf("no base64 content for %s/%s", repoFullName, filePath)
+		// No content => skip
+		return nil, fmt.Errorf("no base64 content found for %s/%s", repoFullName, filePath)
 	}
 
 	// 3) Decode just to do line count check
@@ -290,11 +293,11 @@ func GetDockerfile(
 			repoFullName, filePath, len(lines), MAX_DOCKERFILE_LEN)
 	}
 
-	// 4) Use the new utility function to parse the Dockerfile base64 content
+	// 4) Parse to find external base images
 	images, parseErr := utils.ExtractExternalBaseImagesFromBase64(dockerfileB64)
 	if parseErr != nil {
 		log.Printf("Parsing error for Dockerfile at %s/%s: %v\n", repoFullName, filePath, parseErr)
-		images = []string{} // Fail-safe
+		images = []string{} // fail-safe
 	}
 
 	// 5) Last updated time
@@ -317,7 +320,7 @@ func GetDockerfile(
 		}
 	}
 
-	// 6) Prepare the output struct
+	// 6) Build the final struct
 	repoObj := map[string]interface{}{
 		"full_name": repoFullName,
 	}
@@ -330,10 +333,10 @@ func GetDockerfile(
 		GitURL:                  contentData.GitURL,
 		HTMLURL:                 contentData.HTMLURL,
 		URI:                     contentData.HTMLURL,
-		DockerfileContent:       string(decoded), // optional raw content
+		DockerfileContent:       string(decoded),
 		DockerfileContentBase64: dockerfileB64,
 		Repository:              repoObj,
-		Images:                  images, // results from the utility function
+		Images:                  images,
 	}
 
 	value := models.Resource{
@@ -343,5 +346,6 @@ func GetDockerfile(
 			Value: output,
 		},
 	}
+
 	return &value, nil
 }
