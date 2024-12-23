@@ -69,6 +69,11 @@ func tableGitHubArtifactDockerFile() *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Description.Repository"),
 				Description: "Repository metadata associated with the Dockerfile."},
+			{
+				Name:        "images",
+				Type:        proto.ColumnType_JSON,
+				Transform:   transform.FromField("Description.Images"),
+				Description: ""},
 		}),
 	}
 }
