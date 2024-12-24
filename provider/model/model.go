@@ -29,13 +29,22 @@ type ArtifactDescription struct {
 }
 
 type RunnerDescription struct {
-	*github.Runner
+	ID           *int64
+	Name         *string
+	OS           *string
+	Status       *string
+	Busy         *bool
+	Labels       []*github.RunnerLabels
 	RepoFullName string
 }
 
 type SecretDescription struct {
-	*github.Secret
-	RepoFullName string
+	Name                    string
+	CreatedAt               string
+	UpdatedAt               string
+	Visibility              string
+	SelectedRepositoriesURL string
+	RepoFullName            string
 }
 
 type SimpleActor struct {
@@ -55,27 +64,27 @@ type CommitRefWorkflow struct {
 }
 
 type WorkflowRunDescription struct {
-	ID                  int                `json:"id"`
-	Name                string             `json:"name"`
-	HeadBranch          string             `json:"head_branch"`
-	HeadSHA             string             `json:"head_sha"`
-	Status              string             `json:"status"`
-	Conclusion          string             `json:"conclusion"`
-	HTMLURL             string             `json:"html_url"`
-	WorkflowID          int                `json:"workflow_id"`
-	RunNumber           int                `json:"run_number"`
-	Event               string             `json:"event"`
-	CreatedAt           string             `json:"created_at"`
-	UpdatedAt           string             `json:"updated_at"`
-	RunAttempt          int                `json:"run_attempt"`
-	RunStartedAt        string             `json:"run_started_at"`
-	Actor               *SimpleActor       `json:"triggering_actor,omitempty"`
-	HeadCommit          *CommitRefWorkflow `json:"head_commit,omitempty"`
-	Repository          *SimpleRepo        `json:"repository,omitempty"`
-	HeadRepository      *SimpleRepo        `json:"head_repository,omitempty"`
-	ReferencedWorkflows []interface{}      `json:"referenced_workflows,omitempty"`
-	ArtifactCount       int                `json:"artifact_count"`
-	Artifacts           []WorkflowArtifact `json:"artifacts,omitempty"`
+	ID                  int
+	Name                string
+	HeadBranch          string
+	HeadSHA             string
+	Status              string
+	Conclusion          string
+	HTMLURL             string
+	WorkflowID          int
+	RunNumber           int
+	Event               string
+	CreatedAt           string
+	UpdatedAt           string
+	RunAttempt          int
+	RunStartedAt        string
+	Actor               *SimpleActor
+	HeadCommit          *CommitRefWorkflow
+	Repository          *SimpleRepo
+	HeadRepository      *SimpleRepo
+	ReferencedWorkflows []interface{}
+	ArtifactCount       int
+	Artifacts           []WorkflowArtifact
 }
 
 type WorkflowRunsResponse struct {
@@ -101,43 +110,6 @@ type ArtifactsResponse struct {
 	Artifacts  []WorkflowArtifact `json:"artifacts"`
 }
 
-//type WorkflowRunDescription struct {
-//	ID                 int64
-//	Name               string
-//	NodeID             string
-//	HeadBranch         string
-//	HeadSHA            string
-//	RunNumber          int
-//	RunAttempt         int
-//	Event              string
-//	DisplayTitle       string
-//	Status             string
-//	Conclusion         string
-//	WorkflowID         int64
-//	CheckSuiteID       int64
-//	CheckSuiteNodeID   string
-//	URL                string
-//	HTMLURL            string
-//	PullRequests       []*github.PullRequest
-//	CreatedAt          github.Timestamp
-//	UpdatedAt          github.Timestamp
-//	RunStartedAt       github.Timestamp
-//	JobsURL            string
-//	LogsURL            string
-//	CheckSuiteURL      string
-//	ArtifactsURL       string
-//	CancelURL          string
-//	RerunURL           string
-//	PreviousAttemptURL string
-//	HeadCommit         *github.HeadCommit
-//	WorkflowURL        string
-//	Repository         *github.Repository
-//	HeadRepository     *github.Repository
-//	Actor              *github.User
-//	TriggeringActor    *github.User
-//	RepoFullName       string
-//}
-
 type AuditLogDescription struct {
 	ID            string
 	CreatedAt     github.Timestamp
@@ -153,10 +125,15 @@ type AuditLogDescription struct {
 	Data          *github.AuditEntryData
 }
 
-type BlobDescription struct {
-	*github.Blob
-	RepoFullName string
-}
+//type BlobDescription struct {
+//	Content      *string
+//	Encoding     *string
+//	SHA          *string
+//	Size         *int
+//	URL          *string
+//	NodeID       *string
+//	RepoFullName string
+//}
 
 type BranchDescription struct {
 	RepoFullName         string
@@ -182,7 +159,31 @@ type BranchUser struct {
 }
 
 type BranchProtectionDescription struct {
-	steampipemodels.BranchProtectionRule
+	AllowsDeletions                 bool
+	AllowsForcePushes               bool
+	BlocksCreations                 bool
+	Creator                         steampipemodels.Actor
+	Id                              int
+	NodeId                          string
+	DismissesStaleReviews           bool
+	IsAdminEnforced                 bool
+	LockAllowsFetchAndMerge         bool
+	LockBranch                      bool
+	Pattern                         string
+	RequireLastPushApproval         bool
+	RequiredApprovingReviewCount    int
+	RequiredDeploymentEnvironments  []string
+	RequiredStatusChecks            []string
+	RequiresApprovingReviews        bool
+	RequiresConversationResolution  bool
+	RequiresCodeOwnerReviews        bool
+	RequiresCommitSignatures        bool
+	RequiresDeployments             bool
+	RequiresLinearHistory           bool
+	RequiresStatusChecks            bool
+	RequiresStrictStatusChecks      bool
+	RestrictsPushes                 bool
+	RestrictsReviewDismissals       bool
 	RepoFullName                    string
 	CreatorLogin                    string
 	MatchingBranches                int
@@ -196,35 +197,6 @@ type BranchProtectionDescription struct {
 	BypassPullRequestAllowanceTeams []BranchTeam
 	BypassPullRequestAllowanceUsers []BranchUser
 }
-
-//type Parents []struct {
-//	SHA string `json:"sha"`
-//}
-
-//type VerificationDetails struct {
-//	Reason     string  `json:"reason"`
-//	Signature  *string `json:"signature"`
-//	VerifiedAt *string `json:"verified_at"`
-//}
-
-//type AdditionalDetails struct {
-//	NodeID              string              `json:"node_id"`
-//	Parents             Parents             `json:"parents"`
-//	Tree                Tree                `json:"tree"`
-//	VerificationDetails VerificationDetails `json:"verification_details"`
-//}
-
-//type UserMinimalInfo struct {
-//	Name  string `json:"name"`
-//	Email string `json:"email"`
-//	Date  string `json:"date"`
-//}
-
-//type Changes struct {
-//	Additions int `json:"additions"`
-//	Deletions int `json:"deletions"`
-//	Total     int `json:"total"`
-//}
 
 type Tree struct {
 	SHA string `json:"sha"`
@@ -302,7 +274,7 @@ type Stats struct {
 	Deletions int `json:"deletions"`
 }
 
-type CommitDescription struct {
+type CommitResp struct {
 	SHA          string       `json:"sha"`
 	NodeID       string       `json:"node_id"`
 	CommitDetail CommitDetail `json:"commit"`
@@ -316,20 +288,19 @@ type CommitDescription struct {
 	Files        []File       `json:"files"`
 }
 
-//type CommitDescription struct {
-//	AdditionalDetails AdditionalDetails `json:"additional_details"`
-//	Author            Author            `json:"author"`
-//	Changes           Changes           `json:"changes"`
-//	CommentCount      int               `json:"comment_count"`
-//	Date              string            `json:"date"`
-//	Files             []File            `json:"files"`
-//	HTMLURL           string            `json:"html_url"`
-//	ID                string            `json:"id"`
-//	IsVerified        bool              `json:"is_verified"`
-//	Message           string            `json:"message"`
-//	PullRequests      []int             `json:"pull_requests"`
-//	Target            Target            `json:"target"`
-//}
+type CommitDescription struct {
+	SHA          string
+	NodeID       string
+	CommitDetail CommitDetail
+	URL          string
+	HTMLURL      string
+	CommentsURL  string
+	Author       User
+	Committer    User
+	Parents      []Parent
+	Stats        Stats
+	Files        []File
+}
 
 type IssueDescription struct {
 	RepositoryFullName      string
@@ -376,55 +347,106 @@ type IssueDescription struct {
 	Assignees               []steampipemodels.BaseUser
 }
 
-type IssueCommentDescription struct {
-	steampipemodels.IssueComment
-	RepoFullName string
-	Number       int
-	AuthorLogin  string
-	EditorLogin  string
-}
+//type IssueCommentDescription struct {
+//	steampipemodels.IssueComment
+//	RepoFullName string
+//	Number       int
+//	AuthorLogin  string
+//	EditorLogin  string
+//}
 
 type LicenseDescription struct {
-	steampipemodels.License
+	Key            string
+	Name           string
+	Nickname       string
+	SpdxId         string
+	Url            string
+	Body           string
+	Conditions     []steampipemodels.LicenseRule
+	Description    string
+	Featured       bool
+	Hidden         bool
+	Implementation string
+	Limitations    []steampipemodels.LicenseRule
+	Permissions    []steampipemodels.LicenseRule
+	PseudoLicense  bool
 }
 
 type OrganizationDescription struct {
-	steampipemodels.Organization
-	Hooks                                []*github.Hook
-	BillingEmail                         string
-	TwoFactorRequirementEnabled          bool
-	DefaultRepoPermission                string
-	MembersAllowedRepositoryCreationType string
-	MembersCanCreateInternalRepos        bool
-	MembersCanCreatePages                bool
-	MembersCanCreatePrivateRepos         bool
-	MembersCanCreatePublicRepos          bool
-	MembersCanCreateRepos                bool
-	MembersCanForkPrivateRepos           bool
-	PlanFilledSeats                      int
-	PlanName                             string
-	PlanPrivateRepos                     int
-	PlanSeats                            int
-	PlanSpace                            int
-	Followers                            int
-	Following                            int
-	Collaborators                        int
-	HasOrganizationProjects              bool
-	HasRepositoryProjects                bool
-	WebCommitSignoffRequired             bool
-	MembersWithRoleTotalCount            int
-	PackagesTotalCount                   int
-	PinnableItemsTotalCount              int
-	PinnedItemsTotalCount                int
-	ProjectsTotalCount                   int
-	ProjectsV2TotalCount                 int
-	SponsoringTotalCount                 int
-	SponsorsTotalCount                   int
-	TeamsTotalCount                      int
-	PrivateRepositoriesTotalCount        int
-	PublicRepositoriesTotalCount         int
-	RepositoriesTotalCount               int
-	RepositoriesTotalDiskUsage           int
+	Id                                     int
+	NodeId                                 string
+	Name                                   string
+	Login                                  string
+	CreatedAt                              string
+	UpdatedAt                              string
+	Description                            string
+	Email                                  string
+	Url                                    string
+	Announcement                           string
+	AnnouncementExpiresAt                  string
+	AnnouncementUserDismissible            bool
+	AnyPinnableItems                       bool
+	AvatarUrl                              string
+	EstimatedNextSponsorsPayoutInCents     int
+	HasSponsorsListing                     bool
+	InteractionAbility                     steampipemodels.RepositoryInteractionAbility
+	IsSponsoringYou                        bool
+	IsVerified                             bool
+	Location                               string
+	MonthlyEstimatedSponsorsIncomeInCents  int
+	NewTeamUrl                             string
+	PinnedItemsRemaining                   int
+	ProjectsUrl                            string
+	SamlIdentityProvider                   steampipemodels.OrganizationIdentityProvider
+	SponsorsListing                        steampipemodels.SponsorsListing
+	TeamsUrl                               string
+	TotalSponsorshipAmountAsSponsorInCents int
+	TwitterUsername                        string
+	CanAdminister                          bool
+	CanChangedPinnedItems                  bool
+	CanCreateProjects                      bool
+	CanCreateRepositories                  bool
+	CanCreateTeams                         bool
+	CanSponsor                             bool
+	IsAMember                              bool
+	IsFollowing                            bool
+	IsSponsoring                           bool
+	WebsiteUrl                             string
+	Hooks                                  []*github.Hook
+	BillingEmail                           string
+	TwoFactorRequirementEnabled            bool
+	DefaultRepoPermission                  string
+	MembersAllowedRepositoryCreationType   string
+	MembersCanCreateInternalRepos          bool
+	MembersCanCreatePages                  bool
+	MembersCanCreatePrivateRepos           bool
+	MembersCanCreatePublicRepos            bool
+	MembersCanCreateRepos                  bool
+	MembersCanForkPrivateRepos             bool
+	PlanFilledSeats                        int
+	PlanName                               string
+	PlanPrivateRepos                       int
+	PlanSeats                              int
+	PlanSpace                              int
+	Followers                              int
+	Following                              int
+	Collaborators                          int
+	HasOrganizationProjects                bool
+	HasRepositoryProjects                  bool
+	WebCommitSignoffRequired               bool
+	MembersWithRoleTotalCount              int
+	PackagesTotalCount                     int
+	PinnableItemsTotalCount                int
+	PinnedItemsTotalCount                  int
+	ProjectsTotalCount                     int
+	ProjectsV2TotalCount                   int
+	SponsoringTotalCount                   int
+	SponsorsTotalCount                     int
+	TeamsTotalCount                        int
+	PrivateRepositoriesTotalCount          int
+	PublicRepositoriesTotalCount           int
+	RepositoriesTotalCount                 int
+	RepositoriesTotalDiskUsage             int
 }
 
 type OrgCollaboratorsDescription struct {
@@ -836,34 +858,34 @@ type Metrics struct {
 //}
 
 type RepositoryDescription struct {
-	GitHubRepoID            int                    `json:"id"`
-	NodeID                  string                 `json:"node_id"`
-	Name                    string                 `json:"name"`
-	NameWithOwner           string                 `json:"name_with_owner"`
-	Description             *string                `json:"description"`
-	CreatedAt               string                 `json:"created_at"`
-	UpdatedAt               string                 `json:"updated_at"`
-	PushedAt                string                 `json:"pushed_at"`
-	IsActive                bool                   `json:"is_active"`
-	IsEmpty                 bool                   `json:"is_empty"`
-	IsFork                  bool                   `json:"is_fork"`
-	IsSecurityPolicyEnabled bool                   `json:"is_security_policy_enabled"`
-	Owner                   *Owner                 `json:"owner"`
-	HomepageURL             *string                `json:"homepage_url"`
-	LicenseInfo             json.RawMessage        `json:"license_info"`
-	Topics                  []string               `json:"topics"`
-	Visibility              string                 `json:"visibility"`
-	DefaultBranchRef        json.RawMessage        `json:"default_branch_ref"`
-	Permissions             *Permissions           `json:"permissions"`
-	Organization            *Organization          `json:"organization"`
-	Parent                  *RepositoryDescription `json:"parent"`
-	Source                  *RepositoryDescription `json:"source"`
-	PrimaryLanguage         *string                `json:"primary_language,omitempty"`
-	Languages               map[string]int         `json:"languages,omitempty"`
-	RepositorySettings      RepositorySettings     `json:"repo_settings"`
-	SecuritySettings        SecuritySettings       `json:"security_settings"`
-	RepoURLs                RepoURLs               `json:"repo_urls"`
-	Metrics                 Metrics                `json:"metrics"`
+	GitHubRepoID            int
+	NodeID                  string
+	Name                    string
+	NameWithOwner           string
+	Description             *string
+	CreatedAt               string
+	UpdatedAt               string
+	PushedAt                string
+	IsActive                bool
+	IsEmpty                 bool
+	IsFork                  bool
+	IsSecurityPolicyEnabled bool
+	Owner                   *Owner
+	HomepageURL             *string
+	LicenseInfo             json.RawMessage
+	Topics                  []string
+	Visibility              string
+	DefaultBranchRef        json.RawMessage
+	Permissions             *Permissions
+	Organization            *Organization
+	Parent                  *RepositoryDescription
+	Source                  *RepositoryDescription
+	PrimaryLanguage         *string
+	Languages               map[string]int
+	RepositorySettings      RepositorySettings
+	SecuritySettings        SecuritySettings
+	RepoURLs                RepoURLs
+	Metrics                 Metrics
 }
 
 type MinimalRepoInfo struct {

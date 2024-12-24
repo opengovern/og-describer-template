@@ -42,7 +42,12 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 				Name: runner.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.RunnerDescription{
-						Runner:       runner,
+						ID:           runner.ID,
+						Name:         runner.Name,
+						OS:           runner.OS,
+						Status:       runner.Status,
+						Busy:         runner.Busy,
+						Labels:       runner.Labels,
 						RepoFullName: repoFullName,
 					},
 				},
@@ -79,7 +84,12 @@ func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizatio
 		Name: runner.GetName(),
 		Description: JSONAllFieldsMarshaller{
 			Value: model.RunnerDescription{
-				Runner:       runner,
+				ID:           runner.ID,
+				Name:         runner.Name,
+				OS:           runner.OS,
+				Status:       runner.Status,
+				Busy:         runner.Busy,
+				Labels:       runner.Labels,
 				RepoFullName: repoFullName,
 			},
 		},

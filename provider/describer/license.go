@@ -38,7 +38,20 @@ func GetLicenseList(ctx context.Context, githubClient GitHubClient, organization
 			Name: query.Repository.LicenseInfo.Name,
 			Description: JSONAllFieldsMarshaller{
 				Value: model.LicenseDescription{
-					License: query.Repository.LicenseInfo,
+					Key:            query.Repository.LicenseInfo.Key,
+					Name:           query.Repository.LicenseInfo.Name,
+					Nickname:       query.Repository.LicenseInfo.Nickname,
+					SpdxId:         query.Repository.LicenseInfo.SpdxId,
+					Url:            query.Repository.LicenseInfo.Url,
+					Body:           query.Repository.LicenseInfo.Body,
+					Conditions:     query.Repository.LicenseInfo.Conditions,
+					Description:    query.Repository.LicenseInfo.Description,
+					Featured:       query.Repository.LicenseInfo.Featured,
+					Hidden:         query.Repository.LicenseInfo.Hidden,
+					Implementation: query.Repository.LicenseInfo.Implementation,
+					Limitations:    query.Repository.LicenseInfo.Limitations,
+					Permissions:    query.Repository.LicenseInfo.Permissions,
+					PseudoLicense:  query.Repository.LicenseInfo.PseudoLicense,
 				},
 			},
 		}
@@ -76,7 +89,20 @@ func GetLicense(ctx context.Context, githubClient GitHubClient, organizationName
 		Name: query.License.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.LicenseDescription{
-				License: query.License,
+				Key:            query.License.Key,
+				Name:           query.License.Name,
+				Nickname:       query.License.Nickname,
+				SpdxId:         query.License.SpdxId,
+				Url:            query.License.Url,
+				Body:           query.License.Body,
+				Conditions:     query.License.Conditions,
+				Description:    query.License.Description,
+				Featured:       query.License.Featured,
+				Hidden:         query.License.Hidden,
+				Implementation: query.License.Implementation,
+				Limitations:    query.License.Limitations,
+				Permissions:    query.License.Permissions,
+				PseudoLicense:  query.License.PseudoLicense,
 			},
 		},
 	}

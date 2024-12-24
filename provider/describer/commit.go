@@ -90,7 +90,7 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 				continue
 			}
 
-			var commit model.CommitDescription
+			var commit model.CommitResp
 			if err := json.Unmarshal(commitJSON, &commit); err != nil {
 				log.Printf("Error unmarshaling JSON for commit %s: %v", j.sha, err)
 				continue
@@ -99,7 +99,19 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 				ID:   commit.SHA,
 				Name: commit.SHA,
 				Description: JSONAllFieldsMarshaller{
-					Value: commit,
+					Value: model.CommitDescription{
+						SHA:          commit.SHA,
+						NodeID:       commit.NodeID,
+						CommitDetail: commit.CommitDetail,
+						URL:          commit.URL,
+						HTMLURL:      commit.HTMLURL,
+						CommentsURL:  commit.CommentsURL,
+						Author:       commit.Author,
+						Committer:    commit.Committer,
+						Parents:      commit.Parents,
+						Stats:        commit.Stats,
+						Files:        commit.Files,
+					},
 				},
 			}
 			results[j.index] = value

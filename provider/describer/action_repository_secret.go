@@ -6,6 +6,7 @@ import (
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
+	"time"
 )
 
 func GetAllSecrets(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -43,8 +44,12 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 				Name: secret.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.SecretDescription{
-						Secret:       secret,
-						RepoFullName: repoFullName,
+						Name:                    secret.Name,
+						CreatedAt:               secret.CreatedAt.Format(time.RFC3339),
+						UpdatedAt:               secret.UpdatedAt.Format(time.RFC3339),
+						Visibility:              secret.Visibility,
+						SelectedRepositoriesURL: secret.SelectedRepositoriesURL,
+						RepoFullName:            repoFullName,
 					},
 				},
 			}
@@ -77,8 +82,12 @@ func GetRepoActionSecret(ctx context.Context, githubClient GitHubClient, organiz
 		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.SecretDescription{
-				Secret:       secret,
-				RepoFullName: repoFullName,
+				Name:                    secret.Name,
+				CreatedAt:               secret.CreatedAt.Format(time.RFC3339),
+				UpdatedAt:               secret.UpdatedAt.Format(time.RFC3339),
+				Visibility:              secret.Visibility,
+				SelectedRepositoriesURL: secret.SelectedRepositoriesURL,
+				RepoFullName:            repoFullName,
 			},
 		},
 	}
