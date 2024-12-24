@@ -17,14 +17,14 @@ type Client struct {
 // ==========================  START: Artifact =============================
 
 type Artifact struct {
-	ResourceID      string                     `json:"resource_id"`
-	PlatformID      string                     `json:"platform_id"`
-	Description     github.ArtifactDescription `json:"description"`
-	Metadata        github.Metadata            `json:"metadata"`
-	DescribedBy     string                     `json:"described_by"`
-	ResourceType    string                     `json:"resource_type"`
-	IntegrationType string                     `json:"integration_type"`
-	IntegrationID   string                     `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.ArtifactDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type ArtifactHit struct {
@@ -232,14 +232,14 @@ func GetArtifact(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 // ==========================  START: Runner =============================
 
 type Runner struct {
-	ResourceID      string                   `json:"resource_id"`
-	PlatformID      string                   `json:"platform_id"`
-	Description     github.RunnerDescription `json:"description"`
-	Metadata        github.Metadata          `json:"metadata"`
-	DescribedBy     string                   `json:"described_by"`
-	ResourceType    string                   `json:"resource_type"`
-	IntegrationType string                   `json:"integration_type"`
-	IntegrationID   string                   `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RunnerDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RunnerHit struct {
@@ -447,14 +447,14 @@ func GetRunner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 // ==========================  START: Secret =============================
 
 type Secret struct {
-	ResourceID      string                   `json:"resource_id"`
-	PlatformID      string                   `json:"platform_id"`
-	Description     github.SecretDescription `json:"description"`
-	Metadata        github.Metadata          `json:"metadata"`
-	DescribedBy     string                   `json:"described_by"`
-	ResourceType    string                   `json:"resource_type"`
-	IntegrationType string                   `json:"integration_type"`
-	IntegrationID   string                   `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.SecretDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type SecretHit struct {
@@ -656,14 +656,14 @@ func GetSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 // ==========================  START: WorkflowRun =============================
 
 type WorkflowRun struct {
-	ResourceID      string                        `json:"resource_id"`
-	PlatformID      string                        `json:"platform_id"`
-	Description     github.WorkflowRunDescription `json:"description"`
-	Metadata        github.Metadata               `json:"metadata"`
-	DescribedBy     string                        `json:"described_by"`
-	ResourceType    string                        `json:"resource_type"`
-	IntegrationType string                        `json:"integration_type"`
-	IntegrationID   string                        `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.WorkflowRunDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type WorkflowRunHit struct {
@@ -899,14 +899,14 @@ func GetWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 // ==========================  START: Branch =============================
 
 type Branch struct {
-	ResourceID      string                   `json:"resource_id"`
-	PlatformID      string                   `json:"platform_id"`
-	Description     github.BranchDescription `json:"description"`
-	Metadata        github.Metadata          `json:"metadata"`
-	DescribedBy     string                   `json:"described_by"`
-	ResourceType    string                   `json:"resource_type"`
-	IntegrationType string                   `json:"integration_type"`
-	IntegrationID   string                   `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.BranchDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type BranchHit struct {
@@ -1110,14 +1110,14 @@ func GetBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 // ==========================  START: BranchProtection =============================
 
 type BranchProtection struct {
-	ResourceID      string                             `json:"resource_id"`
-	PlatformID      string                             `json:"platform_id"`
-	Description     github.BranchProtectionDescription `json:"description"`
-	Metadata        github.Metadata                    `json:"metadata"`
-	DescribedBy     string                             `json:"described_by"`
-	ResourceType    string                             `json:"resource_type"`
-	IntegrationType string                             `json:"integration_type"`
-	IntegrationID   string                             `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.BranchProtectionDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type BranchProtectionHit struct {
@@ -1383,14 +1383,14 @@ func GetBranchProtection(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 // ==========================  START: Commit =============================
 
 type Commit struct {
-	ResourceID      string                   `json:"resource_id"`
-	PlatformID      string                   `json:"platform_id"`
-	Description     github.CommitDescription `json:"description"`
-	Metadata        github.Metadata          `json:"metadata"`
-	DescribedBy     string                   `json:"described_by"`
-	ResourceType    string                   `json:"resource_type"`
-	IntegrationType string                   `json:"integration_type"`
-	IntegrationID   string                   `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.CommitDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type CommitHit struct {
@@ -1606,14 +1606,14 @@ func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 // ==========================  START: Issue =============================
 
 type Issue struct {
-	ResourceID      string                  `json:"resource_id"`
-	PlatformID      string                  `json:"platform_id"`
-	Description     github.IssueDescription `json:"description"`
-	Metadata        github.Metadata         `json:"metadata"`
-	DescribedBy     string                  `json:"described_by"`
-	ResourceType    string                  `json:"resource_type"`
-	IntegrationType string                  `json:"integration_type"`
-	IntegrationID   string                  `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.IssueDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type IssueHit struct {
@@ -1881,14 +1881,14 @@ func GetIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 // ==========================  START: License =============================
 
 type License struct {
-	ResourceID      string                    `json:"resource_id"`
-	PlatformID      string                    `json:"platform_id"`
-	Description     github.LicenseDescription `json:"description"`
-	Metadata        github.Metadata           `json:"metadata"`
-	DescribedBy     string                    `json:"described_by"`
-	ResourceType    string                    `json:"resource_type"`
-	IntegrationType string                    `json:"integration_type"`
-	IntegrationID   string                    `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.LicenseDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type LicenseHit struct {
@@ -2108,14 +2108,14 @@ func GetLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 // ==========================  START: Organization =============================
 
 type Organization struct {
-	ResourceID      string                         `json:"resource_id"`
-	PlatformID      string                         `json:"platform_id"`
-	Description     github.OrganizationDescription `json:"description"`
-	Metadata        github.Metadata                `json:"metadata"`
-	DescribedBy     string                         `json:"described_by"`
-	ResourceType    string                         `json:"resource_type"`
-	IntegrationType string                         `json:"integration_type"`
-	IntegrationID   string                         `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.OrganizationDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type OrganizationHit struct {
@@ -2451,14 +2451,14 @@ func GetOrganization(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 // ==========================  START: OrgCollaborators =============================
 
 type OrgCollaborators struct {
-	ResourceID      string                             `json:"resource_id"`
-	PlatformID      string                             `json:"platform_id"`
-	Description     github.OrgCollaboratorsDescription `json:"description"`
-	Metadata        github.Metadata                    `json:"metadata"`
-	DescribedBy     string                             `json:"described_by"`
-	ResourceType    string                             `json:"resource_type"`
-	IntegrationType string                             `json:"integration_type"`
-	IntegrationID   string                             `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.OrgCollaboratorsDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type OrgCollaboratorsHit struct {
@@ -2662,14 +2662,14 @@ func GetOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 // ==========================  START: OrgAlertDependabot =============================
 
 type OrgAlertDependabot struct {
-	ResourceID      string                               `json:"resource_id"`
-	PlatformID      string                               `json:"platform_id"`
-	Description     github.OrgAlertDependabotDescription `json:"description"`
-	Metadata        github.Metadata                      `json:"metadata"`
-	DescribedBy     string                               `json:"described_by"`
-	ResourceType    string                               `json:"resource_type"`
-	IntegrationType string                               `json:"integration_type"`
-	IntegrationID   string                               `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.OrgAlertDependabotDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type OrgAlertDependabotHit struct {
@@ -2899,14 +2899,14 @@ func GetOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 // ==========================  START: OrgMembers =============================
 
 type OrgMembers struct {
-	ResourceID      string                       `json:"resource_id"`
-	PlatformID      string                       `json:"platform_id"`
-	Description     github.OrgMembersDescription `json:"description"`
-	Metadata        github.Metadata              `json:"metadata"`
-	DescribedBy     string                       `json:"described_by"`
-	ResourceType    string                       `json:"resource_type"`
-	IntegrationType string                       `json:"integration_type"`
-	IntegrationID   string                       `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.OrgMembersDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type OrgMembersHit struct {
@@ -3106,14 +3106,14 @@ func GetOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 // ==========================  START: PullRequest =============================
 
 type PullRequest struct {
-	ResourceID      string                        `json:"resource_id"`
-	PlatformID      string                        `json:"platform_id"`
-	Description     github.PullRequestDescription `json:"description"`
-	Metadata        github.Metadata               `json:"metadata"`
-	DescribedBy     string                        `json:"described_by"`
-	ResourceType    string                        `json:"resource_type"`
-	IntegrationType string                        `json:"integration_type"`
-	IntegrationID   string                        `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.PullRequestDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type PullRequestHit struct {
@@ -3431,14 +3431,14 @@ func GetPullRequest(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 // ==========================  START: Repository =============================
 
 type Repository struct {
-	ResourceID      string                       `json:"resource_id"`
-	PlatformID      string                       `json:"platform_id"`
-	Description     github.RepositoryDescription `json:"description"`
-	Metadata        github.Metadata              `json:"metadata"`
-	DescribedBy     string                       `json:"described_by"`
-	ResourceType    string                       `json:"resource_type"`
-	IntegrationType string                       `json:"integration_type"`
-	IntegrationID   string                       `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepositoryDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepositoryHit struct {
@@ -3688,14 +3688,14 @@ func GetRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 // ==========================  START: Release =============================
 
 type Release struct {
-	ResourceID      string                    `json:"resource_id"`
-	PlatformID      string                    `json:"platform_id"`
-	Description     github.ReleaseDescription `json:"description"`
-	Metadata        github.Metadata           `json:"metadata"`
-	DescribedBy     string                    `json:"described_by"`
-	ResourceType    string                    `json:"resource_type"`
-	IntegrationType string                    `json:"integration_type"`
-	IntegrationID   string                    `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.ReleaseDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type ReleaseHit struct {
@@ -3923,14 +3923,14 @@ func GetRelease(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 // ==========================  START: RepoCollaborators =============================
 
 type RepoCollaborators struct {
-	ResourceID      string                              `json:"resource_id"`
-	PlatformID      string                              `json:"platform_id"`
-	Description     github.RepoCollaboratorsDescription `json:"description"`
-	Metadata        github.Metadata                     `json:"metadata"`
-	DescribedBy     string                              `json:"described_by"`
-	ResourceType    string                              `json:"resource_type"`
-	IntegrationType string                              `json:"integration_type"`
-	IntegrationID   string                              `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoCollaboratorsDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoCollaboratorsHit struct {
@@ -4132,14 +4132,14 @@ func GetRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 // ==========================  START: RepoAlertDependabot =============================
 
 type RepoAlertDependabot struct {
-	ResourceID      string                                `json:"resource_id"`
-	PlatformID      string                                `json:"platform_id"`
-	Description     github.RepoAlertDependabotDescription `json:"description"`
-	Metadata        github.Metadata                       `json:"metadata"`
-	DescribedBy     string                                `json:"described_by"`
-	ResourceType    string                                `json:"resource_type"`
-	IntegrationType string                                `json:"integration_type"`
-	IntegrationID   string                                `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoAlertDependabotDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoAlertDependabotHit struct {
@@ -4331,14 +4331,14 @@ func GetRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.
 // ==========================  START: RepoDeployment =============================
 
 type RepoDeployment struct {
-	ResourceID      string                           `json:"resource_id"`
-	PlatformID      string                           `json:"platform_id"`
-	Description     github.RepoDeploymentDescription `json:"description"`
-	Metadata        github.Metadata                  `json:"metadata"`
-	DescribedBy     string                           `json:"described_by"`
-	ResourceType    string                           `json:"resource_type"`
-	IntegrationType string                           `json:"integration_type"`
-	IntegrationID   string                           `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoDeploymentDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoDeploymentHit struct {
@@ -4560,14 +4560,14 @@ func GetRepoDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 // ==========================  START: RepoEnvironment =============================
 
 type RepoEnvironment struct {
-	ResourceID      string                            `json:"resource_id"`
-	PlatformID      string                            `json:"platform_id"`
-	Description     github.RepoEnvironmentDescription `json:"description"`
-	Metadata        github.Metadata                   `json:"metadata"`
-	DescribedBy     string                            `json:"described_by"`
-	ResourceType    string                            `json:"resource_type"`
-	IntegrationType string                            `json:"integration_type"`
-	IntegrationID   string                            `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoEnvironmentDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoEnvironmentHit struct {
@@ -4769,14 +4769,14 @@ func GetRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 // ==========================  START: RepoRuleSet =============================
 
 type RepoRuleSet struct {
-	ResourceID      string                        `json:"resource_id"`
-	PlatformID      string                        `json:"platform_id"`
-	Description     github.RepoRuleSetDescription `json:"description"`
-	Metadata        github.Metadata               `json:"metadata"`
-	DescribedBy     string                        `json:"described_by"`
-	ResourceType    string                        `json:"resource_type"`
-	IntegrationType string                        `json:"integration_type"`
-	IntegrationID   string                        `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoRuleSetDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoRuleSetHit struct {
@@ -4986,14 +4986,14 @@ func GetRepoRuleSet(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 // ==========================  START: RepoSBOM =============================
 
 type RepoSBOM struct {
-	ResourceID      string                     `json:"resource_id"`
-	PlatformID      string                     `json:"platform_id"`
-	Description     github.RepoSBOMDescription `json:"description"`
-	Metadata        github.Metadata            `json:"metadata"`
-	DescribedBy     string                     `json:"described_by"`
-	ResourceType    string                     `json:"resource_type"`
-	IntegrationType string                     `json:"integration_type"`
-	IntegrationID   string                     `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoSBOMDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoSBOMHit struct {
@@ -5205,14 +5205,14 @@ func GetRepoSBOM(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 // ==========================  START: RepoVulnerabilityAlert =============================
 
 type RepoVulnerabilityAlert struct {
-	ResourceID      string                                   `json:"resource_id"`
-	PlatformID      string                                   `json:"platform_id"`
-	Description     github.RepoVulnerabilityAlertDescription `json:"description"`
-	Metadata        github.Metadata                          `json:"metadata"`
-	DescribedBy     string                                   `json:"described_by"`
-	ResourceType    string                                   `json:"resource_type"`
-	IntegrationType string                                   `json:"integration_type"`
-	IntegrationID   string                                   `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.RepoVulnerabilityAlertDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type RepoVulnerabilityAlertHit struct {
@@ -5436,14 +5436,14 @@ func GetRepoVulnerabilityAlert(ctx context.Context, d *plugin.QueryData, _ *plug
 // ==========================  START: Tag =============================
 
 type Tag struct {
-	ResourceID      string                `json:"resource_id"`
-	PlatformID      string                `json:"platform_id"`
-	Description     github.TagDescription `json:"description"`
-	Metadata        github.Metadata       `json:"metadata"`
-	DescribedBy     string                `json:"described_by"`
-	ResourceType    string                `json:"resource_type"`
-	IntegrationType string                `json:"integration_type"`
-	IntegrationID   string                `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.TagDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type TagHit struct {
@@ -5649,14 +5649,14 @@ func GetTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (in
 // ==========================  START: Team =============================
 
 type Team struct {
-	ResourceID      string                 `json:"resource_id"`
-	PlatformID      string                 `json:"platform_id"`
-	Description     github.TeamDescription `json:"description"`
-	Metadata        github.Metadata        `json:"metadata"`
-	DescribedBy     string                 `json:"described_by"`
-	ResourceType    string                 `json:"resource_type"`
-	IntegrationType string                 `json:"integration_type"`
-	IntegrationID   string                 `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.TeamDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type TeamHit struct {
@@ -5904,14 +5904,14 @@ func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 // ==========================  START: TeamMembers =============================
 
 type TeamMembers struct {
-	ResourceID      string                        `json:"resource_id"`
-	PlatformID      string                        `json:"platform_id"`
-	Description     github.TeamMembersDescription `json:"description"`
-	Metadata        github.Metadata               `json:"metadata"`
-	DescribedBy     string                        `json:"described_by"`
-	ResourceType    string                        `json:"resource_type"`
-	IntegrationType string                        `json:"integration_type"`
-	IntegrationID   string                        `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.TeamMembersDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type TeamMembersHit struct {
@@ -6111,14 +6111,14 @@ func GetTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 // ==========================  START: User =============================
 
 type User struct {
-	ResourceID      string                 `json:"resource_id"`
-	PlatformID      string                 `json:"platform_id"`
-	Description     github.UserDescription `json:"description"`
-	Metadata        github.Metadata        `json:"metadata"`
-	DescribedBy     string                 `json:"described_by"`
-	ResourceType    string                 `json:"resource_type"`
-	IntegrationType string                 `json:"integration_type"`
-	IntegrationID   string                 `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.UserDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type UserHit struct {
@@ -6424,14 +6424,14 @@ func GetUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 // ==========================  START: Workflow =============================
 
 type Workflow struct {
-	ResourceID      string                     `json:"resource_id"`
-	PlatformID      string                     `json:"platform_id"`
-	Description     github.WorkflowDescription `json:"description"`
-	Metadata        github.Metadata            `json:"metadata"`
-	DescribedBy     string                     `json:"described_by"`
-	ResourceType    string                     `json:"resource_type"`
-	IntegrationType string                     `json:"integration_type"`
-	IntegrationID   string                     `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.WorkflowDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type WorkflowHit struct {
@@ -6649,14 +6649,14 @@ func GetWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 // ==========================  START: ContainerPackage =============================
 
 type ContainerPackage struct {
-	ResourceID      string                             `json:"resource_id"`
-	PlatformID      string                             `json:"platform_id"`
-	Description     github.ContainerPackageDescription `json:"description"`
-	Metadata        github.Metadata                    `json:"metadata"`
-	DescribedBy     string                             `json:"described_by"`
-	ResourceType    string                             `json:"resource_type"`
-	IntegrationType string                             `json:"integration_type"`
-	IntegrationID   string                             `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.ContainerPackageDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type ContainerPackageHit struct {
@@ -6874,14 +6874,14 @@ func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 // ==========================  START: PackageDetail =============================
 
 type PackageDetail struct {
-	ResourceID      string                          `json:"resource_id"`
-	PlatformID      string                          `json:"platform_id"`
-	Description     github.PackageDetailDescription `json:"description"`
-	Metadata        github.Metadata                 `json:"metadata"`
-	DescribedBy     string                          `json:"described_by"`
-	ResourceType    string                          `json:"resource_type"`
-	IntegrationType string                          `json:"integration_type"`
-	IntegrationID   string                          `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.PackageDetailDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type PackageDetailHit struct {
@@ -7073,14 +7073,14 @@ func GetPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 // ==========================  START: Package =============================
 
 type Package struct {
-	ResourceID      string                    `json:"resource_id"`
-	PlatformID      string                    `json:"platform_id"`
-	Description     github.PackageDescription `json:"description"`
-	Metadata        github.Metadata           `json:"metadata"`
-	DescribedBy     string                    `json:"described_by"`
-	ResourceType    string                    `json:"resource_type"`
-	IntegrationType string                    `json:"integration_type"`
-	IntegrationID   string                    `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.PackageDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type PackageHit struct {
@@ -7272,14 +7272,14 @@ func GetPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 // ==========================  START: ArtifactDockerFile =============================
 
 type ArtifactDockerFile struct {
-	ResourceID      string                               `json:"resource_id"`
-	PlatformID      string                               `json:"platform_id"`
-	Description     github.ArtifactDockerFileDescription `json:"description"`
-	Metadata        github.Metadata                      `json:"metadata"`
-	DescribedBy     string                               `json:"described_by"`
-	ResourceType    string                               `json:"resource_type"`
-	IntegrationType string                               `json:"integration_type"`
-	IntegrationID   string                               `json:"integration_id"`
+	ResourceID      string `json:"resource_id"`
+	PlatformID      string `json:"platform_id"`
+	Description     github.ArtifactDockerFileDescription
+	Metadata        github.Metadata `json:"metadata"`
+	DescribedBy     string          `json:"described_by"`
+	ResourceType    string          `json:"resource_type"`
+	IntegrationType string          `json:"integration_type"`
+	IntegrationID   string          `json:"integration_id"`
 }
 
 type ArtifactDockerFileHit struct {
