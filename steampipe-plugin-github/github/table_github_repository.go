@@ -10,7 +10,7 @@ import (
 func sharedRepositoryColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
-			Name:        "id",
+			Name:        "GitHubRepoID",
 			Type:        proto.ColumnType_INT,
 			Transform:   transform.FromField("Description.GitHubRepoID"),
 			Description: "Unique identifier of the GitHub repository.",
