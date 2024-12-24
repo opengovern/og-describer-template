@@ -207,7 +207,7 @@ func GetRepository(
 	}
 	value := models.Resource{
 		ID:   resourceID,
-		Name: finalDetail.Name,
+		Name: *finalDetail.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: finalDetail,
 		},
@@ -298,13 +298,13 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 
 	finalDetail := &model.RepositoryDescription{
 		GitHubRepoID:            detail.ID,
-		NodeID:                  detail.NodeID,
-		Name:                    detail.Name,
-		NameWithOwner:           detail.FullName,
+		NodeID:                  &detail.NodeID,
+		Name:                    &detail.Name,
+		NameWithOwner:           &detail.FullName,
 		Description:             detail.Description,
-		CreatedAt:               detail.CreatedAt,
-		UpdatedAt:               detail.UpdatedAt,
-		PushedAt:                detail.PushedAt,
+		CreatedAt:               &detail.CreatedAt,
+		UpdatedAt:               &detail.UpdatedAt,
+		PushedAt:                &detail.PushedAt,
 		IsActive:                isActive,
 		IsEmpty:                 isEmpty,
 		IsFork:                  detail.Fork,

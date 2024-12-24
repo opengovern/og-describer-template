@@ -859,13 +859,13 @@ type Metrics struct {
 
 type RepositoryDescription struct {
 	GitHubRepoID            int
-	NodeID                  string
-	Name                    string
-	NameWithOwner           string
+	NodeID                  *string
+	Name                    *string
+	NameWithOwner           *string
 	Description             *string
-	CreatedAt               string
-	UpdatedAt               string
-	PushedAt                string
+	CreatedAt               *string
+	UpdatedAt               *string
+	PushedAt                *string
 	IsActive                bool
 	IsEmpty                 bool
 	IsFork                  bool
@@ -1131,8 +1131,8 @@ type WorkflowDescription struct {
 	URL                     *string
 	HTMLURL                 *string
 	BadgeURL                *string
-	RepositoryFullName      string
-	WorkFlowFileContent     string
+	RepositoryFullName      *string
+	WorkFlowFileContent     *string
 	WorkFlowFileContentJson *github.RepositoryContent
 	Pipeline                *goPipeline.Pipeline
 }

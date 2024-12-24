@@ -3509,11 +3509,11 @@ func (p RepositoryPaginator) NextPage(ctx context.Context) ([]Repository, error)
 }
 
 var listRepositoryFilters = map[string]string{
+	"GitHubRepoID":               "Description.GitHubRepoID",
 	"created_at":                 "Description.CreatedAt",
 	"default_branch_ref":         "Description.DefaultBranchRef",
 	"description":                "Description.Description",
 	"homepage_url":               "Description.HomepageURL",
-	"id":                         "Description.GitHubRepoID",
 	"is_active":                  "Description.IsActive",
 	"is_empty":                   "Description.IsEmpty",
 	"is_fork":                    "Description.IsFork",
@@ -3600,11 +3600,11 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getRepositoryFilters = map[string]string{
+	"GitHubRepoID":               "Description.GitHubRepoID",
 	"created_at":                 "Description.CreatedAt",
 	"default_branch_ref":         "Description.DefaultBranchRef",
 	"description":                "Description.Description",
 	"homepage_url":               "Description.HomepageURL",
-	"id":                         "Description.GitHubRepoID",
 	"is_active":                  "Description.IsActive",
 	"is_empty":                   "Description.IsEmpty",
 	"is_fork":                    "Description.IsFork",
