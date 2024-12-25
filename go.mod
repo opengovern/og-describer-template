@@ -12,7 +12,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/nats-io/nats.go v1.36.0
-	github.com/opengovern/og-util v1.5.1
+	github.com/opengovern/og-util v1.5.2
 	github.com/opengovern/opencomply v0.475.2
 	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
