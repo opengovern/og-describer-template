@@ -6,6 +6,7 @@ import (
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
 	"strconv"
+	"time"
 )
 
 func GetAllArtifacts(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -37,20 +38,22 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 			return nil, err
 		}
 		for _, artifact := range artifacts.Artifacts {
+			createdAt := artifact.GetCreatedAt().Format(time.RFC3339)
+			expiresAt := artifact.GetExpiresAt().Format(time.RFC3339)
 			value := models.Resource{
 				ID:   strconv.Itoa(int(artifact.GetID())),
 				Name: artifact.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.ArtifactDescription{
 						ID:                 artifact.GetID(),
-						NodeID:             artifact.GetNodeID(),
-						Name:               artifact.GetName(),
+						NodeID:             artifact.NodeID,
+						Name:               artifact.Name,
 						SizeInBytes:        artifact.GetSizeInBytes(),
-						ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
+						ArchiveDownloadURL: artifact.ArchiveDownloadURL,
 						Expired:            artifact.GetExpired(),
-						CreatedAt:          artifact.GetCreatedAt(),
-						ExpiresAt:          artifact.GetExpiresAt(),
-						RepoFullName:       repoFullName,
+						CreatedAt:          &createdAt,
+						ExpiresAt:          &expiresAt,
+						RepoFullName:       &repoFullName,
 					},
 				},
 			}
@@ -81,20 +84,22 @@ func GetArtifact(ctx context.Context, githubClient GitHubClient, organizationNam
 	if err != nil {
 		return nil, err
 	}
+	createdAt := artifact.GetCreatedAt().Format(time.RFC3339)
+	expiresAt := artifact.GetExpiresAt().Format(time.RFC3339)
 	value := models.Resource{
 		ID:   strconv.Itoa(int(artifact.GetID())),
 		Name: artifact.GetName(),
 		Description: JSONAllFieldsMarshaller{
 			Value: model.ArtifactDescription{
 				ID:                 artifact.GetID(),
-				NodeID:             artifact.GetNodeID(),
-				Name:               artifact.GetName(),
+				NodeID:             artifact.NodeID,
+				Name:               artifact.Name,
 				SizeInBytes:        artifact.GetSizeInBytes(),
-				ArchiveDownloadURL: artifact.GetArchiveDownloadURL(),
+				ArchiveDownloadURL: artifact.ArchiveDownloadURL,
 				Expired:            artifact.GetExpired(),
-				CreatedAt:          artifact.GetCreatedAt(),
-				ExpiresAt:          artifact.GetExpiresAt(),
-				RepoFullName:       repoFullName,
+				CreatedAt:          &createdAt,
+				ExpiresAt:          &expiresAt,
+				RepoFullName:       &repoFullName,
 			},
 		},
 	}

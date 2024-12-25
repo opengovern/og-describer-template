@@ -95,22 +95,118 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 				log.Printf("Error unmarshaling JSON for commit %s: %v", j.sha, err)
 				continue
 			}
+
+			tree := model.Tree{
+				SHA: &commit.CommitDetail.Tree.SHA,
+				URL: &commit.CommitDetail.Tree.URL,
+			}
+
+			verification := model.Verification{
+				Verified:   commit.CommitDetail.Verification.Verified,
+				Reason:     &commit.CommitDetail.Verification.Reason,
+				Signature:  commit.CommitDetail.Verification.Signature,
+				Payload:    commit.CommitDetail.Verification.Payload,
+				VerifiedAt: commit.CommitDetail.Verification.VerifiedAt,
+			}
+
+			commitDetail := model.CommitDetail{
+				Message:      &commit.CommitDetail.Message,
+				Tree:         tree,
+				CommentCount: commit.CommitDetail.CommentCount,
+				Verification: verification,
+			}
+
+			author := model.User{
+				Login:             &commit.Author.Login,
+				ID:                commit.Author.ID,
+				NodeID:            &commit.Author.NodeID,
+				AvatarURL:         &commit.Author.AvatarURL,
+				GravatarID:        &commit.Author.GravatarID,
+				URL:               &commit.Author.URL,
+				HTMLURL:           &commit.Author.HTMLURL,
+				FollowersURL:      &commit.Author.FollowersURL,
+				FollowingURL:      &commit.Author.FollowingURL,
+				GistsURL:          &commit.Author.GistsURL,
+				StarredURL:        &commit.Author.StarredURL,
+				SubscriptionsURL:  &commit.Author.SubscriptionsURL,
+				OrganizationsURL:  &commit.Author.OrganizationsURL,
+				ReposURL:          &commit.Author.ReposURL,
+				EventsURL:         &commit.Author.EventsURL,
+				ReceivedEventsURL: &commit.Author.ReceivedEventsURL,
+				Type:              &commit.Author.Type,
+				UserViewType:      &commit.Author.UserViewType,
+				SiteAdmin:         commit.Author.SiteAdmin,
+			}
+
+			commiter := model.User{
+				Login:             &commit.Committer.Login,
+				ID:                commit.Committer.ID,
+				NodeID:            &commit.Committer.NodeID,
+				AvatarURL:         &commit.Committer.AvatarURL,
+				GravatarID:        &commit.Committer.GravatarID,
+				URL:               &commit.Committer.URL,
+				HTMLURL:           &commit.Committer.HTMLURL,
+				FollowersURL:      &commit.Committer.FollowersURL,
+				FollowingURL:      &commit.Committer.FollowingURL,
+				GistsURL:          &commit.Committer.GistsURL,
+				StarredURL:        &commit.Committer.StarredURL,
+				SubscriptionsURL:  &commit.Committer.SubscriptionsURL,
+				OrganizationsURL:  &commit.Committer.OrganizationsURL,
+				ReposURL:          &commit.Committer.ReposURL,
+				EventsURL:         &commit.Committer.EventsURL,
+				ReceivedEventsURL: &commit.Committer.ReceivedEventsURL,
+				Type:              &commit.Committer.Type,
+				UserViewType:      &commit.Committer.UserViewType,
+				SiteAdmin:         commit.Committer.SiteAdmin,
+			}
+
+			var parents []model.Parent
+			for _, parent := range commit.Parents {
+				parents = append(parents, model.Parent{
+					SHA:     &parent.SHA,
+					URL:     &parent.URL,
+					HTMLURL: &parent.HTMLURL,
+				})
+			}
+
+			stats := model.Stats{
+				Total:     commit.Stats.Total,
+				Additions: commit.Stats.Additions,
+				Deletions: commit.Stats.Deletions,
+			}
+
+			var files []model.File
+			for _, file := range files {
+				files = append(files, model.File{
+					SHA:         file.SHA,
+					Filename:    file.Filename,
+					Status:      file.Status,
+					Additions:   file.Additions,
+					Deletions:   file.Deletions,
+					Changes:     file.Changes,
+					BlobURL:     file.BlobURL,
+					RawURL:      file.RawURL,
+					ContentsURL: file.ContentsURL,
+					Patch:       file.Patch,
+				})
+			}
+
 			value := models.Resource{
 				ID:   commit.SHA,
 				Name: commit.SHA,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.CommitDescription{
-						SHA:          commit.SHA,
-						NodeID:       commit.NodeID,
-						CommitDetail: commit.CommitDetail,
-						URL:          commit.URL,
-						HTMLURL:      commit.HTMLURL,
-						CommentsURL:  commit.CommentsURL,
-						Author:       commit.Author,
-						Committer:    commit.Committer,
-						Parents:      commit.Parents,
-						Stats:        commit.Stats,
-						Files:        commit.Files,
+						SHA:          &commit.SHA,
+						NodeID:       &commit.NodeID,
+						CommitDetail: commitDetail,
+						URL:          &commit.URL,
+						HTMLURL:      &commit.HTMLURL,
+						CommentsURL:  &commit.CommentsURL,
+						Author:       author,
+						Committer:    commiter,
+						Parents:      parents,
+						Stats:        stats,
+						Files:        files,
 					},
 				},
 			}

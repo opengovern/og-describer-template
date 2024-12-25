@@ -8,6 +8,7 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 	"math"
 	"strconv"
+	"time"
 )
 
 func GetIssueList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -47,43 +48,211 @@ func GetIssueList(ctx context.Context, githubClient GitHubClient, organizationNa
 			for _, issue := range query.Repository.Issues.Nodes {
 				labelsSrcLength := int(math.Min(float64(len(issue.Labels.Nodes)), 100.0))
 				labelsSrc := issue.Labels.Nodes[:labelsSrcLength]
-				labels := make(map[string]steampipemodels.Label)
-				for _, label := range issue.Labels.Nodes {
-					labels[label.Name] = label
+				var finalLabelsSrc []model.Label
+				for _, labelSrc := range labelsSrc {
+					finalLabelsSrc = append(finalLabelsSrc, model.Label{
+						NodeId:      &labelSrc.NodeId,
+						Name:        &labelSrc.Name,
+						Description: &labelSrc.Description,
+						IsDefault:   labelSrc.IsDefault,
+						Color:       &labelSrc.Color,
+					})
 				}
+				labels := make(map[string]model.Label)
+				for _, label := range issue.Labels.Nodes {
+					labels[label.Name] = model.Label{
+						NodeId:      &label.NodeId,
+						Name:        &label.Name,
+						Description: &label.Description,
+						IsDefault:   label.IsDefault,
+						Color:       &label.Color,
+					}
+				}
+
+				author := model.Actor{
+					AvatarUrl: &issue.Author.AvatarUrl,
+					Login:     &issue.Author.Login,
+					Url:       &issue.Author.Url,
+				}
+
+				editor := model.Actor{
+					AvatarUrl: &issue.Editor.AvatarUrl,
+					Login:     &issue.Editor.Login,
+					Url:       &issue.Editor.Url,
+				}
+
+				milestoneClosedAt := issue.Milestone.ClosedAt.Format(time.RFC3339)
+				milestoneCreatedAt := issue.Milestone.CreatedAt.Format(time.RFC3339)
+				milestoneDueOn := issue.Milestone.DueOn.Format(time.RFC3339)
+				milestoneUpdatedAt := issue.Milestone.UpdatedAt.Format(time.RFC3339)
+
+				milestoneCreator := model.Actor{
+					AvatarUrl: &issue.Milestone.Creator.AvatarUrl,
+					Login:     &issue.Milestone.Creator.Login,
+					Url:       &issue.Milestone.Creator.Url,
+				}
+
+				milestone := model.Milestone{
+					Closed:             issue.Milestone.Closed,
+					ClosedAt:           &milestoneClosedAt,
+					CreatedAt:          &milestoneCreatedAt,
+					Creator:            milestoneCreator,
+					Description:        &issue.Milestone.Description,
+					DueOn:              &milestoneDueOn,
+					Number:             issue.Milestone.Number,
+					ProgressPercentage: issue.Milestone.ProgressPercentage,
+					State:              &issue.Milestone.State,
+					Title:              &issue.Milestone.Title,
+					UpdatedAt:          &milestoneUpdatedAt,
+					UserCanClose:       issue.Milestone.UserCanClose,
+					UserCanReopen:      issue.Milestone.UserCanReopen,
+				}
+
+				var assignees []model.BaseUser
+				for _, assignee := range issue.Assignees.Nodes {
+					assigneeCreatedAt := assignee.CreatedAt.Format(time.RFC3339)
+					assigneeUpdatedAt := assignee.UpdatedAt.Format(time.RFC3339)
+					interactionAbilityExpiresAt := assignee.InteractionAbility.ExpiresAt.Format(time.RFC3339)
+					sponsorListingCreatedAt := assignee.SponsorsListing.CreatedAt.Format(time.RFC3339)
+					nextPayoutDate := assignee.SponsorsListing.NextPayoutDate.Format(time.RFC3339)
+					statusCreatedAt := assignee.Status.CreatedAt.Format(time.RFC3339)
+					statusUpdatedAt := assignee.Status.UpdatedAt.Format(time.RFC3339)
+					statusExpiresAt := assignee.Status.ExpiresAt.Format(time.RFC3339)
+
+					interactionAbility := model.RepositoryInteractionAbility{
+						ExpiresAt: &interactionAbilityExpiresAt,
+						Limit:     &assignee.InteractionAbility.Limit,
+						Origin:    &assignee.InteractionAbility.Origin,
+					}
+
+					activeGoal := model.SponsorsGoal{
+						Description:     &assignee.SponsorsListing.ActiveGoal.Description,
+						PercentComplete: assignee.SponsorsListing.ActiveGoal.PercentComplete,
+						TargetValue:     assignee.SponsorsListing.ActiveGoal.TargetValue,
+						Title:           &assignee.SponsorsListing.ActiveGoal.Title,
+						Kind:            &assignee.SponsorsListing.ActiveGoal.Kind,
+					}
+
+					activeStripeConnectAccount := model.StripeConnectAccount{
+						AccountId:              &assignee.SponsorsListing.ActiveStripeConnectAccount.AccountId,
+						BillingCountryOrRegion: &assignee.SponsorsListing.ActiveStripeConnectAccount.BillingCountryOrRegion,
+						CountryOrRegion:        &assignee.SponsorsListing.ActiveStripeConnectAccount.CountryOrRegion,
+						IsActive:               assignee.SponsorsListing.ActiveStripeConnectAccount.IsActive,
+						StripeDashboardUrl:     &assignee.SponsorsListing.ActiveStripeConnectAccount.StripeDashboardUrl,
+					}
+
+					sponsorListing := model.SponsorsListing{
+						Id:                         &assignee.SponsorsListing.Id,
+						ActiveGoal:                 activeGoal,
+						ActiveStripeConnectAccount: activeStripeConnectAccount,
+						BillingCountryOrRegion:     &assignee.SponsorsListing.BillingCountryOrRegion,
+						ContactEmailAddress:        &assignee.SponsorsListing.ContactEmailAddress,
+						CreatedAt:                  &sponsorListingCreatedAt,
+						DashboardUrl:               &assignee.SponsorsListing.DashboardUrl,
+						FullDescription:            &assignee.SponsorsListing.FullDescription,
+						IsPublic:                   assignee.SponsorsListing.IsPublic,
+						Name:                       &assignee.SponsorsListing.Name,
+						NextPayoutDate:             &nextPayoutDate,
+						ResidenceCountryOrRegion:   &assignee.SponsorsListing.ResidenceCountryOrRegion,
+						ShortDescription:           &assignee.SponsorsListing.ShortDescription,
+						Slug:                       &assignee.SponsorsListing.Slug,
+						Url:                        &assignee.SponsorsListing.Url,
+					}
+
+					status := model.UserStatus{
+						CreatedAt:                    &statusCreatedAt,
+						UpdatedAt:                    &statusUpdatedAt,
+						ExpiresAt:                    &statusExpiresAt,
+						Emoji:                        &assignee.Status.Emoji,
+						Message:                      &assignee.Status.Message,
+						IndicatesLimitedAvailability: assignee.Status.IndicatesLimitedAvailability,
+					}
+
+					assignees = append(assignees, model.BaseUser{
+						BasicUser: model.BasicUser{
+							Id:        assignee.Id,
+							NodeId:    &assignee.NodeId,
+							Name:      &assignee.Name,
+							Login:     &assignee.Login,
+							Email:     &assignee.Email,
+							CreatedAt: &assigneeCreatedAt,
+							UpdatedAt: &assigneeUpdatedAt,
+							Url:       &assignee.Url,
+						},
+						AnyPinnableItems:                      assignee.AnyPinnableItems,
+						AvatarUrl:                             &assignee.AvatarUrl,
+						Bio:                                   &assignee.Bio,
+						Company:                               &assignee.Company,
+						EstimatedNextSponsorsPayoutInCents:    assignee.EstimatedNextSponsorsPayoutInCents,
+						HasSponsorsListing:                    assignee.HasSponsorsListing,
+						InteractionAbility:                    interactionAbility,
+						IsBountyHunter:                        assignee.IsBountyHunter,
+						IsCampusExpert:                        assignee.IsCampusExpert,
+						IsDeveloperProgramMember:              assignee.IsDeveloperProgramMember,
+						IsEmployee:                            assignee.IsEmployee,
+						IsFollowingYou:                        assignee.IsFollowingYou,
+						IsGitHubStar:                          assignee.IsGitHubStar,
+						IsHireable:                            assignee.IsHireable,
+						IsSiteAdmin:                           assignee.IsSiteAdmin,
+						IsSponsoringYou:                       assignee.IsSponsoringYou,
+						IsYou:                                 assignee.IsYou,
+						Location:                              &assignee.Location,
+						MonthlyEstimatedSponsorsIncomeInCents: assignee.MonthlyEstimatedSponsorsIncomeInCents,
+						PinnedItemsRemaining:                  assignee.PinnedItemsRemaining,
+						ProjectsUrl:                           &assignee.ProjectsUrl,
+						Pronouns:                              &assignee.Pronouns,
+						SponsorsListing:                       sponsorListing,
+						Status:                                status,
+						TwitterUsername:                       &assignee.TwitterUsername,
+						CanChangedPinnedItems:                 assignee.CanChangedPinnedItems,
+						CanCreateProjects:                     assignee.CanCreateProjects,
+						CanFollow:                             assignee.CanFollow,
+						CanSponsor:                            assignee.CanSponsor,
+						IsFollowing:                           assignee.IsFollowing,
+						IsSponsoring:                          assignee.IsSponsoring,
+						WebsiteUrl:                            &assignee.WebsiteUrl,
+					})
+				}
+
+				closedAt := issue.ClosedAt.Format(time.RFC3339)
+				createdAt := issue.CreatedAt.Format(time.RFC3339)
+				lastEditedAt := issue.LastEditedAt.Format(time.RFC3339)
+				publishedAt := issue.PublishedAt.Format(time.RFC3339)
+				updatedAt := issue.UpdatedAt.Format(time.RFC3339)
+
 				value := models.Resource{
 					ID:   strconv.Itoa(issue.Id),
 					Name: issue.Title,
 					Description: JSONAllFieldsMarshaller{
 						Value: model.IssueDescription{
-							RepositoryFullName:      r.GetFullName(),
+							RepositoryFullName:      r.FullName,
 							Id:                      issue.Id,
-							NodeId:                  issue.NodeId,
+							NodeId:                  &issue.NodeId,
 							Number:                  issue.Number,
-							ActiveLockReason:        issue.ActiveLockReason,
-							Author:                  issue.Author,
-							AuthorLogin:             issue.Author.Login,
-							AuthorAssociation:       issue.AuthorAssociation,
-							Body:                    issue.Body,
-							BodyUrl:                 issue.BodyUrl,
+							ActiveLockReason:        &issue.ActiveLockReason,
+							Author:                  author,
+							AuthorLogin:             &issue.Author.Login,
+							AuthorAssociation:       &issue.AuthorAssociation,
+							Body:                    &issue.Body,
+							BodyUrl:                 &issue.BodyUrl,
 							Closed:                  issue.Closed,
-							ClosedAt:                issue.ClosedAt,
-							CreatedAt:               issue.CreatedAt,
+							ClosedAt:                &closedAt,
+							CreatedAt:               &createdAt,
 							CreatedViaEmail:         issue.CreatedViaEmail,
-							Editor:                  issue.Editor,
-							FullDatabaseId:          issue.FullDatabaseId,
+							Editor:                  editor,
+							FullDatabaseId:          &issue.FullDatabaseId,
 							IncludesCreatedEdit:     issue.IncludesCreatedEdit,
 							IsPinned:                issue.IsPinned,
 							IsReadByUser:            issue.IsReadByUser,
-							LastEditedAt:            issue.LastEditedAt,
+							LastEditedAt:            &lastEditedAt,
 							Locked:                  issue.Locked,
-							Milestone:               issue.Milestone,
-							PublishedAt:             issue.PublishedAt,
-							State:                   issue.State,
-							StateReason:             issue.StateReason,
-							Title:                   issue.Title,
-							UpdatedAt:               issue.UpdatedAt,
-							Url:                     issue.Url,
+							Milestone:               milestone,
+							PublishedAt:             &publishedAt,
+							State:                   &issue.State,
+							StateReason:             &issue.StateReason,
+							Title:                   &issue.Title,
+							UpdatedAt:               &updatedAt,
+							Url:                     &issue.Url,
 							UserCanClose:            issue.UserCanClose,
 							UserCanReact:            issue.UserCanReact,
 							UserCanReopen:           issue.UserCanReopen,
@@ -91,13 +260,13 @@ func GetIssueList(ctx context.Context, githubClient GitHubClient, organizationNa
 							UserCanUpdate:           issue.UserCanUpdate,
 							UserCannotUpdateReasons: issue.UserCannotUpdateReasons,
 							UserDidAuthor:           issue.UserDidAuthor,
-							UserSubscription:        issue.UserSubscription,
+							UserSubscription:        &issue.UserSubscription,
 							CommentsTotalCount:      issue.Comments.TotalCount,
 							LabelsTotalCount:        issue.Labels.TotalCount,
-							LabelsSrc:               labelsSrc,
+							LabelsSrc:               finalLabelsSrc,
 							Labels:                  labels,
 							AssigneesTotalCount:     issue.Assignees.TotalCount,
-							Assignees:               issue.Assignees.Nodes,
+							Assignees:               assignees,
 						},
 					},
 				}
@@ -146,43 +315,211 @@ func GetIssue(ctx context.Context, githubClient GitHubClient, organizationName s
 	}
 	labelsSrcLength := int(math.Min(float64(len(query.Repository.Issue.Labels.Nodes)), 100.0))
 	labelsSrc := query.Repository.Issue.Labels.Nodes[:labelsSrcLength]
-	labels := make(map[string]steampipemodels.Label)
-	for _, label := range query.Repository.Issue.Labels.Nodes {
-		labels[label.Name] = label
+	var finalLabelsSrc []model.Label
+	for _, labelSrc := range labelsSrc {
+		finalLabelsSrc = append(finalLabelsSrc, model.Label{
+			NodeId:      &labelSrc.NodeId,
+			Name:        &labelSrc.Name,
+			Description: &labelSrc.Description,
+			IsDefault:   labelSrc.IsDefault,
+			Color:       &labelSrc.Color,
+		})
 	}
+	labels := make(map[string]model.Label)
+	for _, label := range query.Repository.Issue.Labels.Nodes {
+		labels[label.Name] = model.Label{
+			NodeId:      &label.NodeId,
+			Name:        &label.Name,
+			Description: &label.Description,
+			IsDefault:   label.IsDefault,
+			Color:       &label.Color,
+		}
+	}
+
+	author := model.Actor{
+		AvatarUrl: &query.Repository.Issue.Author.AvatarUrl,
+		Login:     &query.Repository.Issue.Author.Login,
+		Url:       &query.Repository.Issue.Author.Url,
+	}
+
+	editor := model.Actor{
+		AvatarUrl: &query.Repository.Issue.Editor.AvatarUrl,
+		Login:     &query.Repository.Issue.Editor.Login,
+		Url:       &query.Repository.Issue.Editor.Url,
+	}
+
+	milestoneClosedAt := query.Repository.Issue.Milestone.ClosedAt.Format(time.RFC3339)
+	milestoneCreatedAt := query.Repository.Issue.Milestone.CreatedAt.Format(time.RFC3339)
+	milestoneDueOn := query.Repository.Issue.Milestone.DueOn.Format(time.RFC3339)
+	milestoneUpdatedAt := query.Repository.Issue.Milestone.UpdatedAt.Format(time.RFC3339)
+
+	milestoneCreator := model.Actor{
+		AvatarUrl: &query.Repository.Issue.Milestone.Creator.AvatarUrl,
+		Login:     &query.Repository.Issue.Milestone.Creator.Login,
+		Url:       &query.Repository.Issue.Milestone.Creator.Url,
+	}
+
+	milestone := model.Milestone{
+		Closed:             query.Repository.Issue.Milestone.Closed,
+		ClosedAt:           &milestoneClosedAt,
+		CreatedAt:          &milestoneCreatedAt,
+		Creator:            milestoneCreator,
+		Description:        &query.Repository.Issue.Milestone.Description,
+		DueOn:              &milestoneDueOn,
+		Number:             query.Repository.Issue.Milestone.Number,
+		ProgressPercentage: query.Repository.Issue.Milestone.ProgressPercentage,
+		State:              &query.Repository.Issue.Milestone.State,
+		Title:              &query.Repository.Issue.Milestone.Title,
+		UpdatedAt:          &milestoneUpdatedAt,
+		UserCanClose:       query.Repository.Issue.Milestone.UserCanClose,
+		UserCanReopen:      query.Repository.Issue.Milestone.UserCanReopen,
+	}
+
+	var assignees []model.BaseUser
+	for _, assignee := range query.Repository.Issue.Assignees.Nodes {
+		assigneeCreatedAt := assignee.CreatedAt.Format(time.RFC3339)
+		assigneeUpdatedAt := assignee.UpdatedAt.Format(time.RFC3339)
+		interactionAbilityExpiresAt := assignee.InteractionAbility.ExpiresAt.Format(time.RFC3339)
+		sponsorListingCreatedAt := assignee.SponsorsListing.CreatedAt.Format(time.RFC3339)
+		nextPayoutDate := assignee.SponsorsListing.NextPayoutDate.Format(time.RFC3339)
+		statusCreatedAt := assignee.Status.CreatedAt.Format(time.RFC3339)
+		statusUpdatedAt := assignee.Status.UpdatedAt.Format(time.RFC3339)
+		statusExpiresAt := assignee.Status.ExpiresAt.Format(time.RFC3339)
+
+		interactionAbility := model.RepositoryInteractionAbility{
+			ExpiresAt: &interactionAbilityExpiresAt,
+			Limit:     &assignee.InteractionAbility.Limit,
+			Origin:    &assignee.InteractionAbility.Origin,
+		}
+
+		activeGoal := model.SponsorsGoal{
+			Description:     &assignee.SponsorsListing.ActiveGoal.Description,
+			PercentComplete: assignee.SponsorsListing.ActiveGoal.PercentComplete,
+			TargetValue:     assignee.SponsorsListing.ActiveGoal.TargetValue,
+			Title:           &assignee.SponsorsListing.ActiveGoal.Title,
+			Kind:            &assignee.SponsorsListing.ActiveGoal.Kind,
+		}
+
+		activeStripeConnectAccount := model.StripeConnectAccount{
+			AccountId:              &assignee.SponsorsListing.ActiveStripeConnectAccount.AccountId,
+			BillingCountryOrRegion: &assignee.SponsorsListing.ActiveStripeConnectAccount.BillingCountryOrRegion,
+			CountryOrRegion:        &assignee.SponsorsListing.ActiveStripeConnectAccount.CountryOrRegion,
+			IsActive:               assignee.SponsorsListing.ActiveStripeConnectAccount.IsActive,
+			StripeDashboardUrl:     &assignee.SponsorsListing.ActiveStripeConnectAccount.StripeDashboardUrl,
+		}
+
+		sponsorListing := model.SponsorsListing{
+			Id:                         &assignee.SponsorsListing.Id,
+			ActiveGoal:                 activeGoal,
+			ActiveStripeConnectAccount: activeStripeConnectAccount,
+			BillingCountryOrRegion:     &assignee.SponsorsListing.BillingCountryOrRegion,
+			ContactEmailAddress:        &assignee.SponsorsListing.ContactEmailAddress,
+			CreatedAt:                  &sponsorListingCreatedAt,
+			DashboardUrl:               &assignee.SponsorsListing.DashboardUrl,
+			FullDescription:            &assignee.SponsorsListing.FullDescription,
+			IsPublic:                   assignee.SponsorsListing.IsPublic,
+			Name:                       &assignee.SponsorsListing.Name,
+			NextPayoutDate:             &nextPayoutDate,
+			ResidenceCountryOrRegion:   &assignee.SponsorsListing.ResidenceCountryOrRegion,
+			ShortDescription:           &assignee.SponsorsListing.ShortDescription,
+			Slug:                       &assignee.SponsorsListing.Slug,
+			Url:                        &assignee.SponsorsListing.Url,
+		}
+
+		status := model.UserStatus{
+			CreatedAt:                    &statusCreatedAt,
+			UpdatedAt:                    &statusUpdatedAt,
+			ExpiresAt:                    &statusExpiresAt,
+			Emoji:                        &assignee.Status.Emoji,
+			Message:                      &assignee.Status.Message,
+			IndicatesLimitedAvailability: assignee.Status.IndicatesLimitedAvailability,
+		}
+
+		assignees = append(assignees, model.BaseUser{
+			BasicUser: model.BasicUser{
+				Id:        assignee.Id,
+				NodeId:    &assignee.NodeId,
+				Name:      &assignee.Name,
+				Login:     &assignee.Login,
+				Email:     &assignee.Email,
+				CreatedAt: &assigneeCreatedAt,
+				UpdatedAt: &assigneeUpdatedAt,
+				Url:       &assignee.Url,
+			},
+			AnyPinnableItems:                      assignee.AnyPinnableItems,
+			AvatarUrl:                             &assignee.AvatarUrl,
+			Bio:                                   &assignee.Bio,
+			Company:                               &assignee.Company,
+			EstimatedNextSponsorsPayoutInCents:    assignee.EstimatedNextSponsorsPayoutInCents,
+			HasSponsorsListing:                    assignee.HasSponsorsListing,
+			InteractionAbility:                    interactionAbility,
+			IsBountyHunter:                        assignee.IsBountyHunter,
+			IsCampusExpert:                        assignee.IsCampusExpert,
+			IsDeveloperProgramMember:              assignee.IsDeveloperProgramMember,
+			IsEmployee:                            assignee.IsEmployee,
+			IsFollowingYou:                        assignee.IsFollowingYou,
+			IsGitHubStar:                          assignee.IsGitHubStar,
+			IsHireable:                            assignee.IsHireable,
+			IsSiteAdmin:                           assignee.IsSiteAdmin,
+			IsSponsoringYou:                       assignee.IsSponsoringYou,
+			IsYou:                                 assignee.IsYou,
+			Location:                              &assignee.Location,
+			MonthlyEstimatedSponsorsIncomeInCents: assignee.MonthlyEstimatedSponsorsIncomeInCents,
+			PinnedItemsRemaining:                  assignee.PinnedItemsRemaining,
+			ProjectsUrl:                           &assignee.ProjectsUrl,
+			Pronouns:                              &assignee.Pronouns,
+			SponsorsListing:                       sponsorListing,
+			Status:                                status,
+			TwitterUsername:                       &assignee.TwitterUsername,
+			CanChangedPinnedItems:                 assignee.CanChangedPinnedItems,
+			CanCreateProjects:                     assignee.CanCreateProjects,
+			CanFollow:                             assignee.CanFollow,
+			CanSponsor:                            assignee.CanSponsor,
+			IsFollowing:                           assignee.IsFollowing,
+			IsSponsoring:                          assignee.IsSponsoring,
+			WebsiteUrl:                            &assignee.WebsiteUrl,
+		})
+	}
+
+	closedAt := query.Repository.Issue.ClosedAt.Format(time.RFC3339)
+	createdAt := query.Repository.Issue.CreatedAt.Format(time.RFC3339)
+	lastEditedAt := query.Repository.Issue.LastEditedAt.Format(time.RFC3339)
+	publishedAt := query.Repository.Issue.PublishedAt.Format(time.RFC3339)
+	updatedAt := query.Repository.Issue.UpdatedAt.Format(time.RFC3339)
+
 	value := models.Resource{
 		ID:   strconv.Itoa(query.Repository.Issue.Id),
 		Name: query.Repository.Issue.Title,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.IssueDescription{
-				RepositoryFullName:      repoFullName,
+				RepositoryFullName:      &repoFullName,
 				Id:                      query.Repository.Issue.Id,
-				NodeId:                  query.Repository.Issue.NodeId,
+				NodeId:                  &query.Repository.Issue.NodeId,
 				Number:                  query.Repository.Issue.Number,
-				ActiveLockReason:        query.Repository.Issue.ActiveLockReason,
-				Author:                  query.Repository.Issue.Author,
-				AuthorLogin:             query.Repository.Issue.Author.Login,
-				AuthorAssociation:       query.Repository.Issue.AuthorAssociation,
-				Body:                    query.Repository.Issue.Body,
-				BodyUrl:                 query.Repository.Issue.BodyUrl,
+				ActiveLockReason:        &query.Repository.Issue.ActiveLockReason,
+				Author:                  author,
+				AuthorLogin:             &query.Repository.Issue.Author.Login,
+				AuthorAssociation:       &query.Repository.Issue.AuthorAssociation,
+				Body:                    &query.Repository.Issue.Body,
+				BodyUrl:                 &query.Repository.Issue.BodyUrl,
 				Closed:                  query.Repository.Issue.Closed,
-				ClosedAt:                query.Repository.Issue.ClosedAt,
-				CreatedAt:               query.Repository.Issue.CreatedAt,
+				ClosedAt:                &closedAt,
+				CreatedAt:               &createdAt,
 				CreatedViaEmail:         query.Repository.Issue.CreatedViaEmail,
-				Editor:                  query.Repository.Issue.Editor,
-				FullDatabaseId:          query.Repository.Issue.FullDatabaseId,
+				Editor:                  editor,
+				FullDatabaseId:          &query.Repository.Issue.FullDatabaseId,
 				IncludesCreatedEdit:     query.Repository.Issue.IncludesCreatedEdit,
 				IsPinned:                query.Repository.Issue.IsPinned,
 				IsReadByUser:            query.Repository.Issue.IsReadByUser,
-				LastEditedAt:            query.Repository.Issue.LastEditedAt,
+				LastEditedAt:            &lastEditedAt,
 				Locked:                  query.Repository.Issue.Locked,
-				Milestone:               query.Repository.Issue.Milestone,
-				PublishedAt:             query.Repository.Issue.PublishedAt,
-				State:                   query.Repository.Issue.State,
-				StateReason:             query.Repository.Issue.StateReason,
-				Title:                   query.Repository.Issue.Title,
-				UpdatedAt:               query.Repository.Issue.UpdatedAt,
-				Url:                     query.Repository.Issue.Url,
+				Milestone:               milestone,
+				PublishedAt:             &publishedAt,
+				State:                   &query.Repository.Issue.State,
+				StateReason:             &query.Repository.Issue.StateReason,
+				Title:                   &query.Repository.Issue.Title,
+				UpdatedAt:               &updatedAt,
+				Url:                     &query.Repository.Issue.Url,
 				UserCanClose:            query.Repository.Issue.UserCanClose,
 				UserCanReact:            query.Repository.Issue.UserCanReact,
 				UserCanReopen:           query.Repository.Issue.UserCanReopen,
@@ -190,13 +527,13 @@ func GetIssue(ctx context.Context, githubClient GitHubClient, organizationName s
 				UserCanUpdate:           query.Repository.Issue.UserCanUpdate,
 				UserCannotUpdateReasons: query.Repository.Issue.UserCannotUpdateReasons,
 				UserDidAuthor:           query.Repository.Issue.UserDidAuthor,
-				UserSubscription:        query.Repository.Issue.UserSubscription,
+				UserSubscription:        &query.Repository.Issue.UserSubscription,
 				CommentsTotalCount:      query.Repository.Issue.Comments.TotalCount,
 				LabelsTotalCount:        query.Repository.Issue.Labels.TotalCount,
-				LabelsSrc:               labelsSrc,
+				LabelsSrc:               finalLabelsSrc,
 				Labels:                  labels,
 				AssigneesTotalCount:     query.Repository.Issue.Assignees.TotalCount,
-				Assignees:               query.Repository.Issue.Assignees.Nodes,
+				Assignees:               assignees,
 			},
 		},
 	}

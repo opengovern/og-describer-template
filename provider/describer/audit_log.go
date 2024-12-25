@@ -5,6 +5,7 @@ import (
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/provider/model"
+	"time"
 )
 
 func GetAllAuditLogs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -33,23 +34,31 @@ func GetRepositoryAuditLog(ctx context.Context, githubClient GitHubClient, strea
 			return nil, err
 		}
 		for _, audit := range auditResults {
+			createdAt := audit.CreatedAt.Format(time.RFC3339)
+			actorLocation := model.ActorLocation{
+				CountryCode: audit.ActorLocation.CountryCode,
+			}
+			data := model.AuditEntryData{
+				OldName:  audit.Data.OldName,
+				OldLogin: audit.Data.OldLogin,
+			}
 			value := models.Resource{
 				ID:   audit.GetDocumentID(),
 				Name: audit.GetName(),
 				Description: JSONAllFieldsMarshaller{
 					Value: model.AuditLogDescription{
-						ID:            audit.GetDocumentID(),
-						CreatedAt:     audit.GetCreatedAt(),
-						Organization:  org,
-						Phrase:        phrase,
-						Include:       include,
-						Action:        audit.GetAction(),
-						Actor:         audit.GetActor(),
-						ActorLocation: audit.GetActorLocation(),
-						Team:          audit.GetTeam(),
-						UserLogin:     audit.GetUser(),
-						Repo:          audit.GetRepository(),
-						Data:          audit.GetData(),
+						ID:            audit.DocumentID,
+						CreatedAt:     &createdAt,
+						Organization:  &org,
+						Phrase:        &phrase,
+						Include:       &include,
+						Action:        audit.Action,
+						Actor:         audit.Actor,
+						ActorLocation: &actorLocation,
+						Team:          audit.Team,
+						UserLogin:     audit.User,
+						Repo:          audit.Repository,
+						Data:          &data,
 					},
 				},
 			}

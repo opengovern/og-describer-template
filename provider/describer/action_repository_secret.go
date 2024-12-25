@@ -39,17 +39,19 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 		}
 		for _, secret := range secrets.Secrets {
 			id := fmt.Sprintf("%s/%s/%s", owner, repo, secret.Name)
+			createdAt := secret.CreatedAt.Format(time.RFC3339)
+			updatedAt := secret.UpdatedAt.Format(time.RFC3339)
 			value := models.Resource{
 				ID:   id,
 				Name: secret.Name,
 				Description: JSONAllFieldsMarshaller{
 					Value: model.SecretDescription{
-						Name:                    secret.Name,
-						CreatedAt:               secret.CreatedAt.Format(time.RFC3339),
-						UpdatedAt:               secret.UpdatedAt.Format(time.RFC3339),
-						Visibility:              secret.Visibility,
-						SelectedRepositoriesURL: secret.SelectedRepositoriesURL,
-						RepoFullName:            repoFullName,
+						Name:                    &secret.Name,
+						CreatedAt:               &createdAt,
+						UpdatedAt:               &updatedAt,
+						Visibility:              &secret.Visibility,
+						SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
+						RepoFullName:            &repoFullName,
 					},
 				},
 			}
@@ -77,17 +79,19 @@ func GetRepoActionSecret(ctx context.Context, githubClient GitHubClient, organiz
 		return nil, err
 	}
 	id := fmt.Sprintf("%s/%s/%s", organizationName, repositoryName, secret.Name)
+	createdAt := secret.CreatedAt.Format(time.RFC3339)
+	updatedAt := secret.UpdatedAt.Format(time.RFC3339)
 	value := models.Resource{
 		ID:   id,
 		Name: secret.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: model.SecretDescription{
-				Name:                    secret.Name,
-				CreatedAt:               secret.CreatedAt.Format(time.RFC3339),
-				UpdatedAt:               secret.UpdatedAt.Format(time.RFC3339),
-				Visibility:              secret.Visibility,
-				SelectedRepositoriesURL: secret.SelectedRepositoriesURL,
-				RepoFullName:            repoFullName,
+				Name:                    &secret.Name,
+				CreatedAt:               &createdAt,
+				UpdatedAt:               &updatedAt,
+				Visibility:              &secret.Visibility,
+				SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
+				RepoFullName:            &repoFullName,
 			},
 		},
 	}

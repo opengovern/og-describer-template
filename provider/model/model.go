@@ -18,14 +18,20 @@ type Metadata struct{}
 
 type ArtifactDescription struct {
 	ID                 int64
-	NodeID             string
-	Name               string
+	NodeID             *string
+	Name               *string
 	SizeInBytes        int64
-	ArchiveDownloadURL string
+	ArchiveDownloadURL *string
 	Expired            bool
-	CreatedAt          github.Timestamp
-	ExpiresAt          github.Timestamp
-	RepoFullName       string
+	CreatedAt          *string
+	ExpiresAt          *string
+	RepoFullName       *string
+}
+
+type RunnerLabels struct {
+	ID   *int64
+	Name *string
+	Type *string
 }
 
 type RunnerDescription struct {
@@ -34,50 +40,50 @@ type RunnerDescription struct {
 	OS           *string
 	Status       *string
 	Busy         *bool
-	Labels       []*github.RunnerLabels
-	RepoFullName string
+	Labels       []*RunnerLabels
+	RepoFullName *string
 }
 
 type SecretDescription struct {
-	Name                    string
-	CreatedAt               string
-	UpdatedAt               string
-	Visibility              string
-	SelectedRepositoriesURL string
-	RepoFullName            string
+	Name                    *string
+	CreatedAt               *string
+	UpdatedAt               *string
+	Visibility              *string
+	SelectedRepositoriesURL *string
+	RepoFullName            *string
 }
 
 type SimpleActor struct {
-	Login  string `json:"login"`
-	ID     int    `json:"id"`
-	NodeID string `json:"node_id"`
-	Type   string `json:"type"`
+	Login  *string
+	ID     int
+	NodeID *string
+	Type   *string
 }
 
 type SimpleRepo struct {
-	ID     int    `json:"id"`
-	NodeID string `json:"node_id"`
+	ID     int
+	NodeID *string
 }
 
 type CommitRefWorkflow struct {
-	ID string `json:"id"`
+	ID *string
 }
 
 type WorkflowRunDescription struct {
 	ID                  int
-	Name                string
-	HeadBranch          string
-	HeadSHA             string
-	Status              string
-	Conclusion          string
-	HTMLURL             string
+	Name                *string
+	HeadBranch          *string
+	HeadSHA             *string
+	Status              *string
+	Conclusion          *string
+	HTMLURL             *string
 	WorkflowID          int
 	RunNumber           int
-	Event               string
-	CreatedAt           string
-	UpdatedAt           string
+	Event               *string
+	CreatedAt           *string
+	UpdatedAt           *string
 	RunAttempt          int
-	RunStartedAt        string
+	RunStartedAt        *string
 	Actor               *SimpleActor
 	HeadCommit          *CommitRefWorkflow
 	Repository          *SimpleRepo
@@ -92,7 +98,7 @@ type WorkflowRunsResponse struct {
 	WorkflowRuns []WorkflowRunDescription `json:"workflow_runs"`
 }
 
-type WorkflowArtifact struct {
+type WorkflowArtifactJSON struct {
 	ID                 int    `json:"id"`
 	NodeID             string `json:"node_id"`
 	Name               string `json:"name"`
@@ -105,24 +111,46 @@ type WorkflowArtifact struct {
 	ExpiresAt          string `json:"expires_at"`
 }
 
+type WorkflowArtifact struct {
+	ID                 int
+	NodeID             *string
+	Name               *string
+	SizeInBytes        int
+	URL                *string
+	ArchiveDownloadURL *string
+	Expired            bool
+	CreatedAt          *string
+	UpdatedAt          *string
+	ExpiresAt          *string
+}
+
 type ArtifactsResponse struct {
-	TotalCount int                `json:"total_count"`
-	Artifacts  []WorkflowArtifact `json:"artifacts"`
+	TotalCount int                    `json:"total_count"`
+	Artifacts  []WorkflowArtifactJSON `json:"artifacts"`
+}
+
+type ActorLocation struct {
+	CountryCode *string
+}
+
+type AuditEntryData struct {
+	OldName  *string
+	OldLogin *string
 }
 
 type AuditLogDescription struct {
-	ID            string
-	CreatedAt     github.Timestamp
-	Organization  string
-	Phrase        string
-	Include       string
-	Action        string
-	Actor         string
-	ActorLocation *github.ActorLocation
-	Team          string
-	UserLogin     string
-	Repo          string
-	Data          *github.AuditEntryData
+	ID            *string
+	CreatedAt     *string
+	Organization  *string
+	Phrase        *string
+	Include       *string
+	Action        *string
+	Actor         *string
+	ActorLocation *ActorLocation
+	Team          *string
+	UserLogin     *string
+	Repo          *string
+	Data          *AuditEntryData
 }
 
 //type BlobDescription struct {
@@ -135,41 +163,135 @@ type AuditLogDescription struct {
 //	RepoFullName string
 //}
 
+type BasicUser struct {
+	Id        int
+	NodeId    *string
+	Name      *string
+	Login     *string
+	Email     *string
+	CreatedAt *string
+	UpdatedAt *string
+	Url       *string
+}
+
+type GitActor struct {
+	AvatarUrl *string
+	Date      *string
+	Email     *string
+	Name      *string
+	User      BasicUser
+}
+
+type Signature struct {
+	Email             *string
+	IsValid           bool
+	State             *string
+	WasSignedByGitHub bool
+	Signer            struct {
+		Email *string
+		Login *string
+	}
+}
+
+type CommitStatus struct {
+	State *string
+}
+
+type BaseCommit struct {
+	Sha                 *string
+	ShortSha            *string
+	AuthoredDate        *string
+	Author              GitActor
+	CommittedDate       *string
+	Committer           GitActor
+	Message             *string
+	Url                 *string
+	Additions           int
+	AuthoredByCommitter bool
+	ChangedFiles        int
+	CommittedViaWeb     bool
+	CommitUrl           *string
+	Deletions           int
+	Signature           Signature
+	TarballUrl          *string
+	TreeUrl             *string
+	CanSubscribe        bool
+	Subscription        *string
+	ZipballUrl          *string
+	MessageHeadline     *string
+	Status              CommitStatus
+	NodeId              *string
+}
+
+type Actor struct {
+	AvatarUrl *string
+	Login     *string
+	Url       *string
+}
+
+type BranchProtectionRule struct {
+	AllowsDeletions                bool
+	AllowsForcePushes              bool
+	BlocksCreations                bool
+	CreatorLogin                   *string
+	Id                             int
+	NodeId                         *string
+	DismissesStaleReviews          bool
+	IsAdminEnforced                bool
+	LockAllowsFetchAndMerge        bool
+	LockBranch                     bool
+	Pattern                        *string
+	RequireLastPushApproval        bool
+	RequiredApprovingReviewCount   int
+	RequiredDeploymentEnvironments []string
+	RequiredStatusChecks           []string
+	RequiresApprovingReviews       bool
+	RequiresConversationResolution bool
+	RequiresCodeOwnerReviews       bool
+	RequiresCommitSignatures       bool
+	RequiresDeployments            bool
+	RequiresLinearHistory          bool
+	RequiresStatusChecks           bool
+	RequiresStrictStatusChecks     bool
+	RestrictsPushes                bool
+	RestrictsReviewDismissals      bool
+	MatchingBranches               int
+}
+
 type BranchDescription struct {
-	RepoFullName         string
-	Name                 string
-	Commit               steampipemodels.BaseCommit
-	BranchProtectionRule steampipemodels.BranchProtectionRule
+	RepoFullName         *string
+	Name                 *string
+	Commit               BaseCommit
+	BranchProtectionRule BranchProtectionRule
 	Protected            bool
 }
 
 type BranchApp struct {
-	Name string
-	Slug string
+	Name *string
+	Slug *string
 }
 
 type BranchTeam struct {
-	Name string
-	Slug string
+	Name *string
+	Slug *string
 }
 
 type BranchUser struct {
-	Name  string
-	Login string
+	Name  *string
+	Login *string
 }
 
 type BranchProtectionDescription struct {
 	AllowsDeletions                 bool
 	AllowsForcePushes               bool
 	BlocksCreations                 bool
-	Creator                         steampipemodels.Actor
 	Id                              int
-	NodeId                          string
+	NodeId                          *string
 	DismissesStaleReviews           bool
 	IsAdminEnforced                 bool
 	LockAllowsFetchAndMerge         bool
 	LockBranch                      bool
-	Pattern                         string
+	Pattern                         *string
 	RequireLastPushApproval         bool
 	RequiredApprovingReviewCount    int
 	RequiredDeploymentEnvironments  []string
@@ -184,8 +306,8 @@ type BranchProtectionDescription struct {
 	RequiresStrictStatusChecks      bool
 	RestrictsPushes                 bool
 	RestrictsReviewDismissals       bool
-	RepoFullName                    string
-	CreatorLogin                    string
+	RepoFullName                    *string
+	CreatorLogin                    *string
 	MatchingBranches                int
 	PushAllowanceApps               []BranchApp
 	PushAllowanceTeams              []BranchTeam
@@ -198,12 +320,17 @@ type BranchProtectionDescription struct {
 	BypassPullRequestAllowanceUsers []BranchUser
 }
 
-type Tree struct {
+type TreeJSON struct {
 	SHA string `json:"sha"`
 	URL string `json:"url"`
 }
 
-type File struct {
+type Tree struct {
+	SHA *string
+	URL *string
+}
+
+type FileJSON struct {
 	SHA         string  `json:"sha"`
 	Filename    string  `json:"filename"`
 	Status      string  `json:"status"`
@@ -216,13 +343,20 @@ type File struct {
 	Patch       *string `json:"patch"`
 }
 
-type Target struct {
-	Branch       string `json:"branch"`
-	Organization string `json:"organization"`
-	Repository   string `json:"repository"`
+type File struct {
+	SHA         *string
+	Filename    *string
+	Status      *string
+	Additions   int
+	Deletions   int
+	Changes     int
+	BlobURL     *string
+	RawURL      *string
+	ContentsURL *string
+	Patch       *string
 }
 
-type Verification struct {
+type VerificationJSON struct {
 	Verified   bool    `json:"verified"`
 	Reason     string  `json:"reason"`
 	Signature  *string `json:"signature"`
@@ -230,7 +364,15 @@ type Verification struct {
 	VerifiedAt *string `json:"verified_at"`
 }
 
-type User struct {
+type Verification struct {
+	Verified   bool
+	Reason     *string
+	Signature  *string
+	Payload    *string
+	VerifiedAt *string
+}
+
+type UserJSON struct {
 	Login             string `json:"login"`
 	ID                int    `json:"id"`
 	NodeID            string `json:"node_id"`
@@ -252,49 +394,90 @@ type User struct {
 	SiteAdmin         bool   `json:"site_admin"`
 }
 
-type CommitDetail struct {
-	//Author       UserMinimalInfo `json:"author"`
-	//Committer    UserMinimalInfo `json:"committer"`
-	Message string `json:"message"`
-	Tree    Tree   `json:"tree"`
-	//URL          string          `json:"url"`
-	CommentCount int          `json:"comment_count"`
-	Verification Verification `json:"verification"`
+type User struct {
+	Login             *string `json:"login"`
+	ID                int     `json:"id"`
+	NodeID            *string `json:"node_id"`
+	AvatarURL         *string `json:"avatar_url"`
+	GravatarID        *string `json:"gravatar_id"`
+	URL               *string `json:"url"`
+	HTMLURL           *string `json:"html_url"`
+	FollowersURL      *string `json:"followers_url"`
+	FollowingURL      *string `json:"following_url"`
+	GistsURL          *string `json:"gists_url"`
+	StarredURL        *string `json:"starred_url"`
+	SubscriptionsURL  *string `json:"subscriptions_url"`
+	OrganizationsURL  *string `json:"organizations_url"`
+	ReposURL          *string `json:"repos_url"`
+	EventsURL         *string `json:"events_url"`
+	ReceivedEventsURL *string `json:"received_events_url"`
+	Type              *string `json:"type"`
+	UserViewType      *string `json:"user_view_type"`
+	SiteAdmin         bool    `json:"site_admin"`
 }
 
-type Parent struct {
+type CommitDetailJSON struct {
+	//Author       UserMinimalInfo `json:"author"`
+	//Committer    UserMinimalInfo `json:"committer"`
+	//URL          string          `json:"url"`
+	Message      string           `json:"message"`
+	Tree         TreeJSON         `json:"tree"`
+	CommentCount int              `json:"comment_count"`
+	Verification VerificationJSON `json:"verification"`
+}
+
+type CommitDetail struct {
+	Message      *string
+	Tree         Tree
+	CommentCount int
+	Verification Verification
+}
+
+type ParentJSON struct {
 	SHA     string `json:"sha"`
 	URL     string `json:"url"`
 	HTMLURL string `json:"html_url"`
 }
 
-type Stats struct {
+type Parent struct {
+	SHA     *string
+	URL     *string
+	HTMLURL *string
+}
+
+type StatsJSON struct {
 	Total     int `json:"total"`
 	Additions int `json:"additions"`
 	Deletions int `json:"deletions"`
 }
 
+type Stats struct {
+	Total     int
+	Additions int
+	Deletions int
+}
+
 type CommitResp struct {
-	SHA          string       `json:"sha"`
-	NodeID       string       `json:"node_id"`
-	CommitDetail CommitDetail `json:"commit"`
-	URL          string       `json:"url"`
-	HTMLURL      string       `json:"html_url"`
-	CommentsURL  string       `json:"comments_url"`
-	Author       User         `json:"author"`
-	Committer    User         `json:"committer"`
-	Parents      []Parent     `json:"parents"`
-	Stats        Stats        `json:"stats"`
-	Files        []File       `json:"files"`
+	SHA          string           `json:"sha"`
+	NodeID       string           `json:"node_id"`
+	CommitDetail CommitDetailJSON `json:"commit"`
+	URL          string           `json:"url"`
+	HTMLURL      string           `json:"html_url"`
+	CommentsURL  string           `json:"comments_url"`
+	Author       UserJSON         `json:"author"`
+	Committer    UserJSON         `json:"committer"`
+	Parents      []ParentJSON     `json:"parents"`
+	Stats        StatsJSON        `json:"stats"`
+	Files        []FileJSON       `json:"files"`
 }
 
 type CommitDescription struct {
-	SHA          string
-	NodeID       string
+	SHA          *string
+	NodeID       *string
 	CommitDetail CommitDetail
-	URL          string
-	HTMLURL      string
-	CommentsURL  string
+	URL          *string
+	HTMLURL      *string
+	CommentsURL  *string
 	Author       User
 	Committer    User
 	Parents      []Parent
@@ -302,35 +485,144 @@ type CommitDescription struct {
 	Files        []File
 }
 
+type Milestone struct {
+	Closed             bool
+	ClosedAt           *string
+	CreatedAt          *string
+	Creator            Actor
+	Description        *string
+	DueOn              *string
+	Number             int
+	ProgressPercentage float32
+	State              *githubv4.MilestoneState
+	Title              *string
+	UpdatedAt          *string
+	UserCanClose       bool
+	UserCanReopen      bool
+}
+
+type Label struct {
+	NodeId      *string
+	Name        *string
+	Description *string
+	IsDefault   bool
+	Color       *string
+}
+
+type RepositoryInteractionAbility struct {
+	ExpiresAt *string
+	Limit     *string
+	Origin    *string
+}
+
+type SponsorsGoal struct {
+	Description     *string
+	PercentComplete int
+	TargetValue     int
+	Title           *string
+	Kind            *githubv4.SponsorsGoalKind
+}
+
+type StripeConnectAccount struct {
+	AccountId              *string
+	BillingCountryOrRegion *string
+	CountryOrRegion        *string
+	IsActive               bool
+	StripeDashboardUrl     *string
+}
+
+type SponsorsListing struct {
+	Id                         *string
+	ActiveGoal                 SponsorsGoal
+	ActiveStripeConnectAccount StripeConnectAccount
+	BillingCountryOrRegion     *string
+	ContactEmailAddress        *string
+	CreatedAt                  *string
+	DashboardUrl               *string
+	FullDescription            *string
+	IsPublic                   bool
+	Name                       *string
+	NextPayoutDate             *string
+	ResidenceCountryOrRegion   *string
+	ShortDescription           *string
+	Slug                       *string
+	Url                        *string
+}
+
+type BaseUser struct {
+	BasicUser
+	AnyPinnableItems                      bool
+	AvatarUrl                             *string
+	Bio                                   *string
+	Company                               *string
+	EstimatedNextSponsorsPayoutInCents    int
+	HasSponsorsListing                    bool
+	InteractionAbility                    RepositoryInteractionAbility
+	IsBountyHunter                        bool
+	IsCampusExpert                        bool
+	IsDeveloperProgramMember              bool
+	IsEmployee                            bool
+	IsFollowingYou                        bool
+	IsGitHubStar                          bool
+	IsHireable                            bool
+	IsSiteAdmin                           bool
+	IsSponsoringYou                       bool
+	IsYou                                 bool
+	Location                              *string
+	MonthlyEstimatedSponsorsIncomeInCents int
+	PinnedItemsRemaining                  int
+	ProjectsUrl                           *string
+	Pronouns                              *string
+	SponsorsListing                       SponsorsListing
+	Status                                UserStatus
+	TwitterUsername                       *string
+	CanChangedPinnedItems                 bool
+	CanCreateProjects                     bool
+	CanFollow                             bool
+	CanSponsor                            bool
+	IsFollowing                           bool
+	IsSponsoring                          bool
+	WebsiteUrl                            *string
+}
+
+type UserStatus struct {
+	CreatedAt                    *string
+	UpdatedAt                    *string
+	ExpiresAt                    *string
+	Emoji                        *string
+	Message                      *string
+	IndicatesLimitedAvailability bool
+}
+
 type IssueDescription struct {
-	RepositoryFullName      string
+	RepositoryFullName      *string
 	Id                      int
-	NodeId                  string
+	NodeId                  *string
 	Number                  int
-	ActiveLockReason        githubv4.LockReason
-	Author                  steampipemodels.Actor
-	AuthorLogin             string
-	AuthorAssociation       githubv4.CommentAuthorAssociation
-	Body                    string
-	BodyUrl                 string
+	ActiveLockReason        *githubv4.LockReason
+	Author                  Actor
+	AuthorLogin             *string
+	AuthorAssociation       *githubv4.CommentAuthorAssociation
+	Body                    *string
+	BodyUrl                 *string
 	Closed                  bool
-	ClosedAt                steampipemodels.NullableTime
-	CreatedAt               steampipemodels.NullableTime
+	ClosedAt                *string
+	CreatedAt               *string
 	CreatedViaEmail         bool
-	Editor                  steampipemodels.Actor
-	FullDatabaseId          string
+	Editor                  Actor
+	FullDatabaseId          *string
 	IncludesCreatedEdit     bool
 	IsPinned                bool
 	IsReadByUser            bool
-	LastEditedAt            steampipemodels.NullableTime
+	LastEditedAt            *string
 	Locked                  bool
-	Milestone               steampipemodels.Milestone
-	PublishedAt             steampipemodels.NullableTime
-	State                   githubv4.IssueState
-	StateReason             githubv4.IssueStateReason
-	Title                   string
-	UpdatedAt               steampipemodels.NullableTime
-	Url                     string
+	Milestone               Milestone
+	PublishedAt             *string
+	State                   *githubv4.IssueState
+	StateReason             *githubv4.IssueStateReason
+	Title                   *string
+	UpdatedAt               *string
+	Url                     *string
 	UserCanClose            bool
 	UserCanReact            bool
 	UserCanReopen           bool
@@ -338,13 +630,13 @@ type IssueDescription struct {
 	UserCanUpdate           bool
 	UserCannotUpdateReasons []githubv4.CommentCannotUpdateReason
 	UserDidAuthor           bool
-	UserSubscription        githubv4.SubscriptionState
+	UserSubscription        *githubv4.SubscriptionState
 	CommentsTotalCount      int
 	LabelsTotalCount        int
-	LabelsSrc               []steampipemodels.Label
-	Labels                  map[string]steampipemodels.Label
+	LabelsSrc               []Label
+	Labels                  map[string]Label
 	AssigneesTotalCount     int
-	Assignees               []steampipemodels.BaseUser
+	Assignees               []BaseUser
 }
 
 //type IssueCommentDescription struct {
@@ -1348,15 +1640,15 @@ type CommitResponse struct {
 }
 
 type ArtifactDockerFileDescription struct {
-	Sha                     *string                 
-	Name                    *string                 
-	Path                    *string                 
-	LastUpdatedAt           *string                 
-	GitURL                  *string                 
-	HTMLURL                 *string                 
-	URI                     *string                  // Unique identifier
-	DockerfileContent       string                 
-	DockerfileContentBase64 *string                
-	Repository              map[string]interface{} 
-	Images                  []string                // New field to store extracted base images
+	Sha                     *string
+	Name                    *string
+	Path                    *string
+	LastUpdatedAt           *string
+	GitURL                  *string
+	HTMLURL                 *string
+	URI                     *string // Unique identifier
+	DockerfileContent       string
+	DockerfileContentBase64 *string
+	Repository              map[string]interface{}
+	Images                  []string // New field to store extracted base images
 }

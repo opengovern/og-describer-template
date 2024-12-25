@@ -37,6 +37,14 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 			return nil, err
 		}
 		for _, runner := range runners.Runners {
+			var labels []*model.RunnerLabels
+			for _, runnerLabel := range runner.Labels {
+				labels = append(labels, &model.RunnerLabels{
+					ID:   runnerLabel.ID,
+					Name: runnerLabel.Name,
+					Type: runnerLabel.Type,
+				})
+			}
 			value := models.Resource{
 				ID:   strconv.Itoa(int(runner.GetID())),
 				Name: runner.GetName(),
@@ -47,8 +55,8 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 						OS:           runner.OS,
 						Status:       runner.Status,
 						Busy:         runner.Busy,
-						Labels:       runner.Labels,
-						RepoFullName: repoFullName,
+						Labels:       labels,
+						RepoFullName: &repoFullName,
 					},
 				},
 			}
@@ -79,6 +87,14 @@ func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizatio
 	if err != nil {
 		return nil, err
 	}
+	var labels []*model.RunnerLabels
+	for _, runnerLabel := range runner.Labels {
+		labels = append(labels, &model.RunnerLabels{
+			ID:   runnerLabel.ID,
+			Name: runnerLabel.Name,
+			Type: runnerLabel.Type,
+		})
+	}
 	value := models.Resource{
 		ID:   strconv.Itoa(int(runner.GetID())),
 		Name: runner.GetName(),
@@ -89,8 +105,8 @@ func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizatio
 				OS:           runner.OS,
 				Status:       runner.Status,
 				Busy:         runner.Busy,
-				Labels:       runner.Labels,
-				RepoFullName: repoFullName,
+				Labels:       labels,
+				RepoFullName: &repoFullName,
 			},
 		},
 	}
