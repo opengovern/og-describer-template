@@ -22,7 +22,7 @@ type Client struct {
 type AdUsers struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdUsersDescription `json:"description"`
+	Description     entraid.AdUsersDescription `json:"Description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -308,7 +308,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdGroup struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdGroupDescription `json:"description"`
+	Description     entraid.AdGroupDescription `json:"Description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -626,7 +626,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdServicePrincipal struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdServicePrincipalDescription `json:"description"`
+	Description     entraid.AdServicePrincipalDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -932,7 +932,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdApplication struct {
 	ResourceID      string                           `json:"resource_id"`
 	PlatformID      string                           `json:"platform_id"`
-	Description     entraid.AdApplicationDescription `json:"description"`
+	Description     entraid.AdApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                 `json:"metadata"`
 	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
@@ -1220,7 +1220,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 type AdDirectoryRole struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
-	Description     entraid.AdDirectoryRoleDescription `json:"description"`
+	Description     entraid.AdDirectoryRoleDescription `json:"Description"`
 	Metadata        entraid.Metadata                   `json:"metadata"`
 	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
@@ -1482,7 +1482,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 type AdDirectorySetting struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdDirectorySettingDescription `json:"description"`
+	Description     entraid.AdDirectorySettingDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -1746,7 +1746,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdDomain struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDomainDescription `json:"description"`
+	Description     entraid.AdDomainDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -2016,7 +2016,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdTenant struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdTenantDescription `json:"description"`
+	Description     entraid.AdTenantDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -2282,7 +2282,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdIdentityProvider struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdIdentityProviderDescription `json:"description"`
+	Description     entraid.AdIdentityProviderDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -2546,7 +2546,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdSecurityDefaultsPolicy struct {
 	ResourceID      string                                      `json:"resource_id"`
 	PlatformID      string                                      `json:"platform_id"`
-	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"description"`
+	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                            `json:"metadata"`
 	DescribedBy     string                                      `json:"described_by"`
 	ResourceType    string                                      `json:"resource_type"`
@@ -2808,7 +2808,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 type AdAuthorizationPolicy struct {
 	ResourceID      string                                   `json:"resource_id"`
 	PlatformID      string                                   `json:"platform_id"`
-	Description     entraid.AdAuthorizationPolicyDescription `json:"description"`
+	Description     entraid.AdAuthorizationPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                         `json:"metadata"`
 	DescribedBy     string                                   `json:"described_by"`
 	ResourceType    string                                   `json:"resource_type"`
@@ -3082,7 +3082,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 type AdConditionalAccessPolicy struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdConditionalAccessPolicyDescription `json:"description"`
+	Description     entraid.AdConditionalAccessPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
@@ -3376,7 +3376,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 type AdAdminConsentRequestPolicy struct {
 	ResourceID      string                                         `json:"resource_id"`
 	PlatformID      string                                         `json:"platform_id"`
-	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"description"`
+	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                               `json:"metadata"`
 	DescribedBy     string                                         `json:"described_by"`
 	ResourceType    string                                         `json:"resource_type"`
@@ -3642,7 +3642,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 type AdDevice struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDeviceDescription `json:"description"`
+	Description     entraid.AdDeviceDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -3922,7 +3922,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdUserRegistrationDetails struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdUserRegistrationDetailsDescription `json:"description"`
+	Description     entraid.AdUserRegistrationDetailsDescription `json:"Description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
@@ -4208,7 +4208,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 type AdGroupMembership struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdGroupMembershipDescription `json:"description"`
+	Description     entraid.AdGroupMembershipDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -4486,7 +4486,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdAppRegistration struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdAppRegistrationDescription `json:"description"`
+	Description     entraid.AdAppRegistrationDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -4774,7 +4774,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdEnterpriseApplication struct {
 	ResourceID      string                                     `json:"resource_id"`
 	PlatformID      string                                     `json:"platform_id"`
-	Description     entraid.AdEnterpriseApplicationDescription `json:"description"`
+	Description     entraid.AdEnterpriseApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                           `json:"metadata"`
 	DescribedBy     string                                     `json:"described_by"`
 	ResourceType    string                                     `json:"resource_type"`
@@ -5080,7 +5080,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 type AdManagedIdentity struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdManagedIdentityDescription `json:"description"`
+	Description     entraid.AdManagedIdentityDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -5386,7 +5386,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdMicrosoftApplication struct {
 	ResourceID      string                                    `json:"resource_id"`
 	PlatformID      string                                    `json:"platform_id"`
-	Description     entraid.AdMicrosoftApplicationDescription `json:"description"`
+	Description     entraid.AdMicrosoftApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                          `json:"metadata"`
 	DescribedBy     string                                    `json:"described_by"`
 	ResourceType    string                                    `json:"resource_type"`
