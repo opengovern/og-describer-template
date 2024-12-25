@@ -1456,23 +1456,23 @@ type Package struct {
 
 type ContainerMetadata struct {
 	Container struct {
-		Tags []string `json:"tags"`
-	} `json:"container"`
+		Tags []string 
+	} 
 }
 
 type ContainerPackageDescription struct {
-	ID             int               `json:"id"`
-	Digest         string            `json:"digest"`
-	PackageURI     string            `json:"package_uri"`
-	PackageHTMLURL string            `json:"package_html_url"`
-	CreatedAt      string            `json:"created_at"`
-	UpdatedAt      string            `json:"updated_at"`
-	HTMLURL        string            `json:"html_url"`
-	Name           string            `json:"name"`
-	MediaType      string            `json:"media_type"`
-	TotalSize      int64             `json:"total_size"`
-	Metadata       ContainerMetadata `json:"metadata"`
-	Manifest       interface{}       `json:"manifest"`
+	ID             int               
+	Digest         string            
+	PackageURI     string            
+	PackageHTMLURL string            
+	CreatedAt      string            
+	UpdatedAt      string            
+	HTMLURL        string            
+	Name           string            
+	MediaType      string            
+	TotalSize      int64             
+	Metadata       ContainerMetadata 
+	Manifest       interface{}       
 
 	// -- Add these new fields/methods: --
 
