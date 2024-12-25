@@ -83,19 +83,55 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient GitHubClie
 				}
 			}
 			for _, node := range rule.PushAllowances.Nodes {
-				pushAllowanceApps = append(pushAllowanceApps, node.Actor.App)
-				pushAllowanceTeams = append(pushAllowanceTeams, node.Actor.Team)
-				pushAllowanceUsers = append(pushAllowanceUsers, node.Actor.User)
+				app := model.BranchApp{
+					Name: &node.Actor.App.Name,
+					Slug: &node.Actor.App.Slug,
+				}
+				team := model.BranchTeam{
+					Name: &node.Actor.Team.Name,
+					Slug: &node.Actor.Team.Slug,
+				}
+				user := model.BranchUser{
+					Name:  &node.Actor.User.Name,
+					Login: &node.Actor.User.Login,
+				}
+				pushAllowanceApps = append(pushAllowanceApps, app)
+				pushAllowanceTeams = append(pushAllowanceTeams, team)
+				pushAllowanceUsers = append(pushAllowanceUsers, user)
 			}
 			for _, node := range rule.BypassForcePushAllowances.Nodes {
-				bypassForcePushAllowanceApps = append(bypassForcePushAllowanceApps, node.Actor.App)
-				bypassForcePushAllowanceTeams = append(bypassForcePushAllowanceTeams, node.Actor.Team)
-				bypassForcePushAllowanceUsers = append(bypassForcePushAllowanceUsers, node.Actor.User)
+				app := model.BranchApp{
+					Name: &node.Actor.App.Name,
+					Slug: &node.Actor.App.Slug,
+				}
+				team := model.BranchTeam{
+					Name: &node.Actor.Team.Name,
+					Slug: &node.Actor.Team.Slug,
+				}
+				user := model.BranchUser{
+					Name:  &node.Actor.User.Name,
+					Login: &node.Actor.User.Login,
+				}
+				bypassForcePushAllowanceApps = append(bypassForcePushAllowanceApps, app)
+				bypassForcePushAllowanceTeams = append(bypassForcePushAllowanceTeams, team)
+				bypassForcePushAllowanceUsers = append(bypassForcePushAllowanceUsers, user)
 			}
 			for _, node := range rule.BypassForcePushAllowances.Nodes {
-				bypassPullRequestAllowanceApps = append(bypassPullRequestAllowanceApps, node.Actor.App)
-				bypassPullRequestAllowanceTeams = append(bypassPullRequestAllowanceTeams, node.Actor.Team)
-				bypassPullRequestAllowanceUsers = append(bypassPullRequestAllowanceUsers, node.Actor.User)
+				app := model.BranchApp{
+					Name: &node.Actor.App.Name,
+					Slug: &node.Actor.App.Slug,
+				}
+				team := model.BranchTeam{
+					Name: &node.Actor.Team.Name,
+					Slug: &node.Actor.Team.Slug,
+				}
+				user := model.BranchUser{
+					Name:  &node.Actor.User.Name,
+					Login: &node.Actor.User.Login,
+				}
+				bypassPullRequestAllowanceApps = append(bypassPullRequestAllowanceApps, app)
+				bypassPullRequestAllowanceTeams = append(bypassPullRequestAllowanceTeams, team)
+				bypassPullRequestAllowanceUsers = append(bypassPullRequestAllowanceUsers, user)
 			}
 			value := models.Resource{
 				ID:   strconv.Itoa(rule.Id),
@@ -105,14 +141,13 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient GitHubClie
 						AllowsDeletions:                 rule.AllowsDeletions,
 						AllowsForcePushes:               rule.AllowsForcePushes,
 						BlocksCreations:                 rule.BlocksCreations,
-						Creator:                         rule.Creator,
 						Id:                              rule.Id,
-						NodeId:                          rule.NodeId,
+						NodeId:                          &rule.NodeId,
 						DismissesStaleReviews:           rule.DismissesStaleReviews,
 						IsAdminEnforced:                 rule.IsAdminEnforced,
 						LockAllowsFetchAndMerge:         rule.LockAllowsFetchAndMerge,
 						LockBranch:                      rule.LockBranch,
-						Pattern:                         rule.Pattern,
+						Pattern:                         &rule.Pattern,
 						RequireLastPushApproval:         rule.RequireLastPushApproval,
 						RequiredApprovingReviewCount:    rule.RequiredApprovingReviewCount,
 						RequiredDeploymentEnvironments:  rule.RequiredDeploymentEnvironments,
@@ -127,8 +162,8 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient GitHubClie
 						RequiresStrictStatusChecks:      rule.RequiresStrictStatusChecks,
 						RestrictsPushes:                 rule.RestrictsPushes,
 						RestrictsReviewDismissals:       rule.RestrictsReviewDismissals,
-						RepoFullName:                    repoFullName,
-						CreatorLogin:                    rule.Creator.Login,
+						RepoFullName:                    &repoFullName,
+						CreatorLogin:                    &rule.Creator.Login,
 						MatchingBranches:                rule.MatchingBranches.TotalCount,
 						PushAllowanceApps:               pushAllowanceApps,
 						PushAllowanceTeams:              pushAllowanceTeams,

@@ -183,10 +183,14 @@ func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.Resilie
 		}
 		runDetail.ArtifactCount = artifactCount
 		runDetail.Artifacts = artifacts
+		var name string
+		if runDetail.Name != nil {
+			name = *runDetail.Name
+		}
 
 		value := models.Resource{
 			ID:   strconv.Itoa(runDetail.ID),
-			Name: runDetail.Name,
+			Name: name,
 			Description: JSONAllFieldsMarshaller{
 				Value: runDetail,
 			},
@@ -441,19 +445,19 @@ func fetchRunDetails(sdk *resilientbridge.ResilientBridge, owner, repo string, r
 
 	return model.WorkflowRunDescription{
 		ID:                  fullDetail.ID,
-		Name:                fullDetail.Name,
-		HeadBranch:          fullDetail.HeadBranch,
-		HeadSHA:             fullDetail.HeadSHA,
-		Status:              fullDetail.Status,
-		Conclusion:          fullDetail.Conclusion,
-		HTMLURL:             fullDetail.HTMLURL,
+		Name:                &fullDetail.Name,
+		HeadBranch:          &fullDetail.HeadBranch,
+		HeadSHA:             &fullDetail.HeadSHA,
+		Status:              &fullDetail.Status,
+		Conclusion:          &fullDetail.Conclusion,
+		HTMLURL:             &fullDetail.HTMLURL,
 		WorkflowID:          fullDetail.WorkflowID,
 		RunNumber:           fullDetail.RunNumber,
-		Event:               fullDetail.Event,
-		CreatedAt:           fullDetail.CreatedAt,
-		UpdatedAt:           fullDetail.UpdatedAt,
+		Event:               &fullDetail.Event,
+		CreatedAt:           &fullDetail.CreatedAt,
+		UpdatedAt:           &fullDetail.UpdatedAt,
 		RunAttempt:          fullDetail.RunAttempt,
-		RunStartedAt:        fullDetail.RunStartedAt,
+		RunStartedAt:        &fullDetail.RunStartedAt,
 		Actor:               fullDetail.Actor,
 		HeadCommit:          fullDetail.HeadCommit,
 		Repository:          fullDetail.Repository,
@@ -484,5 +488,22 @@ func fetchArtifactsForRun(sdk *resilientbridge.ResilientBridge, owner, repo stri
 		return 0, nil, fmt.Errorf("error decoding artifacts response: %w", err)
 	}
 
-	return artResp.TotalCount, artResp.Artifacts, nil
+	var artifacts []model.WorkflowArtifact
+
+	for _, artifact := range artResp.Artifacts {
+		artifacts = append(artifacts, model.WorkflowArtifact{
+			ID:                 artifact.ID,
+			NodeID:             &artifact.NodeID,
+			Name:               &artifact.Name,
+			SizeInBytes:        artifact.SizeInBytes,
+			URL:                &artifact.URL,
+			ArchiveDownloadURL: &artifact.ArchiveDownloadURL,
+			Expired:            artifact.Expired,
+			CreatedAt:          &artifact.CreatedAt,
+			UpdatedAt:          &artifact.UpdatedAt,
+			ExpiresAt:          &artifact.ExpiresAt,
+		})
+	}
+
+	return artResp.TotalCount, artifacts, nil
 }
