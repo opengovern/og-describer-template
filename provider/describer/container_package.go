@@ -205,7 +205,7 @@ func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID in
 
 		// If we already have this digest, append to AdditionalPackageURIs
 		if existing, exists := dedupMap[dk]; exists {
-			existing.AdditionalPackageURIs = append(existing.AdditionalPackageURIs, cpd.PackageURI)
+			existing.AdditionalPackageURIs = append(existing.AdditionalPackageURIs, cpd.PackageURL)
 		} else {
 			dedupMap[dk] = &cpd
 		}
@@ -300,13 +300,10 @@ func fetchAndAssembleOutput(
 	ov := model.ContainerPackageDescription{
 		ID:                    version.ID,
 		Digest:                actualDigest, // store the real Docker digest
-		GHVersionName:         version.Name, // store the GH "version.Name" if desired
-		PackageURI:            imageRef,
 		AdditionalPackageURIs: []string{}, // Will be appended after dedup
-		PackageHTMLURL:        version.PackageHTMLURL,
 		CreatedAt:             version.CreatedAt,
 		UpdatedAt:             version.UpdatedAt,
-		HTMLURL:               version.HTMLURL,
+		PackageURL:               version.HTMLURL,
 		Name:                  imageRef,
 		MediaType:             string(desc.Descriptor.MediaType),
 		TotalSize:             totalSize,

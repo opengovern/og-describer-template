@@ -675,8 +675,8 @@ github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQb2IpWsCzug=
 github.com/opencontainers/image-spec v1.1.0/go.mod h1:W4s4sFTMaBeK1BQLXbG4AdM2szdn85PY75RI83NrTrM=
-github.com/opengovern/og-util v1.5.3 h1:u6sMV95nOBl0NaQ+qSO0oVWQVjS81fovmmzOmzXPkHQ=
-github.com/opengovern/og-util v1.5.3/go.mod h1:ob8RSaNZG3RWnLH3lDXQaVpIf+B8Ry7ds3twYlDJPp0=
+github.com/opengovern/og-util v1.6.3 h1:QMF+OAEG2O1TzUVVKb7W5jpC8YWFaGfQFMUZzDO8qCg=
+github.com/opengovern/og-util v1.6.3/go.mod h1:ob8RSaNZG3RWnLH3lDXQaVpIf+B8Ry7ds3twYlDJPp0=
 github.com/opengovern/opencomply v0.475.2 h1:JHs12+mhJb9HzFZYMLLgw079PRa+qLKntugvwWiCVL0=
 github.com/opengovern/opencomply v0.475.2/go.mod h1:FsJTfdLz+DDRAzW2/KyCFRxVxM89jMysP7ZfQjaS8+A=
 github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d h1:OnoG1Za89armxN1ZlEbr/eKvAdbRN6UGKXCFxee58s0=

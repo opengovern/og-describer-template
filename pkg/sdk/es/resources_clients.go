@@ -6727,18 +6727,16 @@ func (p ContainerPackagePaginator) NextPage(ctx context.Context) ([]ContainerPac
 }
 
 var listContainerPackageFilters = map[string]string{
-	"created_at":       "Description.CreatedAt",
-	"digest":           "Description.Digest",
-	"html_url":         "Description.HTMLURL",
-	"id":               "Description.ID",
-	"manifest":         "Description.Manifest",
-	"media_type":       "Description.MediaType",
-	"metadata":         "Description.Metadata",
-	"name":             "Description.Name",
-	"package_html_url": "Description.PackageHTMLURL",
-	"package_uri":      "Description.PackageURI",
-	"total_size":       "Description.TotalSize",
-	"updated_at":       "Description.UpdatedAt",
+	"created_at":  "Description.CreatedAt",
+	"digest":      "Description.Digest",
+	"id":          "Description.ID",
+	"manifest":    "Description.Manifest",
+	"media_type":  "Description.MediaType",
+	"metadata":    "Description.Metadata",
+	"name":        "Description.Name",
+	"package_url": "Description.PackageUrl",
+	"total_size":  "Description.TotalSize",
+	"updated_at":  "Description.UpdatedAt",
 }
 
 func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6802,18 +6800,16 @@ func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 }
 
 var getContainerPackageFilters = map[string]string{
-	"created_at":       "Description.CreatedAt",
-	"digest":           "Description.Digest",
-	"html_url":         "Description.HTMLURL",
-	"id":               "Description.ID",
-	"manifest":         "Description.Manifest",
-	"media_type":       "Description.MediaType",
-	"metadata":         "Description.Metadata",
-	"name":             "Description.Name",
-	"package_html_url": "Description.PackageHTMLURL",
-	"package_uri":      "Description.PackageURI",
-	"total_size":       "Description.TotalSize",
-	"updated_at":       "Description.UpdatedAt",
+	"created_at":  "Description.CreatedAt",
+	"digest":      "Description.Digest",
+	"id":          "Description.ID",
+	"manifest":    "Description.Manifest",
+	"media_type":  "Description.MediaType",
+	"metadata":    "Description.Metadata",
+	"name":        "Description.Name",
+	"package_url": "Description.PackageUrl",
+	"total_size":  "Description.TotalSize",
+	"updated_at":  "Description.UpdatedAt",
 }
 
 func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {

@@ -1462,13 +1462,11 @@ type ContainerMetadata struct {
 
 type ContainerPackageDescription struct {
 	ID             int               
-	Digest         string            
-	PackageURI     string            
-	PackageHTMLURL string            
+	Digest         string                   
 	CreatedAt      string            
 	UpdatedAt      string            
-	HTMLURL        string            
-	Name           string            
+	PackageURL        string            
+	Name           string           
 	MediaType      string            
 	TotalSize      int64             
 	Metadata       ContainerMetadata 
@@ -1478,7 +1476,6 @@ type ContainerPackageDescription struct {
 
 	// The GitHub "version.Name" or tag,
 	// if you want to store that separately from the real Docker digest.
-	GHVersionName string `json:"gh_version_name,omitempty"`
 
 	// When deduplicating, any subsequent tags for the same (ID,digest)
 	// can be appended here.

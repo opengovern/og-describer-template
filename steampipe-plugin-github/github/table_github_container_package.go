@@ -29,16 +29,6 @@ func tableGitHubContainerPackage() *plugin.Table {
 				Transform:   transform.FromField("Description.Digest"),
 				Description: "Digest of the package."},
 			{
-				Name:        "package_uri",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.PackageURI"),
-				Description: "URI of the package."},
-			{
-				Name:        "package_html_url",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.PackageHTMLURL"),
-				Description: "HTML URL of the package."},
-			{
 				Name:        "created_at",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.CreatedAt"),
@@ -49,9 +39,9 @@ func tableGitHubContainerPackage() *plugin.Table {
 				Transform:   transform.FromField("Description.UpdatedAt"),
 				Description: "Timestamp when the package was last updated."},
 			{
-				Name:        "html_url",
+				Name:        "package_url",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.HTMLURL"),
+				Transform:   transform.FromField("Description.PackageUrl"),
 				Description: "HTML URL for the package."},
 			{
 				Name:        "name",
