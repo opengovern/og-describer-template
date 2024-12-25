@@ -1348,15 +1348,15 @@ type CommitResponse struct {
 }
 
 type ArtifactDockerFileDescription struct {
-	Sha                     string                 `json:"sha"`
-	Name                    string                 `json:"name"`
-	Path                    string                 `json:"path"`
-	LastUpdatedAt           string                 `json:"last_updated_at"`
-	GitURL                  string                 `json:"git_url"`
-	HTMLURL                 string                 `json:"html_url"`
-	URI                     string                 `json:"uri"` // Unique identifier
+	Sha                     *string                 `json:"sha"`
+	Name                    *string                 `json:"name"`
+	Path                    *string                 `json:"path"`
+	LastUpdatedAt           *string                 `json:"last_updated_at"`
+	GitURL                  *string                 `json:"git_url"`
+	HTMLURL                 *string                 `json:"html_url"`
+	URI                     *string                 `json:"uri"` // Unique identifier
 	DockerfileContent       string                 `json:"dockerfile_content"`
-	DockerfileContentBase64 string                 `json:"dockerfile_content_base64"`
+	DockerfileContentBase64 *string                 `json:"dockerfile_content_base64"`
 	Repository              map[string]interface{} `json:"repository"`
 	Images                  []string               `json:"images"` // New field to store extracted base images
 }

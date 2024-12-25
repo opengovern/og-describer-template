@@ -219,22 +219,22 @@ func GetDockerfile(
 	}
 
 	output := model.ArtifactDockerFileDescription{
-		Sha:                     contentData.Sha,
-		Name:                    contentData.Name,
-		Path:                    contentData.Path,
-		LastUpdatedAt:           lastUpdatedAt,
-		GitURL:                  contentData.GitURL,
-		HTMLURL:                 contentData.HTMLURL,
-		URI:                     contentData.HTMLURL,
+		Sha:                     &contentData.Sha,
+		Name:                    &contentData.Name,
+		Path:                    &contentData.Path,
+		LastUpdatedAt:           &lastUpdatedAt,
+		GitURL:                  &contentData.GitURL,
+		HTMLURL:                 &contentData.HTMLURL,
+		URI:                     &contentData.HTMLURL,
 		DockerfileContent:       string(decoded),
-		DockerfileContentBase64: dockerfileB64,
+		DockerfileContentBase64: &dockerfileB64,
 		Repository:              repoObj,
-		Images:                  images,
+		Images:                 images,
 	}
 
 	value := models.Resource{
-		ID:   output.URI,
-		Name: output.Name,
+		ID:   *output.URI,
+		Name: *output.Name,
 		Description: JSONAllFieldsMarshaller{
 			Value: output,
 		},
