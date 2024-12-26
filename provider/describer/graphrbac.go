@@ -103,27 +103,25 @@ func AdUsers(ctx context.Context, cred *azidentity.ClientSecretCredential, tenan
 			Name:     name,
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdUsersDescription{
-					TenantID:                        tenantId,
-					DisplayName:                     user.GetDisplayName(),
-					Id:                              user.GetId(),
-					UserPrincipalName:               user.GetUserPrincipalName(),
-					AccountEnabled:                  user.GetAccountEnabled(),
-					UserType:                        user.GetUserType(),
-					CreatedDateTime:                 user.GetCreatedDateTime(),
-					Mail:                            user.GetMail(),
-					PasswordPolicies:                user.GetPasswordPolicies(),
-					SignInSessionsValidFromDateTime: user.GetSignInSessionsValidFromDateTime(),
-					UsageLocation:                   user.GetUsageLocation(),
-					MemberOf:                        memberOf,
-					TransitiveMemberOf:              transitiveMemberOf,
-					LastSignInDateTime:              lastSignInDateTime,
-					ImAddresses:                     user.GetImAddresses(),
-					OtherMails:                      user.GetOtherMails(),
-					JobTitle:                        user.GetJobTitle(),
-					Identities:                      identities,
-				},
+			Description: model.AdUsersDescription{
+				TenantID:                        tenantId,
+				DisplayName:                     user.GetDisplayName(),
+				Id:                              user.GetId(),
+				UserPrincipalName:               user.GetUserPrincipalName(),
+				AccountEnabled:                  user.GetAccountEnabled(),
+				UserType:                        user.GetUserType(),
+				CreatedDateTime:                 user.GetCreatedDateTime(),
+				Mail:                            user.GetMail(),
+				PasswordPolicies:                user.GetPasswordPolicies(),
+				SignInSessionsValidFromDateTime: user.GetSignInSessionsValidFromDateTime(),
+				UsageLocation:                   user.GetUsageLocation(),
+				MemberOf:                        memberOf,
+				TransitiveMemberOf:              transitiveMemberOf,
+				LastSignInDateTime:              lastSignInDateTime,
+				ImAddresses:                     user.GetImAddresses(),
+				OtherMails:                      user.GetOtherMails(),
+				JobTitle:                        user.GetJobTitle(),
+				Identities:                      identities,
 			},
 		}
 		if stream != nil {
@@ -222,41 +220,39 @@ func AdGroup(ctx context.Context, cred *azidentity.ClientSecretCredential, tenan
 			Name:     *group.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdGroupDescription{
-					TenantID:                      tenantId,
-					DisplayName:                   group.GetDisplayName(),
-					ID:                            group.GetId(),
-					Description:                   group.GetDescription(),
-					Classification:                group.GetClassification(),
-					CreatedDateTime:               group.GetCreatedDateTime(),
-					ExpirationDateTime:            group.GetExpirationDateTime(),
-					IsAssignableToRole:            group.GetIsAssignableToRole(),
-					IsSubscribedByMail:            group.GetIsSubscribedByMail(),
-					Mail:                          group.GetMail(),
-					MailEnabled:                   group.GetMailEnabled(),
-					MailNickname:                  group.GetMailNickname(),
-					MembershipRule:                group.GetMembershipRule(),
-					MembershipRuleProcessingState: group.GetMembershipRuleProcessingState(),
-					OnPremisesDomainName:          group.GetOnPremisesDomainName(),
-					OnPremisesLastSyncDateTime:    group.GetOnPremisesLastSyncDateTime(),
-					OnPremisesNetBiosName:         group.GetOnPremisesNetBiosName(),
-					OnPremisesSamAccountName:      group.GetOnPremisesSamAccountName(),
-					OnPremisesSecurityIdentifier:  group.GetOnPremisesSecurityIdentifier(),
-					OnPremisesSyncEnabled:         group.GetOnPremisesSyncEnabled(),
-					RenewedDateTime:               group.GetRenewedDateTime(),
-					SecurityEnabled:               group.GetSecurityEnabled(),
-					SecurityIdentifier:            group.GetSecurityIdentifier(),
-					Visibility:                    group.GetVisibility(),
-					AssignedLabels:                assignedLabels,
-					GroupTypes:                    group.GetGroupTypes(),
-					MemberIds:                     memberIds,
-					OwnerIds:                      ownerIds,
-					ProxyAddresses:                group.GetProxyAddresses(),
-					//ResourceBehaviorOptions:       group.GetResourceBehaviorOptions(),
-					//ResourceProvisioningOptions:   group.GetResourceProvisioningOptions(),
-					NestedGroups: nestedGroups,
-				},
+			Description: model.AdGroupDescription{
+				TenantID:                      tenantId,
+				DisplayName:                   group.GetDisplayName(),
+				ID:                            group.GetId(),
+				Description:                   group.GetDescription(),
+				Classification:                group.GetClassification(),
+				CreatedDateTime:               group.GetCreatedDateTime(),
+				ExpirationDateTime:            group.GetExpirationDateTime(),
+				IsAssignableToRole:            group.GetIsAssignableToRole(),
+				IsSubscribedByMail:            group.GetIsSubscribedByMail(),
+				Mail:                          group.GetMail(),
+				MailEnabled:                   group.GetMailEnabled(),
+				MailNickname:                  group.GetMailNickname(),
+				MembershipRule:                group.GetMembershipRule(),
+				MembershipRuleProcessingState: group.GetMembershipRuleProcessingState(),
+				OnPremisesDomainName:          group.GetOnPremisesDomainName(),
+				OnPremisesLastSyncDateTime:    group.GetOnPremisesLastSyncDateTime(),
+				OnPremisesNetBiosName:         group.GetOnPremisesNetBiosName(),
+				OnPremisesSamAccountName:      group.GetOnPremisesSamAccountName(),
+				OnPremisesSecurityIdentifier:  group.GetOnPremisesSecurityIdentifier(),
+				OnPremisesSyncEnabled:         group.GetOnPremisesSyncEnabled(),
+				RenewedDateTime:               group.GetRenewedDateTime(),
+				SecurityEnabled:               group.GetSecurityEnabled(),
+				SecurityIdentifier:            group.GetSecurityIdentifier(),
+				Visibility:                    group.GetVisibility(),
+				AssignedLabels:                assignedLabels,
+				GroupTypes:                    group.GetGroupTypes(),
+				MemberIds:                     memberIds,
+				OwnerIds:                      ownerIds,
+				ProxyAddresses:                group.GetProxyAddresses(),
+				//ResourceBehaviorOptions:       group.GetResourceBehaviorOptions(),
+				//ResourceProvisioningOptions:   group.GetResourceProvisioningOptions(),
+				NestedGroups: nestedGroups,
 			},
 		}
 		if stream != nil {
@@ -485,35 +481,33 @@ func AdServicePrinciple(ctx context.Context, cred *azidentity.ClientSecretCreden
 			Name:     *servicePrincipal.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdServicePrincipalDescription{
-					TenantID:                  tenantId,
-					Id:                        servicePrincipal.GetId(),
-					DisplayName:               servicePrincipal.GetDisplayName(),
-					AppId:                     servicePrincipal.GetAppId(),
-					AccountEnabled:            servicePrincipal.GetAccountEnabled(),
-					AppDisplayName:            servicePrincipal.GetAppDisplayName(),
-					AppOwnerOrganizationId:    orgID,
-					AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
-					ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
-					SignInAudience:            servicePrincipal.GetSignInAudience(),
-					AppDescription:            servicePrincipal.GetAppDescription(),
-					Description:               servicePrincipal.GetDescription(),
-					LoginUrl:                  servicePrincipal.GetLoginUrl(),
-					LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
-					AddIns:                    addIns,
-					AlternativeNames:          servicePrincipal.GetAlternativeNames(),
-					AppRoles:                  appRoles,
-					//Info: servicePrincipal.GetInfo(),
-					KeyCredentials:             keyCredentials,
-					NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
-					OwnerIds:                   ownerIds,
-					PasswordCredentials:        passwordCredentials,
-					Oauth2PermissionScopes:     oauth2PermissionScopes,
-					ReplyUrls:                  servicePrincipal.GetReplyUrls(),
-					ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
-					TagsSrc:                    servicePrincipal.GetTags(),
-				},
+			Description: model.AdServicePrincipalDescription{
+				TenantID:                  tenantId,
+				Id:                        servicePrincipal.GetId(),
+				DisplayName:               servicePrincipal.GetDisplayName(),
+				AppId:                     servicePrincipal.GetAppId(),
+				AccountEnabled:            servicePrincipal.GetAccountEnabled(),
+				AppDisplayName:            servicePrincipal.GetAppDisplayName(),
+				AppOwnerOrganizationId:    orgID,
+				AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
+				ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
+				SignInAudience:            servicePrincipal.GetSignInAudience(),
+				AppDescription:            servicePrincipal.GetAppDescription(),
+				Description:               servicePrincipal.GetDescription(),
+				LoginUrl:                  servicePrincipal.GetLoginUrl(),
+				LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
+				AddIns:                    addIns,
+				AlternativeNames:          servicePrincipal.GetAlternativeNames(),
+				AppRoles:                  appRoles,
+				//Info: servicePrincipal.GetInfo(),
+				KeyCredentials:             keyCredentials,
+				NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
+				OwnerIds:                   ownerIds,
+				PasswordCredentials:        passwordCredentials,
+				Oauth2PermissionScopes:     oauth2PermissionScopes,
+				ReplyUrls:                  servicePrincipal.GetReplyUrls(),
+				ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
+				TagsSrc:                    servicePrincipal.GetTags(),
 			},
 		}
 		if stream != nil {
@@ -699,97 +693,95 @@ func AdApplication(ctx context.Context, cred *azidentity.ClientSecretCredential,
 			Name:     *app.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdApplicationDescription{
-					TenantID:                  tenantId,
-					DisplayName:               app.GetDisplayName(),
-					Id:                        app.GetId(),
-					AppId:                     app.GetAppId(),
-					CreatedDateTime:           app.GetCreatedDateTime(),
-					Description:               app.GetDescription(),
-					Oauth2RequirePostResponse: app.GetOauth2RequirePostResponse(),
-					PublisherDomain:           app.GetPublisherDomain(),
-					SignInAudience:            app.GetSignInAudience(),
-					Api: struct {
-						AcceptMappedClaims      *bool
-						KnownClientApplications []string
-						Oauth2PermissionScopes  []struct {
-							AdminConsentDescription *string
-							AdminConsentDisplayName *string
-							Id                      string
-							IsEnabled               *bool
-							Origin                  *string
-							TypeEscaped             *string
-							UserConsentDescription  *string
-							UserConsentDisplayName  *string
-						}
-						PreAuthorizedApplications []struct {
-							AppId                  *string
-							DelegatedPermissionIds []string
-						}
-						RequestedAccessTokenVersion *int32
+			Description: model.AdApplicationDescription{
+				TenantID:                  tenantId,
+				DisplayName:               app.GetDisplayName(),
+				Id:                        app.GetId(),
+				AppId:                     app.GetAppId(),
+				CreatedDateTime:           app.GetCreatedDateTime(),
+				Description:               app.GetDescription(),
+				Oauth2RequirePostResponse: app.GetOauth2RequirePostResponse(),
+				PublisherDomain:           app.GetPublisherDomain(),
+				SignInAudience:            app.GetSignInAudience(),
+				Api: struct {
+					AcceptMappedClaims      *bool
+					KnownClientApplications []string
+					Oauth2PermissionScopes  []struct {
+						AdminConsentDescription *string
+						AdminConsentDisplayName *string
+						Id                      string
+						IsEnabled               *bool
+						Origin                  *string
+						TypeEscaped             *string
+						UserConsentDescription  *string
+						UserConsentDisplayName  *string
+					}
+					PreAuthorizedApplications []struct {
+						AppId                  *string
+						DelegatedPermissionIds []string
+					}
+					RequestedAccessTokenVersion *int32
+				}{
+					AcceptMappedClaims:          app.GetApi().GetAcceptMappedClaims(),
+					KnownClientApplications:     knownClientApplications,
+					PreAuthorizedApplications:   preAuthorizedApplications,
+					Oauth2PermissionScopes:      oauth2PermissionScopes,
+					RequestedAccessTokenVersion: app.GetApi().GetRequestedAccessTokenVersion(),
+				},
+				IdentifierUris: app.GetIdentifierUris(),
+				Info: struct {
+					LogoUrl             *string
+					MarketingUrl        *string
+					PrivacyStatementUrl *string
+					SupportUrl          *string
+					TermsOfServiceUrl   *string
+				}{
+					LogoUrl:             app.GetInfo().GetLogoUrl(),
+					MarketingUrl:        app.GetInfo().GetMarketingUrl(),
+					SupportUrl:          app.GetInfo().GetSupportUrl(),
+					PrivacyStatementUrl: app.GetInfo().GetPrivacyStatementUrl(),
+					TermsOfServiceUrl:   app.GetInfo().GetTermsOfServiceUrl(),
+				},
+				KeyCredentials: keyCredentials,
+				OwnerIds:       ownerIds,
+				ParentalControlSettings: struct {
+					CountriesBlockedForMinors []string
+					LegalAgeGroupRule         *string
+				}{
+					CountriesBlockedForMinors: app.GetParentalControlSettings().GetCountriesBlockedForMinors(),
+					LegalAgeGroupRule:         app.GetParentalControlSettings().GetLegalAgeGroupRule(),
+				},
+				PasswordCredentials: passwordCredentials,
+				Spa: struct {
+					RedirectUris []string
+				}{
+					RedirectUris: app.GetSpa().GetRedirectUris(),
+				},
+				TagsSrc: app.GetTags(),
+				Web: struct {
+					HomePageUrl           *string
+					ImplicitGrantSettings struct {
+						EnableAccessTokenIssuance *bool
+						EnableIdTokenIssuance     *bool
+					}
+					LogoutUrl           *string
+					RedirectUris        []string
+					RedirectUriSettings []struct {
+						Index *int32
+						Uri   *string
+					}
+				}{
+					HomePageUrl:  app.GetWeb().GetHomePageUrl(),
+					RedirectUris: app.GetWeb().GetRedirectUris(),
+					LogoutUrl:    app.GetWeb().GetLogoutUrl(),
+					ImplicitGrantSettings: struct {
+						EnableAccessTokenIssuance *bool
+						EnableIdTokenIssuance     *bool
 					}{
-						AcceptMappedClaims:          app.GetApi().GetAcceptMappedClaims(),
-						KnownClientApplications:     knownClientApplications,
-						PreAuthorizedApplications:   preAuthorizedApplications,
-						Oauth2PermissionScopes:      oauth2PermissionScopes,
-						RequestedAccessTokenVersion: app.GetApi().GetRequestedAccessTokenVersion(),
+						EnableAccessTokenIssuance: app.GetWeb().GetImplicitGrantSettings().GetEnableAccessTokenIssuance(),
+						EnableIdTokenIssuance:     app.GetWeb().GetImplicitGrantSettings().GetEnableIdTokenIssuance(),
 					},
-					IdentifierUris: app.GetIdentifierUris(),
-					Info: struct {
-						LogoUrl             *string
-						MarketingUrl        *string
-						PrivacyStatementUrl *string
-						SupportUrl          *string
-						TermsOfServiceUrl   *string
-					}{
-						LogoUrl:             app.GetInfo().GetLogoUrl(),
-						MarketingUrl:        app.GetInfo().GetMarketingUrl(),
-						SupportUrl:          app.GetInfo().GetSupportUrl(),
-						PrivacyStatementUrl: app.GetInfo().GetPrivacyStatementUrl(),
-						TermsOfServiceUrl:   app.GetInfo().GetTermsOfServiceUrl(),
-					},
-					KeyCredentials: keyCredentials,
-					OwnerIds:       ownerIds,
-					ParentalControlSettings: struct {
-						CountriesBlockedForMinors []string
-						LegalAgeGroupRule         *string
-					}{
-						CountriesBlockedForMinors: app.GetParentalControlSettings().GetCountriesBlockedForMinors(),
-						LegalAgeGroupRule:         app.GetParentalControlSettings().GetLegalAgeGroupRule(),
-					},
-					PasswordCredentials: passwordCredentials,
-					Spa: struct {
-						RedirectUris []string
-					}{
-						RedirectUris: app.GetSpa().GetRedirectUris(),
-					},
-					TagsSrc: app.GetTags(),
-					Web: struct {
-						HomePageUrl           *string
-						ImplicitGrantSettings struct {
-							EnableAccessTokenIssuance *bool
-							EnableIdTokenIssuance     *bool
-						}
-						LogoutUrl           *string
-						RedirectUris        []string
-						RedirectUriSettings []struct {
-							Index *int32
-							Uri   *string
-						}
-					}{
-						HomePageUrl:  app.GetWeb().GetHomePageUrl(),
-						RedirectUris: app.GetWeb().GetRedirectUris(),
-						LogoutUrl:    app.GetWeb().GetLogoutUrl(),
-						ImplicitGrantSettings: struct {
-							EnableAccessTokenIssuance *bool
-							EnableIdTokenIssuance     *bool
-						}{
-							EnableAccessTokenIssuance: app.GetWeb().GetImplicitGrantSettings().GetEnableAccessTokenIssuance(),
-							EnableIdTokenIssuance:     app.GetWeb().GetImplicitGrantSettings().GetEnableIdTokenIssuance(),
-						},
-						RedirectUriSettings: redirectUriSettings,
-					},
+					RedirectUriSettings: redirectUriSettings,
 				},
 			},
 		}
@@ -949,33 +941,31 @@ func AdSignInReport(ctx context.Context, cred *azidentity.ClientSecretCredential
 			Name:     *report.GetId(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdSignInReportDescription{
-					TenantID:                         tenantId,
-					Id:                               report.GetId(),
-					CreatedDateTime:                  report.GetCreatedDateTime(),
-					UserDisplayName:                  report.GetUserDisplayName(),
-					UserPrincipalName:                report.GetUserPrincipalName(),
-					UserId:                           report.GetUserId(),
-					AppId:                            report.GetAppId(),
-					AppDisplayName:                   report.GetAppDisplayName(),
-					IpAddress:                        report.GetIpAddress(),
-					ClientAppUsed:                    report.GetClientAppUsed(),
-					CorrelationId:                    report.GetCorrelationId(),
-					ConditionalAccessStatus:          report.GetConditionalAccessStatus(),
-					IsInteractive:                    report.GetIsInteractive(),
-					RiskDetail:                       report.GetRiskDetail(),
-					RiskLevelAggregated:              report.GetRiskLevelAggregated(),
-					RiskLevelDuringSignIn:            report.GetRiskLevelDuringSignIn(),
-					RiskState:                        report.GetRiskState(),
-					ResourceDisplayName:              report.GetResourceDisplayName(),
-					ResourceId:                       report.GetResourceId(),
-					RiskEventTypes:                   report.GetRiskEventTypes(),
-					Status:                           status,
-					DeviceDetail:                     deviceDetail,
-					Location:                         location,
-					AppliedConditionalAccessPolicies: appliedConditionalAccessPolicies,
-				},
+			Description: model.AdSignInReportDescription{
+				TenantID:                         tenantId,
+				Id:                               report.GetId(),
+				CreatedDateTime:                  report.GetCreatedDateTime(),
+				UserDisplayName:                  report.GetUserDisplayName(),
+				UserPrincipalName:                report.GetUserPrincipalName(),
+				UserId:                           report.GetUserId(),
+				AppId:                            report.GetAppId(),
+				AppDisplayName:                   report.GetAppDisplayName(),
+				IpAddress:                        report.GetIpAddress(),
+				ClientAppUsed:                    report.GetClientAppUsed(),
+				CorrelationId:                    report.GetCorrelationId(),
+				ConditionalAccessStatus:          report.GetConditionalAccessStatus(),
+				IsInteractive:                    report.GetIsInteractive(),
+				RiskDetail:                       report.GetRiskDetail(),
+				RiskLevelAggregated:              report.GetRiskLevelAggregated(),
+				RiskLevelDuringSignIn:            report.GetRiskLevelDuringSignIn(),
+				RiskState:                        report.GetRiskState(),
+				ResourceDisplayName:              report.GetResourceDisplayName(),
+				ResourceId:                       report.GetResourceId(),
+				RiskEventTypes:                   report.GetRiskEventTypes(),
+				Status:                           status,
+				DeviceDetail:                     deviceDetail,
+				Location:                         location,
+				AppliedConditionalAccessPolicies: appliedConditionalAccessPolicies,
 			},
 		}
 		if stream != nil {
@@ -1029,24 +1019,22 @@ func AdDevice(ctx context.Context, cred *azidentity.ClientSecretCredential, tena
 			Name:     *device.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdDeviceDescription{
-					TenantID:                      tenantId,
-					Id:                            device.GetId(),
-					DisplayName:                   device.GetDisplayName(),
-					AccountEnabled:                device.GetAccountEnabled(),
-					DeviceId:                      device.GetDeviceId(),
-					ApproximateLastSignInDateTime: device.GetApproximateLastSignInDateTime(),
-					IsCompliant:                   device.GetIsCompliant(),
-					IsManaged:                     device.GetIsManaged(),
-					MdmAppId:                      device.GetMdmAppId(),
-					OperatingSystem:               device.GetOperatingSystem(),
-					OperatingSystemVersion:        device.GetOperatingSystemVersion(),
-					ProfileType:                   device.GetProfileType(),
-					TrustType:                     device.GetTrustType(),
-					ExtensionAttributes:           device.GetExtensions(),
-					MemberOf:                      device.GetMemberOf(),
-				},
+			Description: model.AdDeviceDescription{
+				TenantID:                      tenantId,
+				Id:                            device.GetId(),
+				DisplayName:                   device.GetDisplayName(),
+				AccountEnabled:                device.GetAccountEnabled(),
+				DeviceId:                      device.GetDeviceId(),
+				ApproximateLastSignInDateTime: device.GetApproximateLastSignInDateTime(),
+				IsCompliant:                   device.GetIsCompliant(),
+				IsManaged:                     device.GetIsManaged(),
+				MdmAppId:                      device.GetMdmAppId(),
+				OperatingSystem:               device.GetOperatingSystem(),
+				OperatingSystemVersion:        device.GetOperatingSystemVersion(),
+				ProfileType:                   device.GetProfileType(),
+				TrustType:                     device.GetTrustType(),
+				ExtensionAttributes:           device.GetExtensions(),
+				MemberOf:                      device.GetMemberOf(),
 			},
 		}
 		if stream != nil {
@@ -1099,15 +1087,13 @@ func AdDirectoryRole(ctx context.Context, cred *azidentity.ClientSecretCredentia
 			Name:     *role.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdDirectoryRoleDescription{
-					TenantID:       tenantId,
-					DisplayName:    role.GetDisplayName(),
-					Id:             role.GetId(),
-					Description:    role.GetDescription(),
-					RoleTemplateId: role.GetRoleTemplateId(),
-					MemberIds:      memberIds,
-				},
+			Description: model.AdDirectoryRoleDescription{
+				TenantID:       tenantId,
+				DisplayName:    role.GetDisplayName(),
+				Id:             role.GetId(),
+				Description:    role.GetDescription(),
+				RoleTemplateId: role.GetRoleTemplateId(),
+				MemberIds:      memberIds,
 			},
 		}
 		if stream != nil {
@@ -1163,15 +1149,13 @@ func AdDirectorySetting(ctx context.Context, cred *azidentity.ClientSecretCreden
 				Name:     *setting.GetDisplayName(),
 				Location: "global",
 
-				Description: JSONAllFieldsMarshaller{
-					Value: model.AdDirectorySettingDescription{
-						TenantID:    tenantId,
-						DisplayName: setting.GetDisplayName(),
-						Id:          setting.GetId(),
-						TemplateId:  setting.GetTemplateId(),
-						Name:        v.GetName(),
-						Value:       v.GetValue(),
-					},
+				Description: model.AdDirectorySettingDescription{
+					TenantID:    tenantId,
+					DisplayName: setting.GetDisplayName(),
+					Id:          setting.GetId(),
+					TemplateId:  setting.GetTemplateId(),
+					Name:        v.GetName(),
+					Value:       v.GetValue(),
 				},
 			}
 			if stream != nil {
@@ -1337,21 +1321,19 @@ func AdDirectoryAuditReport(ctx context.Context, cred *azidentity.ClientSecretCr
 			ID:       id,
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdDirectoryAuditReportDescription{
-					TenantID:            tenantId,
-					Id:                  audit.GetId(),
-					ActivityDateTime:    audit.GetActivityDateTime(),
-					ActivityDisplayName: audit.GetActivityDisplayName(),
-					Category:            audit.GetCategory(),
-					CorrelationId:       audit.GetCorrelationId(),
-					LoggedByService:     audit.GetLoggedByService(),
-					OperationType:       audit.GetOperationType(),
-					Result:              auditResult,
-					ResultReason:        audit.GetResultReason(),
-					InitiatedBy:         initiatedBy,
-					TargetResources:     targetResources,
-				},
+			Description: model.AdDirectoryAuditReportDescription{
+				TenantID:            tenantId,
+				Id:                  audit.GetId(),
+				ActivityDateTime:    audit.GetActivityDateTime(),
+				ActivityDisplayName: audit.GetActivityDisplayName(),
+				Category:            audit.GetCategory(),
+				CorrelationId:       audit.GetCorrelationId(),
+				LoggedByService:     audit.GetLoggedByService(),
+				OperationType:       audit.GetOperationType(),
+				Result:              auditResult,
+				ResultReason:        audit.GetResultReason(),
+				InitiatedBy:         initiatedBy,
+				TargetResources:     targetResources,
 			},
 		}
 		if stream != nil {
@@ -1405,18 +1387,16 @@ func AdDomain(ctx context.Context, cred *azidentity.ClientSecretCredential, tena
 			ID:       *domain.GetId(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdDomainDescription{
-					TenantID:           tenantId,
-					Id:                 domain.GetId(),
-					AuthenticationType: domain.GetAuthenticationType(),
-					IsDefault:          domain.GetIsDefault(),
-					IsAdminManaged:     domain.GetIsAdminManaged(),
-					IsInitial:          domain.GetIsInitial(),
-					IsRoot:             domain.GetIsRoot(),
-					IsVerified:         domain.GetIsVerified(),
-					SupportedServices:  domain.GetSupportedServices(),
-				},
+			Description: model.AdDomainDescription{
+				TenantID:           tenantId,
+				Id:                 domain.GetId(),
+				AuthenticationType: domain.GetAuthenticationType(),
+				IsDefault:          domain.GetIsDefault(),
+				IsAdminManaged:     domain.GetIsAdminManaged(),
+				IsInitial:          domain.GetIsInitial(),
+				IsRoot:             domain.GetIsRoot(),
+				IsVerified:         domain.GetIsVerified(),
+				SupportedServices:  domain.GetSupportedServices(),
 			},
 		}
 		if stream != nil {
@@ -1471,15 +1451,13 @@ func AdIdentityProvider(ctx context.Context, cred *azidentity.ClientSecretCreden
 			Name:     *ip.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdIdentityProviderDescription{
-					TenantID:     tenantId,
-					Id:           ip.GetId(),
-					DisplayName:  ip.GetDisplayName(),
-					Type:         ip.GetOdataType(),
-					ClientId:     clientID,
-					ClientSecret: clientSecret,
-				},
+			Description: model.AdIdentityProviderDescription{
+				TenantID:     tenantId,
+				Id:           ip.GetId(),
+				DisplayName:  ip.GetDisplayName(),
+				Type:         ip.GetOdataType(),
+				ClientId:     clientID,
+				ClientSecret: clientSecret,
 			},
 		}
 		if stream != nil {
@@ -1524,14 +1502,12 @@ func AdSecurityDefaultsPolicy(ctx context.Context, cred *azidentity.ClientSecret
 		Name:     *result.GetDisplayName(),
 		Location: "global",
 
-		Description: JSONAllFieldsMarshaller{
-			Value: model.AdSecurityDefaultsPolicyDescription{
-				TenantID:    tenantId,
-				Id:          result.GetId(),
-				DisplayName: result.GetDisplayName(),
-				IsEnabled:   result.GetIsEnabled(),
-				Description: result.GetDescription(),
-			},
+		Description: model.AdSecurityDefaultsPolicyDescription{
+			TenantID:    tenantId,
+			Id:          result.GetId(),
+			DisplayName: result.GetDisplayName(),
+			IsEnabled:   result.GetIsEnabled(),
+			Description: result.GetDescription(),
 		},
 	}
 	if stream != nil {
@@ -1584,20 +1560,18 @@ func AdAuthorizationPolicy(ctx context.Context, cred *azidentity.ClientSecretCre
 		Name:     *result.GetDisplayName(),
 		Location: "global",
 
-		Description: JSONAllFieldsMarshaller{
-			Value: model.AdAuthorizationPolicyDescription{
-				TenantID:                               tenantId,
-				Id:                                     result.GetId(),
-				DisplayName:                            result.GetDisplayName(),
-				Description:                            result.GetDescription(),
-				AllowedToSignIpEmailBasedSubscriptions: result.GetAllowedToSignUpEmailBasedSubscriptions(),
-				AllowedToUseSspr:                       result.GetAllowedToUseSSPR(),
-				AllowedEmailVerifiedUsersToJoinOrganization: result.GetAllowEmailVerifiedUsersToJoinOrganization(),
-				AllowInvitesFrom:           result.GetAllowInvitesFrom().String(),
-				BlockMsolPowershell:        result.GetBlockMsolPowerShell(),
-				GuestUserRoleId:            result.GetGuestUserRoleId().String(),
-				DefaultUserRolePermissions: defaultUserRolePermissions,
-			},
+		Description: model.AdAuthorizationPolicyDescription{
+			TenantID:                               tenantId,
+			Id:                                     result.GetId(),
+			DisplayName:                            result.GetDisplayName(),
+			Description:                            result.GetDescription(),
+			AllowedToSignIpEmailBasedSubscriptions: result.GetAllowedToSignUpEmailBasedSubscriptions(),
+			AllowedToUseSspr:                       result.GetAllowedToUseSSPR(),
+			AllowedEmailVerifiedUsersToJoinOrganization: result.GetAllowEmailVerifiedUsersToJoinOrganization(),
+			AllowInvitesFrom:           result.GetAllowInvitesFrom().String(),
+			BlockMsolPowershell:        result.GetBlockMsolPowerShell(),
+			GuestUserRoleId:            result.GetGuestUserRoleId().String(),
+			DefaultUserRolePermissions: defaultUserRolePermissions,
 		},
 	}
 	if stream != nil {
@@ -1826,36 +1800,34 @@ func AdConditionalAccessPolicy(ctx context.Context, cred *azidentity.ClientSecre
 			Name:     *p.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdConditionalAccessPolicyDescription{
-					TenantID:                        tenantId,
-					Id:                              p.GetId(),
-					DisplayName:                     p.GetDisplayName(),
-					State:                           state,
-					CreatedDateTime:                 p.GetCreatedDateTime(),
-					ModifiedDateTime:                p.GetModifiedDateTime(),
-					Operator:                        operator,
-					Applications:                    applications,
-					ApplicationEnforcedRestrictions: applicationEnforcedRestrictions,
-					BuiltInControls:                 builtInControls,
-					ClientAppTypes:                  clientAppTypes,
-					CustomAuthenticationFactors:     customAuthenticationFactors,
-					CloudAppSecurity:                cloudAppSecurity,
-					Locations:                       locations,
-					PersistentBrowser:               persistentBrowser,
-					Platforms: struct {
-						ExcludePlatforms []string
-						IncludePlatforms []string
-					}{
-						ExcludePlatforms: excludePlatforms,
-						IncludePlatforms: includePlatforms,
-					},
-					SignInFrequency:  signInFrequency,
-					SignInRiskLevels: signInRiskLevel,
-					TermsOfUse:       termOfUse,
-					Users:            users,
-					UserRiskLevel:    userRiskLevel,
+			Description: model.AdConditionalAccessPolicyDescription{
+				TenantID:                        tenantId,
+				Id:                              p.GetId(),
+				DisplayName:                     p.GetDisplayName(),
+				State:                           state,
+				CreatedDateTime:                 p.GetCreatedDateTime(),
+				ModifiedDateTime:                p.GetModifiedDateTime(),
+				Operator:                        operator,
+				Applications:                    applications,
+				ApplicationEnforcedRestrictions: applicationEnforcedRestrictions,
+				BuiltInControls:                 builtInControls,
+				ClientAppTypes:                  clientAppTypes,
+				CustomAuthenticationFactors:     customAuthenticationFactors,
+				CloudAppSecurity:                cloudAppSecurity,
+				Locations:                       locations,
+				PersistentBrowser:               persistentBrowser,
+				Platforms: struct {
+					ExcludePlatforms []string
+					IncludePlatforms []string
+				}{
+					ExcludePlatforms: excludePlatforms,
+					IncludePlatforms: includePlatforms,
 				},
+				SignInFrequency:  signInFrequency,
+				SignInRiskLevels: signInRiskLevel,
+				TermsOfUse:       termOfUse,
+				Users:            users,
+				UserRiskLevel:    userRiskLevel,
 			},
 		}
 		if stream != nil {
@@ -1922,17 +1894,15 @@ func AdAdminConsentRequestPolicy(ctx context.Context, cred *azidentity.ClientSec
 		ID:       *result.GetId(),
 		Location: "global",
 
-		Description: JSONAllFieldsMarshaller{
-			Value: model.AdAdminConsentRequestPolicyDescription{
-				TenantID:              tenantId,
-				Id:                    result.GetId(),
-				IsEnabled:             result.GetIsEnabled(),
-				NotifyReviewers:       result.GetNotifyReviewers(),
-				RemindersEnabled:      result.GetRemindersEnabled(),
-				RequestDurationInDays: result.GetRequestDurationInDays(),
-				Version:               result.GetVersion(),
-				Reviewers:             reviewers,
-			},
+		Description: model.AdAdminConsentRequestPolicyDescription{
+			TenantID:              tenantId,
+			Id:                    result.GetId(),
+			IsEnabled:             result.GetIsEnabled(),
+			NotifyReviewers:       result.GetNotifyReviewers(),
+			RemindersEnabled:      result.GetRemindersEnabled(),
+			RequestDurationInDays: result.GetRequestDurationInDays(),
+			Version:               result.GetVersion(),
+			Reviewers:             reviewers,
 		},
 	}
 	if stream != nil {
@@ -1972,26 +1942,24 @@ func AdUserRegistrationDetails(ctx context.Context, cred *azidentity.ClientSecre
 			ID:       *user.GetId(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdUserRegistrationDetailsDescription{
-					TenantID:                             tenantId,
-					Id:                                   user.GetId(),
-					UserPrincipalName:                    user.GetUserPrincipalName(),
-					UserDisplayName:                      user.GetUserDisplayName(),
-					UserType:                             user.GetUserType().String(),
-					IsAdmin:                              user.GetIsAdmin(),
-					IsMfaCapable:                         user.GetIsMfaCapable(),
-					IsMfaRegistered:                      user.GetIsMfaRegistered(),
-					IsSsprCapable:                        user.GetIsSsprCapable(),
-					IsSsprRegistered:                     user.GetIsSsprRegistered(),
-					IsSsprEnabled:                        user.GetIsSsprEnabled(),
-					IsPasswordlessCapable:                user.GetIsPasswordlessCapable(),
-					SystemPreferredAuthenticationMethods: user.GetSystemPreferredAuthenticationMethods(),
-					IsSystemPreferredAuthenticationMethodEnabled:  user.GetIsSystemPreferredAuthenticationMethodEnabled(),
-					LastUpdatedDateTime:                           user.GetLastUpdatedDateTime(),
-					MethodsRegistered:                             user.GetMethodsRegistered(),
-					UserPreferredMethodForSecondaryAuthentication: user.GetUserPreferredMethodForSecondaryAuthentication().String(),
-				},
+			Description: model.AdUserRegistrationDetailsDescription{
+				TenantID:                             tenantId,
+				Id:                                   user.GetId(),
+				UserPrincipalName:                    user.GetUserPrincipalName(),
+				UserDisplayName:                      user.GetUserDisplayName(),
+				UserType:                             user.GetUserType().String(),
+				IsAdmin:                              user.GetIsAdmin(),
+				IsMfaCapable:                         user.GetIsMfaCapable(),
+				IsMfaRegistered:                      user.GetIsMfaRegistered(),
+				IsSsprCapable:                        user.GetIsSsprCapable(),
+				IsSsprRegistered:                     user.GetIsSsprRegistered(),
+				IsSsprEnabled:                        user.GetIsSsprEnabled(),
+				IsPasswordlessCapable:                user.GetIsPasswordlessCapable(),
+				SystemPreferredAuthenticationMethods: user.GetSystemPreferredAuthenticationMethods(),
+				IsSystemPreferredAuthenticationMethodEnabled:  user.GetIsSystemPreferredAuthenticationMethodEnabled(),
+				LastUpdatedDateTime:                           user.GetLastUpdatedDateTime(),
+				MethodsRegistered:                             user.GetMethodsRegistered(),
+				UserPreferredMethodForSecondaryAuthentication: user.GetUserPreferredMethodForSecondaryAuthentication().String(),
 			},
 		}
 		if stream != nil {
@@ -2060,20 +2028,18 @@ func AdGroupMembership(ctx context.Context, cred *azidentity.ClientSecretCredent
 				Name:     *member.GetDisplayName(),
 				Location: "global",
 
-				Description: JSONAllFieldsMarshaller{
-					Value: model.AdGroupMembershipDescription{
-						TenantID:           tenantId,
-						DisplayName:        member.GetDisplayName(),
-						Id:                 member.GetId(),
-						GroupId:            group.GetId(),
-						State:              member.GetState(),
-						UserPrincipalName:  member.GetUserPrincipalName(),
-						AccountEnabled:     member.GetAccountEnabled(),
-						Mail:               member.GetMail(),
-						ProxyAddresses:     member.GetProxyAddresses(),
-						UserType:           member.GetUserType(),
-						SecurityIdentifier: member.GetSecurityIdentifier(),
-					},
+				Description: model.AdGroupMembershipDescription{
+					TenantID:           tenantId,
+					DisplayName:        member.GetDisplayName(),
+					Id:                 member.GetId(),
+					GroupId:            group.GetId(),
+					State:              member.GetState(),
+					UserPrincipalName:  member.GetUserPrincipalName(),
+					AccountEnabled:     member.GetAccountEnabled(),
+					Mail:               member.GetMail(),
+					ProxyAddresses:     member.GetProxyAddresses(),
+					UserType:           member.GetUserType(),
+					SecurityIdentifier: member.GetSecurityIdentifier(),
 				},
 			}
 			if stream != nil {
@@ -2258,97 +2224,95 @@ func AdAppRegistration(ctx context.Context, cred *azidentity.ClientSecretCredent
 			Name:     *app.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdAppRegistrationDescription{
-					TenantID:                  tenantId,
-					DisplayName:               app.GetDisplayName(),
-					Id:                        app.GetId(),
-					AppId:                     app.GetAppId(),
-					CreatedDateTime:           app.GetCreatedDateTime(),
-					Description:               app.GetDescription(),
-					Oauth2RequirePostResponse: app.GetOauth2RequirePostResponse(),
-					PublisherDomain:           app.GetPublisherDomain(),
-					SignInAudience:            app.GetSignInAudience(),
-					Api: struct {
-						AcceptMappedClaims      *bool
-						KnownClientApplications []string
-						Oauth2PermissionScopes  []struct {
-							AdminConsentDescription *string
-							AdminConsentDisplayName *string
-							Id                      string
-							IsEnabled               *bool
-							Origin                  *string
-							TypeEscaped             *string
-							UserConsentDescription  *string
-							UserConsentDisplayName  *string
-						}
-						PreAuthorizedApplications []struct {
-							AppId                  *string
-							DelegatedPermissionIds []string
-						}
-						RequestedAccessTokenVersion *int32
+			Description: model.AdAppRegistrationDescription{
+				TenantID:                  tenantId,
+				DisplayName:               app.GetDisplayName(),
+				Id:                        app.GetId(),
+				AppId:                     app.GetAppId(),
+				CreatedDateTime:           app.GetCreatedDateTime(),
+				Description:               app.GetDescription(),
+				Oauth2RequirePostResponse: app.GetOauth2RequirePostResponse(),
+				PublisherDomain:           app.GetPublisherDomain(),
+				SignInAudience:            app.GetSignInAudience(),
+				Api: struct {
+					AcceptMappedClaims      *bool
+					KnownClientApplications []string
+					Oauth2PermissionScopes  []struct {
+						AdminConsentDescription *string
+						AdminConsentDisplayName *string
+						Id                      string
+						IsEnabled               *bool
+						Origin                  *string
+						TypeEscaped             *string
+						UserConsentDescription  *string
+						UserConsentDisplayName  *string
+					}
+					PreAuthorizedApplications []struct {
+						AppId                  *string
+						DelegatedPermissionIds []string
+					}
+					RequestedAccessTokenVersion *int32
+				}{
+					AcceptMappedClaims:          app.GetApi().GetAcceptMappedClaims(),
+					KnownClientApplications:     knownClientApplications,
+					PreAuthorizedApplications:   preAuthorizedApplications,
+					Oauth2PermissionScopes:      oauth2PermissionScopes,
+					RequestedAccessTokenVersion: app.GetApi().GetRequestedAccessTokenVersion(),
+				},
+				IdentifierUris: app.GetIdentifierUris(),
+				Info: struct {
+					LogoUrl             *string
+					MarketingUrl        *string
+					PrivacyStatementUrl *string
+					SupportUrl          *string
+					TermsOfServiceUrl   *string
+				}{
+					LogoUrl:             app.GetInfo().GetLogoUrl(),
+					MarketingUrl:        app.GetInfo().GetMarketingUrl(),
+					SupportUrl:          app.GetInfo().GetSupportUrl(),
+					PrivacyStatementUrl: app.GetInfo().GetPrivacyStatementUrl(),
+					TermsOfServiceUrl:   app.GetInfo().GetTermsOfServiceUrl(),
+				},
+				KeyCredentials: keyCredentials,
+				OwnerIds:       ownerIds,
+				ParentalControlSettings: struct {
+					CountriesBlockedForMinors []string
+					LegalAgeGroupRule         *string
+				}{
+					CountriesBlockedForMinors: app.GetParentalControlSettings().GetCountriesBlockedForMinors(),
+					LegalAgeGroupRule:         app.GetParentalControlSettings().GetLegalAgeGroupRule(),
+				},
+				PasswordCredentials: passwordCredentials,
+				Spa: struct {
+					RedirectUris []string
+				}{
+					RedirectUris: app.GetSpa().GetRedirectUris(),
+				},
+				TagsSrc: app.GetTags(),
+				Web: struct {
+					HomePageUrl           *string
+					ImplicitGrantSettings struct {
+						EnableAccessTokenIssuance *bool
+						EnableIdTokenIssuance     *bool
+					}
+					LogoutUrl           *string
+					RedirectUris        []string
+					RedirectUriSettings []struct {
+						Index *int32
+						Uri   *string
+					}
+				}{
+					HomePageUrl:  app.GetWeb().GetHomePageUrl(),
+					RedirectUris: app.GetWeb().GetRedirectUris(),
+					LogoutUrl:    app.GetWeb().GetLogoutUrl(),
+					ImplicitGrantSettings: struct {
+						EnableAccessTokenIssuance *bool
+						EnableIdTokenIssuance     *bool
 					}{
-						AcceptMappedClaims:          app.GetApi().GetAcceptMappedClaims(),
-						KnownClientApplications:     knownClientApplications,
-						PreAuthorizedApplications:   preAuthorizedApplications,
-						Oauth2PermissionScopes:      oauth2PermissionScopes,
-						RequestedAccessTokenVersion: app.GetApi().GetRequestedAccessTokenVersion(),
+						EnableAccessTokenIssuance: app.GetWeb().GetImplicitGrantSettings().GetEnableAccessTokenIssuance(),
+						EnableIdTokenIssuance:     app.GetWeb().GetImplicitGrantSettings().GetEnableIdTokenIssuance(),
 					},
-					IdentifierUris: app.GetIdentifierUris(),
-					Info: struct {
-						LogoUrl             *string
-						MarketingUrl        *string
-						PrivacyStatementUrl *string
-						SupportUrl          *string
-						TermsOfServiceUrl   *string
-					}{
-						LogoUrl:             app.GetInfo().GetLogoUrl(),
-						MarketingUrl:        app.GetInfo().GetMarketingUrl(),
-						SupportUrl:          app.GetInfo().GetSupportUrl(),
-						PrivacyStatementUrl: app.GetInfo().GetPrivacyStatementUrl(),
-						TermsOfServiceUrl:   app.GetInfo().GetTermsOfServiceUrl(),
-					},
-					KeyCredentials: keyCredentials,
-					OwnerIds:       ownerIds,
-					ParentalControlSettings: struct {
-						CountriesBlockedForMinors []string
-						LegalAgeGroupRule         *string
-					}{
-						CountriesBlockedForMinors: app.GetParentalControlSettings().GetCountriesBlockedForMinors(),
-						LegalAgeGroupRule:         app.GetParentalControlSettings().GetLegalAgeGroupRule(),
-					},
-					PasswordCredentials: passwordCredentials,
-					Spa: struct {
-						RedirectUris []string
-					}{
-						RedirectUris: app.GetSpa().GetRedirectUris(),
-					},
-					TagsSrc: app.GetTags(),
-					Web: struct {
-						HomePageUrl           *string
-						ImplicitGrantSettings struct {
-							EnableAccessTokenIssuance *bool
-							EnableIdTokenIssuance     *bool
-						}
-						LogoutUrl           *string
-						RedirectUris        []string
-						RedirectUriSettings []struct {
-							Index *int32
-							Uri   *string
-						}
-					}{
-						HomePageUrl:  app.GetWeb().GetHomePageUrl(),
-						RedirectUris: app.GetWeb().GetRedirectUris(),
-						LogoutUrl:    app.GetWeb().GetLogoutUrl(),
-						ImplicitGrantSettings: struct {
-							EnableAccessTokenIssuance *bool
-							EnableIdTokenIssuance     *bool
-						}{
-							EnableAccessTokenIssuance: app.GetWeb().GetImplicitGrantSettings().GetEnableAccessTokenIssuance(),
-							EnableIdTokenIssuance:     app.GetWeb().GetImplicitGrantSettings().GetEnableIdTokenIssuance(),
-						},
-						RedirectUriSettings: redirectUriSettings,
-					},
+					RedirectUriSettings: redirectUriSettings,
 				},
 			},
 		}
@@ -2574,35 +2538,33 @@ func AdEnterpriseApplication(ctx context.Context, cred *azidentity.ClientSecretC
 			Name:     *servicePrincipal.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdEnterpriseApplicationDescription{
-					TenantID:                  tenantId,
-					Id:                        servicePrincipal.GetId(),
-					DisplayName:               servicePrincipal.GetDisplayName(),
-					AppId:                     servicePrincipal.GetAppId(),
-					AccountEnabled:            servicePrincipal.GetAccountEnabled(),
-					AppDisplayName:            servicePrincipal.GetAppDisplayName(),
-					AppOwnerOrganizationId:    orgID,
-					AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
-					ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
-					SignInAudience:            servicePrincipal.GetSignInAudience(),
-					AppDescription:            servicePrincipal.GetAppDescription(),
-					Description:               servicePrincipal.GetDescription(),
-					LoginUrl:                  servicePrincipal.GetLoginUrl(),
-					LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
-					AddIns:                    addIns,
-					AlternativeNames:          servicePrincipal.GetAlternativeNames(),
-					AppRoles:                  appRoles,
-					//Info: servicePrincipal.GetInfo(),
-					KeyCredentials:             keyCredentials,
-					NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
-					OwnerIds:                   ownerIds,
-					PasswordCredentials:        passwordCredentials,
-					Oauth2PermissionScopes:     oauth2PermissionScopes,
-					ReplyUrls:                  servicePrincipal.GetReplyUrls(),
-					ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
-					TagsSrc:                    servicePrincipal.GetTags(),
-				},
+			Description: model.AdEnterpriseApplicationDescription{
+				TenantID:                  tenantId,
+				Id:                        servicePrincipal.GetId(),
+				DisplayName:               servicePrincipal.GetDisplayName(),
+				AppId:                     servicePrincipal.GetAppId(),
+				AccountEnabled:            servicePrincipal.GetAccountEnabled(),
+				AppDisplayName:            servicePrincipal.GetAppDisplayName(),
+				AppOwnerOrganizationId:    orgID,
+				AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
+				ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
+				SignInAudience:            servicePrincipal.GetSignInAudience(),
+				AppDescription:            servicePrincipal.GetAppDescription(),
+				Description:               servicePrincipal.GetDescription(),
+				LoginUrl:                  servicePrincipal.GetLoginUrl(),
+				LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
+				AddIns:                    addIns,
+				AlternativeNames:          servicePrincipal.GetAlternativeNames(),
+				AppRoles:                  appRoles,
+				//Info: servicePrincipal.GetInfo(),
+				KeyCredentials:             keyCredentials,
+				NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
+				OwnerIds:                   ownerIds,
+				PasswordCredentials:        passwordCredentials,
+				Oauth2PermissionScopes:     oauth2PermissionScopes,
+				ReplyUrls:                  servicePrincipal.GetReplyUrls(),
+				ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
+				TagsSrc:                    servicePrincipal.GetTags(),
 			},
 		}
 		if stream != nil {
@@ -2837,36 +2799,34 @@ func AdManagedIdentity(ctx context.Context, cred *azidentity.ClientSecretCredent
 			Name:     *servicePrincipal.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdManagedIdentityDescription{
-					TenantID:                  tenantId,
-					Id:                        servicePrincipal.GetId(),
-					DisplayName:               servicePrincipal.GetDisplayName(),
-					AppId:                     servicePrincipal.GetAppId(),
-					AccountEnabled:            servicePrincipal.GetAccountEnabled(),
-					AppDisplayName:            servicePrincipal.GetAppDisplayName(),
-					AppOwnerOrganizationId:    orgID,
-					AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
-					ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
-					SignInAudience:            servicePrincipal.GetSignInAudience(),
-					AppDescription:            servicePrincipal.GetAppDescription(),
-					Description:               servicePrincipal.GetDescription(),
-					LoginUrl:                  servicePrincipal.GetLoginUrl(),
-					LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
-					AddIns:                    addIns,
-					AlternativeNames:          servicePrincipal.GetAlternativeNames(),
-					AppRoles:                  appRoles,
-					//Info: servicePrincipal.GetInfo(),
-					KeyCredentials:             keyCredentials,
-					NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
-					OwnerIds:                   ownerIds,
-					PasswordCredentials:        passwordCredentials,
-					Oauth2PermissionScopes:     oauth2PermissionScopes,
-					ReplyUrls:                  servicePrincipal.GetReplyUrls(),
-					ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
-					TagsSrc:                    servicePrincipal.GetTags(),
-					IdentityType:               identityType,
-				},
+			Description: model.AdManagedIdentityDescription{
+				TenantID:                  tenantId,
+				Id:                        servicePrincipal.GetId(),
+				DisplayName:               servicePrincipal.GetDisplayName(),
+				AppId:                     servicePrincipal.GetAppId(),
+				AccountEnabled:            servicePrincipal.GetAccountEnabled(),
+				AppDisplayName:            servicePrincipal.GetAppDisplayName(),
+				AppOwnerOrganizationId:    orgID,
+				AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
+				ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
+				SignInAudience:            servicePrincipal.GetSignInAudience(),
+				AppDescription:            servicePrincipal.GetAppDescription(),
+				Description:               servicePrincipal.GetDescription(),
+				LoginUrl:                  servicePrincipal.GetLoginUrl(),
+				LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
+				AddIns:                    addIns,
+				AlternativeNames:          servicePrincipal.GetAlternativeNames(),
+				AppRoles:                  appRoles,
+				//Info: servicePrincipal.GetInfo(),
+				KeyCredentials:             keyCredentials,
+				NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
+				OwnerIds:                   ownerIds,
+				PasswordCredentials:        passwordCredentials,
+				Oauth2PermissionScopes:     oauth2PermissionScopes,
+				ReplyUrls:                  servicePrincipal.GetReplyUrls(),
+				ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
+				TagsSrc:                    servicePrincipal.GetTags(),
+				IdentityType:               identityType,
 			},
 		}
 		if stream != nil {
@@ -3096,35 +3056,33 @@ func AdMicrosoftApplication(ctx context.Context, cred *azidentity.ClientSecretCr
 			Name:     *servicePrincipal.GetDisplayName(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdMicrosoftApplicationDescription{
-					TenantID:                  tenantId,
-					Id:                        servicePrincipal.GetId(),
-					DisplayName:               servicePrincipal.GetDisplayName(),
-					AppId:                     servicePrincipal.GetAppId(),
-					AccountEnabled:            servicePrincipal.GetAccountEnabled(),
-					AppDisplayName:            servicePrincipal.GetAppDisplayName(),
-					AppOwnerOrganizationId:    orgID,
-					AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
-					ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
-					SignInAudience:            servicePrincipal.GetSignInAudience(),
-					AppDescription:            servicePrincipal.GetAppDescription(),
-					Description:               servicePrincipal.GetDescription(),
-					LoginUrl:                  servicePrincipal.GetLoginUrl(),
-					LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
-					AddIns:                    addIns,
-					AlternativeNames:          servicePrincipal.GetAlternativeNames(),
-					AppRoles:                  appRoles,
-					//Info: servicePrincipal.GetInfo(),
-					KeyCredentials:             keyCredentials,
-					NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
-					OwnerIds:                   ownerIds,
-					PasswordCredentials:        passwordCredentials,
-					Oauth2PermissionScopes:     oauth2PermissionScopes,
-					ReplyUrls:                  servicePrincipal.GetReplyUrls(),
-					ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
-					TagsSrc:                    servicePrincipal.GetTags(),
-				},
+			Description: model.AdMicrosoftApplicationDescription{
+				TenantID:                  tenantId,
+				Id:                        servicePrincipal.GetId(),
+				DisplayName:               servicePrincipal.GetDisplayName(),
+				AppId:                     servicePrincipal.GetAppId(),
+				AccountEnabled:            servicePrincipal.GetAccountEnabled(),
+				AppDisplayName:            servicePrincipal.GetAppDisplayName(),
+				AppOwnerOrganizationId:    orgID,
+				AppRoleAssignmentRequired: servicePrincipal.GetAppRoleAssignmentRequired(),
+				ServicePrincipalType:      servicePrincipal.GetServicePrincipalType(),
+				SignInAudience:            servicePrincipal.GetSignInAudience(),
+				AppDescription:            servicePrincipal.GetAppDescription(),
+				Description:               servicePrincipal.GetDescription(),
+				LoginUrl:                  servicePrincipal.GetLoginUrl(),
+				LogoutUrl:                 servicePrincipal.GetLogoutUrl(),
+				AddIns:                    addIns,
+				AlternativeNames:          servicePrincipal.GetAlternativeNames(),
+				AppRoles:                  appRoles,
+				//Info: servicePrincipal.GetInfo(),
+				KeyCredentials:             keyCredentials,
+				NotificationEmailAddresses: servicePrincipal.GetNotificationEmailAddresses(),
+				OwnerIds:                   ownerIds,
+				PasswordCredentials:        passwordCredentials,
+				Oauth2PermissionScopes:     oauth2PermissionScopes,
+				ReplyUrls:                  servicePrincipal.GetReplyUrls(),
+				ServicePrincipalNames:      servicePrincipal.GetServicePrincipalNames(),
+				TagsSrc:                    servicePrincipal.GetTags(),
 			},
 		}
 		if stream != nil {
@@ -3201,15 +3159,13 @@ func AdTenant(ctx context.Context, cred *azidentity.ClientSecretCredential, tena
 			ID:       *org.GetId(),
 			Location: "global",
 
-			Description: JSONAllFieldsMarshaller{
-				Value: model.AdTenantDescription{
-					TenantID:              org.GetId(),
-					DisplayName:           org.GetDisplayName(),
-					CreatedDateTime:       org.GetCreatedDateTime(),
-					OnPremisesSyncEnabled: org.GetOnPremisesSyncEnabled(),
-					TenantType:            org.GetTenantType(),
-					VerifiedDomains:       verifiedDomains,
-				},
+			Description: model.AdTenantDescription{
+				TenantID:              org.GetId(),
+				DisplayName:           org.GetDisplayName(),
+				CreatedDateTime:       org.GetCreatedDateTime(),
+				OnPremisesSyncEnabled: org.GetOnPremisesSyncEnabled(),
+				TenantType:            org.GetTenantType(),
+				VerifiedDomains:       verifiedDomains,
 			},
 		}
 		if stream != nil {
