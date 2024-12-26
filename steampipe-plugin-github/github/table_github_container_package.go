@@ -41,7 +41,7 @@ func tableGitHubContainerPackage() *plugin.Table {
 			{
 				Name:        "package_url",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.PackageUrl"),
+				Transform:   transform.FromField("Description.PackageURL"),
 				Description: "HTML URL for the package."},
 			{
 				Name:        "name",

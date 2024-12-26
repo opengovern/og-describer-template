@@ -6734,7 +6734,7 @@ var listContainerPackageFilters = map[string]string{
 	"media_type":  "Description.MediaType",
 	"metadata":    "Description.Metadata",
 	"name":        "Description.Name",
-	"package_url": "Description.PackageUrl",
+	"package_url": "Description.PackageURL",
 	"total_size":  "Description.TotalSize",
 	"updated_at":  "Description.UpdatedAt",
 }
@@ -6807,7 +6807,7 @@ var getContainerPackageFilters = map[string]string{
 	"media_type":  "Description.MediaType",
 	"metadata":    "Description.Metadata",
 	"name":        "Description.Name",
-	"package_url": "Description.PackageUrl",
+	"package_url": "Description.PackageURL",
 	"total_size":  "Description.TotalSize",
 	"updated_at":  "Description.UpdatedAt",
 }

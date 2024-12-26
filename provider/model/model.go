@@ -1465,7 +1465,7 @@ type ContainerPackageDescription struct {
 	Digest         string                   
 	CreatedAt      string            
 	UpdatedAt      string            
-	PackageURL        string            
+	PackageURL       string            
 	Name           string           
 	MediaType      string            
 	TotalSize      int64             
