@@ -3,8 +3,6 @@ package entraid
 import (
 	"context"
 	"encoding/json"
-	"github.com/opengovern/og-describer-entraid/provider/describer"
-
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -67,7 +65,7 @@ func azureOGColumns(columns []*plugin.Column) []*plugin.Column {
 }
 
 func marshalAzureJSON(_ context.Context, d *transform.TransformData) (interface{}, error) {
-	b, err := json.Marshal(describer.JSONAllFieldsMarshaller{Value: d.Value})
+	b, err := json.Marshal(d.Value)
 	if err != nil {
 		return nil, err
 	}
