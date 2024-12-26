@@ -52,7 +52,7 @@ func ListDeploys(ctx context.Context, handler *RenderAPIHandler, stream *models.
 }
 
 func processDeploys(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var deploys []model.DeployDescription
+	var deploys []model.DeployJSON
 	var deployListResponse []model.DeployResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services/"
@@ -100,13 +100,32 @@ func processDeploys(ctx context.Context, handler *RenderAPIHandler, serviceID st
 	}
 	for _, deploy := range deploys {
 		wg.Add(1)
-		go func(deploy model.DeployDescription) {
+		go func(deploy model.DeployJSON) {
 			defer wg.Done()
+			commit := model.Commit{
+				ID:        deploy.Commit.ID,
+				Message:   deploy.Commit.Message,
+				CreatedAt: deploy.Commit.CreatedAt,
+			}
+			image := model.Image{
+				Ref:                deploy.Image.Ref,
+				SHA:                deploy.Image.SHA,
+				RegistryCredential: deploy.Image.RegistryCredential,
+			}
 			value := models.Resource{
 				ID:   deploy.ID,
 				Name: deploy.Status,
 				Description: JSONAllFieldsMarshaller{
-					Value: deploy,
+					Value: model.DeployDescription{
+						ID:         deploy.ID,
+						Commit:     commit,
+						Image:      image,
+						Status:     deploy.Status,
+						Trigger:    deploy.Trigger,
+						FinishedAt: deploy.FinishedAt,
+						CreatedAt:  deploy.CreatedAt,
+						UpdatedAt:  deploy.UpdatedAt,
+					},
 				},
 			}
 			renderChan <- value

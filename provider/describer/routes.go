@@ -54,7 +54,7 @@ func ListRoutes(ctx context.Context, handler *RenderAPIHandler, stream *models.S
 }
 
 func processRoutes(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var routes []model.RouteDescription
+	var routes []model.RouteJSON
 	var routeListResponse []model.RouteResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services/"
@@ -103,13 +103,19 @@ func processRoutes(ctx context.Context, handler *RenderAPIHandler, serviceID str
 	}
 	for _, route := range routes {
 		wg.Add(1)
-		go func(route model.RouteDescription) {
+		go func(route model.RouteJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   route.ID,
 				Name: route.Type,
 				Description: JSONAllFieldsMarshaller{
-					Value: route,
+					Value: model.RouteDescription{
+						ID:          route.ID,
+						Type:        route.Type,
+						Source:      route.Source,
+						Destination: route.Destination,
+						Priority:    route.Priority,
+					},
 				},
 			}
 			renderChan <- value

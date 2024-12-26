@@ -54,14 +54,22 @@ func GetBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID str
 		ID:   blueprint.ID,
 		Name: blueprint.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: blueprint,
+			Value: model.BlueprintDescription{
+				ID:       blueprint.ID,
+				Name:     blueprint.Name,
+				Status:   blueprint.Status,
+				AutoSync: blueprint.AutoSync,
+				Repo:     blueprint.Repo,
+				Branch:   blueprint.Branch,
+				LastSync: blueprint.LastSync,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processBlueprints(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var blueprints []model.BlueprintDescription
+	var blueprints []model.BlueprintJSON
 	var blueprintListResponse []model.BlueprintResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/blueprints"
@@ -110,13 +118,21 @@ func processBlueprints(ctx context.Context, handler *RenderAPIHandler, renderCha
 	}
 	for _, blueprint := range blueprints {
 		wg.Add(1)
-		go func(blueprint model.BlueprintDescription) {
+		go func(blueprint model.BlueprintJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   blueprint.ID,
 				Name: blueprint.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: blueprint,
+					Value: model.BlueprintDescription{
+						ID:       blueprint.ID,
+						Name:     blueprint.Name,
+						Status:   blueprint.Status,
+						AutoSync: blueprint.AutoSync,
+						Repo:     blueprint.Repo,
+						Branch:   blueprint.Branch,
+						LastSync: blueprint.LastSync,
+					},
 				},
 			}
 			renderChan <- value
@@ -125,8 +141,8 @@ func processBlueprints(ctx context.Context, handler *RenderAPIHandler, renderCha
 	return nil
 }
 
-func processBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ProjectDescription, error) {
-	var project model.ProjectDescription
+func processBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.BlueprintJSON, error) {
+	var blueprint model.BlueprintJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/blueprints/"
 
@@ -144,7 +160,7 @@ func processBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID
 		}
 		defer resp.Body.Close()
 
-		if e = json.NewDecoder(resp.Body).Decode(&project); e != nil {
+		if e = json.NewDecoder(resp.Body).Decode(&blueprint); e != nil {
 			return nil, fmt.Errorf("failed to decode response: %w", e)
 		}
 		return resp, e
@@ -154,5 +170,5 @@ func processBlueprint(ctx context.Context, handler *RenderAPIHandler, resourceID
 	if err != nil {
 		return nil, fmt.Errorf("error during request handling: %w", err)
 	}
-	return &project, nil
+	return &blueprint, nil
 }

@@ -54,14 +54,22 @@ func GetDisk(ctx context.Context, handler *RenderAPIHandler, resourceID string) 
 		ID:   disk.ID,
 		Name: disk.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: disk,
+			Value: model.DiskDescription{
+				ID:        disk.ID,
+				Name:      disk.Name,
+				SizeGB:    disk.SizeGB,
+				MountPath: disk.MountPath,
+				ServiceID: disk.ServiceID,
+				CreatedAt: disk.CreatedAt,
+				UpdatedAt: disk.UpdatedAt,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processDisks(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var disks []model.DiskDescription
+	var disks []model.DiskJSON
 	var diskListResponse []model.DiskResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/disks"
@@ -110,13 +118,21 @@ func processDisks(ctx context.Context, handler *RenderAPIHandler, renderChan cha
 	}
 	for _, disk := range disks {
 		wg.Add(1)
-		go func(disk model.DiskDescription) {
+		go func(disk model.DiskJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   disk.ID,
 				Name: disk.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: disk,
+					Value: model.DiskDescription{
+						ID:        disk.ID,
+						Name:      disk.Name,
+						SizeGB:    disk.SizeGB,
+						MountPath: disk.MountPath,
+						ServiceID: disk.ServiceID,
+						CreatedAt: disk.CreatedAt,
+						UpdatedAt: disk.UpdatedAt,
+					},
 				},
 			}
 			renderChan <- value
@@ -125,8 +141,8 @@ func processDisks(ctx context.Context, handler *RenderAPIHandler, renderChan cha
 	return nil
 }
 
-func processDisk(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.DiskDescription, error) {
-	var disk model.DiskDescription
+func processDisk(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.DiskJSON, error) {
+	var disk model.DiskJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/disks/"
 

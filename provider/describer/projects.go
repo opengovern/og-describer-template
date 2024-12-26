@@ -50,18 +50,32 @@ func GetProject(ctx context.Context, handler *RenderAPIHandler, resourceID strin
 	if err != nil {
 		return nil, err
 	}
+	owner := model.Owner{
+		ID:                   project.Owner.ID,
+		Name:                 project.Owner.Name,
+		Email:                project.Owner.Email,
+		TwoFactorAuthEnabled: project.Owner.TwoFactorAuthEnabled,
+		Type:                 project.Owner.Type,
+	}
 	value := models.Resource{
 		ID:   project.ID,
 		Name: project.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: project,
+			Value: model.ProjectDescription{
+				ID:             project.ID,
+				CreatedAt:      project.CreatedAt,
+				UpdatedAt:      project.UpdatedAt,
+				Name:           project.Name,
+				Owner:          owner,
+				EnvironmentIDs: project.EnvironmentIDs,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processProjects(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var projects []model.ProjectDescription
+	var projects []model.ProjectJSON
 	var projectListResponse []model.ProjectResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/projects"
@@ -110,13 +124,27 @@ func processProjects(ctx context.Context, handler *RenderAPIHandler, renderChan 
 	}
 	for _, project := range projects {
 		wg.Add(1)
-		go func(project model.ProjectDescription) {
+		go func(project model.ProjectJSON) {
 			defer wg.Done()
+			owner := model.Owner{
+				ID:                   project.Owner.ID,
+				Name:                 project.Owner.Name,
+				Email:                project.Owner.Email,
+				TwoFactorAuthEnabled: project.Owner.TwoFactorAuthEnabled,
+				Type:                 project.Owner.Type,
+			}
 			value := models.Resource{
 				ID:   project.ID,
 				Name: project.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: project,
+					Value: model.ProjectDescription{
+						ID:             project.ID,
+						CreatedAt:      project.CreatedAt,
+						UpdatedAt:      project.UpdatedAt,
+						Name:           project.Name,
+						Owner:          owner,
+						EnvironmentIDs: project.EnvironmentIDs,
+					},
 				},
 			}
 			renderChan <- value
@@ -125,8 +153,8 @@ func processProjects(ctx context.Context, handler *RenderAPIHandler, renderChan 
 	return nil
 }
 
-func processProject(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ProjectDescription, error) {
-	var project model.ProjectDescription
+func processProject(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ProjectJSON, error) {
+	var project model.ProjectJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/projects/"
 
