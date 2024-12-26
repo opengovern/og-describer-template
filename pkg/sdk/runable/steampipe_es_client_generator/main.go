@@ -81,61 +81,12 @@ func main() {
 type {{ .Name }} struct {
 	ResourceID string ` + "`json:\"resource_id\"`" + `
 	PlatformID string ` + "`json:\"platform_id\"`" + `
-	Description   {{ .IntegrationType }}.{{ .Name }}Description 	` + "`json:\"Description\"`" + `
+	Description   {{ .IntegrationType }}.{{ .Name }}Description 	` + "`json:\"description\"`" + `
 	Metadata      {{ .IntegrationType }}.Metadata 					` + "`json:\"metadata\"`" + `
 	DescribedBy 	   string ` + "`json:\"described_by\"`" + `
 	ResourceType  	   string ` + "`json:\"resource_type\"`" + `
 	IntegrationType    string ` + "`json:\"integration_type\"`" + `
 	IntegrationID      string ` + "`json:\"integration_id\"`" + `
-}
-
-func (r *{{ .Name }}) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := {{ .IntegrationType }}Describer.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.({{ .IntegrationType }}.{{ .Name }}Description)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":		
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":		
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type {{ .Name }}Hit struct {
@@ -228,7 +179,7 @@ func List{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		plugin.Logger(ctx).Error("List{{ .Name }} NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("List{{ .Name }} GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -244,7 +195,7 @@ func List{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		return nil, err
 	}
 
-	paginator, err := k.New{{ .Name }}Paginator(essdk.BuildFilter(ctx, d.QueryContext, list{{ .Name }}Filters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.New{{ .Name }}Paginator(essdk.BuildFilter(ctx, d.QueryContext, list{{ .Name }}Filters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("List{{ .Name }} New{{ .Name }}Paginator", "error", err)
 		return nil, err
@@ -291,7 +242,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -305,7 +256,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	limit := int64(1)
-	paginator, err := k.New{{ .Name }}Paginator(essdk.BuildFilter(ctx, d.QueryContext, get{{ .Name }}Filters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.New{{ .Name }}Paginator(essdk.BuildFilter(ctx, d.QueryContext, get{{ .Name }}Filters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -433,6 +384,8 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 						s.ListFilters[fparts[0]] = fparts[1]
 					}
 				}
+				s.GetFilters["platform_account_id"] = "metadata.IntegrationID"
+				s.ListFilters["platform_account_id"] = "metadata.IntegrationID"
 			}
 
 			if s.Index != "" {
@@ -448,12 +401,9 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		fmt.Fprintln(&buf, `
 		import (
 			"context"
-			"encoding/json"
-			"fmt"
 			essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 			steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
 			"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-			`+configs.IntegrationTypeLower+`Describer "`+configs.OGPluginRepoURL+`/provider/describer"
 			`+configs.IntegrationTypeLower+` "`+configs.OGPluginRepoURL+`/provider/model"
             "runtime"
 		)

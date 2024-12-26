@@ -3,9 +3,6 @@ package opengovernance
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	entraidDescriber "github.com/opengovern/og-describer-entraid/provider/describer"
 	entraid "github.com/opengovern/og-describer-entraid/provider/model"
 	essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 	steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
@@ -22,61 +19,12 @@ type Client struct {
 type AdUsers struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdUsersDescription `json:"Description"`
+	Description     entraid.AdUsersDescription `json:"description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *AdUsers) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdUsersDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdUsersHit struct {
@@ -158,7 +106,7 @@ var listAdUsersFilters = map[string]string{
 	"mail":                                  "Description.Mail",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
-	"platform_account_id":                   "Metadata.SourceID",
+	"platform_account_id":                   "metadata.IntegrationID",
 	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
@@ -185,7 +133,7 @@ func ListAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListAdUsers NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUsers GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -201,7 +149,7 @@ func ListAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUsersFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUsersFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUsers NewAdUsersPaginator", "error", err)
 		return nil, err
@@ -239,7 +187,7 @@ var getAdUsersFilters = map[string]string{
 	"mail":                                  "Description.Mail",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
-	"platform_account_id":                   "Metadata.SourceID",
+	"platform_account_id":                   "metadata.IntegrationID",
 	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
@@ -263,7 +211,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -277,7 +225,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUsersFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdUsersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUsersFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -308,61 +256,12 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdGroup struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdGroupDescription `json:"Description"`
+	Description     entraid.AdGroupDescription `json:"description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
 	IntegrationType string                     `json:"integration_type"`
 	IntegrationID   string                     `json:"integration_id"`
-}
-
-func (r *AdGroup) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdGroupDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdGroupHit struct {
@@ -457,7 +356,7 @@ var listAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
-	"platform_account_id":              "Metadata.SourceID",
+	"platform_account_id":              "metadata.IntegrationID",
 	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
@@ -487,7 +386,7 @@ func ListAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListAdGroup NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroup GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -503,7 +402,7 @@ func ListAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroup NewAdGroupPaginator", "error", err)
 		return nil, err
@@ -554,7 +453,7 @@ var getAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
-	"platform_account_id":              "Metadata.SourceID",
+	"platform_account_id":              "metadata.IntegrationID",
 	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
@@ -581,7 +480,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -595,7 +494,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdGroupPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -626,61 +525,12 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdServicePrincipal struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdServicePrincipalDescription `json:"Description"`
+	Description     entraid.AdServicePrincipalDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
-}
-
-func (r *AdServicePrincipal) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdServicePrincipalDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdServicePrincipalHit struct {
@@ -771,7 +621,7 @@ var listAdServicePrincipalFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -799,7 +649,7 @@ func ListAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdServicePrincipal NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdServicePrincipal GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -815,7 +665,7 @@ func ListAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdServicePrincipalFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdServicePrincipalFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdServicePrincipal NewAdServicePrincipalPaginator", "error", err)
 		return nil, err
@@ -862,7 +712,7 @@ var getAdServicePrincipalFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -887,7 +737,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -901,7 +751,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdServicePrincipalFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdServicePrincipalPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdServicePrincipalFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -932,61 +782,12 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdApplication struct {
 	ResourceID      string                           `json:"resource_id"`
 	PlatformID      string                           `json:"platform_id"`
-	Description     entraid.AdApplicationDescription `json:"Description"`
+	Description     entraid.AdApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                 `json:"metadata"`
 	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
 	IntegrationType string                           `json:"integration_type"`
 	IntegrationID   string                           `json:"integration_id"`
-}
-
-func (r *AdApplication) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdApplicationDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdApplicationHit struct {
@@ -1070,6 +871,7 @@ var listAdApplicationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "metadata.IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -1096,7 +898,7 @@ func ListAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		plugin.Logger(ctx).Error("ListAdApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1112,7 +914,7 @@ func ListAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		return nil, err
 	}
 
-	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdApplication NewAdApplicationPaginator", "error", err)
 		return nil, err
@@ -1152,6 +954,7 @@ var getAdApplicationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "metadata.IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -1175,7 +978,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1189,7 +992,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1220,61 +1023,12 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 type AdDirectoryRole struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
-	Description     entraid.AdDirectoryRoleDescription `json:"Description"`
+	Description     entraid.AdDirectoryRoleDescription `json:"description"`
 	Metadata        entraid.Metadata                   `json:"metadata"`
 	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
 	IntegrationType string                             `json:"integration_type"`
 	IntegrationID   string                             `json:"integration_id"`
-}
-
-func (r *AdDirectoryRole) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdDirectoryRoleDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdDirectoryRoleHit struct {
@@ -1345,12 +1099,13 @@ func (p AdDirectoryRolePaginator) NextPage(ctx context.Context) ([]AdDirectoryRo
 }
 
 var listAdDirectoryRoleFilters = map[string]string{
-	"description":      "Description.Description",
-	"display_name":     "Description.DisplayName",
-	"id":               "Description.Id",
-	"member_ids":       "Description.MemberIds",
-	"role_template_id": "Description.RoleTemplateId",
-	"tenant_id":        "Description.TenantID",
+	"description":         "Description.Description",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"member_ids":          "Description.MemberIds",
+	"platform_account_id": "metadata.IntegrationID",
+	"role_template_id":    "Description.RoleTemplateId",
+	"tenant_id":           "Description.TenantID",
 }
 
 func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1371,7 +1126,7 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		plugin.Logger(ctx).Error("ListAdDirectoryRole NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectoryRole GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1387,7 +1142,7 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectoryRoleFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectoryRoleFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectoryRole NewAdDirectoryRolePaginator", "error", err)
 		return nil, err
@@ -1414,12 +1169,13 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 }
 
 var getAdDirectoryRoleFilters = map[string]string{
-	"description":      "Description.Description",
-	"display_name":     "Description.DisplayName",
-	"id":               "Description.Id",
-	"member_ids":       "Description.MemberIds",
-	"role_template_id": "Description.RoleTemplateId",
-	"tenant_id":        "Description.TenantID",
+	"description":         "Description.Description",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"member_ids":          "Description.MemberIds",
+	"platform_account_id": "metadata.IntegrationID",
+	"role_template_id":    "Description.RoleTemplateId",
+	"tenant_id":           "Description.TenantID",
 }
 
 func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1437,7 +1193,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1451,7 +1207,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectoryRoleFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDirectoryRolePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectoryRoleFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1482,61 +1238,12 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 type AdDirectorySetting struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdDirectorySettingDescription `json:"Description"`
+	Description     entraid.AdDirectorySettingDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
-}
-
-func (r *AdDirectorySetting) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdDirectorySettingDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdDirectorySettingHit struct {
@@ -1607,13 +1314,14 @@ func (p AdDirectorySettingPaginator) NextPage(ctx context.Context) ([]AdDirector
 }
 
 var listAdDirectorySettingFilters = map[string]string{
-	"display_name": "Description.DisplayName",
-	"id":           "Description.Id",
-	"name":         "Description.Name",
-	"template_id":  "Description.TemplateId",
-	"tenant_id":    "Description.TenantID",
-	"title":        "Description.Name",
-	"value":        "Description.Value",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"name":                "Description.Name",
+	"platform_account_id": "metadata.IntegrationID",
+	"template_id":         "Description.TemplateId",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.Name",
+	"value":               "Description.Value",
 }
 
 func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1634,7 +1342,7 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdDirectorySetting NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectorySetting GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1650,7 +1358,7 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectorySettingFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDirectorySettingFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDirectorySetting NewAdDirectorySettingPaginator", "error", err)
 		return nil, err
@@ -1677,13 +1385,14 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getAdDirectorySettingFilters = map[string]string{
-	"display_name": "Description.DisplayName",
-	"id":           "Description.Id",
-	"name":         "Description.Name",
-	"template_id":  "Description.TemplateId",
-	"tenant_id":    "Description.TenantID",
-	"title":        "Description.Name",
-	"value":        "Description.Value",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"name":                "Description.Name",
+	"platform_account_id": "metadata.IntegrationID",
+	"template_id":         "Description.TemplateId",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.Name",
+	"value":               "Description.Value",
 }
 
 func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1701,7 +1410,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1715,7 +1424,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectorySettingFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDirectorySettingPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDirectorySettingFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1746,61 +1455,12 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdDomain struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDomainDescription `json:"Description"`
+	Description     entraid.AdDomainDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
-}
-
-func (r *AdDomain) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdDomainDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdDomainHit struct {
@@ -1878,6 +1538,7 @@ var listAdDomainFilters = map[string]string{
 	"is_initial":          "Description.IsInitial",
 	"is_root":             "Description.IsRoot",
 	"is_verified":         "Description.IsVerified",
+	"platform_account_id": "metadata.IntegrationID",
 	"supported_services":  "Description.SupportedServices",
 	"tenant_id":           "Description.TenantID",
 	"title":               "Description.Id",
@@ -1901,7 +1562,7 @@ func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdDomain NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDomain GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1917,7 +1578,7 @@ func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDomainFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDomainFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDomain NewAdDomainPaginator", "error", err)
 		return nil, err
@@ -1951,6 +1612,7 @@ var getAdDomainFilters = map[string]string{
 	"is_initial":          "Description.IsInitial",
 	"is_root":             "Description.IsRoot",
 	"is_verified":         "Description.IsVerified",
+	"platform_account_id": "metadata.IntegrationID",
 	"supported_services":  "Description.SupportedServices",
 	"tenant_id":           "Description.TenantID",
 	"title":               "Description.Id",
@@ -1971,7 +1633,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1985,7 +1647,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDomainFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDomainPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDomainFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2016,61 +1678,12 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdTenant struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdTenantDescription `json:"Description"`
+	Description     entraid.AdTenantDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
-}
-
-func (r *AdTenant) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdTenantDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdTenantHit struct {
@@ -2144,7 +1757,7 @@ var listAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
 	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
-	"platform_account_id":      "Metadata.SourceID",
+	"platform_account_id":      "metadata.IntegrationID",
 	"platform_resource_id":     "ID",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
@@ -2169,7 +1782,7 @@ func ListAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdTenant NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdTenant GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2185,7 +1798,7 @@ func ListAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdTenantFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdTenantFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdTenant NewAdTenantPaginator", "error", err)
 		return nil, err
@@ -2215,7 +1828,7 @@ var getAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
 	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
-	"platform_account_id":      "Metadata.SourceID",
+	"platform_account_id":      "metadata.IntegrationID",
 	"platform_resource_id":     "ID",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
@@ -2237,7 +1850,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2251,7 +1864,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdTenantFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdTenantPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdTenantFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2282,61 +1895,12 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdIdentityProvider struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdIdentityProviderDescription `json:"Description"`
+	Description     entraid.AdIdentityProviderDescription `json:"description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
 	IntegrationType string                                `json:"integration_type"`
 	IntegrationID   string                                `json:"integration_id"`
-}
-
-func (r *AdIdentityProvider) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdIdentityProviderDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdIdentityProviderHit struct {
@@ -2407,13 +1971,14 @@ func (p AdIdentityProviderPaginator) NextPage(ctx context.Context) ([]AdIdentity
 }
 
 var listAdIdentityProviderFilters = map[string]string{
-	"client_id":     "Description.ClientId",
-	"client_secret": "Description.ClientSecret",
-	"id":            "Description.Id",
-	"name":          "Description.DisplayName",
-	"tenant_id":     "Description.TenantID",
-	"title":         "Description.DisplayName",
-	"type":          "Description.Type",
+	"client_id":           "Description.ClientId",
+	"client_secret":       "Description.ClientSecret",
+	"id":                  "Description.Id",
+	"name":                "Description.DisplayName",
+	"platform_account_id": "metadata.IntegrationID",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.DisplayName",
+	"type":                "Description.Type",
 }
 
 func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2434,7 +1999,7 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListAdIdentityProvider NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdIdentityProvider GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2450,7 +2015,7 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdIdentityProviderFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdIdentityProviderFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdIdentityProvider NewAdIdentityProviderPaginator", "error", err)
 		return nil, err
@@ -2477,13 +2042,14 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getAdIdentityProviderFilters = map[string]string{
-	"client_id":     "Description.ClientId",
-	"client_secret": "Description.ClientSecret",
-	"id":            "Description.Id",
-	"name":          "Description.DisplayName",
-	"tenant_id":     "Description.TenantID",
-	"title":         "Description.DisplayName",
-	"type":          "Description.Type",
+	"client_id":           "Description.ClientId",
+	"client_secret":       "Description.ClientSecret",
+	"id":                  "Description.Id",
+	"name":                "Description.DisplayName",
+	"platform_account_id": "metadata.IntegrationID",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.DisplayName",
+	"type":                "Description.Type",
 }
 
 func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2501,7 +2067,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2515,7 +2081,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdIdentityProviderFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdIdentityProviderPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdIdentityProviderFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2546,61 +2112,12 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdSecurityDefaultsPolicy struct {
 	ResourceID      string                                      `json:"resource_id"`
 	PlatformID      string                                      `json:"platform_id"`
-	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"Description"`
+	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                            `json:"metadata"`
 	DescribedBy     string                                      `json:"described_by"`
 	ResourceType    string                                      `json:"resource_type"`
 	IntegrationType string                                      `json:"integration_type"`
 	IntegrationID   string                                      `json:"integration_id"`
-}
-
-func (r *AdSecurityDefaultsPolicy) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdSecurityDefaultsPolicyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdSecurityDefaultsPolicyHit struct {
@@ -2671,12 +2188,13 @@ func (p AdSecurityDefaultsPolicyPaginator) NextPage(ctx context.Context) ([]AdSe
 }
 
 var listAdSecurityDefaultsPolicyFilters = map[string]string{
-	"description":  "Description.Description",
-	"display_name": "Description.DisplayName",
-	"id":           "Description.Id",
-	"is_enabled":   "Description.IsEnabled",
-	"tenant_id":    "Description.TenantID",
-	"title":        "Description.DisplayName",
+	"description":         "Description.Description",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"is_enabled":          "Description.IsEnabled",
+	"platform_account_id": "metadata.IntegrationID",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.DisplayName",
 }
 
 func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2697,7 +2215,7 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2713,7 +2231,7 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 		return nil, err
 	}
 
-	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdSecurityDefaultsPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdSecurityDefaultsPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdSecurityDefaultsPolicy NewAdSecurityDefaultsPolicyPaginator", "error", err)
 		return nil, err
@@ -2740,12 +2258,13 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 }
 
 var getAdSecurityDefaultsPolicyFilters = map[string]string{
-	"description":  "Description.Description",
-	"display_name": "Description.DisplayName",
-	"id":           "Description.Id",
-	"is_enabled":   "Description.IsEnabled",
-	"tenant_id":    "Description.TenantID",
-	"title":        "Description.DisplayName",
+	"description":         "Description.Description",
+	"display_name":        "Description.DisplayName",
+	"id":                  "Description.Id",
+	"is_enabled":          "Description.IsEnabled",
+	"platform_account_id": "metadata.IntegrationID",
+	"tenant_id":           "Description.TenantID",
+	"title":               "Description.DisplayName",
 }
 
 func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2763,7 +2282,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2777,7 +2296,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdSecurityDefaultsPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdSecurityDefaultsPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdSecurityDefaultsPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2808,61 +2327,12 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 type AdAuthorizationPolicy struct {
 	ResourceID      string                                   `json:"resource_id"`
 	PlatformID      string                                   `json:"platform_id"`
-	Description     entraid.AdAuthorizationPolicyDescription `json:"Description"`
+	Description     entraid.AdAuthorizationPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                         `json:"metadata"`
 	DescribedBy     string                                   `json:"described_by"`
 	ResourceType    string                                   `json:"resource_type"`
 	IntegrationType string                                   `json:"integration_type"`
 	IntegrationID   string                                   `json:"integration_id"`
-}
-
-func (r *AdAuthorizationPolicy) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdAuthorizationPolicyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdAuthorizationPolicyHit struct {
@@ -2943,6 +2413,7 @@ var listAdAuthorizationPolicyFilters = map[string]string{
 	"display_name":                                      "Description.DisplayName",
 	"guest_user_role_id":                                "Description.GuestUserRoleId",
 	"id":                                                "Description.Id",
+	"platform_account_id":                               "metadata.IntegrationID",
 	"tenant_id":                                         "Description.TenantID",
 	"title":                                             "Description.DisplayName",
 }
@@ -2965,7 +2436,7 @@ func ListAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plug
 		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2981,7 +2452,7 @@ func ListAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plug
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAuthorizationPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAuthorizationPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAuthorizationPolicy NewAdAuthorizationPolicyPaginator", "error", err)
 		return nil, err
@@ -3018,6 +2489,7 @@ var getAdAuthorizationPolicyFilters = map[string]string{
 	"display_name":                                      "Description.DisplayName",
 	"guest_user_role_id":                                "Description.GuestUserRoleId",
 	"id":                                                "Description.Id",
+	"platform_account_id":                               "metadata.IntegrationID",
 	"tenant_id":                                         "Description.TenantID",
 	"title":                                             "Description.DisplayName",
 }
@@ -3037,7 +2509,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3051,7 +2523,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAuthorizationPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAuthorizationPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAuthorizationPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3082,61 +2554,12 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 type AdConditionalAccessPolicy struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdConditionalAccessPolicyDescription `json:"Description"`
+	Description     entraid.AdConditionalAccessPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
 	IntegrationType string                                       `json:"integration_type"`
 	IntegrationID   string                                       `json:"integration_id"`
-}
-
-func (r *AdConditionalAccessPolicy) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdConditionalAccessPolicyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdConditionalAccessPolicyHit struct {
@@ -3220,6 +2643,7 @@ var listAdConditionalAccessPolicyFilters = map[string]string{
 	"modified_date_time":                "Description.ModifiedDateTime",
 	"operator":                          "Description.Operator",
 	"persistent_browser":                "Description.PersistentBrowser",
+	"platform_account_id":               "metadata.IntegrationID",
 	"platforms":                         "Description.Platforms",
 	"sign_in_frequency":                 "Description.SignInFrequency",
 	"sign_in_risk_levels":               "Description.SignInRiskLevels",
@@ -3249,7 +2673,7 @@ func ListAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *
 		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3265,7 +2689,7 @@ func ListAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *
 		return nil, err
 	}
 
-	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdConditionalAccessPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdConditionalAccessPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdConditionalAccessPolicy NewAdConditionalAccessPolicyPaginator", "error", err)
 		return nil, err
@@ -3305,6 +2729,7 @@ var getAdConditionalAccessPolicyFilters = map[string]string{
 	"modified_date_time":                "Description.ModifiedDateTime",
 	"operator":                          "Description.Operator",
 	"persistent_browser":                "Description.PersistentBrowser",
+	"platform_account_id":               "metadata.IntegrationID",
 	"platforms":                         "Description.Platforms",
 	"sign_in_frequency":                 "Description.SignInFrequency",
 	"sign_in_risk_levels":               "Description.SignInRiskLevels",
@@ -3331,7 +2756,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3345,7 +2770,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdConditionalAccessPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdConditionalAccessPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdConditionalAccessPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3376,61 +2801,12 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 type AdAdminConsentRequestPolicy struct {
 	ResourceID      string                                         `json:"resource_id"`
 	PlatformID      string                                         `json:"platform_id"`
-	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"Description"`
+	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"description"`
 	Metadata        entraid.Metadata                               `json:"metadata"`
 	DescribedBy     string                                         `json:"described_by"`
 	ResourceType    string                                         `json:"resource_type"`
 	IntegrationType string                                         `json:"integration_type"`
 	IntegrationID   string                                         `json:"integration_id"`
-}
-
-func (r *AdAdminConsentRequestPolicy) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdAdminConsentRequestPolicyDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdAdminConsentRequestPolicyHit struct {
@@ -3503,6 +2879,7 @@ func (p AdAdminConsentRequestPolicyPaginator) NextPage(ctx context.Context) ([]A
 var listAdAdminConsentRequestPolicyFilters = map[string]string{
 	"is_enabled":               "Description.IsEnabled",
 	"notify_reviewers":         "Description.NotifyReviewers",
+	"platform_account_id":      "metadata.IntegrationID",
 	"reminders_enabled":        "Description.RemindersEnabled",
 	"request_duration_in_days": "Description.RequestDurationInDays",
 	"reviewers":                "Description.Reviewers",
@@ -3529,7 +2906,7 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3545,7 +2922,7 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAdminConsentRequestPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAdminConsentRequestPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAdminConsentRequestPolicy NewAdAdminConsentRequestPolicyPaginator", "error", err)
 		return nil, err
@@ -3574,6 +2951,7 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 var getAdAdminConsentRequestPolicyFilters = map[string]string{
 	"is_enabled":               "Description.IsEnabled",
 	"notify_reviewers":         "Description.NotifyReviewers",
+	"platform_account_id":      "metadata.IntegrationID",
 	"reminders_enabled":        "Description.RemindersEnabled",
 	"request_duration_in_days": "Description.RequestDurationInDays",
 	"reviewers":                "Description.Reviewers",
@@ -3597,7 +2975,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3611,7 +2989,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAdminConsentRequestPolicyFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAdminConsentRequestPolicyPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAdminConsentRequestPolicyFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3642,61 +3020,12 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 type AdDevice struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDeviceDescription `json:"Description"`
+	Description     entraid.AdDeviceDescription `json:"description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
 	IntegrationType string                      `json:"integration_type"`
 	IntegrationID   string                      `json:"integration_id"`
-}
-
-func (r *AdDevice) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdDeviceDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdDeviceHit struct {
@@ -3779,6 +3108,7 @@ var listAdDeviceFilters = map[string]string{
 	"member_of":                          "Description.MemberOf",
 	"operating_system":                   "Description.OperatingSystem",
 	"operating_system_version":           "Description.OperatingSystemVersion",
+	"platform_account_id":                "metadata.IntegrationID",
 	"profile_type":                       "Description.ProfileType",
 	"tenant_id":                          "Description.TenantID",
 	"trust_type":                         "Description.TrustType",
@@ -3802,7 +3132,7 @@ func ListAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListAdDevice NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDevice GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3818,7 +3148,7 @@ func ListAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDeviceFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdDeviceFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdDevice NewAdDevicePaginator", "error", err)
 		return nil, err
@@ -3857,6 +3187,7 @@ var getAdDeviceFilters = map[string]string{
 	"member_of":                          "Description.MemberOf",
 	"operating_system":                   "Description.OperatingSystem",
 	"operating_system_version":           "Description.OperatingSystemVersion",
+	"platform_account_id":                "metadata.IntegrationID",
 	"profile_type":                       "Description.ProfileType",
 	"tenant_id":                          "Description.TenantID",
 	"trust_type":                         "Description.TrustType",
@@ -3877,7 +3208,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3891,7 +3222,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDeviceFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdDevicePaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdDeviceFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3922,61 +3253,12 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdUserRegistrationDetails struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdUserRegistrationDetailsDescription `json:"Description"`
+	Description     entraid.AdUserRegistrationDetailsDescription `json:"description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
 	IntegrationType string                                       `json:"integration_type"`
 	IntegrationID   string                                       `json:"integration_id"`
-}
-
-func (r *AdUserRegistrationDetails) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdUserRegistrationDetailsDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdUserRegistrationDetailsHit struct {
@@ -4058,6 +3340,7 @@ var listAdUserRegistrationDetailsFilters = map[string]string{
 	"is_system_preferred_authentication_method_enabled": "Description.IsSystemPreferredAuthenticationMethodEnabled",
 	"last_updated_date_time":                            "Description.LastUpdatedDateTime",
 	"methods_registered":                                "Description.MethodsRegistered",
+	"platform_account_id":                               "metadata.IntegrationID",
 	"system_preferred_authentication_methods":           "Description.SystemPreferredAuthenticationMethods",
 	"tenant_id":         "Description.TenantID",
 	"title":             "Description.Id",
@@ -4085,7 +3368,7 @@ func ListAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *
 		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4101,7 +3384,7 @@ func ListAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *
 		return nil, err
 	}
 
-	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUserRegistrationDetailsFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdUserRegistrationDetailsFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdUserRegistrationDetails NewAdUserRegistrationDetailsPaginator", "error", err)
 		return nil, err
@@ -4139,6 +3422,7 @@ var getAdUserRegistrationDetailsFilters = map[string]string{
 	"is_system_preferred_authentication_method_enabled": "Description.IsSystemPreferredAuthenticationMethodEnabled",
 	"last_updated_date_time":                            "Description.LastUpdatedDateTime",
 	"methods_registered":                                "Description.MethodsRegistered",
+	"platform_account_id":                               "metadata.IntegrationID",
 	"system_preferred_authentication_methods":           "Description.SystemPreferredAuthenticationMethods",
 	"tenant_id":         "Description.TenantID",
 	"title":             "Description.Id",
@@ -4163,7 +3447,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4177,7 +3461,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUserRegistrationDetailsFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdUserRegistrationDetailsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdUserRegistrationDetailsFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4208,61 +3492,12 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 type AdGroupMembership struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdGroupMembershipDescription `json:"Description"`
+	Description     entraid.AdGroupMembershipDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
-}
-
-func (r *AdGroupMembership) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdGroupMembershipDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdGroupMembershipHit struct {
@@ -4338,7 +3573,7 @@ var listAdGroupMembershipFilters = map[string]string{
 	"group_id":             "Description.GroupId",
 	"id":                   "Description.Id",
 	"mail":                 "Description.Mail",
-	"platform_account_id":  "Metadata.SourceID",
+	"platform_account_id":  "metadata.IntegrationID",
 	"platform_resource_id": "ID",
 	"proxy_addresses":      "Description.ProxyAddresses",
 	"security_identifier":  "Description.SecurityIdentifier",
@@ -4367,7 +3602,7 @@ func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdGroupMembership NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroupMembership GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4383,7 +3618,7 @@ func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupMembershipFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdGroupMembershipFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdGroupMembership NewAdGroupMembershipPaginator", "error", err)
 		return nil, err
@@ -4415,7 +3650,7 @@ var getAdGroupMembershipFilters = map[string]string{
 	"group_id":             "Description.GroupId",
 	"id":                   "Description.Id",
 	"mail":                 "Description.Mail",
-	"platform_account_id":  "Metadata.SourceID",
+	"platform_account_id":  "metadata.IntegrationID",
 	"platform_resource_id": "ID",
 	"proxy_addresses":      "Description.ProxyAddresses",
 	"security_identifier":  "Description.SecurityIdentifier",
@@ -4441,7 +3676,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4455,7 +3690,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupMembershipFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdGroupMembershipPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdGroupMembershipFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4486,61 +3721,12 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdAppRegistration struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdAppRegistrationDescription `json:"Description"`
+	Description     entraid.AdAppRegistrationDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
-}
-
-func (r *AdAppRegistration) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdAppRegistrationDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdAppRegistrationHit struct {
@@ -4624,6 +3810,7 @@ var listAdAppRegistrationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "metadata.IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -4650,7 +3837,7 @@ func ListAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdAppRegistration NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAppRegistration GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4666,7 +3853,7 @@ func ListAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAppRegistrationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdAppRegistrationFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdAppRegistration NewAdAppRegistrationPaginator", "error", err)
 		return nil, err
@@ -4706,6 +3893,7 @@ var getAdAppRegistrationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
+	"platform_account_id":          "metadata.IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -4729,7 +3917,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4743,7 +3931,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAppRegistrationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdAppRegistrationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdAppRegistrationFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4774,61 +3962,12 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdEnterpriseApplication struct {
 	ResourceID      string                                     `json:"resource_id"`
 	PlatformID      string                                     `json:"platform_id"`
-	Description     entraid.AdEnterpriseApplicationDescription `json:"Description"`
+	Description     entraid.AdEnterpriseApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                           `json:"metadata"`
 	DescribedBy     string                                     `json:"described_by"`
 	ResourceType    string                                     `json:"resource_type"`
 	IntegrationType string                                     `json:"integration_type"`
 	IntegrationID   string                                     `json:"integration_id"`
-}
-
-func (r *AdEnterpriseApplication) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdEnterpriseApplicationDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdEnterpriseApplicationHit struct {
@@ -4919,7 +4058,7 @@ var listAdEnterpriseApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4947,7 +4086,7 @@ func ListAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *pl
 		plugin.Logger(ctx).Error("ListAdEnterpriseApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdEnterpriseApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4963,7 +4102,7 @@ func ListAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *pl
 		return nil, err
 	}
 
-	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdEnterpriseApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdEnterpriseApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdEnterpriseApplication NewAdEnterpriseApplicationPaginator", "error", err)
 		return nil, err
@@ -5010,7 +4149,7 @@ var getAdEnterpriseApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -5035,7 +4174,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5049,7 +4188,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdEnterpriseApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdEnterpriseApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdEnterpriseApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5080,61 +4219,12 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 type AdManagedIdentity struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdManagedIdentityDescription `json:"Description"`
+	Description     entraid.AdManagedIdentityDescription `json:"description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
 	IntegrationType string                               `json:"integration_type"`
 	IntegrationID   string                               `json:"integration_id"`
-}
-
-func (r *AdManagedIdentity) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdManagedIdentityDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdManagedIdentityHit struct {
@@ -5226,7 +4316,7 @@ var listAdManagedIdentityFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -5253,7 +4343,7 @@ func ListAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListAdManagedIdentity NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdManagedIdentity GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5269,7 +4359,7 @@ func ListAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdManagedIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdManagedIdentityFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdManagedIdentity NewAdManagedIdentityPaginator", "error", err)
 		return nil, err
@@ -5317,7 +4407,7 @@ var getAdManagedIdentityFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -5341,7 +4431,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5355,7 +4445,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdManagedIdentityFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdManagedIdentityPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdManagedIdentityFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5386,61 +4476,12 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdMicrosoftApplication struct {
 	ResourceID      string                                    `json:"resource_id"`
 	PlatformID      string                                    `json:"platform_id"`
-	Description     entraid.AdMicrosoftApplicationDescription `json:"Description"`
+	Description     entraid.AdMicrosoftApplicationDescription `json:"description"`
 	Metadata        entraid.Metadata                          `json:"metadata"`
 	DescribedBy     string                                    `json:"described_by"`
 	ResourceType    string                                    `json:"resource_type"`
 	IntegrationType string                                    `json:"integration_type"`
 	IntegrationID   string                                    `json:"integration_id"`
-}
-
-func (r *AdMicrosoftApplication) UnmarshalJSON(b []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(b, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for k, v := range rawMsg {
-		switch k {
-		case "description":
-			wrapper := entraidDescriber.JSONAllFieldsMarshaller{
-				Value: r.Description,
-			}
-			if err := json.Unmarshal(v, &wrapper); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-			var ok bool
-			r.Description, ok = wrapper.Value.(entraid.AdMicrosoftApplicationDescription)
-			if !ok {
-				return fmt.Errorf("unmarshalling type %T: %v", r, fmt.Errorf("expected type %T, got %T", r.Description, wrapper.Value))
-			}
-		case "platform_id":
-			if err := json.Unmarshal(v, &r.PlatformID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_id":
-			if err := json.Unmarshal(v, &r.ResourceID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "resource_type":
-			if err := json.Unmarshal(v, &r.ResourceType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "described_by":
-			if err := json.Unmarshal(v, &r.DescribedBy); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_type":
-			if err := json.Unmarshal(v, &r.IntegrationType); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		case "integration_id":
-			if err := json.Unmarshal(v, &r.IntegrationID); err != nil {
-				return fmt.Errorf("unmarshalling type %T: %v", r, err)
-			}
-		default:
-		}
-	}
-	return nil
 }
 
 type AdMicrosoftApplicationHit struct {
@@ -5531,7 +4572,7 @@ var listAdMicrosoftApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -5559,7 +4600,7 @@ func ListAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 		plugin.Logger(ctx).Error("ListAdMicrosoftApplication NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdMicrosoftApplication GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5575,7 +4616,7 @@ func ListAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 		return nil, err
 	}
 
-	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdMicrosoftApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listAdMicrosoftApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListAdMicrosoftApplication NewAdMicrosoftApplicationPaginator", "error", err)
 		return nil, err
@@ -5622,7 +4663,7 @@ var getAdMicrosoftApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "Metadata.SourceID",
+	"platform_account_id":          "metadata.IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -5647,7 +4688,7 @@ func GetAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plug
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5661,7 +4702,7 @@ func GetAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plug
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdMicrosoftApplicationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewAdMicrosoftApplicationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getAdMicrosoftApplicationFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
