@@ -60,14 +60,23 @@ func GetEnvironment(ctx context.Context, handler *RenderAPIHandler, resourceID s
 		ID:   environment.ID,
 		Name: environment.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: environment,
+			Value: model.EnvironmentDescription{
+				ID:              environment.ID,
+				Name:            environment.Name,
+				ProjectID:       resourceID,
+				DatabasesIDs:    environment.DatabasesIDs,
+				RedisIDs:        environment.RedisIDs,
+				ServiceIDs:      environment.ServiceIDs,
+				EnvGroupIDs:     environment.EnvGroupIDs,
+				ProtectedStatus: environment.ProtectedStatus,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processEnvironments(ctx context.Context, handler *RenderAPIHandler, projectID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var environments []model.EnvironmentDescription
+	var environments []model.EnvironmentJSON
 	var environmentListResponse []model.EnvironmentResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/environments"
@@ -117,13 +126,22 @@ func processEnvironments(ctx context.Context, handler *RenderAPIHandler, project
 	}
 	for _, environment := range environments {
 		wg.Add(1)
-		go func(environment model.EnvironmentDescription) {
+		go func(environment model.EnvironmentJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   environment.ID,
 				Name: environment.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: environment,
+					Value: model.EnvironmentDescription{
+						ID:              environment.ID,
+						Name:            environment.Name,
+						ProjectID:       projectID,
+						DatabasesIDs:    environment.DatabasesIDs,
+						RedisIDs:        environment.RedisIDs,
+						ServiceIDs:      environment.ServiceIDs,
+						EnvGroupIDs:     environment.EnvGroupIDs,
+						ProtectedStatus: environment.ProtectedStatus,
+					},
 				},
 			}
 			renderChan <- value
@@ -132,8 +150,8 @@ func processEnvironments(ctx context.Context, handler *RenderAPIHandler, project
 	return nil
 }
 
-func processEnvironment(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.EnvironmentDescription, error) {
-	var environment model.EnvironmentDescription
+func processEnvironment(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.EnvironmentJSON, error) {
+	var environment model.EnvironmentJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/environments/"
 

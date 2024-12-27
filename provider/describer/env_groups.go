@@ -50,18 +50,34 @@ func GetEnvGroup(ctx context.Context, handler *RenderAPIHandler, resourceID stri
 	if err != nil {
 		return nil, err
 	}
+	var serviceLinks []model.ServiceLink
+	for _, serviceLink := range envGroup.ServiceLinks {
+		serviceLinks = append(serviceLinks, model.ServiceLink{
+			ID:   serviceLink.ID,
+			Name: serviceLink.Name,
+			Type: serviceLink.Type,
+		})
+	}
 	value := models.Resource{
 		ID:   envGroup.ID,
 		Name: envGroup.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: envGroup,
+			Value: model.EnvGroupDescription{
+				ID:            envGroup.ID,
+				Name:          envGroup.Name,
+				OwnerID:       envGroup.OwnerID,
+				CreatedAt:     envGroup.CreatedAt,
+				UpdatedAt:     envGroup.UpdatedAt,
+				ServiceLinks:  serviceLinks,
+				EnvironmentID: envGroup.EnvironmentID,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processEnvGroups(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var envGroups []model.EnvGroupDescription
+	var envGroups []model.EnvGroupJSON
 	var envGroupResp []model.EnvGroupResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/env-groups"
@@ -110,13 +126,29 @@ func processEnvGroups(ctx context.Context, handler *RenderAPIHandler, renderChan
 	}
 	for _, envGroup := range envGroups {
 		wg.Add(1)
-		go func(envGroup model.EnvGroupDescription) {
+		go func(envGroup model.EnvGroupJSON) {
 			defer wg.Done()
+			var serviceLinks []model.ServiceLink
+			for _, serviceLink := range envGroup.ServiceLinks {
+				serviceLinks = append(serviceLinks, model.ServiceLink{
+					ID:   serviceLink.ID,
+					Name: serviceLink.Name,
+					Type: serviceLink.Type,
+				})
+			}
 			value := models.Resource{
 				ID:   envGroup.ID,
 				Name: envGroup.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: envGroup,
+					Value: model.EnvGroupDescription{
+						ID:            envGroup.ID,
+						Name:          envGroup.Name,
+						OwnerID:       envGroup.OwnerID,
+						CreatedAt:     envGroup.CreatedAt,
+						UpdatedAt:     envGroup.UpdatedAt,
+						ServiceLinks:  serviceLinks,
+						EnvironmentID: envGroup.EnvironmentID,
+					},
 				},
 			}
 			renderChan <- value
@@ -125,8 +157,8 @@ func processEnvGroups(ctx context.Context, handler *RenderAPIHandler, renderChan
 	return nil
 }
 
-func processEnvGroup(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.EnvGroupDescription, error) {
-	var envGroup model.EnvGroupDescription
+func processEnvGroup(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.EnvGroupJSON, error) {
+	var envGroup model.EnvGroupJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/env-groups/"
 

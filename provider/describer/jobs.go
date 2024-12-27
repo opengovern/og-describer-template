@@ -52,7 +52,7 @@ func ListJobs(ctx context.Context, handler *RenderAPIHandler, stream *models.Str
 }
 
 func processJobs(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var jobs []model.JobDescription
+	var jobs []model.JobJSON
 	var jobListResponse []model.JobResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services/"
@@ -101,13 +101,22 @@ func processJobs(ctx context.Context, handler *RenderAPIHandler, serviceID strin
 	}
 	for _, job := range jobs {
 		wg.Add(1)
-		go func(job model.JobDescription) {
+		go func(job model.JobJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   job.ID,
 				Name: job.Status,
 				Description: JSONAllFieldsMarshaller{
-					Value: job,
+					Value: model.JobDescription{
+						ID:           job.ID,
+						ServiceID:    serviceID,
+						StartCommand: job.StartCommand,
+						PlanID:       job.PlanID,
+						Status:       job.Status,
+						CreatedAt:    job.CreatedAt,
+						StartedAt:    job.StartedAt,
+						FinishedAt:   job.FinishedAt,
+					},
 				},
 			}
 			renderChan <- value

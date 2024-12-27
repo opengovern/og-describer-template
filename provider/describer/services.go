@@ -50,18 +50,62 @@ func GetService(ctx context.Context, handler *RenderAPIHandler, resourceID strin
 	if err != nil {
 		return nil, err
 	}
+	buildFilter := model.BuildFilter{
+		Paths:        service.BuildFilter.Paths,
+		IgnoredPaths: service.BuildFilter.IgnoredPaths,
+	}
+	registryCredential := model.RegistryCredential{
+		ID:   service.RegistryCredential.ID,
+		Name: service.RegistryCredential.Name,
+	}
+	parentServer := model.ParentServer{
+		ID:   service.ServiceDetails.ParentServer.ID,
+		Name: service.ServiceDetails.ParentServer.Name,
+	}
+	previews := model.Previews{
+		Generation: service.ServiceDetails.Previews.Generation,
+	}
+	serviceDetails := model.ServiceDetails{
+		BuildCommand: service.ServiceDetails.BuildCommand,
+		ParentServer: parentServer,
+		PublishPath:  service.ServiceDetails.PublishPath,
+		Previews:     previews,
+		URL:          service.ServiceDetails.URL,
+		BuildPlan:    service.ServiceDetails.BuildPlan,
+	}
 	value := models.Resource{
 		ID:   service.ID,
 		Name: service.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: service,
+			Value: model.ServiceDescription{
+				ID:                 service.ID,
+				AutoDeploy:         service.AutoDeploy,
+				Branch:             service.Branch,
+				BuildFilter:        buildFilter,
+				CreatedAt:          service.CreatedAt,
+				DashboardURL:       service.DashboardURL,
+				EnvironmentID:      service.EnvironmentID,
+				ImagePath:          service.ImagePath,
+				Name:               service.Name,
+				NotifyOnFail:       service.NotifyOnFail,
+				OwnerID:            service.OwnerID,
+				RegistryCredential: registryCredential,
+				Repo:               service.Repo,
+				RootDir:            service.RootDir,
+				Slug:               service.Slug,
+				Suspended:          service.Suspended,
+				Suspenders:         service.Suspenders,
+				Type:               service.Type,
+				UpdatedAt:          service.UpdatedAt,
+				ServiceDetails:     serviceDetails,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processServices(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var services []model.ServiceDescription
+	var services []model.ServiceJSON
 	var serviceListResponse []model.ServiceResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services"
@@ -111,13 +155,57 @@ func processServices(ctx context.Context, handler *RenderAPIHandler, renderChan 
 	}
 	for _, service := range services {
 		wg.Add(1)
-		go func(service model.ServiceDescription) {
+		go func(service model.ServiceJSON) {
 			defer wg.Done()
+			buildFilter := model.BuildFilter{
+				Paths:        service.BuildFilter.Paths,
+				IgnoredPaths: service.BuildFilter.IgnoredPaths,
+			}
+			registryCredential := model.RegistryCredential{
+				ID:   service.RegistryCredential.ID,
+				Name: service.RegistryCredential.Name,
+			}
+			parentServer := model.ParentServer{
+				ID:   service.ServiceDetails.ParentServer.ID,
+				Name: service.ServiceDetails.ParentServer.Name,
+			}
+			previews := model.Previews{
+				Generation: service.ServiceDetails.Previews.Generation,
+			}
+			serviceDetails := model.ServiceDetails{
+				BuildCommand: service.ServiceDetails.BuildCommand,
+				ParentServer: parentServer,
+				PublishPath:  service.ServiceDetails.PublishPath,
+				Previews:     previews,
+				URL:          service.ServiceDetails.URL,
+				BuildPlan:    service.ServiceDetails.BuildPlan,
+			}
 			value := models.Resource{
 				ID:   service.ID,
 				Name: service.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: service,
+					Value: model.ServiceDescription{
+						ID:                 service.ID,
+						AutoDeploy:         service.AutoDeploy,
+						Branch:             service.Branch,
+						BuildFilter:        buildFilter,
+						CreatedAt:          service.CreatedAt,
+						DashboardURL:       service.DashboardURL,
+						EnvironmentID:      service.EnvironmentID,
+						ImagePath:          service.ImagePath,
+						Name:               service.Name,
+						NotifyOnFail:       service.NotifyOnFail,
+						OwnerID:            service.OwnerID,
+						RegistryCredential: registryCredential,
+						Repo:               service.Repo,
+						RootDir:            service.RootDir,
+						Slug:               service.Slug,
+						Suspended:          service.Suspended,
+						Suspenders:         service.Suspenders,
+						Type:               service.Type,
+						UpdatedAt:          service.UpdatedAt,
+						ServiceDetails:     serviceDetails,
+					},
 				},
 			}
 			renderChan <- value
@@ -126,8 +214,8 @@ func processServices(ctx context.Context, handler *RenderAPIHandler, renderChan 
 	return nil
 }
 
-func processService(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ServiceDescription, error) {
-	var service model.ServiceDescription
+func processService(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.ServiceJSON, error) {
+	var service model.ServiceJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services/"
 

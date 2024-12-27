@@ -50,18 +50,62 @@ func GetPostgresInstance(ctx context.Context, handler *RenderAPIHandler, resourc
 	if err != nil {
 		return nil, err
 	}
+	var ipAllowList []model.IPAllow
+	for _, ipAllow := range postgres.IPAllowList {
+		ipAllowList = append(ipAllowList, model.IPAllow{
+			CIDRBlock:   ipAllow.CIDRBlock,
+			Description: ipAllow.Description,
+		})
+	}
+	owner := model.Owner{
+		ID:                   postgres.Owner.ID,
+		Name:                 postgres.Owner.Name,
+		Email:                postgres.Owner.Email,
+		TwoFactorAuthEnabled: postgres.Owner.TwoFactorAuthEnabled,
+		Type:                 postgres.Owner.Type,
+	}
+	var readReplicas []model.ReadReplica
+	for _, readReplica := range postgres.ReadReplicas {
+		readReplicas = append(readReplicas, model.ReadReplica{
+			ID:   readReplica.ID,
+			Name: readReplica.Name,
+		})
+	}
 	value := models.Resource{
 		ID:   postgres.ID,
 		Name: postgres.Name,
 		Description: JSONAllFieldsMarshaller{
-			Value: postgres,
+			Value: model.PostgresDescription{
+				ID:                      postgres.ID,
+				IPAllowList:             ipAllowList,
+				CreatedAt:               postgres.CreatedAt,
+				UpdatedAt:               postgres.UpdatedAt,
+				ExpiresAt:               postgres.ExpiresAt,
+				DatabaseName:            postgres.DatabaseName,
+				DatabaseUser:            postgres.DatabaseUser,
+				EnvironmentID:           postgres.EnvironmentID,
+				HighAvailabilityEnabled: postgres.HighAvailabilityEnabled,
+				Name:                    postgres.Name,
+				Owner:                   owner,
+				Plan:                    postgres.Plan,
+				DiskSizeGB:              postgres.DiskSizeGB,
+				PrimaryPostgresID:       postgres.PrimaryPostgresID,
+				Region:                  postgres.Region,
+				ReadReplicas:            readReplicas,
+				Role:                    postgres.Role,
+				Status:                  postgres.Status,
+				Version:                 postgres.Version,
+				Suspended:               postgres.Suspended,
+				Suspenders:              postgres.Suspenders,
+				DashboardURL:            postgres.DashboardURL,
+			},
 		},
 	}
 	return &value, nil
 }
 
 func processPostgresInstances(ctx context.Context, handler *RenderAPIHandler, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var postgresInstances []model.PostgresDescription
+	var postgresInstances []model.PostgresJSON
 	var postgresListResponse []model.PostgresResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/postgres"
@@ -111,13 +155,57 @@ func processPostgresInstances(ctx context.Context, handler *RenderAPIHandler, re
 	}
 	for _, postgres := range postgresInstances {
 		wg.Add(1)
-		go func(postgres model.PostgresDescription) {
+		go func(postgres model.PostgresJSON) {
 			defer wg.Done()
+			var ipAllowList []model.IPAllow
+			for _, ipAllow := range postgres.IPAllowList {
+				ipAllowList = append(ipAllowList, model.IPAllow{
+					CIDRBlock:   ipAllow.CIDRBlock,
+					Description: ipAllow.Description,
+				})
+			}
+			owner := model.Owner{
+				ID:                   postgres.Owner.ID,
+				Name:                 postgres.Owner.Name,
+				Email:                postgres.Owner.Email,
+				TwoFactorAuthEnabled: postgres.Owner.TwoFactorAuthEnabled,
+				Type:                 postgres.Owner.Type,
+			}
+			var readReplicas []model.ReadReplica
+			for _, readReplica := range postgres.ReadReplicas {
+				readReplicas = append(readReplicas, model.ReadReplica{
+					ID:   readReplica.ID,
+					Name: readReplica.Name,
+				})
+			}
 			value := models.Resource{
 				ID:   postgres.ID,
 				Name: postgres.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: postgres,
+					Value: model.PostgresDescription{
+						ID:                      postgres.ID,
+						IPAllowList:             ipAllowList,
+						CreatedAt:               postgres.CreatedAt,
+						UpdatedAt:               postgres.UpdatedAt,
+						ExpiresAt:               postgres.ExpiresAt,
+						DatabaseName:            postgres.DatabaseName,
+						DatabaseUser:            postgres.DatabaseUser,
+						EnvironmentID:           postgres.EnvironmentID,
+						HighAvailabilityEnabled: postgres.HighAvailabilityEnabled,
+						Name:                    postgres.Name,
+						Owner:                   owner,
+						Plan:                    postgres.Plan,
+						DiskSizeGB:              postgres.DiskSizeGB,
+						PrimaryPostgresID:       postgres.PrimaryPostgresID,
+						Region:                  postgres.Region,
+						ReadReplicas:            readReplicas,
+						Role:                    postgres.Role,
+						Status:                  postgres.Status,
+						Version:                 postgres.Version,
+						Suspended:               postgres.Suspended,
+						Suspenders:              postgres.Suspenders,
+						DashboardURL:            postgres.DashboardURL,
+					},
 				},
 			}
 			renderChan <- value
@@ -126,8 +214,8 @@ func processPostgresInstances(ctx context.Context, handler *RenderAPIHandler, re
 	return nil
 }
 
-func processPostgresInstance(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.PostgresDescription, error) {
-	var postgres model.PostgresDescription
+func processPostgresInstance(ctx context.Context, handler *RenderAPIHandler, resourceID string) (*model.PostgresJSON, error) {
+	var postgres model.PostgresJSON
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/postgres/"
 

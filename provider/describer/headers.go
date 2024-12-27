@@ -54,7 +54,7 @@ func ListHeaders(ctx context.Context, handler *RenderAPIHandler, stream *models.
 }
 
 func processHeaders(ctx context.Context, handler *RenderAPIHandler, serviceID string, renderChan chan<- models.Resource, wg *sync.WaitGroup) error {
-	var headers []model.HeaderDescription
+	var headers []model.HeaderJSON
 	var headerListResponse []model.HeaderResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services/"
@@ -102,13 +102,18 @@ func processHeaders(ctx context.Context, handler *RenderAPIHandler, serviceID st
 	}
 	for _, header := range headers {
 		wg.Add(1)
-		go func(header model.HeaderDescription) {
+		go func(header model.HeaderJSON) {
 			defer wg.Done()
 			value := models.Resource{
 				ID:   header.ID,
 				Name: header.Name,
 				Description: JSONAllFieldsMarshaller{
-					Value: header,
+					Value: model.HeaderDescription{
+						ID:    header.ID,
+						Path:  header.Path,
+						Name:  header.Name,
+						Value: header.Value,
+					},
 				},
 			}
 			renderChan <- value

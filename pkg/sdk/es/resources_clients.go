@@ -19,7 +19,7 @@ type Client struct {
 type Project struct {
 	ResourceID      string                    `json:"resource_id"`
 	PlatformID      string                    `json:"platform_id"`
-	Description     render.ProjectDescription `json:"description"`
+	Description     render.ProjectDescription `json:"Description"`
 	Metadata        render.Metadata           `json:"metadata"`
 	DescribedBy     string                    `json:"described_by"`
 	ResourceType    string                    `json:"resource_type"`
@@ -94,7 +94,14 @@ func (p ProjectPaginator) NextPage(ctx context.Context) ([]Project, error) {
 	return values, nil
 }
 
-var listProjectFilters = map[string]string{}
+var listProjectFilters = map[string]string{
+	"createdAt":      "Description.CreatedAt",
+	"environmentIds": "Description.EnvironmentIDs",
+	"id":             "Description.ID",
+	"name":           "Description.Name",
+	"owner":          "Description.Owner",
+	"updatedAt":      "Description.UpdatedAt",
+}
 
 func ListProject(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListProject")
@@ -156,7 +163,14 @@ func ListProject(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	return nil, nil
 }
 
-var getProjectFilters = map[string]string{}
+var getProjectFilters = map[string]string{
+	"createdAt":      "Description.CreatedAt",
+	"environmentIds": "Description.EnvironmentIDs",
+	"id":             "Description.ID",
+	"name":           "Description.Name",
+	"owner":          "Description.Owner",
+	"updatedAt":      "Description.UpdatedAt",
+}
 
 func GetProject(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetProject")
@@ -218,7 +232,7 @@ func GetProject(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type Environment struct {
 	ResourceID      string                        `json:"resource_id"`
 	PlatformID      string                        `json:"platform_id"`
-	Description     render.EnvironmentDescription `json:"description"`
+	Description     render.EnvironmentDescription `json:"Description"`
 	Metadata        render.Metadata               `json:"metadata"`
 	DescribedBy     string                        `json:"described_by"`
 	ResourceType    string                        `json:"resource_type"`
@@ -293,7 +307,16 @@ func (p EnvironmentPaginator) NextPage(ctx context.Context) ([]Environment, erro
 	return values, nil
 }
 
-var listEnvironmentFilters = map[string]string{}
+var listEnvironmentFilters = map[string]string{
+	"databasesIds":    "Description.DatabasesIDs",
+	"envGroupIds":     "Description.EnvGroupIDs",
+	"id":              "Description.ID",
+	"name":            "Description.Name",
+	"projectId":       "Description.ProjectID",
+	"protectedStatus": "Description.ProtectedStatus",
+	"redisIds":        "Description.RedisIDs",
+	"serviceIds":      "Description.ServiceIDs",
+}
 
 func ListEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListEnvironment")
@@ -355,7 +378,16 @@ func ListEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 	return nil, nil
 }
 
-var getEnvironmentFilters = map[string]string{}
+var getEnvironmentFilters = map[string]string{
+	"databasesIds":    "Description.DatabasesIDs",
+	"envGroupIds":     "Description.EnvGroupIDs",
+	"id":              "Description.ID",
+	"name":            "Description.Name",
+	"projectId":       "Description.ProjectID",
+	"protectedStatus": "Description.ProtectedStatus",
+	"redisIds":        "Description.RedisIDs",
+	"serviceIds":      "Description.ServiceIDs",
+}
 
 func GetEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetEnvironment")
@@ -417,7 +449,7 @@ func GetEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 type Postgres struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     render.PostgresDescription `json:"description"`
+	Description     render.PostgresDescription `json:"Description"`
 	Metadata        render.Metadata            `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -492,7 +524,30 @@ func (p PostgresPaginator) NextPage(ctx context.Context) ([]Postgres, error) {
 	return values, nil
 }
 
-var listPostgresFilters = map[string]string{}
+var listPostgresFilters = map[string]string{
+	"createdAt":               "Description.CreatedAt",
+	"dashboardUrl":            "Description.DashboardURL",
+	"databaseName":            "Description.DatabaseName",
+	"databaseUser":            "Description.DatabaseUser",
+	"diskSizeGB":              "Description.DiskSizeGB",
+	"environmentId":           "Description.EnvironmentID",
+	"expiresAt":               "Description.ExpiresAt",
+	"highAvailabilityEnabled": "Description.HighAvailabilityEnabled",
+	"id":                      "Description.ID",
+	"ipAllowList":             "Description.IPAllowList",
+	"name":                    "Description.Name",
+	"owner":                   "Description.Owner",
+	"plan":                    "Description.Plan",
+	"primaryPostgresID":       "Description.PrimaryPostgresID",
+	"readReplicas":            "Description.ReadReplicas",
+	"region":                  "Description.Region",
+	"role":                    "Description.Role",
+	"status":                  "Description.Status",
+	"suspended":               "Description.Suspended",
+	"suspenders":              "Description.Suspenders",
+	"updatedAt":               "Description.UpdatedAt",
+	"version":                 "Description.Version",
+}
 
 func ListPostgres(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListPostgres")
@@ -554,7 +609,30 @@ func ListPostgres(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 	return nil, nil
 }
 
-var getPostgresFilters = map[string]string{}
+var getPostgresFilters = map[string]string{
+	"createdAt":               "Description.CreatedAt",
+	"dashboardUrl":            "Description.DashboardURL",
+	"databaseName":            "Description.DatabaseName",
+	"databaseUser":            "Description.DatabaseUser",
+	"diskSizeGB":              "Description.DiskSizeGB",
+	"environmentId":           "Description.EnvironmentID",
+	"expiresAt":               "Description.ExpiresAt",
+	"highAvailabilityEnabled": "Description.HighAvailabilityEnabled",
+	"id":                      "Description.ID",
+	"ipAllowList":             "Description.IPAllowList",
+	"name":                    "Description.Name",
+	"owner":                   "Description.Owner",
+	"plan":                    "Description.Plan",
+	"primaryPostgresID":       "Description.PrimaryPostgresID",
+	"readReplicas":            "Description.ReadReplicas",
+	"region":                  "Description.Region",
+	"role":                    "Description.Role",
+	"status":                  "Description.Status",
+	"suspended":               "Description.Suspended",
+	"suspenders":              "Description.Suspenders",
+	"updatedAt":               "Description.UpdatedAt",
+	"version":                 "Description.Version",
+}
 
 func GetPostgres(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetPostgres")
@@ -616,7 +694,7 @@ func GetPostgres(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type Service struct {
 	ResourceID      string                    `json:"resource_id"`
 	PlatformID      string                    `json:"platform_id"`
-	Description     render.ServiceDescription `json:"description"`
+	Description     render.ServiceDescription `json:"Description"`
 	Metadata        render.Metadata           `json:"metadata"`
 	DescribedBy     string                    `json:"described_by"`
 	ResourceType    string                    `json:"resource_type"`
@@ -691,7 +769,28 @@ func (p ServicePaginator) NextPage(ctx context.Context) ([]Service, error) {
 	return values, nil
 }
 
-var listServiceFilters = map[string]string{}
+var listServiceFilters = map[string]string{
+	"autoDeploy":         "Description.AutoDeploy",
+	"branch":             "Description.Branch",
+	"buildFilter":        "Description.BuildFilter",
+	"createdAt":          "Description.CreatedAt",
+	"dashboardUrl":       "Description.DashboardURL",
+	"environmentId":      "Description.EnvironmentID",
+	"id":                 "Description.ID",
+	"imagePath":          "Description.ImagePath",
+	"name":               "Description.Name",
+	"notifyOnFail":       "Description.NotifyOnFail",
+	"ownerId":            "Description.OwnerID",
+	"registryCredential": "Description.RegistryCredential",
+	"repo":               "Description.Repo",
+	"rootDir":            "Description.RootDir",
+	"serviceDetails":     "Description.ServiceDetails",
+	"slug":               "Description.Slug",
+	"suspended":          "Description.Suspended",
+	"suspenders":         "Description.Suspenders",
+	"type":               "Description.Type",
+	"updatedAt":          "Description.UpdatedAt",
+}
 
 func ListService(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListService")
@@ -753,7 +852,28 @@ func ListService(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	return nil, nil
 }
 
-var getServiceFilters = map[string]string{}
+var getServiceFilters = map[string]string{
+	"autoDeploy":         "Description.AutoDeploy",
+	"branch":             "Description.Branch",
+	"buildFilter":        "Description.BuildFilter",
+	"createdAt":          "Description.CreatedAt",
+	"dashboardUrl":       "Description.DashboardURL",
+	"environmentId":      "Description.EnvironmentID",
+	"id":                 "Description.ID",
+	"imagePath":          "Description.ImagePath",
+	"name":               "Description.Name",
+	"notifyOnFail":       "Description.NotifyOnFail",
+	"ownerId":            "Description.OwnerID",
+	"registryCredential": "Description.RegistryCredential",
+	"repo":               "Description.Repo",
+	"rootDir":            "Description.RootDir",
+	"serviceDetails":     "Description.ServiceDetails",
+	"slug":               "Description.Slug",
+	"suspended":          "Description.Suspended",
+	"suspenders":         "Description.Suspenders",
+	"type":               "Description.Type",
+	"updatedAt":          "Description.UpdatedAt",
+}
 
 func GetService(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetService")
@@ -815,7 +935,7 @@ func GetService(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type Job struct {
 	ResourceID      string                `json:"resource_id"`
 	PlatformID      string                `json:"platform_id"`
-	Description     render.JobDescription `json:"description"`
+	Description     render.JobDescription `json:"Description"`
 	Metadata        render.Metadata       `json:"metadata"`
 	DescribedBy     string                `json:"described_by"`
 	ResourceType    string                `json:"resource_type"`
@@ -890,7 +1010,16 @@ func (p JobPaginator) NextPage(ctx context.Context) ([]Job, error) {
 	return values, nil
 }
 
-var listJobFilters = map[string]string{}
+var listJobFilters = map[string]string{
+	"createdAt":    "Description.CreatedAt",
+	"finishedAt":   "Description.FinishedAt",
+	"id":           "Description.ID",
+	"planId":       "Description.PlanID",
+	"serviceId":    "Description.ServiceID",
+	"startCommand": "Description.StartCommand",
+	"startedAt":    "Description.StartedAt",
+	"status":       "Description.Status",
+}
 
 func ListJob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListJob")
@@ -952,7 +1081,16 @@ func ListJob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	return nil, nil
 }
 
-var getJobFilters = map[string]string{}
+var getJobFilters = map[string]string{
+	"createdAt":    "Description.CreatedAt",
+	"finishedAt":   "Description.FinishedAt",
+	"id":           "Description.ID",
+	"planId":       "Description.PlanID",
+	"serviceId":    "Description.ServiceID",
+	"startCommand": "Description.StartCommand",
+	"startedAt":    "Description.StartedAt",
+	"status":       "Description.Status",
+}
 
 func GetJob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetJob")
@@ -1014,7 +1152,7 @@ func GetJob(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (in
 type Disk struct {
 	ResourceID      string                 `json:"resource_id"`
 	PlatformID      string                 `json:"platform_id"`
-	Description     render.DiskDescription `json:"description"`
+	Description     render.DiskDescription `json:"Description"`
 	Metadata        render.Metadata        `json:"metadata"`
 	DescribedBy     string                 `json:"described_by"`
 	ResourceType    string                 `json:"resource_type"`
@@ -1089,7 +1227,15 @@ func (p DiskPaginator) NextPage(ctx context.Context) ([]Disk, error) {
 	return values, nil
 }
 
-var listDiskFilters = map[string]string{}
+var listDiskFilters = map[string]string{
+	"createdAt": "Description.CreatedAt",
+	"id":        "Description.ID",
+	"mountPath": "Description.MountPath",
+	"name":      "Description.Name",
+	"serviceId": "Description.ServiceID",
+	"sizeGB":    "Description.SizeGB",
+	"updatedAt": "Description.UpdatedAt",
+}
 
 func ListDisk(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListDisk")
@@ -1151,7 +1297,15 @@ func ListDisk(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	return nil, nil
 }
 
-var getDiskFilters = map[string]string{}
+var getDiskFilters = map[string]string{
+	"createdAt": "Description.CreatedAt",
+	"id":        "Description.ID",
+	"mountPath": "Description.MountPath",
+	"name":      "Description.Name",
+	"serviceId": "Description.ServiceID",
+	"sizeGB":    "Description.SizeGB",
+	"updatedAt": "Description.UpdatedAt",
+}
 
 func GetDisk(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetDisk")
@@ -1213,7 +1367,7 @@ func GetDisk(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 type Deploy struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
-	Description     render.DeployDescription `json:"description"`
+	Description     render.DeployDescription `json:"Description"`
 	Metadata        render.Metadata          `json:"metadata"`
 	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
@@ -1288,7 +1442,16 @@ func (p DeployPaginator) NextPage(ctx context.Context) ([]Deploy, error) {
 	return values, nil
 }
 
-var listDeployFilters = map[string]string{}
+var listDeployFilters = map[string]string{
+	"commit":     "Description.Commit",
+	"createdAt":  "Description.CreatedAt",
+	"finishedAt": "Description.FinishedAt",
+	"id":         "Description.ID",
+	"image":      "Description.Image",
+	"status":     "Description.Status",
+	"trigger":    "Description.Trigger",
+	"updatedAt":  "Description.UpdatedAt",
+}
 
 func ListDeploy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListDeploy")
@@ -1350,7 +1513,16 @@ func ListDeploy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	return nil, nil
 }
 
-var getDeployFilters = map[string]string{}
+var getDeployFilters = map[string]string{
+	"commit":     "Description.Commit",
+	"createdAt":  "Description.CreatedAt",
+	"finishedAt": "Description.FinishedAt",
+	"id":         "Description.ID",
+	"image":      "Description.Image",
+	"status":     "Description.Status",
+	"trigger":    "Description.Trigger",
+	"updatedAt":  "Description.UpdatedAt",
+}
 
 func GetDeploy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetDeploy")
@@ -1412,7 +1584,7 @@ func GetDeploy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 type Blueprint struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     render.BlueprintDescription `json:"description"`
+	Description     render.BlueprintDescription `json:"Description"`
 	Metadata        render.Metadata             `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -1487,7 +1659,15 @@ func (p BlueprintPaginator) NextPage(ctx context.Context) ([]Blueprint, error) {
 	return values, nil
 }
 
-var listBlueprintFilters = map[string]string{}
+var listBlueprintFilters = map[string]string{
+	"autoSync": "Description.AutoSync",
+	"branch":   "Description.Branch",
+	"id":       "Description.ID",
+	"lastSync": "Description.LastSync",
+	"name":     "Description.Name",
+	"repo":     "Description.Repo",
+	"status":   "Description.Status",
+}
 
 func ListBlueprint(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListBlueprint")
@@ -1549,7 +1729,15 @@ func ListBlueprint(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 	return nil, nil
 }
 
-var getBlueprintFilters = map[string]string{}
+var getBlueprintFilters = map[string]string{
+	"autoSync": "Description.AutoSync",
+	"branch":   "Description.Branch",
+	"id":       "Description.ID",
+	"lastSync": "Description.LastSync",
+	"name":     "Description.Name",
+	"repo":     "Description.Repo",
+	"status":   "Description.Status",
+}
 
 func GetBlueprint(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetBlueprint")
@@ -1611,7 +1799,7 @@ func GetBlueprint(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 type EnvGroup struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     render.EnvGroupDescription `json:"description"`
+	Description     render.EnvGroupDescription `json:"Description"`
 	Metadata        render.Metadata            `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -1686,7 +1874,15 @@ func (p EnvGroupPaginator) NextPage(ctx context.Context) ([]EnvGroup, error) {
 	return values, nil
 }
 
-var listEnvGroupFilters = map[string]string{}
+var listEnvGroupFilters = map[string]string{
+	"createdAt":     "Description.CreatedAt",
+	"environmentId": "Description.EnvironmentID",
+	"id":            "Description.ID",
+	"name":          "Description.Name",
+	"ownerId":       "Description.OwnerID",
+	"serviceLinks":  "Description.ServiceLinks",
+	"updatedAt":     "Description.UpdatedAt",
+}
 
 func ListEnvGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListEnvGroup")
@@ -1748,7 +1944,15 @@ func ListEnvGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 	return nil, nil
 }
 
-var getEnvGroupFilters = map[string]string{}
+var getEnvGroupFilters = map[string]string{
+	"createdAt":     "Description.CreatedAt",
+	"environmentId": "Description.EnvironmentID",
+	"id":            "Description.ID",
+	"name":          "Description.Name",
+	"ownerId":       "Description.OwnerID",
+	"serviceLinks":  "Description.ServiceLinks",
+	"updatedAt":     "Description.UpdatedAt",
+}
 
 func GetEnvGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetEnvGroup")
@@ -1810,7 +2014,7 @@ func GetEnvGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type Header struct {
 	ResourceID      string                   `json:"resource_id"`
 	PlatformID      string                   `json:"platform_id"`
-	Description     render.HeaderDescription `json:"description"`
+	Description     render.HeaderDescription `json:"Description"`
 	Metadata        render.Metadata          `json:"metadata"`
 	DescribedBy     string                   `json:"described_by"`
 	ResourceType    string                   `json:"resource_type"`
@@ -1885,7 +2089,12 @@ func (p HeaderPaginator) NextPage(ctx context.Context) ([]Header, error) {
 	return values, nil
 }
 
-var listHeaderFilters = map[string]string{}
+var listHeaderFilters = map[string]string{
+	"id":    "Description.ID",
+	"name":  "Description.Name",
+	"path":  "Description.Path",
+	"value": "Description.Value",
+}
 
 func ListHeader(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListHeader")
@@ -1947,7 +2156,12 @@ func ListHeader(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	return nil, nil
 }
 
-var getHeaderFilters = map[string]string{}
+var getHeaderFilters = map[string]string{
+	"id":    "Description.ID",
+	"name":  "Description.Name",
+	"path":  "Description.Path",
+	"value": "Description.Value",
+}
 
 func GetHeader(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetHeader")
@@ -2009,7 +2223,7 @@ func GetHeader(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 type Route struct {
 	ResourceID      string                  `json:"resource_id"`
 	PlatformID      string                  `json:"platform_id"`
-	Description     render.RouteDescription `json:"description"`
+	Description     render.RouteDescription `json:"Description"`
 	Metadata        render.Metadata         `json:"metadata"`
 	DescribedBy     string                  `json:"described_by"`
 	ResourceType    string                  `json:"resource_type"`
@@ -2084,7 +2298,13 @@ func (p RoutePaginator) NextPage(ctx context.Context) ([]Route, error) {
 	return values, nil
 }
 
-var listRouteFilters = map[string]string{}
+var listRouteFilters = map[string]string{
+	"destination": "Description.Destination",
+	"id":          "Description.ID",
+	"priority":    "Description.Priority",
+	"source":      "Description.Source",
+	"type":        "Description.Type",
+}
 
 func ListRoute(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListRoute")
@@ -2146,7 +2366,13 @@ func ListRoute(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	return nil, nil
 }
 
-var getRouteFilters = map[string]string{}
+var getRouteFilters = map[string]string{
+	"destination": "Description.Destination",
+	"id":          "Description.ID",
+	"priority":    "Description.Priority",
+	"source":      "Description.Source",
+	"type":        "Description.Type",
+}
 
 func GetRoute(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetRoute")
