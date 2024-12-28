@@ -108,8 +108,8 @@ func isTemporary(err error) bool {
 	return false
 }
 
-func getServices(ctx context.Context, handler *RenderAPIHandler) ([]model.ServiceDescription, error) {
-	var services []model.ServiceDescription
+func getServices(ctx context.Context, handler *RenderAPIHandler) ([]model.ServiceJSON, error) {
+	var services []model.ServiceJSON
 	var serviceListResponse []model.ServiceResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/services"
@@ -160,8 +160,8 @@ func getServices(ctx context.Context, handler *RenderAPIHandler) ([]model.Servic
 	return services, nil
 }
 
-func getProjects(ctx context.Context, handler *RenderAPIHandler) ([]model.ProjectDescription, error) {
-	var projects []model.ProjectDescription
+func getProjects(ctx context.Context, handler *RenderAPIHandler) ([]model.ProjectJSON, error) {
+	var projects []model.ProjectJSON
 	var projectListResponse []model.ProjectResponse
 	var resp *http.Response
 	baseURL := "https://api.render.com/v1/projects"
