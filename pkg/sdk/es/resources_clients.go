@@ -122,7 +122,7 @@ func ListArtifact(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListArtifact NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListArtifact GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -138,7 +138,7 @@ func ListArtifact(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewArtifactPaginator(essdk.BuildFilter(ctx, d.QueryContext, listArtifactFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewArtifactPaginator(essdk.BuildFilter(ctx, d.QueryContext, listArtifactFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListArtifact NewArtifactPaginator", "error", err)
 		return nil, err
@@ -189,7 +189,7 @@ func GetArtifact(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func GetArtifact(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewArtifactPaginator(essdk.BuildFilter(ctx, d.QueryContext, getArtifactFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewArtifactPaginator(essdk.BuildFilter(ctx, d.QueryContext, getArtifactFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -337,7 +337,7 @@ func ListRunner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		plugin.Logger(ctx).Error("ListRunner NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRunner GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -353,7 +353,7 @@ func ListRunner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		return nil, err
 	}
 
-	paginator, err := k.NewRunnerPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRunnerFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRunnerPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRunnerFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRunner NewRunnerPaginator", "error", err)
 		return nil, err
@@ -404,7 +404,7 @@ func GetRunner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -418,7 +418,7 @@ func GetRunner(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRunnerPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRunnerFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRunnerPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRunnerFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -549,7 +549,7 @@ func ListSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		plugin.Logger(ctx).Error("ListSecret NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListSecret GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -565,7 +565,7 @@ func ListSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		return nil, err
 	}
 
-	paginator, err := k.NewSecretPaginator(essdk.BuildFilter(ctx, d.QueryContext, listSecretFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewSecretPaginator(essdk.BuildFilter(ctx, d.QueryContext, listSecretFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListSecret NewSecretPaginator", "error", err)
 		return nil, err
@@ -613,7 +613,7 @@ func GetSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -627,7 +627,7 @@ func GetSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewSecretPaginator(essdk.BuildFilter(ctx, d.QueryContext, getSecretFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewSecretPaginator(essdk.BuildFilter(ctx, d.QueryContext, getSecretFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -775,7 +775,7 @@ func ListWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		plugin.Logger(ctx).Error("ListWorkflowRun NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListWorkflowRun GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -791,7 +791,7 @@ func ListWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		return nil, err
 	}
 
-	paginator, err := k.NewWorkflowRunPaginator(essdk.BuildFilter(ctx, d.QueryContext, listWorkflowRunFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewWorkflowRunPaginator(essdk.BuildFilter(ctx, d.QueryContext, listWorkflowRunFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListWorkflowRun NewWorkflowRunPaginator", "error", err)
 		return nil, err
@@ -856,7 +856,7 @@ func GetWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -870,7 +870,7 @@ func GetWorkflowRun(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewWorkflowRunPaginator(essdk.BuildFilter(ctx, d.QueryContext, getWorkflowRunFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewWorkflowRunPaginator(essdk.BuildFilter(ctx, d.QueryContext, getWorkflowRunFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1002,7 +1002,7 @@ func ListBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		plugin.Logger(ctx).Error("ListBranch NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListBranch GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1018,7 +1018,7 @@ func ListBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		return nil, err
 	}
 
-	paginator, err := k.NewBranchPaginator(essdk.BuildFilter(ctx, d.QueryContext, listBranchFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewBranchPaginator(essdk.BuildFilter(ctx, d.QueryContext, listBranchFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListBranch NewBranchPaginator", "error", err)
 		return nil, err
@@ -1067,7 +1067,7 @@ func GetBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1081,7 +1081,7 @@ func GetBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewBranchPaginator(essdk.BuildFilter(ctx, d.QueryContext, getBranchFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewBranchPaginator(essdk.BuildFilter(ctx, d.QueryContext, getBranchFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1244,7 +1244,7 @@ func ListBranchProtection(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		plugin.Logger(ctx).Error("ListBranchProtection NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListBranchProtection GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1260,7 +1260,7 @@ func ListBranchProtection(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, err
 	}
 
-	paginator, err := k.NewBranchProtectionPaginator(essdk.BuildFilter(ctx, d.QueryContext, listBranchProtectionFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewBranchProtectionPaginator(essdk.BuildFilter(ctx, d.QueryContext, listBranchProtectionFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListBranchProtection NewBranchProtectionPaginator", "error", err)
 		return nil, err
@@ -1340,7 +1340,7 @@ func GetBranchProtection(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1354,7 +1354,7 @@ func GetBranchProtection(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewBranchProtectionPaginator(essdk.BuildFilter(ctx, d.QueryContext, getBranchProtectionFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewBranchProtectionPaginator(essdk.BuildFilter(ctx, d.QueryContext, getBranchProtectionFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1492,7 +1492,7 @@ func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		plugin.Logger(ctx).Error("ListCommit NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListCommit GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1508,7 +1508,7 @@ func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		return nil, err
 	}
 
-	paginator, err := k.NewCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, listCommitFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, listCommitFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListCommit NewCommitPaginator", "error", err)
 		return nil, err
@@ -1563,7 +1563,7 @@ func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1577,7 +1577,7 @@ func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, getCommitFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewCommitPaginator(essdk.BuildFilter(ctx, d.QueryContext, getCommitFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1741,7 +1741,7 @@ func ListIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 		plugin.Logger(ctx).Error("ListIssue NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListIssue GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -1757,7 +1757,7 @@ func ListIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 		return nil, err
 	}
 
-	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, listIssueFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListIssue NewIssuePaginator", "error", err)
 		return nil, err
@@ -1838,7 +1838,7 @@ func GetIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -1852,7 +1852,7 @@ func GetIssue(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewIssuePaginator(essdk.BuildFilter(ctx, d.QueryContext, getIssueFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -1992,7 +1992,7 @@ func ListLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListLicense NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListLicense GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2008,7 +2008,7 @@ func ListLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, listLicenseFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, listLicenseFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListLicense NewLicensePaginator", "error", err)
 		return nil, err
@@ -2065,7 +2065,7 @@ func GetLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2079,7 +2079,7 @@ func GetLicense(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, getLicenseFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewLicensePaginator(essdk.BuildFilter(ctx, d.QueryContext, getLicenseFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2277,7 +2277,7 @@ func ListOrganization(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 		plugin.Logger(ctx).Error("ListOrganization NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrganization GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2293,7 +2293,7 @@ func ListOrganization(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 		return nil, err
 	}
 
-	paginator, err := k.NewOrganizationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrganizationFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewOrganizationPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrganizationFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrganization NewOrganizationPaginator", "error", err)
 		return nil, err
@@ -2408,7 +2408,7 @@ func GetOrganization(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2422,7 +2422,7 @@ func GetOrganization(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewOrganizationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrganizationFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewOrganizationPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrganizationFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2554,7 +2554,7 @@ func ListOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		plugin.Logger(ctx).Error("ListOrgCollaborators NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgCollaborators GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2570,7 +2570,7 @@ func ListOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, err
 	}
 
-	paginator, err := k.NewOrgCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgCollaboratorsFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewOrgCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgCollaboratorsFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgCollaborators NewOrgCollaboratorsPaginator", "error", err)
 		return nil, err
@@ -2619,7 +2619,7 @@ func GetOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2633,7 +2633,7 @@ func GetOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewOrgCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgCollaboratorsFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewOrgCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgCollaboratorsFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -2778,7 +2778,7 @@ func ListOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListOrgAlertDependabot NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgAlertDependabot GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -2794,7 +2794,7 @@ func ListOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewOrgAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgAlertDependabotFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewOrgAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgAlertDependabotFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgAlertDependabot NewOrgAlertDependabotPaginator", "error", err)
 		return nil, err
@@ -2856,7 +2856,7 @@ func GetOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -2870,7 +2870,7 @@ func GetOrgAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewOrgAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgAlertDependabotFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewOrgAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgAlertDependabotFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3000,7 +3000,7 @@ func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		plugin.Logger(ctx).Error("ListOrgMembers NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgMembers GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3016,7 +3016,7 @@ func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	paginator, err := k.NewOrgMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgMembersFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewOrgMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrgMembersFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListOrgMembers NewOrgMembersPaginator", "error", err)
 		return nil, err
@@ -3063,7 +3063,7 @@ func GetOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3077,7 +3077,7 @@ func GetOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewOrgMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgMembersFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewOrgMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrgMembersFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3266,7 +3266,7 @@ func ListPullRequest(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		plugin.Logger(ctx).Error("ListPullRequest NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPullRequest GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3282,7 +3282,7 @@ func ListPullRequest(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		return nil, err
 	}
 
-	paginator, err := k.NewPullRequestPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPullRequestFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewPullRequestPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPullRequestFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPullRequest NewPullRequestPaginator", "error", err)
 		return nil, err
@@ -3388,7 +3388,7 @@ func GetPullRequest(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3402,7 +3402,7 @@ func GetPullRequest(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewPullRequestPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPullRequestFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewPullRequestPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPullRequestFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3557,7 +3557,7 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		plugin.Logger(ctx).Error("ListRepository NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepository GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3573,7 +3573,7 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 		return nil, err
 	}
 
-	paginator, err := k.NewRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepositoryFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepositoryFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepository NewRepositoryPaginator", "error", err)
 		return nil, err
@@ -3645,7 +3645,7 @@ func GetRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3659,7 +3659,7 @@ func GetRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepositoryFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepositoryPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepositoryFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -3803,7 +3803,7 @@ func ListRelease(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListRelease NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRelease GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -3819,7 +3819,7 @@ func ListRelease(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewReleasePaginator(essdk.BuildFilter(ctx, d.QueryContext, listReleaseFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewReleasePaginator(essdk.BuildFilter(ctx, d.QueryContext, listReleaseFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRelease NewReleasePaginator", "error", err)
 		return nil, err
@@ -3880,7 +3880,7 @@ func GetRelease(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -3894,7 +3894,7 @@ func GetRelease(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewReleasePaginator(essdk.BuildFilter(ctx, d.QueryContext, getReleaseFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewReleasePaginator(essdk.BuildFilter(ctx, d.QueryContext, getReleaseFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4025,7 +4025,7 @@ func ListRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		plugin.Logger(ctx).Error("ListRepoCollaborators NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoCollaborators GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4041,7 +4041,7 @@ func ListRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoCollaboratorsFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoCollaboratorsFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoCollaborators NewRepoCollaboratorsPaginator", "error", err)
 		return nil, err
@@ -4089,7 +4089,7 @@ func GetRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4103,7 +4103,7 @@ func GetRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoCollaboratorsFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoCollaboratorsPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoCollaboratorsFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4229,7 +4229,7 @@ func ListRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin
 		plugin.Logger(ctx).Error("ListRepoAlertDependabot NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoAlertDependabot GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4245,7 +4245,7 @@ func ListRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoAlertDependabotFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoAlertDependabotFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoAlertDependabot NewRepoAlertDependabotPaginator", "error", err)
 		return nil, err
@@ -4288,7 +4288,7 @@ func GetRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4302,7 +4302,7 @@ func GetRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoAlertDependabotFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoAlertDependabotPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoAlertDependabotFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4443,7 +4443,7 @@ func ListRepoDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		plugin.Logger(ctx).Error("ListRepoDeployment NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoDeployment GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4459,7 +4459,7 @@ func ListRepoDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoDeploymentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoDeploymentFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoDeploymentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoDeploymentFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoDeployment NewRepoDeploymentPaginator", "error", err)
 		return nil, err
@@ -4517,7 +4517,7 @@ func GetRepoDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4531,7 +4531,7 @@ func GetRepoDeployment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoDeploymentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoDeploymentFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoDeploymentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoDeploymentFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4662,7 +4662,7 @@ func ListRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		plugin.Logger(ctx).Error("ListRepoEnvironment NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoEnvironment GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4678,7 +4678,7 @@ func ListRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoEnvironmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoEnvironmentFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoEnvironmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoEnvironmentFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoEnvironment NewRepoEnvironmentPaginator", "error", err)
 		return nil, err
@@ -4726,7 +4726,7 @@ func GetRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4740,7 +4740,7 @@ func GetRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoEnvironmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoEnvironmentFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoEnvironmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoEnvironmentFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -4875,7 +4875,7 @@ func ListRepoRuleSet(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		plugin.Logger(ctx).Error("ListRepoRuleSet NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoRuleSet GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -4891,7 +4891,7 @@ func ListRepoRuleSet(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoRuleSetPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoRuleSetFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoRuleSetPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoRuleSetFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoRuleSet NewRepoRuleSetPaginator", "error", err)
 		return nil, err
@@ -4943,7 +4943,7 @@ func GetRepoRuleSet(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -4957,7 +4957,7 @@ func GetRepoRuleSet(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoRuleSetPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoRuleSetFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoRuleSetPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoRuleSetFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5093,7 +5093,7 @@ func ListRepoSBOM(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListRepoSBOM NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoSBOM GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5109,7 +5109,7 @@ func ListRepoSBOM(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoSBOMPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoSBOMFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoSBOMPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoSBOMFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoSBOM NewRepoSBOMPaginator", "error", err)
 		return nil, err
@@ -5162,7 +5162,7 @@ func GetRepoSBOM(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5176,7 +5176,7 @@ func GetRepoSBOM(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoSBOMPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoSBOMFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoSBOMPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoSBOMFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5318,7 +5318,7 @@ func ListRepoVulnerabilityAlert(ctx context.Context, d *plugin.QueryData, _ *plu
 		plugin.Logger(ctx).Error("ListRepoVulnerabilityAlert NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoVulnerabilityAlert GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5334,7 +5334,7 @@ func ListRepoVulnerabilityAlert(ctx context.Context, d *plugin.QueryData, _ *plu
 		return nil, err
 	}
 
-	paginator, err := k.NewRepoVulnerabilityAlertPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoVulnerabilityAlertFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewRepoVulnerabilityAlertPaginator(essdk.BuildFilter(ctx, d.QueryContext, listRepoVulnerabilityAlertFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListRepoVulnerabilityAlert NewRepoVulnerabilityAlertPaginator", "error", err)
 		return nil, err
@@ -5393,7 +5393,7 @@ func GetRepoVulnerabilityAlert(ctx context.Context, d *plugin.QueryData, _ *plug
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5407,7 +5407,7 @@ func GetRepoVulnerabilityAlert(ctx context.Context, d *plugin.QueryData, _ *plug
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewRepoVulnerabilityAlertPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoVulnerabilityAlertFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewRepoVulnerabilityAlertPaginator(essdk.BuildFilter(ctx, d.QueryContext, getRepoVulnerabilityAlertFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5540,7 +5540,7 @@ func ListTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 		plugin.Logger(ctx).Error("ListTag NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTag GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5556,7 +5556,7 @@ func ListTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 		return nil, err
 	}
 
-	paginator, err := k.NewTagPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTagFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewTagPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTagFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTag NewTagPaginator", "error", err)
 		return nil, err
@@ -5606,7 +5606,7 @@ func GetTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (in
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5620,7 +5620,7 @@ func GetTag(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (in
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewTagPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTagFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewTagPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTagFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -5774,7 +5774,7 @@ func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 		plugin.Logger(ctx).Error("ListTeam NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTeam GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -5790,7 +5790,7 @@ func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 		return nil, err
 	}
 
-	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTeam NewTeamPaginator", "error", err)
 		return nil, err
@@ -5861,7 +5861,7 @@ func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -5875,7 +5875,7 @@ func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewTeamPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6005,7 +6005,7 @@ func ListTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		plugin.Logger(ctx).Error("ListTeamMembers NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTeamMembers GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -6021,7 +6021,7 @@ func ListTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 		return nil, err
 	}
 
-	paginator, err := k.NewTeamMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamMembersFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewTeamMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, listTeamMembersFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListTeamMembers NewTeamMembersPaginator", "error", err)
 		return nil, err
@@ -6068,7 +6068,7 @@ func GetTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -6082,7 +6082,7 @@ func GetTeamMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewTeamMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamMembersFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewTeamMembersPaginator(essdk.BuildFilter(ctx, d.QueryContext, getTeamMembersFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6265,7 +6265,7 @@ func ListUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 		plugin.Logger(ctx).Error("ListUser NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListUser GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -6281,7 +6281,7 @@ func ListUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 		return nil, err
 	}
 
-	paginator, err := k.NewUserPaginator(essdk.BuildFilter(ctx, d.QueryContext, listUserFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewUserPaginator(essdk.BuildFilter(ctx, d.QueryContext, listUserFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListUser NewUserPaginator", "error", err)
 		return nil, err
@@ -6381,7 +6381,7 @@ func GetUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -6395,7 +6395,7 @@ func GetUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewUserPaginator(essdk.BuildFilter(ctx, d.QueryContext, getUserFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewUserPaginator(essdk.BuildFilter(ctx, d.QueryContext, getUserFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6534,7 +6534,7 @@ func ListWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		plugin.Logger(ctx).Error("ListWorkflow NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListWorkflow GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -6550,7 +6550,7 @@ func ListWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 		return nil, err
 	}
 
-	paginator, err := k.NewWorkflowPaginator(essdk.BuildFilter(ctx, d.QueryContext, listWorkflowFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewWorkflowPaginator(essdk.BuildFilter(ctx, d.QueryContext, listWorkflowFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListWorkflow NewWorkflowPaginator", "error", err)
 		return nil, err
@@ -6606,7 +6606,7 @@ func GetWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -6620,7 +6620,7 @@ func GetWorkflow(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewWorkflowPaginator(essdk.BuildFilter(ctx, d.QueryContext, getWorkflowFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewWorkflowPaginator(essdk.BuildFilter(ctx, d.QueryContext, getWorkflowFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6757,7 +6757,7 @@ func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		plugin.Logger(ctx).Error("ListContainerPackage NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListContainerPackage GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -6773,7 +6773,7 @@ func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 		return nil, err
 	}
 
-	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, listContainerPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, listContainerPackageFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListContainerPackage NewContainerPackagePaginator", "error", err)
 		return nil, err
@@ -6827,7 +6827,7 @@ func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -6841,7 +6841,7 @@ func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, getContainerPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewContainerPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, getContainerPackageFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -6967,7 +6967,7 @@ func ListPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		plugin.Logger(ctx).Error("ListPackageDetail NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPackageDetail GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -6983,7 +6983,7 @@ func ListPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 		return nil, err
 	}
 
-	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageDetailFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageDetailFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPackageDetail NewPackageDetailPaginator", "error", err)
 		return nil, err
@@ -7026,7 +7026,7 @@ func GetPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -7040,7 +7040,7 @@ func GetPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageDetailFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewPackageDetailPaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageDetailFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -7166,7 +7166,7 @@ func ListPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		plugin.Logger(ctx).Error("ListPackage NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPackage GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -7182,7 +7182,7 @@ func ListPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 		return nil, err
 	}
 
-	paginator, err := k.NewPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, listPackageFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListPackage NewPackagePaginator", "error", err)
 		return nil, err
@@ -7225,7 +7225,7 @@ func GetPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -7239,7 +7239,7 @@ func GetPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewPackagePaginator(essdk.BuildFilter(ctx, d.QueryContext, getPackageFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
@@ -7377,7 +7377,7 @@ func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		plugin.Logger(ctx).Error("ListArtifactDockerFile NewSelfClientCached", "error", err)
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListArtifactDockerFile GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
 		return nil, err
@@ -7393,7 +7393,7 @@ func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.
 		return nil, err
 	}
 
-	paginator, err := k.NewArtifactDockerFilePaginator(essdk.BuildFilter(ctx, d.QueryContext, listArtifactDockerFileFilters, integrationID, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	paginator, err := k.NewArtifactDockerFilePaginator(essdk.BuildFilter(ctx, d.QueryContext, listArtifactDockerFileFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
 	if err != nil {
 		plugin.Logger(ctx).Error("ListArtifactDockerFile NewArtifactDockerFilePaginator", "error", err)
 		return nil, err
@@ -7448,7 +7448,7 @@ func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	if err != nil {
 		return nil, err
 	}
-	integrationID, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
 	if err != nil {
 		return nil, err
 	}
@@ -7462,7 +7462,7 @@ func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	limit := int64(1)
-	paginator, err := k.NewArtifactDockerFilePaginator(essdk.BuildFilter(ctx, d.QueryContext, getArtifactDockerFileFilters, integrationID, encodedResourceCollectionFilters, clientType), &limit)
+	paginator, err := k.NewArtifactDockerFilePaginator(essdk.BuildFilter(ctx, d.QueryContext, getArtifactDockerFileFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
 	if err != nil {
 		return nil, err
 	}
