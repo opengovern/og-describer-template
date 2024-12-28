@@ -29,15 +29,13 @@ func GetNugetPackageList(ctx context.Context, githubClient GitHubClient, organiz
 			value := models.Resource{
 				ID:   strconv.Itoa(int(packageData.GetID())),
 				Name: packageData.GetName(),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.PackageDescription{
-						ID:         strconv.Itoa(int(packageData.GetID())),
-						RegistryID: packageData.Registry.GetURL(),
-						Name:       packageData.GetName(),
-						URL:        packageData.GetURL(),
-						CreatedAt:  packageData.GetCreatedAt(),
-						UpdatedAt:  packageData.GetUpdatedAt(),
-					},
+				Description: model.PackageDescription{
+					ID:         strconv.Itoa(int(packageData.GetID())),
+					RegistryID: packageData.Registry.GetURL(),
+					Name:       packageData.GetName(),
+					URL:        packageData.GetURL(),
+					CreatedAt:  packageData.GetCreatedAt(),
+					UpdatedAt:  packageData.GetUpdatedAt(),
 				},
 			}
 			if stream != nil {
@@ -67,15 +65,13 @@ func GetNugetPackage(ctx context.Context, githubClient GitHubClient, organizatio
 	value := models.Resource{
 		ID:   strconv.Itoa(int(respPackages.GetID())),
 		Name: respPackages.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.PackageDescription{
-				ID:         strconv.Itoa(int(respPackages.GetID())),
-				RegistryID: respPackages.Registry.GetURL(),
-				Name:       respPackages.GetName(),
-				URL:        respPackages.GetURL(),
-				CreatedAt:  respPackages.GetCreatedAt(),
-				UpdatedAt:  respPackages.GetUpdatedAt(),
-			},
+		Description: model.PackageDescription{
+			ID:         strconv.Itoa(int(respPackages.GetID())),
+			RegistryID: respPackages.Registry.GetURL(),
+			Name:       respPackages.GetName(),
+			URL:        respPackages.GetURL(),
+			CreatedAt:  respPackages.GetCreatedAt(),
+			UpdatedAt:  respPackages.GetUpdatedAt(),
 		},
 	}
 	if stream != nil {

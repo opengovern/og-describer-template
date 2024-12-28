@@ -229,15 +229,13 @@ func GetDockerfile(
 		DockerfileContent:       string(decoded),
 		DockerfileContentBase64: &dockerfileB64,
 		Repository:              repoObj,
-		Images:                 images,
+		Images:                  images,
 	}
 
 	value := models.Resource{
-		ID:   *output.URI,
-		Name: *output.Name,
-		Description: JSONAllFieldsMarshaller{
-			Value: output,
-		},
+		ID:          *output.URI,
+		Name:        *output.Name,
+		Description: output,
 	}
 	return &value, nil
 }

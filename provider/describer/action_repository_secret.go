@@ -44,15 +44,13 @@ func GetRepositorySecrets(ctx context.Context, githubClient GitHubClient, stream
 			value := models.Resource{
 				ID:   id,
 				Name: secret.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.SecretDescription{
-						Name:                    &secret.Name,
-						CreatedAt:               &createdAt,
-						UpdatedAt:               &updatedAt,
-						Visibility:              &secret.Visibility,
-						SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
-						RepoFullName:            &repoFullName,
-					},
+				Description: model.SecretDescription{
+					Name:                    &secret.Name,
+					CreatedAt:               &createdAt,
+					UpdatedAt:               &updatedAt,
+					Visibility:              &secret.Visibility,
+					SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
+					RepoFullName:            &repoFullName,
 				},
 			}
 			if stream != nil {
@@ -84,15 +82,13 @@ func GetRepoActionSecret(ctx context.Context, githubClient GitHubClient, organiz
 	value := models.Resource{
 		ID:   id,
 		Name: secret.Name,
-		Description: JSONAllFieldsMarshaller{
-			Value: model.SecretDescription{
-				Name:                    &secret.Name,
-				CreatedAt:               &createdAt,
-				UpdatedAt:               &updatedAt,
-				Visibility:              &secret.Visibility,
-				SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
-				RepoFullName:            &repoFullName,
-			},
+		Description: model.SecretDescription{
+			Name:                    &secret.Name,
+			CreatedAt:               &createdAt,
+			UpdatedAt:               &updatedAt,
+			Visibility:              &secret.Visibility,
+			SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
+			RepoFullName:            &repoFullName,
 		},
 	}
 	if stream != nil {

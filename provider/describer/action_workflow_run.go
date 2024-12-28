@@ -189,11 +189,9 @@ func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.Resilie
 		}
 
 		value := models.Resource{
-			ID:   strconv.Itoa(runDetail.ID),
-			Name: name,
-			Description: JSONAllFieldsMarshaller{
-				Value: runDetail,
-			},
+			ID:          strconv.Itoa(runDetail.ID),
+			Name:        name,
+			Description: runDetail,
 		}
 		if stream != nil {
 			if err := (*stream)(value); err != nil {

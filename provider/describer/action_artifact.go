@@ -43,18 +43,16 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 			value := models.Resource{
 				ID:   strconv.Itoa(int(artifact.GetID())),
 				Name: artifact.GetName(),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.ArtifactDescription{
-						ID:                 artifact.GetID(),
-						NodeID:             artifact.NodeID,
-						Name:               artifact.Name,
-						SizeInBytes:        artifact.GetSizeInBytes(),
-						ArchiveDownloadURL: artifact.ArchiveDownloadURL,
-						Expired:            artifact.GetExpired(),
-						CreatedAt:          &createdAt,
-						ExpiresAt:          &expiresAt,
-						RepoFullName:       &repoFullName,
-					},
+				Description: model.ArtifactDescription{
+					ID:                 artifact.GetID(),
+					NodeID:             artifact.NodeID,
+					Name:               artifact.Name,
+					SizeInBytes:        artifact.GetSizeInBytes(),
+					ArchiveDownloadURL: artifact.ArchiveDownloadURL,
+					Expired:            artifact.GetExpired(),
+					CreatedAt:          &createdAt,
+					ExpiresAt:          &expiresAt,
+					RepoFullName:       &repoFullName,
 				},
 			}
 			if stream != nil {
@@ -89,18 +87,16 @@ func GetArtifact(ctx context.Context, githubClient GitHubClient, organizationNam
 	value := models.Resource{
 		ID:   strconv.Itoa(int(artifact.GetID())),
 		Name: artifact.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.ArtifactDescription{
-				ID:                 artifact.GetID(),
-				NodeID:             artifact.NodeID,
-				Name:               artifact.Name,
-				SizeInBytes:        artifact.GetSizeInBytes(),
-				ArchiveDownloadURL: artifact.ArchiveDownloadURL,
-				Expired:            artifact.GetExpired(),
-				CreatedAt:          &createdAt,
-				ExpiresAt:          &expiresAt,
-				RepoFullName:       &repoFullName,
-			},
+		Description: model.ArtifactDescription{
+			ID:                 artifact.GetID(),
+			NodeID:             artifact.NodeID,
+			Name:               artifact.Name,
+			SizeInBytes:        artifact.GetSizeInBytes(),
+			ArchiveDownloadURL: artifact.ArchiveDownloadURL,
+			Expired:            artifact.GetExpired(),
+			CreatedAt:          &createdAt,
+			ExpiresAt:          &expiresAt,
+			RepoFullName:       &repoFullName,
 		},
 	}
 	if stream != nil {

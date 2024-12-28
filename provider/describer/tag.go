@@ -58,16 +58,14 @@ func GetRepositoryTags(ctx context.Context, githubClient GitHubClient, stream *m
 			value := models.Resource{
 				ID:   id,
 				Name: tag.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.TagDescription{
-						RepositoryFullName: repoFullName,
-						Name:               tag.Name,
-						TaggerDate:         tag.Target.Tag.Tagger.Date,
-						TaggerName:         tag.Target.Tag.Tagger.Name,
-						TaggerLogin:        tag.Target.Tag.Tagger.Name,
-						Message:            tag.Target.Tag.Message,
-						Commit:             tag.Target.Commit,
-					},
+				Description: model.TagDescription{
+					RepositoryFullName: repoFullName,
+					Name:               tag.Name,
+					TaggerDate:         tag.Target.Tag.Tagger.Date,
+					TaggerName:         tag.Target.Tag.Tagger.Name,
+					TaggerLogin:        tag.Target.Tag.Tagger.Name,
+					Message:            tag.Target.Tag.Message,
+					Commit:             tag.Target.Commit,
 				},
 			}
 			if stream != nil {

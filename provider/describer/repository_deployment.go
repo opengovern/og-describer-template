@@ -70,11 +70,9 @@ func GetRepositoryDeployments(ctx context.Context, githubClient GitHubClient, st
 			value := models.Resource{
 				ID:   strconv.Itoa(deployment.Id),
 				Name: strconv.Itoa(deployment.Id),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoDeploymentDescription{
-						Deployment:   deployment,
-						RepoFullName: repoFullName,
-					},
+				Description: model.RepoDeploymentDescription{
+					Deployment:   deployment,
+					RepoFullName: repoFullName,
 				},
 			}
 			if stream != nil {

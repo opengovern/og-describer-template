@@ -70,11 +70,9 @@ func GetRepositoryEnvironments(ctx context.Context, githubClient GitHubClient, s
 			value := models.Resource{
 				ID:   strconv.Itoa(environment.Id),
 				Name: environment.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoEnvironmentDescription{
-						Environment:  environment,
-						RepoFullName: repoFullName,
-					},
+				Description: model.RepoEnvironmentDescription{
+					Environment:  environment,
+					RepoFullName: repoFullName,
 				},
 			}
 			if stream != nil {

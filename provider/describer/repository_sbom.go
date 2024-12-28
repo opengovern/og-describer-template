@@ -53,18 +53,16 @@ func GetRepositorySBOMs(ctx context.Context, githubClient GitHubClient, owner, r
 	value := models.Resource{
 		ID:   SBOM.GetSBOM().GetSPDXID(),
 		Name: SBOM.GetSBOM().GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.RepoSBOMDescription{
-				RepositoryFullName: repoFullName,
-				SPDXID:             SBOM.GetSBOM().GetSPDXID(),
-				SPDXVersion:        SBOM.GetSBOM().GetSPDXVersion(),
-				CreationInfo:       SBOM.GetSBOM().GetCreationInfo(),
-				Name:               SBOM.GetSBOM().GetName(),
-				DataLicense:        SBOM.GetSBOM().GetDataLicense(),
-				DocumentDescribes:  SBOM.GetSBOM().DocumentDescribes,
-				DocumentNamespace:  SBOM.GetSBOM().GetDocumentNamespace(),
-				Packages:           SBOM.GetSBOM().Packages,
-			},
+		Description: model.RepoSBOMDescription{
+			RepositoryFullName: repoFullName,
+			SPDXID:             SBOM.GetSBOM().GetSPDXID(),
+			SPDXVersion:        SBOM.GetSBOM().GetSPDXVersion(),
+			CreationInfo:       SBOM.GetSBOM().GetCreationInfo(),
+			Name:               SBOM.GetSBOM().GetName(),
+			DataLicense:        SBOM.GetSBOM().GetDataLicense(),
+			DocumentDescribes:  SBOM.GetSBOM().DocumentDescribes,
+			DocumentNamespace:  SBOM.GetSBOM().GetDocumentNamespace(),
+			Packages:           SBOM.GetSBOM().Packages,
 		},
 	}
 	return &value, nil

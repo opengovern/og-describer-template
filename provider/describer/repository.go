@@ -206,11 +206,9 @@ func GetRepository(
 		resourceID = strconv.Itoa(finalDetail.GitHubRepoID)
 	}
 	value := models.Resource{
-		ID:   resourceID,
-		Name: *finalDetail.Name,
-		Description: JSONAllFieldsMarshaller{
-			Value: finalDetail,
-		},
+		ID:          resourceID,
+		Name:        *finalDetail.Name,
+		Description: finalDetail,
 	}
 
 	// Stream if provided

@@ -64,13 +64,11 @@ func tableGitHubTeamMemberList(ctx context.Context, githubClient GitHubClient, s
 			value := models.Resource{
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.TeamMembersDescription{
-						User:         member.Node,
-						Organization: org,
-						Slug:         slug,
-						Role:         member.Role,
-					},
+				Description: model.TeamMembersDescription{
+					User:         member.Node,
+					Organization: org,
+					Slug:         slug,
+					Role:         member.Role,
 				},
 			}
 			if stream != nil {

@@ -45,21 +45,19 @@ func GetRepositoryAuditLog(ctx context.Context, githubClient GitHubClient, strea
 			value := models.Resource{
 				ID:   audit.GetDocumentID(),
 				Name: audit.GetName(),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.AuditLogDescription{
-						ID:            audit.DocumentID,
-						CreatedAt:     &createdAt,
-						Organization:  &org,
-						Phrase:        &phrase,
-						Include:       &include,
-						Action:        audit.Action,
-						Actor:         audit.Actor,
-						ActorLocation: &actorLocation,
-						Team:          audit.Team,
-						UserLogin:     audit.User,
-						Repo:          audit.Repository,
-						Data:          &data,
-					},
+				Description: model.AuditLogDescription{
+					ID:            audit.DocumentID,
+					CreatedAt:     &createdAt,
+					Organization:  &org,
+					Phrase:        &phrase,
+					Include:       &include,
+					Action:        audit.Action,
+					Actor:         audit.Actor,
+					ActorLocation: &actorLocation,
+					Team:          audit.Team,
+					UserLogin:     audit.User,
+					Repo:          audit.Repository,
+					Data:          &data,
 				},
 			}
 			if stream != nil {

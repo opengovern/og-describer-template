@@ -70,14 +70,12 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient GitHubClient
 				value := models.Resource{
 					ID:   id,
 					Name: repoFullName,
-					Description: JSONAllFieldsMarshaller{
-						Value: model.OrgCollaboratorsDescription{
-							Organization:   org,
-							Affiliation:    "ALL",
-							RepositoryName: node.Name,
-							Permission:     collaborator.Permission,
-							UserLogin:      collaborator.Node,
-						},
+					Description: model.OrgCollaboratorsDescription{
+						Organization:   org,
+						Affiliation:    "ALL",
+						RepositoryName: node.Name,
+						Permission:     collaborator.Permission,
+						UserLogin:      collaborator.Node,
 					},
 				}
 				if stream != nil {

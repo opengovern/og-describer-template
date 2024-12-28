@@ -48,16 +48,14 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 			value := models.Resource{
 				ID:   strconv.Itoa(int(runner.GetID())),
 				Name: runner.GetName(),
-				Description: JSONAllFieldsMarshaller{
-					Value: model.RunnerDescription{
-						ID:           runner.ID,
-						Name:         runner.Name,
-						OS:           runner.OS,
-						Status:       runner.Status,
-						Busy:         runner.Busy,
-						Labels:       labels,
-						RepoFullName: &repoFullName,
-					},
+				Description: model.RunnerDescription{
+					ID:           runner.ID,
+					Name:         runner.Name,
+					OS:           runner.OS,
+					Status:       runner.Status,
+					Busy:         runner.Busy,
+					Labels:       labels,
+					RepoFullName: &repoFullName,
 				},
 			}
 			if stream != nil {
@@ -98,16 +96,14 @@ func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizatio
 	value := models.Resource{
 		ID:   strconv.Itoa(int(runner.GetID())),
 		Name: runner.GetName(),
-		Description: JSONAllFieldsMarshaller{
-			Value: model.RunnerDescription{
-				ID:           runner.ID,
-				Name:         runner.Name,
-				OS:           runner.OS,
-				Status:       runner.Status,
-				Busy:         runner.Busy,
-				Labels:       labels,
-				RepoFullName: &repoFullName,
-			},
+		Description: model.RunnerDescription{
+			ID:           runner.ID,
+			Name:         runner.Name,
+			OS:           runner.OS,
+			Status:       runner.Status,
+			Busy:         runner.Busy,
+			Labels:       labels,
+			RepoFullName: &repoFullName,
 		},
 	}
 	if stream != nil {

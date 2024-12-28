@@ -74,13 +74,11 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient GitHubClient, 
 			value := models.Resource{
 				ID:   strconv.Itoa(collaborator.Node.Id),
 				Name: collaborator.Node.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoCollaboratorsDescription{
-						Affiliation:  "ALL",
-						RepoFullName: repoFullName,
-						Permission:   collaborator.Permission,
-						UserLogin:    collaborator.Node.Login,
-					},
+				Description: model.RepoCollaboratorsDescription{
+					Affiliation:  "ALL",
+					RepoFullName: repoFullName,
+					Permission:   collaborator.Permission,
+					UserLogin:    collaborator.Node.Login,
 				},
 			}
 			if stream != nil {

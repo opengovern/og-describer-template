@@ -123,11 +123,9 @@ func getVersionOutput(
 
 			// Convert ov -> models.Resource
 			value := models.Resource{
-				ID:   strconv.Itoa(ov.ID),
-				Name: ov.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: ov,
-				},
+				ID:          strconv.Itoa(ov.ID),
+				Name:        ov.Name,
+				Description: ov,
 			}
 			resultsChan <- value
 		}(tag)
@@ -181,14 +179,10 @@ func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID in
 
 	for _, r := range resources {
 		// Type-assert .Description to JSONAllFieldsMarshaller
-		desc, ok := r.Description.(JSONAllFieldsMarshaller)
-		if !ok {
-			// Not the type we expected
-			continue
-		}
+		desc := r.Description
 
 		// Marshal then unmarshal so we can read it into ContainerPackageDescription
-		rawBytes, err := json.Marshal(desc.Value)
+		rawBytes, err := json.Marshal(desc)
 		if err != nil {
 			continue
 		}
@@ -215,11 +209,9 @@ func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID in
 	for _, cpdPtr := range dedupMap {
 		cpd := *cpdPtr
 		res := models.Resource{
-			ID:   strconv.Itoa(cpd.ID),
-			Name: cpd.Name,
-			Description: JSONAllFieldsMarshaller{
-				Value: cpd,
-			},
+			ID:          strconv.Itoa(cpd.ID),
+			Name:        cpd.Name,
+			Description: cpd,
 		}
 		finalResults = append(finalResults, res)
 	}
@@ -245,7 +237,7 @@ func fetchAndAssembleOutput(
 		Password: apiToken,
 	})
 	imageRef = strings.ToLower(imageRef)
-	ref, err := name.ParseReference(imageRef,name.WeakValidation)
+	ref, err := name.ParseReference(imageRef, name.WeakValidation)
 	if err != nil {
 		return model.ContainerPackageDescription{},
 			fmt.Errorf("error parsing reference %s: %w", imageRef, err)
@@ -300,10 +292,10 @@ func fetchAndAssembleOutput(
 	ov := model.ContainerPackageDescription{
 		ID:                    version.ID,
 		Digest:                actualDigest, // store the real Docker digest
-		AdditionalPackageURIs: []string{}, // Will be appended after dedup
+		AdditionalPackageURIs: []string{},   // Will be appended after dedup
 		CreatedAt:             version.CreatedAt,
 		UpdatedAt:             version.UpdatedAt,
-		PackageURL:               version.HTMLURL,
+		PackageURL:            version.HTMLURL,
 		Name:                  imageRef,
 		MediaType:             string(desc.Descriptor.MediaType),
 		TotalSize:             totalSize,

@@ -128,11 +128,9 @@ func GetRepositoryRuleSets(ctx context.Context, githubClient GitHubClient, strea
 			value := models.Resource{
 				ID:   ruleset.ID,
 				Name: ruleset.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.RepoRuleSetDescription{
-						Ruleset:      ruleset,
-						RepoFullName: repoFullName,
-					},
+				Description: model.RepoRuleSetDescription{
+					Ruleset:      ruleset,
+					RepoFullName: repoFullName,
 				},
 			}
 			if stream != nil {

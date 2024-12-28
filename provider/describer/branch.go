@@ -185,14 +185,12 @@ func GetRepositoryBranches(ctx context.Context, githubClient GitHubClient, strea
 			value := models.Resource{
 				ID:   id,
 				Name: branch.Node.Name,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.BranchDescription{
-						Name:                 &branch.Node.Name,
-						Commit:               commit,
-						BranchProtectionRule: branchProtctionRule,
-						RepoFullName:         &repoFullName,
-						Protected:            protected,
-					},
+				Description: model.BranchDescription{
+					Name:                 &branch.Node.Name,
+					Commit:               commit,
+					BranchProtectionRule: branchProtctionRule,
+					RepoFullName:         &repoFullName,
+					Protected:            protected,
 				},
 			}
 			if stream != nil {
