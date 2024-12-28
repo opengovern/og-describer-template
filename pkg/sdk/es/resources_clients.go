@@ -19,7 +19,7 @@ type Client struct {
 type AdUsers struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdUsersDescription `json:"description"`
+	Description     entraid.AdUsersDescription `json:"Description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -106,7 +106,8 @@ var listAdUsersFilters = map[string]string{
 	"mail":                                  "Description.Mail",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
-	"platform_account_id":                   "metadata.IntegrationID",
+	"platform_account_id":                   "Metadata.SourceID",
+	"platform_integration_id":               "IntegrationID",
 	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
@@ -187,7 +188,8 @@ var getAdUsersFilters = map[string]string{
 	"mail":                                  "Description.Mail",
 	"other_mails":                           "Description.OtherMails",
 	"password_policies":                     "Description.PasswordPolicies",
-	"platform_account_id":                   "metadata.IntegrationID",
+	"platform_account_id":                   "Metadata.SourceID",
+	"platform_integration_id":               "IntegrationID",
 	"platform_resource_id":                  "ID",
 	"sign_in_sessions_valid_from_date_time": "Description.SignInSessionsValidFromDateTime",
 	"tenant_id":                             "Description.TenantID",
@@ -256,7 +258,7 @@ func GetAdUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdGroup struct {
 	ResourceID      string                     `json:"resource_id"`
 	PlatformID      string                     `json:"platform_id"`
-	Description     entraid.AdGroupDescription `json:"description"`
+	Description     entraid.AdGroupDescription `json:"Description"`
 	Metadata        entraid.Metadata           `json:"metadata"`
 	DescribedBy     string                     `json:"described_by"`
 	ResourceType    string                     `json:"resource_type"`
@@ -356,7 +358,8 @@ var listAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
-	"platform_account_id":              "metadata.IntegrationID",
+	"platform_account_id":              "Metadata.SourceID",
+	"platform_integration_id":          "IntegrationID",
 	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
@@ -453,7 +456,8 @@ var getAdGroupFilters = map[string]string{
 	"on_premises_security_identifier":  "Description.OnPremisesSecurityIdentifier",
 	"on_premises_sync_enabled":         "Description.OnPremisesSyncEnabled",
 	"owner_ids":                        "Description.OwnerIDs",
-	"platform_account_id":              "metadata.IntegrationID",
+	"platform_account_id":              "Metadata.SourceID",
+	"platform_integration_id":          "IntegrationID",
 	"platform_resource_id":             "ID",
 	"proxy_addresses":                  "Description.ProxyAddresses",
 	"renewed_date_time":                "Description.RenewedDateTime",
@@ -525,7 +529,7 @@ func GetAdGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 type AdServicePrincipal struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdServicePrincipalDescription `json:"description"`
+	Description     entraid.AdServicePrincipalDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -621,7 +625,8 @@ var listAdServicePrincipalFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -712,7 +717,8 @@ var getAdServicePrincipalFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -782,7 +788,7 @@ func GetAdServicePrincipal(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdApplication struct {
 	ResourceID      string                           `json:"resource_id"`
 	PlatformID      string                           `json:"platform_id"`
-	Description     entraid.AdApplicationDescription `json:"description"`
+	Description     entraid.AdApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                 `json:"metadata"`
 	DescribedBy     string                           `json:"described_by"`
 	ResourceType    string                           `json:"resource_type"`
@@ -871,7 +877,7 @@ var listAdApplicationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_integration_id":      "IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -954,7 +960,7 @@ var getAdApplicationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_integration_id":      "IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -1023,7 +1029,7 @@ func GetAdApplication(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 type AdDirectoryRole struct {
 	ResourceID      string                             `json:"resource_id"`
 	PlatformID      string                             `json:"platform_id"`
-	Description     entraid.AdDirectoryRoleDescription `json:"description"`
+	Description     entraid.AdDirectoryRoleDescription `json:"Description"`
 	Metadata        entraid.Metadata                   `json:"metadata"`
 	DescribedBy     string                             `json:"described_by"`
 	ResourceType    string                             `json:"resource_type"`
@@ -1099,13 +1105,13 @@ func (p AdDirectoryRolePaginator) NextPage(ctx context.Context) ([]AdDirectoryRo
 }
 
 var listAdDirectoryRoleFilters = map[string]string{
-	"description":         "Description.Description",
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"member_ids":          "Description.MemberIds",
-	"platform_account_id": "metadata.IntegrationID",
-	"role_template_id":    "Description.RoleTemplateId",
-	"tenant_id":           "Description.TenantID",
+	"description":             "Description.Description",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"member_ids":              "Description.MemberIds",
+	"platform_integration_id": "IntegrationID",
+	"role_template_id":        "Description.RoleTemplateId",
+	"tenant_id":               "Description.TenantID",
 }
 
 func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1169,13 +1175,13 @@ func ListAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 }
 
 var getAdDirectoryRoleFilters = map[string]string{
-	"description":         "Description.Description",
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"member_ids":          "Description.MemberIds",
-	"platform_account_id": "metadata.IntegrationID",
-	"role_template_id":    "Description.RoleTemplateId",
-	"tenant_id":           "Description.TenantID",
+	"description":             "Description.Description",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"member_ids":              "Description.MemberIds",
+	"platform_integration_id": "IntegrationID",
+	"role_template_id":        "Description.RoleTemplateId",
+	"tenant_id":               "Description.TenantID",
 }
 
 func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1238,7 +1244,7 @@ func GetAdDirectoryRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 type AdDirectorySetting struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdDirectorySettingDescription `json:"description"`
+	Description     entraid.AdDirectorySettingDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -1314,14 +1320,14 @@ func (p AdDirectorySettingPaginator) NextPage(ctx context.Context) ([]AdDirector
 }
 
 var listAdDirectorySettingFilters = map[string]string{
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"name":                "Description.Name",
-	"platform_account_id": "metadata.IntegrationID",
-	"template_id":         "Description.TemplateId",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.Name",
-	"value":               "Description.Value",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"name":                    "Description.Name",
+	"platform_integration_id": "IntegrationID",
+	"template_id":             "Description.TemplateId",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.Name",
+	"value":                   "Description.Value",
 }
 
 func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1385,14 +1391,14 @@ func ListAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getAdDirectorySettingFilters = map[string]string{
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"name":                "Description.Name",
-	"platform_account_id": "metadata.IntegrationID",
-	"template_id":         "Description.TemplateId",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.Name",
-	"value":               "Description.Value",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"name":                    "Description.Name",
+	"platform_integration_id": "IntegrationID",
+	"template_id":             "Description.TemplateId",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.Name",
+	"value":                   "Description.Value",
 }
 
 func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1455,7 +1461,7 @@ func GetAdDirectorySetting(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdDomain struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDomainDescription `json:"description"`
+	Description     entraid.AdDomainDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -1531,17 +1537,17 @@ func (p AdDomainPaginator) NextPage(ctx context.Context) ([]AdDomain, error) {
 }
 
 var listAdDomainFilters = map[string]string{
-	"authentication_type": "Description.AuthenticationType",
-	"id":                  "Description.Id",
-	"is_admin_managed":    "Description.IsAdminManaged",
-	"is_default":          "Description.IsDefault",
-	"is_initial":          "Description.IsInitial",
-	"is_root":             "Description.IsRoot",
-	"is_verified":         "Description.IsVerified",
-	"platform_account_id": "metadata.IntegrationID",
-	"supported_services":  "Description.SupportedServices",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.Id",
+	"authentication_type":     "Description.AuthenticationType",
+	"id":                      "Description.Id",
+	"is_admin_managed":        "Description.IsAdminManaged",
+	"is_default":              "Description.IsDefault",
+	"is_initial":              "Description.IsInitial",
+	"is_root":                 "Description.IsRoot",
+	"is_verified":             "Description.IsVerified",
+	"platform_integration_id": "IntegrationID",
+	"supported_services":      "Description.SupportedServices",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.Id",
 }
 
 func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1605,17 +1611,17 @@ func ListAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 }
 
 var getAdDomainFilters = map[string]string{
-	"authentication_type": "Description.AuthenticationType",
-	"id":                  "Description.Id",
-	"is_admin_managed":    "Description.IsAdminManaged",
-	"is_default":          "Description.IsDefault",
-	"is_initial":          "Description.IsInitial",
-	"is_root":             "Description.IsRoot",
-	"is_verified":         "Description.IsVerified",
-	"platform_account_id": "metadata.IntegrationID",
-	"supported_services":  "Description.SupportedServices",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.Id",
+	"authentication_type":     "Description.AuthenticationType",
+	"id":                      "Description.Id",
+	"is_admin_managed":        "Description.IsAdminManaged",
+	"is_default":              "Description.IsDefault",
+	"is_initial":              "Description.IsInitial",
+	"is_root":                 "Description.IsRoot",
+	"is_verified":             "Description.IsVerified",
+	"platform_integration_id": "IntegrationID",
+	"supported_services":      "Description.SupportedServices",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.Id",
 }
 
 func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1678,7 +1684,7 @@ func GetAdDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdTenant struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdTenantDescription `json:"description"`
+	Description     entraid.AdTenantDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -1757,7 +1763,8 @@ var listAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
 	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
-	"platform_account_id":      "metadata.IntegrationID",
+	"platform_account_id":      "Metadata.SourceID",
+	"platform_integration_id":  "IntegrationID",
 	"platform_resource_id":     "ID",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
@@ -1828,7 +1835,8 @@ var getAdTenantFilters = map[string]string{
 	"created_date_time":        "Description.CreatedDateTime",
 	"display_name":             "Description.DisplayName",
 	"on_premises_sync_enabled": "Description.OnPremisesSyncEnabled",
-	"platform_account_id":      "metadata.IntegrationID",
+	"platform_account_id":      "Metadata.SourceID",
+	"platform_integration_id":  "IntegrationID",
 	"platform_resource_id":     "ID",
 	"tenant_id":                "Description.TenantID",
 	"tenant_type":              "Description.TenantType",
@@ -1895,7 +1903,7 @@ func GetAdTenant(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdIdentityProvider struct {
 	ResourceID      string                                `json:"resource_id"`
 	PlatformID      string                                `json:"platform_id"`
-	Description     entraid.AdIdentityProviderDescription `json:"description"`
+	Description     entraid.AdIdentityProviderDescription `json:"Description"`
 	Metadata        entraid.Metadata                      `json:"metadata"`
 	DescribedBy     string                                `json:"described_by"`
 	ResourceType    string                                `json:"resource_type"`
@@ -1971,14 +1979,14 @@ func (p AdIdentityProviderPaginator) NextPage(ctx context.Context) ([]AdIdentity
 }
 
 var listAdIdentityProviderFilters = map[string]string{
-	"client_id":           "Description.ClientId",
-	"client_secret":       "Description.ClientSecret",
-	"id":                  "Description.Id",
-	"name":                "Description.DisplayName",
-	"platform_account_id": "metadata.IntegrationID",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.DisplayName",
-	"type":                "Description.Type",
+	"client_id":               "Description.ClientId",
+	"client_secret":           "Description.ClientSecret",
+	"id":                      "Description.Id",
+	"name":                    "Description.DisplayName",
+	"platform_integration_id": "IntegrationID",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
+	"type":                    "Description.Type",
 }
 
 func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2042,14 +2050,14 @@ func ListAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getAdIdentityProviderFilters = map[string]string{
-	"client_id":           "Description.ClientId",
-	"client_secret":       "Description.ClientSecret",
-	"id":                  "Description.Id",
-	"name":                "Description.DisplayName",
-	"platform_account_id": "metadata.IntegrationID",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.DisplayName",
-	"type":                "Description.Type",
+	"client_id":               "Description.ClientId",
+	"client_secret":           "Description.ClientSecret",
+	"id":                      "Description.Id",
+	"name":                    "Description.DisplayName",
+	"platform_integration_id": "IntegrationID",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
+	"type":                    "Description.Type",
 }
 
 func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2112,7 +2120,7 @@ func GetAdIdentityProvider(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 type AdSecurityDefaultsPolicy struct {
 	ResourceID      string                                      `json:"resource_id"`
 	PlatformID      string                                      `json:"platform_id"`
-	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"description"`
+	Description     entraid.AdSecurityDefaultsPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                            `json:"metadata"`
 	DescribedBy     string                                      `json:"described_by"`
 	ResourceType    string                                      `json:"resource_type"`
@@ -2188,13 +2196,13 @@ func (p AdSecurityDefaultsPolicyPaginator) NextPage(ctx context.Context) ([]AdSe
 }
 
 var listAdSecurityDefaultsPolicyFilters = map[string]string{
-	"description":         "Description.Description",
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"is_enabled":          "Description.IsEnabled",
-	"platform_account_id": "metadata.IntegrationID",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.DisplayName",
+	"description":             "Description.Description",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"is_enabled":              "Description.IsEnabled",
+	"platform_integration_id": "IntegrationID",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
 }
 
 func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2258,13 +2266,13 @@ func ListAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 }
 
 var getAdSecurityDefaultsPolicyFilters = map[string]string{
-	"description":         "Description.Description",
-	"display_name":        "Description.DisplayName",
-	"id":                  "Description.Id",
-	"is_enabled":          "Description.IsEnabled",
-	"platform_account_id": "metadata.IntegrationID",
-	"tenant_id":           "Description.TenantID",
-	"title":               "Description.DisplayName",
+	"description":             "Description.Description",
+	"display_name":            "Description.DisplayName",
+	"id":                      "Description.Id",
+	"is_enabled":              "Description.IsEnabled",
+	"platform_integration_id": "IntegrationID",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
 }
 
 func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -2327,7 +2335,7 @@ func GetAdSecurityDefaultsPolicy(ctx context.Context, d *plugin.QueryData, _ *pl
 type AdAuthorizationPolicy struct {
 	ResourceID      string                                   `json:"resource_id"`
 	PlatformID      string                                   `json:"platform_id"`
-	Description     entraid.AdAuthorizationPolicyDescription `json:"description"`
+	Description     entraid.AdAuthorizationPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                         `json:"metadata"`
 	DescribedBy     string                                   `json:"described_by"`
 	ResourceType    string                                   `json:"resource_type"`
@@ -2413,7 +2421,7 @@ var listAdAuthorizationPolicyFilters = map[string]string{
 	"display_name":                                      "Description.DisplayName",
 	"guest_user_role_id":                                "Description.GuestUserRoleId",
 	"id":                                                "Description.Id",
-	"platform_account_id":                               "metadata.IntegrationID",
+	"platform_integration_id":                           "IntegrationID",
 	"tenant_id":                                         "Description.TenantID",
 	"title":                                             "Description.DisplayName",
 }
@@ -2489,7 +2497,7 @@ var getAdAuthorizationPolicyFilters = map[string]string{
 	"display_name":                                      "Description.DisplayName",
 	"guest_user_role_id":                                "Description.GuestUserRoleId",
 	"id":                                                "Description.Id",
-	"platform_account_id":                               "metadata.IntegrationID",
+	"platform_integration_id":                           "IntegrationID",
 	"tenant_id":                                         "Description.TenantID",
 	"title":                                             "Description.DisplayName",
 }
@@ -2554,7 +2562,7 @@ func GetAdAuthorizationPolicy(ctx context.Context, d *plugin.QueryData, _ *plugi
 type AdConditionalAccessPolicy struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdConditionalAccessPolicyDescription `json:"description"`
+	Description     entraid.AdConditionalAccessPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
@@ -2643,7 +2651,7 @@ var listAdConditionalAccessPolicyFilters = map[string]string{
 	"modified_date_time":                "Description.ModifiedDateTime",
 	"operator":                          "Description.Operator",
 	"persistent_browser":                "Description.PersistentBrowser",
-	"platform_account_id":               "metadata.IntegrationID",
+	"platform_integration_id":           "IntegrationID",
 	"platforms":                         "Description.Platforms",
 	"sign_in_frequency":                 "Description.SignInFrequency",
 	"sign_in_risk_levels":               "Description.SignInRiskLevels",
@@ -2729,7 +2737,7 @@ var getAdConditionalAccessPolicyFilters = map[string]string{
 	"modified_date_time":                "Description.ModifiedDateTime",
 	"operator":                          "Description.Operator",
 	"persistent_browser":                "Description.PersistentBrowser",
-	"platform_account_id":               "metadata.IntegrationID",
+	"platform_integration_id":           "IntegrationID",
 	"platforms":                         "Description.Platforms",
 	"sign_in_frequency":                 "Description.SignInFrequency",
 	"sign_in_risk_levels":               "Description.SignInRiskLevels",
@@ -2801,7 +2809,7 @@ func GetAdConditionalAccessPolicy(ctx context.Context, d *plugin.QueryData, _ *p
 type AdAdminConsentRequestPolicy struct {
 	ResourceID      string                                         `json:"resource_id"`
 	PlatformID      string                                         `json:"platform_id"`
-	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"description"`
+	Description     entraid.AdAdminConsentRequestPolicyDescription `json:"Description"`
 	Metadata        entraid.Metadata                               `json:"metadata"`
 	DescribedBy     string                                         `json:"described_by"`
 	ResourceType    string                                         `json:"resource_type"`
@@ -2879,7 +2887,7 @@ func (p AdAdminConsentRequestPolicyPaginator) NextPage(ctx context.Context) ([]A
 var listAdAdminConsentRequestPolicyFilters = map[string]string{
 	"is_enabled":               "Description.IsEnabled",
 	"notify_reviewers":         "Description.NotifyReviewers",
-	"platform_account_id":      "metadata.IntegrationID",
+	"platform_integration_id":  "IntegrationID",
 	"reminders_enabled":        "Description.RemindersEnabled",
 	"request_duration_in_days": "Description.RequestDurationInDays",
 	"reviewers":                "Description.Reviewers",
@@ -2951,7 +2959,7 @@ func ListAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _
 var getAdAdminConsentRequestPolicyFilters = map[string]string{
 	"is_enabled":               "Description.IsEnabled",
 	"notify_reviewers":         "Description.NotifyReviewers",
-	"platform_account_id":      "metadata.IntegrationID",
+	"platform_integration_id":  "IntegrationID",
 	"reminders_enabled":        "Description.RemindersEnabled",
 	"request_duration_in_days": "Description.RequestDurationInDays",
 	"reviewers":                "Description.Reviewers",
@@ -3020,7 +3028,7 @@ func GetAdAdminConsentRequestPolicy(ctx context.Context, d *plugin.QueryData, _ 
 type AdDevice struct {
 	ResourceID      string                      `json:"resource_id"`
 	PlatformID      string                      `json:"platform_id"`
-	Description     entraid.AdDeviceDescription `json:"description"`
+	Description     entraid.AdDeviceDescription `json:"Description"`
 	Metadata        entraid.Metadata            `json:"metadata"`
 	DescribedBy     string                      `json:"described_by"`
 	ResourceType    string                      `json:"resource_type"`
@@ -3108,7 +3116,7 @@ var listAdDeviceFilters = map[string]string{
 	"member_of":                          "Description.MemberOf",
 	"operating_system":                   "Description.OperatingSystem",
 	"operating_system_version":           "Description.OperatingSystemVersion",
-	"platform_account_id":                "metadata.IntegrationID",
+	"platform_integration_id":            "IntegrationID",
 	"profile_type":                       "Description.ProfileType",
 	"tenant_id":                          "Description.TenantID",
 	"trust_type":                         "Description.TrustType",
@@ -3187,7 +3195,7 @@ var getAdDeviceFilters = map[string]string{
 	"member_of":                          "Description.MemberOf",
 	"operating_system":                   "Description.OperatingSystem",
 	"operating_system_version":           "Description.OperatingSystemVersion",
-	"platform_account_id":                "metadata.IntegrationID",
+	"platform_integration_id":            "IntegrationID",
 	"profile_type":                       "Description.ProfileType",
 	"tenant_id":                          "Description.TenantID",
 	"trust_type":                         "Description.TrustType",
@@ -3253,7 +3261,7 @@ func GetAdDevice(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 type AdUserRegistrationDetails struct {
 	ResourceID      string                                       `json:"resource_id"`
 	PlatformID      string                                       `json:"platform_id"`
-	Description     entraid.AdUserRegistrationDetailsDescription `json:"description"`
+	Description     entraid.AdUserRegistrationDetailsDescription `json:"Description"`
 	Metadata        entraid.Metadata                             `json:"metadata"`
 	DescribedBy     string                                       `json:"described_by"`
 	ResourceType    string                                       `json:"resource_type"`
@@ -3340,7 +3348,7 @@ var listAdUserRegistrationDetailsFilters = map[string]string{
 	"is_system_preferred_authentication_method_enabled": "Description.IsSystemPreferredAuthenticationMethodEnabled",
 	"last_updated_date_time":                            "Description.LastUpdatedDateTime",
 	"methods_registered":                                "Description.MethodsRegistered",
-	"platform_account_id":                               "metadata.IntegrationID",
+	"platform_integration_id":                           "IntegrationID",
 	"system_preferred_authentication_methods":           "Description.SystemPreferredAuthenticationMethods",
 	"tenant_id":         "Description.TenantID",
 	"title":             "Description.Id",
@@ -3422,7 +3430,7 @@ var getAdUserRegistrationDetailsFilters = map[string]string{
 	"is_system_preferred_authentication_method_enabled": "Description.IsSystemPreferredAuthenticationMethodEnabled",
 	"last_updated_date_time":                            "Description.LastUpdatedDateTime",
 	"methods_registered":                                "Description.MethodsRegistered",
-	"platform_account_id":                               "metadata.IntegrationID",
+	"platform_integration_id":                           "IntegrationID",
 	"system_preferred_authentication_methods":           "Description.SystemPreferredAuthenticationMethods",
 	"tenant_id":         "Description.TenantID",
 	"title":             "Description.Id",
@@ -3492,7 +3500,7 @@ func GetAdUserRegistrationDetails(ctx context.Context, d *plugin.QueryData, _ *p
 type AdGroupMembership struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdGroupMembershipDescription `json:"description"`
+	Description     entraid.AdGroupMembershipDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -3568,20 +3576,21 @@ func (p AdGroupMembershipPaginator) NextPage(ctx context.Context) ([]AdGroupMemb
 }
 
 var listAdGroupMembershipFilters = map[string]string{
-	"account_enabled":      "Description.AccountEnabled",
-	"display_name":         "Description.DisplayName",
-	"group_id":             "Description.GroupId",
-	"id":                   "Description.Id",
-	"mail":                 "Description.Mail",
-	"platform_account_id":  "metadata.IntegrationID",
-	"platform_resource_id": "ID",
-	"proxy_addresses":      "Description.ProxyAddresses",
-	"security_identifier":  "Description.SecurityIdentifier",
-	"state":                "Description.State",
-	"tenant_id":            "Description.TenantID",
-	"title":                "Description.DisplayName",
-	"user_principal_name":  "Description.UserPrincipalName",
-	"user_type":            "Description.UserType",
+	"account_enabled":         "Description.AccountEnabled",
+	"display_name":            "Description.DisplayName",
+	"group_id":                "Description.GroupId",
+	"id":                      "Description.Id",
+	"mail":                    "Description.Mail",
+	"platform_account_id":     "Metadata.SourceID",
+	"platform_integration_id": "IntegrationID",
+	"platform_resource_id":    "ID",
+	"proxy_addresses":         "Description.ProxyAddresses",
+	"security_identifier":     "Description.SecurityIdentifier",
+	"state":                   "Description.State",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
+	"user_principal_name":     "Description.UserPrincipalName",
+	"user_type":               "Description.UserType",
 }
 
 func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3645,20 +3654,21 @@ func ListAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 }
 
 var getAdGroupMembershipFilters = map[string]string{
-	"account_enabled":      "Description.AccountEnabled",
-	"display_name":         "Description.DisplayName",
-	"group_id":             "Description.GroupId",
-	"id":                   "Description.Id",
-	"mail":                 "Description.Mail",
-	"platform_account_id":  "metadata.IntegrationID",
-	"platform_resource_id": "ID",
-	"proxy_addresses":      "Description.ProxyAddresses",
-	"security_identifier":  "Description.SecurityIdentifier",
-	"state":                "Description.State",
-	"tenant_id":            "Description.TenantID",
-	"title":                "Description.DisplayName",
-	"user_principal_name":  "Description.UserPrincipalName",
-	"user_type":            "Description.UserType",
+	"account_enabled":         "Description.AccountEnabled",
+	"display_name":            "Description.DisplayName",
+	"group_id":                "Description.GroupId",
+	"id":                      "Description.Id",
+	"mail":                    "Description.Mail",
+	"platform_account_id":     "Metadata.SourceID",
+	"platform_integration_id": "IntegrationID",
+	"platform_resource_id":    "ID",
+	"proxy_addresses":         "Description.ProxyAddresses",
+	"security_identifier":     "Description.SecurityIdentifier",
+	"state":                   "Description.State",
+	"tenant_id":               "Description.TenantID",
+	"title":                   "Description.DisplayName",
+	"user_principal_name":     "Description.UserPrincipalName",
+	"user_type":               "Description.UserType",
 }
 
 func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3721,7 +3731,7 @@ func GetAdGroupMembership(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdAppRegistration struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdAppRegistrationDescription `json:"description"`
+	Description     entraid.AdAppRegistrationDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -3810,7 +3820,7 @@ var listAdAppRegistrationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_integration_id":      "IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -3893,7 +3903,7 @@ var getAdAppRegistrationFilters = map[string]string{
 	"owner_ids":                    "Description.OwnerIds",
 	"parental_control_settings":    "Description.ParentalControlSettings",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_integration_id":      "IntegrationID",
 	"publisher_domain":             "Description.PublisherDomain",
 	"sign_in_audience":             "Description.SignInAudience",
 	"spa":                          "Description.Spa",
@@ -3962,7 +3972,7 @@ func GetAdAppRegistration(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdEnterpriseApplication struct {
 	ResourceID      string                                     `json:"resource_id"`
 	PlatformID      string                                     `json:"platform_id"`
-	Description     entraid.AdEnterpriseApplicationDescription `json:"description"`
+	Description     entraid.AdEnterpriseApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                           `json:"metadata"`
 	DescribedBy     string                                     `json:"described_by"`
 	ResourceType    string                                     `json:"resource_type"`
@@ -4058,7 +4068,8 @@ var listAdEnterpriseApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4149,7 +4160,8 @@ var getAdEnterpriseApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4219,7 +4231,7 @@ func GetAdEnterpriseApplication(ctx context.Context, d *plugin.QueryData, _ *plu
 type AdManagedIdentity struct {
 	ResourceID      string                               `json:"resource_id"`
 	PlatformID      string                               `json:"platform_id"`
-	Description     entraid.AdManagedIdentityDescription `json:"description"`
+	Description     entraid.AdManagedIdentityDescription `json:"Description"`
 	Metadata        entraid.Metadata                     `json:"metadata"`
 	DescribedBy     string                               `json:"described_by"`
 	ResourceType    string                               `json:"resource_type"`
@@ -4316,7 +4328,8 @@ var listAdManagedIdentityFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4407,7 +4420,8 @@ var getAdManagedIdentityFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4476,7 +4490,7 @@ func GetAdManagedIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 type AdMicrosoftApplication struct {
 	ResourceID      string                                    `json:"resource_id"`
 	PlatformID      string                                    `json:"platform_id"`
-	Description     entraid.AdMicrosoftApplicationDescription `json:"description"`
+	Description     entraid.AdMicrosoftApplicationDescription `json:"Description"`
 	Metadata        entraid.Metadata                          `json:"metadata"`
 	DescribedBy     string                                    `json:"described_by"`
 	ResourceType    string                                    `json:"resource_type"`
@@ -4572,7 +4586,8 @@ var listAdMicrosoftApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",
@@ -4663,7 +4678,8 @@ var getAdMicrosoftApplicationFilters = map[string]string{
 	"oauth2_permission_scopes":     "Description.PublishedPermissionScopes",
 	"owner_ids":                    "Description.Owners",
 	"password_credentials":         "Description.PasswordCredentials",
-	"platform_account_id":          "metadata.IntegrationID",
+	"platform_account_id":          "Metadata.SourceID",
+	"platform_integration_id":      "IntegrationID",
 	"platform_resource_id":         "ID",
 	"reply_urls":                   "Description.ReplyUrls",
 	"service_principal_names":      "Description.ServicePrincipalNames",

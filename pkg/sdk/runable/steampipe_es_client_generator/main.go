@@ -81,10 +81,10 @@ func main() {
 type {{ .Name }} struct {
 	ResourceID string ` + "`json:\"resource_id\"`" + `
 	PlatformID string ` + "`json:\"platform_id\"`" + `
-	Description   {{ .IntegrationType }}.{{ .Name }}Description 	` + "`json:\"description\"`" + `
+	Description   {{ .IntegrationType }}.{{ .Name }}Description 	` + "`json:\"Description\"`" + `
 	Metadata      {{ .IntegrationType }}.Metadata 					` + "`json:\"metadata\"`" + `
 	DescribedBy 	   string ` + "`json:\"described_by\"`" + `
-	ResourceType  	   string ` + "`json:\"resource_type\"`" + `
+	ResourceType       string ` + "`json:\"resource_type\"`" + `
 	IntegrationType    string ` + "`json:\"integration_type\"`" + `
 	IntegrationID      string ` + "`json:\"integration_id\"`" + `
 }
@@ -384,8 +384,8 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 						s.ListFilters[fparts[0]] = fparts[1]
 					}
 				}
-				s.GetFilters["platform_account_id"] = "metadata.IntegrationID"
-				s.ListFilters["platform_account_id"] = "metadata.IntegrationID"
+				s.GetFilters["platform_integration_id"] = "IntegrationID"
+				s.ListFilters["platform_integration_id"] = "IntegrationID"
 			}
 
 			if s.Index != "" {
