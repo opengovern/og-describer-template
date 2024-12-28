@@ -22,7 +22,7 @@ func commonOGColumns() []*plugin.Column {
 			Transform: transform.FromField("Metadata.SubscriptionID"),
 		},
 		{
-			Name:        "platform_account_id",
+			Name:        "platform_integration_id",
 			Type:        proto.ColumnType_STRING,
 			Description: "The Platform Account ID in which the resource is located.",
 			Transform:   transform.FromField("IntegrationID"),
