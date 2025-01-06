@@ -1527,11 +1527,9 @@ func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType,
 	var values []models.Resource
 
 	value := models.Resource{
-		ID:   strconv.Itoa(pd.ID),
-		Name: pd.Name,
-		Description: JSONAllFieldsMarshaller{
-			Value: pd,
-		},
+		ID:          strconv.Itoa(pd.ID),
+		Name:        pd.Name,
+		Description: pd,
 	}
 	if stream != nil {
 		if err := (*stream)(value); err != nil {
