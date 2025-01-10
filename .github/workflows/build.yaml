@@ -73,7 +73,7 @@ jobs:
           retention-days: 1
       - name: Build Integration Plugin
         working-directory: ./integration-plugin
-        run:
+        run: make build
       - name: Pack Integration Plugin Build
         working-directory: ./integration-plugin
         run: |
