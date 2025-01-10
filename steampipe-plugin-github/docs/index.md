@@ -54,7 +54,7 @@ from
 Download and install the latest GitHub plugin:
 
 ```bash
-steampipe plugin install github
+steampipe integration install github
 ```
 
 ### Credentials

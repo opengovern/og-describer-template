@@ -9,11 +9,13 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/go-containerregistry v0.20.2
 	github.com/google/go-github/v55 v55.0.0
+	github.com/google/go-github/v66 v66.0.0
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-hclog v1.6.3
+	github.com/jackc/pgtype v1.14.0
 	github.com/nats-io/nats.go v1.36.0
-	github.com/opengovern/og-util v1.7.0
-	github.com/opengovern/opencomply v0.475.2
+	github.com/opengovern/og-util v1.7.2
+	github.com/opengovern/opencomply v0.582.0-dev.0
 	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.8.1
@@ -133,6 +135,7 @@ require (
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/iancoleman/strcase v0.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.7.1 // indirect

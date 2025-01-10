@@ -71,6 +71,19 @@ jobs:
           name: local-og-describer-github
           path: ./local.tar
           retention-days: 1
+      - name: Build Integration Plugin
+        working-directory: ./integration-plugin
+        run:
+      - name: Pack Integration Plugin Build
+        working-directory: ./integration-plugin
+        run: |
+          tar -cvf integration-plugin.tar build
+      - name: Release Integration Plugin
+        working-directory: ./integration-plugin
+        uses: softprops/action-gh-release@v2
+        with:
+          files: integration.tar
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Set Latest Tag Output
         id: set_latest_tag
         run: |

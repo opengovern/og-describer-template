@@ -12,7 +12,7 @@
 Install the plugin with [Steampipe](https://steampipe.io/downloads):
 
 ```shell
-steampipe plugin install github
+steampipe integration install github
 ```
 
 [Configure the plugin](https://hub.steampipe.io/plugins/turbot/github#configuration) using the configuration file:
@@ -68,7 +68,7 @@ Clone:
 
 ```sh
 git clone https://github.com/opengovern/og-describer-github/steampipe-plugin-github.git
-cd steampipe-plugin-github
+cd steampipe-integration-github
 ```
 
 Build, which automatically installs the new version to your `~/.steampipe/plugins` directory:
