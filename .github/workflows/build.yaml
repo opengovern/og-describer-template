@@ -5,9 +5,6 @@ on:
   push:
     branches: ["main", "dev"]
 
-permissions:
-  contents: write
-
 jobs:
   build:
     environment: main
@@ -81,13 +78,12 @@ jobs:
         working-directory: ./integration-plugin
         run: |
           tar -cvf integration-plugin.tar build
-
-      - name: Release Integration Plugin
-        uses: softprops/action-gh-release@v2
+      - name: Upload Integration Plugin Artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: ./integration-plugin/integration-plugin.tar
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-
+          name: integration-plugin
+          path: ./integration-plugin/integration-plugin.tar
+          retention-days: 1
 
       - name: Set Latest Tag Output
         id: set_latest_tag
@@ -164,3 +160,23 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/og-describer-github:local-${{ needs.build.outputs.latest_tag }}
           file: DockerFileLocal
           context: .
+  release-integration-plugin:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    environment: main
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Download Integration Plugin Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: integration-plugin
+      - name: Release Integration Plugin
+        uses: softprops/action-gh-release@v2
+        with:
+          files: integration-plugin.tar
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
