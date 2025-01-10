@@ -211,6 +211,7 @@ github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/ProtonMail/go-crypto v1.0.0 h1:LRuvITjQWX+WIfr930YHG2HNfjR1uOfyf5vE0kC2U78=
 github.com/ProtonMail/go-crypto v1.0.0/go.mod h1:EjAoLdwvbIOoOQr3ihjnSoLZRtE8azugULFRteWMNc0=
+github.com/ProtonMail/go-crypto v1.1.3/go.mod h1:rA3QumHc/FZ8pAHreoekgiAbzpNsfQAosU5td4SnOrE=
 github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d h1:licZJFw2RwpHMqeKTCYkitsPqHNxTmd4SNR5r94FGM8=
 github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d/go.mod h1:asat636LX7Bqt5lYEZ27JNDcqxfjdBQuJ/MM4CN/Lzo=
 github.com/agext/levenshtein v1.2.3 h1:YB2fHEn0UJagG8T1rrWknE3ZQzWM06O8AMAatNn7lmo=
@@ -743,6 +744,8 @@ github.com/opengovern/og-util v1.7.2 h1:eLGgqSHQmYuSehRBXJcn61pD7uslCzZe9wbwJaEK
 github.com/opengovern/og-util v1.7.2/go.mod h1:ob8RSaNZG3RWnLH3lDXQaVpIf+B8Ry7ds3twYlDJPp0=
 github.com/opengovern/opencomply v0.582.0-dev.0 h1:gUNpcuwrtg72pYzeWdgek9+fNUe7r1CQzVXNirtlwb8=
 github.com/opengovern/opencomply v0.582.0-dev.0/go.mod h1:Sffrst298FLGD5ic9VPOsNHIDuJ7MMEN7atRqSNOv/U=
+github.com/opengovern/opencomply v0.582.4-dev.0.0.20250110161755-c56630852bf4 h1:yKyA73PTmg1uGlofJp8zMbK5OPCV+2B4cOmTANQvfHI=
+github.com/opengovern/opencomply v0.582.4-dev.0.0.20250110161755-c56630852bf4/go.mod h1:DCq6ryCRpy85BFP/bEfz/HS0O8oEsU4l/cl9IoDVj/o=
 github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d h1:OnoG1Za89armxN1ZlEbr/eKvAdbRN6UGKXCFxee58s0=
 github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d/go.mod h1:zEulaGgccj5tPXGiudGz17NRhXAk2HHh+GPj2VkjNq0=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0 h1:nQIEMr+A92CkhHrZgUhcfsrZjibvB3APXf2a1VwCmMQ=

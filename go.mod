@@ -15,7 +15,7 @@ require (
 	github.com/jackc/pgtype v1.14.0
 	github.com/nats-io/nats.go v1.36.0
 	github.com/opengovern/og-util v1.7.2
-	github.com/opengovern/opencomply v0.582.0-dev.0
+	github.com/opengovern/opencomply v0.582.4-dev.0.0.20250110161755-c56630852bf4
 	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.8.1
@@ -70,7 +70,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
 	cloud.google.com/go/storage v1.43.0 // indirect
-	github.com/ProtonMail/go-crypto v1.0.0 // indirect
+	github.com/ProtonMail/go-crypto v1.1.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/btubbs/datetime v0.1.1 // indirect
