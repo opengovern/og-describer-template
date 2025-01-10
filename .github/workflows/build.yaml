@@ -180,3 +180,4 @@ jobs:
         with:
           files: integration-plugin.tar
           token: ${{ secrets.GH_ACCESS_TOKEN }}
+          tag_name: ${{ needs.build.outputs.latest_tag }}
