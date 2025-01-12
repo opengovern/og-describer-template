@@ -77,7 +77,7 @@ jobs:
       - name: Pack Integration Plugin Build
         working-directory: ./integration-plugin
         run: |
-          tar -cvf integration-plugin.tar build/*
+          find build/ \( -type f -o -type d \) -printf "%P\n" | tar -czf integration-plugin.tar --no-recursion -C build/ -T -
       - name: Upload Integration Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
