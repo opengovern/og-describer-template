@@ -74,10 +74,19 @@ jobs:
       - name: Build Integration Plugin
         working-directory: ./integration-plugin
         run: make build
-      - name: Pack Plugin Builds
+      - name: Create output directory
+        working-directory: .
+        run: mkdir -p github-output
+      - name: Copy steampipe plugin to output directory
+        working-directory: .
+        run: cp ./steampipe-plugin-github/build/steampipe-plugin-github.plugin ./github-output/
+      - name: Copy integration plugin to output directory
+        working-directory: .
+        run: cp ./integration-plugin/build/integration-plugin ./github-output/
+      - name: Pack output
         working-directory: .
         run: |
-          tar -czf integration-plugin.tar --no-recursion -C ./integration-plugin/build/ integration-plugin -C ./steampipe-plugin-github/build/ steampipe-plugin-github.plugin
+          find ./github-output \( -type f -o -type d \) -printf "%P\n" | tar -czf integration-plugin.tar --no-recursion -C ./github-output -T -
       - name: Upload Integration Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
