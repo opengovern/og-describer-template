@@ -83,6 +83,9 @@ jobs:
       - name: Copy integration plugin to output directory
         working-directory: .
         run: cp ./integration-plugin/build/integration-plugin ./github-output/
+      - name: Copy manifest to output directory
+        working-directory: .
+        run: cp ./integration-plugin/manifest.yaml ./github-output/
       - name: Pack output
         working-directory: .
         run: |
