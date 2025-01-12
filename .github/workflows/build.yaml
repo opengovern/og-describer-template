@@ -86,12 +86,12 @@ jobs:
       - name: Pack output
         working-directory: .
         run: |
-          find ./github-output \( -type f -o -type d \) -printf "%P\n" | tar -czf integration-plugin.tar --no-recursion -C ./github-output -T -
-      - name: Upload Integration Plugin Artifact
+          find ./github-output \( -type f -o -type d \) -printf "%P\n" | tar -czf github-output.tar --no-recursion -C ./github-output -T -
+      - name: Upload github outputs artifact
         uses: actions/upload-artifact@v3
         with:
-          name: integration-plugin
-          path: ./integration-plugin/integration-plugin.tar
+          name: github-outputs
+          path: ./github-output.tar
           retention-days: 1
 
       - name: Set Latest Tag Output
@@ -183,9 +183,9 @@ jobs:
       - name: Download Integration Plugin Artifact
         uses: actions/download-artifact@v3
         with:
-          name: integration-plugin
+          name: github-outputs
       - name: Release Integration Plugin
         uses: softprops/action-gh-release@v2
         with:
-          files: integration-plugin.tar
+          files: github-output.tar
           tag_name: ${{ needs.build.outputs.latest_tag }}
