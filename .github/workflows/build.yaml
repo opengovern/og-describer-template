@@ -187,11 +187,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: github-outputs
-      - name: Unpack Integration Plugin Artifact
-        run: |
-          tar -xvf github-output.tar
+#      - name: Unpack Integration Plugin Artifact
+#        run: |
+#          tar -xvf github-output.tar
       - name: Release Integration Plugin
         uses: softprops/action-gh-release@v2
         with:
-          files: github-output/*
+          files: github-output.tar
           tag_name: ${{ needs.build.outputs.latest_tag }}
