@@ -89,7 +89,7 @@ jobs:
       - name: Pack output
         working-directory: .
         run: |
-          find ./github-output \( -type f -o -type d \) -printf "%P\n" | tar -czf github-output.tar --no-recursion -C ./github-output -T -
+          tar -czf github-output.tar github-output
       - name: Upload github outputs artifact
         uses: actions/upload-artifact@v3
         with:
