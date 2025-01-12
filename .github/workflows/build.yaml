@@ -179,5 +179,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: integration-plugin.tar
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
           tag_name: ${{ needs.build.outputs.latest_tag }}
