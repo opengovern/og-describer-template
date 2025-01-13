@@ -20,18 +20,31 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 		}
 	}
 
-	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
-	if err != nil {
-		return nil, nil
-	}
 	var values []models.Resource
-	for _, repo := range repositories {
-		repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
-		if err != nil {
-			return nil, err
+	repoParam := ctx.Value("repository")
+	if repoParam != nil {
+		repoName := repoParam.(string)
+		if repoName != "" {
+			repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repoName)
+			if err != nil {
+				return nil, err
+			}
+			values = append(values, repoValues...)
 		}
-		values = append(values, repoValues...)
+	} else {
+		repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
+		if err != nil {
+			return nil, nil
+		}
+		for _, repo := range repositories {
+			repoValues, err := ListRepositoryPullRequests(ctx, githubClient, stream, organizationName, repo.GetName())
+			if err != nil {
+				return nil, err
+			}
+			values = append(values, repoValues...)
+		}
 	}
+
 	return values, nil
 }
 
