@@ -79,7 +79,7 @@ jobs:
         run: mkdir -p github-output
       - name: Copy steampipe plugin to output directory
         working-directory: .
-        run: cp ./steampipe-plugin-github/build/steampipe-plugin-github.plugin ./github-output/
+        run: cp ./steampipe-plugin-github/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
       - name: Copy integration plugin to output directory
         working-directory: .
         run: cp ./integration-plugin/build/integration-plugin ./github-output/
