@@ -12,6 +12,14 @@ import (
 )
 
 func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+	org := ctx.Value("organization")
+	if org != nil {
+		orgName := org.(string)
+		if orgName != "" {
+			organizationName = orgName
+		}
+	}
+
 	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
 		return nil, nil
