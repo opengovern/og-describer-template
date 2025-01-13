@@ -1,4 +1,4 @@
-package cohere
+package fly
 
 import (
 	"context"
@@ -10,15 +10,13 @@ import (
 
 func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
-		Name: "steampipe-plugin-cohereai",
+		Name: "steampipe-plugin-tailscale",
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: essdk.ConfigInstance,
 			Schema:      essdk.ConfigSchema(),
 		},
 		DefaultTransform: transform.FromCamel(),
-		TableMap: map[string]*plugin.Table{
-			"cohereai_datasets":          tableCohereDatasets(ctx),
-		},
+		TableMap:         map[string]*plugin.Table{},
 	}
 	for key, table := range p.TableMap {
 		if table == nil {

@@ -3,3 +3,23 @@
 // Implement types for each resource
 
 package model
+
+type Metadata struct{}
+
+type AppJSON struct {
+	ID           string `json:"id"`
+	MachineCount int    `json:"machine_count,omitempty"`
+	Name         string `json:"name"`
+	Network      any    `json:"network,omitempty"`
+}
+
+type AppDescription struct {
+	ID           string
+	MachineCount int
+	Name         string
+	Network      any
+}
+
+type AppsResponse struct {
+	Apps []AppJSON `json:"apps"`
+}

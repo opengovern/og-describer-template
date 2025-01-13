@@ -1,4 +1,4 @@
-package cohere
+package fly
 
 import (
 	"context"
@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func commonColumns(c []*plugin.Column) []*plugin.Column {
-	return append(c, []*plugin.Column{
+func commonColumns() []*plugin.Column {
+	return []*plugin.Column{
 		{
-			Name:        "platform_account_id",
+			Name:        "platform_integration_id",
 			Type:        proto.ColumnType_STRING,
-			Description: "The Platform Account ID in which the resource is located.",
+			Description: "The Platform Integration ID in which the resource is located.",
 			Transform:   transform.FromField("IntegrationID"),
 		},
 		{
@@ -35,7 +35,11 @@ func commonColumns(c []*plugin.Column) []*plugin.Column {
 			Description: "The full model description of the resource",
 			Transform:   transform.FromField("Description").Transform(marshalJSON),
 		},
-	}...)
+	}
+}
+
+func integrationColumns(columns []*plugin.Column) []*plugin.Column {
+	return append(columns, commonColumns()...)
 }
 
 func marshalJSON(_ context.Context, d *transform.TransformData) (interface{}, error) {
