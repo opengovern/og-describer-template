@@ -62,14 +62,14 @@ jobs:
         working-directory: ./describer
         run: make build-describer
       - name: Pack Local Describer Build
-        working-directory: .
+        working-directory: ./describer
         run: |
           tar -cvf local.tar local
       - name: Upload Local Artifact
         uses: actions/upload-artifact@v3
         with:
           name: local-og-describer-github
-          path: ./local.tar
+          path: ./describer/local.tar
           retention-days: 1
       - name: Build Integration Plugin
         working-directory: ./plugin/integration
@@ -153,10 +153,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: local-og-describer-github
-          path: .
+          path: ./describer
       - name: Unpack Local Describer Artifact
         run: |
-          tar -xvf local.tar
+          tar -xvf ./describer/local.tar -C ./describer
       - name: Log in to Container Registry
         uses: docker/login-action@v2
         with:
