@@ -13,7 +13,7 @@ import (
 )
 
 // DescribeListByFly A wrapper to pass Fly authorization to describer functions
-func DescribeListByFly(describe func(context.Context, *resilientbridge.ResilientBridge, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
+func DescribeListByFly(describe func(context.Context, *resilientbridge.ResilientBridge, string, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
 	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 		ctx = describer.WithTriggerType(ctx, triggerType)
 
@@ -39,7 +39,7 @@ func DescribeListByFly(describe func(context.Context, *resilientbridge.Resilient
 
 		// Get values from describer
 		var values []model.Resource
-		result, err := describe(ctx, resilientBridge, stream)
+		result, err := describe(ctx, resilientBridge, cfg.AppName, stream)
 		if err != nil {
 			return nil, err
 		}
@@ -49,7 +49,7 @@ func DescribeListByFly(describe func(context.Context, *resilientbridge.Resilient
 }
 
 // DescribeSingleByFly A wrapper to pass Fly authorization to describer functions
-func DescribeSingleByFly(describe func(context.Context, *resilientbridge.ResilientBridge, string) (*model.Resource, error)) model.SingleResourceDescriber {
+func DescribeSingleByFly(describe func(context.Context, *resilientbridge.ResilientBridge, string, string) (*model.Resource, error)) model.SingleResourceDescriber {
 	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, resourceID string) (*model.Resource, error) {
 		ctx = describer.WithTriggerType(ctx, triggerType)
 
@@ -73,8 +73,9 @@ func DescribeSingleByFly(describe func(context.Context, *resilientbridge.Resilie
 			BaseBackoff:         200 * time.Millisecond,
 		})
 
+		appName := additionalParameters["AppName"]
 		// Get value from describer
-		value, err := describe(ctx, resilientBridge, resourceID)
+		value, err := describe(ctx, resilientBridge, appName, resourceID)
 		if err != nil {
 			return nil, err
 		}

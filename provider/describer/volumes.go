@@ -10,22 +10,16 @@ import (
 	"sync"
 )
 
-func ListVolumes(ctx context.Context, handler *resilientbridge.ResilientBridge, stream *models.StreamSender) ([]models.Resource, error) {
+func ListVolumes(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var wg sync.WaitGroup
 	flyChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
-	apps, err := ListApps(ctx, handler, stream)
-	if err != nil {
-		return nil, err
-	}
 
 	go func() {
 		defer close(flyChan)
 		defer close(errorChan)
-		for _, app := range apps {
-			if err := processVolumes(ctx, handler, app.Name, flyChan, &wg); err != nil {
-				errorChan <- err // Send error to the error channel
-			}
+		if err := processVolumes(ctx, handler, appName, flyChan, &wg); err != nil {
+			errorChan <- err // Send error to the error channel
 		}
 		wg.Wait()
 	}()
@@ -48,6 +42,38 @@ func ListVolumes(ctx context.Context, handler *resilientbridge.ResilientBridge, 
 			return nil, err
 		}
 	}
+}
+
+func GetVolume(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, resourceID string) (*models.Resource, error) {
+	volume, err := processVolume(ctx, handler, appName, resourceID)
+	if err != nil {
+		return nil, err
+	}
+	value := models.Resource{
+		ID:   volume.ID,
+		Name: volume.Name,
+		Description: model.VolumeDescription{
+			AttachedAllocID:   volume.AttachedAllocID,
+			AttachedMachineID: volume.AttachedMachineID,
+			AutoBackupEnabled: volume.AutoBackupEnabled,
+			BlockSize:         volume.BlockSize,
+			Blocks:            volume.Blocks,
+			BlocksAvail:       volume.BlocksAvail,
+			BlocksFree:        volume.BlocksFree,
+			CreatedAt:         volume.CreatedAt,
+			Encrypted:         volume.Encrypted,
+			FSType:            volume.FSType,
+			HostStatus:        volume.HostStatus,
+			ID:                volume.ID,
+			Name:              volume.Name,
+			Region:            volume.Region,
+			SizeGB:            volume.SizeGB,
+			SnapshotRetention: volume.SnapshotRetention,
+			State:             volume.State,
+			Zone:              volume.Zone,
+		},
+	}
+	return &value, nil
 }
 
 func processVolumes(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, flyChan chan<- models.Resource, wg *sync.WaitGroup) error {
@@ -107,4 +133,32 @@ func processVolumes(ctx context.Context, handler *resilientbridge.ResilientBridg
 		}(volume)
 	}
 	return nil
+}
+
+func processVolume(ctx context.Context, handler *resilientbridge.ResilientBridge, appName, resourceID string) (*model.VolumeJSON, error) {
+	var volume model.VolumeJSON
+	baseURL := "/v1/apps/"
+
+	finalURL := fmt.Sprintf("%s%s/volumes/%s", baseURL, appName, resourceID)
+
+	req := &resilientbridge.NormalizedRequest{
+		Method:   "GET",
+		Endpoint: finalURL,
+		Headers:  map[string]string{"accept": "application/json"},
+	}
+
+	resp, err := handler.Request("fly", req)
+	if err != nil {
+		return nil, fmt.Errorf("request execution failed: %w", err)
+	}
+
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("error %d: %s", resp.StatusCode, string(resp.Data))
+	}
+
+	if err = json.Unmarshal(resp.Data, &volume); err != nil {
+		return nil, fmt.Errorf("error parsing response: %w", err)
+	}
+
+	return &volume, nil
 }

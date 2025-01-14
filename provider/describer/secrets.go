@@ -10,22 +10,16 @@ import (
 	"sync"
 )
 
-func ListSecrets(ctx context.Context, handler *resilientbridge.ResilientBridge, stream *models.StreamSender) ([]models.Resource, error) {
+func ListSecrets(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var wg sync.WaitGroup
 	flyChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
-	apps, err := ListApps(ctx, handler, stream)
-	if err != nil {
-		return nil, err
-	}
 
 	go func() {
 		defer close(flyChan)
 		defer close(errorChan)
-		for _, app := range apps {
-			if err := processSecrets(ctx, handler, app.Name, flyChan, &wg); err != nil {
-				errorChan <- err // Send error to the error channel
-			}
+		if err := processSecrets(ctx, handler, appName, flyChan, &wg); err != nil {
+			errorChan <- err // Send error to the error channel
 		}
 		wg.Wait()
 	}()

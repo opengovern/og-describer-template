@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func ListApps(ctx context.Context, handler *resilientbridge.ResilientBridge, stream *models.StreamSender) ([]models.Resource, error) {
+func ListApps(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var wg sync.WaitGroup
 	flyChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
@@ -45,7 +45,7 @@ func ListApps(ctx context.Context, handler *resilientbridge.ResilientBridge, str
 	}
 }
 
-func GetApp(ctx context.Context, handler *resilientbridge.ResilientBridge, resourceID string) (*models.Resource, error) {
+func GetApp(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, resourceID string) (*models.Resource, error) {
 	app, err := processApp(ctx, handler, resourceID)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func processApp(ctx context.Context, handler *resilientbridge.ResilientBridge, r
 		Headers:  map[string]string{"accept": "application/json"},
 	}
 
-	resp, err := handler.Request("tailscale", req)
+	resp, err := handler.Request("fly", req)
 	if err != nil {
 		return nil, fmt.Errorf("request execution failed: %w", err)
 	}

@@ -9,14 +9,14 @@
   {
     "ResourceName": "Fly/Machine",
     "ListDescriber": "DescribeListByFly(describer.ListMachines)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByFly(describer.GetMachine)",
     "SteampipeTable": "fly_machine",
     "Model": "Machine"
   },
   {
     "ResourceName": "Fly/Volume",
     "ListDescriber": "DescribeListByFly(describer.ListVolumes)",
-    "GetDescriber": "",
+    "GetDescriber": "DescribeSingleByFly(describer.GetVolume)",
     "SteampipeTable": "fly_volume",
     "Model": "Volume"
   },
