@@ -3,7 +3,7 @@ package github
 import (
 	opengovernance "github.com/opengovern/og-describer-github/describer/pkg/sdk/es"
 
-	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
+	"github.com/opengovern/og-describer-github/plugin/cloudql/github/models"
 
 	"github.com/shurcooL/githubv4"
 
