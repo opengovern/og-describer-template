@@ -1,3 +1,3 @@
 FROM alpine:latest
 
-COPY ../build/cohereai.plugin /cohereai.plugin
+COPY ../build/fly.plugin /fly.plugin
