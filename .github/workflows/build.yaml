@@ -46,21 +46,21 @@ jobs:
         run: |
           git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
       - name: Build Github Plugin App
-        working-directory: ./steampipe-plugin-github
+        working-directory: ./plugin/cloudql
         run: make build
       - name: Pack Github Plugin Build
-        working-directory: ./steampipe-plugin-github
+        working-directory: ./plugin/cloudql
         run: |
           tar -cvf build.tar build
       - name: Upload Github Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
           name: steampipe-plugin-github
-          path: ./steampipe-plugin-github/build.tar
+          path: ./plugin/cloudql/build.tar
           retention-days: 1
       - name: Build Local Describer App
         working-directory: .
-        run: make local-build
+        run: make build-describer
       - name: Pack Local Describer Build
         working-directory: .
         run: |
@@ -72,20 +72,20 @@ jobs:
           path: ./local.tar
           retention-days: 1
       - name: Build Integration Plugin
-        working-directory: ./integration-plugin
+        working-directory: ./plugin/integration
         run: make build
       - name: Create output directory
         working-directory: .
         run: mkdir -p github-output
       - name: Copy steampipe plugin to output directory
         working-directory: .
-        run: cp ./steampipe-plugin-github/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
+        run: cp ./plugin/cloudql/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
       - name: Copy integration plugin to output directory
         working-directory: .
-        run: cp ./integration-plugin/build/integration-plugin ./github-output/
+        run: cp ./plugin/integration/build/integration-plugin ./github-output/
       - name: Copy manifest to output directory
         working-directory: .
-        run: cp ./integration-plugin/manifest.yaml ./github-output/
+        run: cp ./plugin/integration/manifest.yaml ./github-output/
       - name: Pack output
         working-directory: .
         run: |

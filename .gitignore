@@ -3,8 +3,3 @@ og-describer-template
 .idea
 .env
 local/
-output.json
-.vscode
-.vscode/*
-
-output.json
