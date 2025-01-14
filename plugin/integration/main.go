@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
-	"github.com/opengovern/og-describer-github/integration-plugin/configs"
-	"github.com/opengovern/og-describer-github/integration-plugin/integration"
+	"github.com/opengovern/og-describer-github/plugin/integration/configs"
+	"github.com/opengovern/og-describer-github/plugin/integration/integration"
 	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
 	"os"
 )

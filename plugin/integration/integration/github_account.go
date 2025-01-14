@@ -3,9 +3,9 @@ package integration
 import (
 	"encoding/json"
 	"github.com/jackc/pgtype"
-	"github.com/opengovern/og-describer-github/integration-plugin/configs"
-	"github.com/opengovern/og-describer-github/integration-plugin/discovery"
-	"github.com/opengovern/og-describer-github/integration-plugin/healthcheck"
+	"github.com/opengovern/og-describer-github/plugin/integration/configs"
+	"github.com/opengovern/og-describer-github/plugin/integration/discovery"
+	"github.com/opengovern/og-describer-github/plugin/integration/healthcheck"
 	"github.com/opengovern/og-util/pkg/integration"
 	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
 	"github.com/opengovern/opencomply/services/integration/models"

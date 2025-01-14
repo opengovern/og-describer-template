@@ -59,7 +59,7 @@ jobs:
           path: ./plugin/cloudql/build.tar
           retention-days: 1
       - name: Build Local Describer App
-        working-directory: .
+        working-directory: ./describer
         run: make build-describer
       - name: Pack Local Describer Build
         working-directory: .
@@ -170,7 +170,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/og-describer-github:local-latest
             ghcr.io/${{ github.repository_owner }}/og-describer-github:local-${{ needs.build.outputs.latest_tag }}
-          file: DockerFileLocal
+          file: describer/DockerFile
           context: .
   release-integration-plugin:
     needs:
