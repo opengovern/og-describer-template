@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"github.com/go-errors/errors"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
 	"github.com/opengovern/og-describer-github/describer/provider"
 	"github.com/opengovern/og-describer-github/describer/provider/configs"
-	"github.com/opengovern/og-describer-github/steampipe"
 	describe2 "github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/opengovern/og-util/pkg/vault"
@@ -89,7 +89,7 @@ func doDescribe(
 	}
 
 	logger.Info("Connect to steampipe plugin")
-	plg := steampipe.Plugin()
+	plg := wrapper.Plugin()
 	logger.Info("Account Config From Map")
 	creds, err := provider.AccountCredentialsFromMap(config)
 	if err != nil {
@@ -127,7 +127,7 @@ func doDescribe(
 		tags := make(map[string]string)
 
 		if plg != nil {
-			tags, _, err = steampipe.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
+			tags, _, err = wrapper.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
 			if err != nil {
 				logger.Error("failed to build tags for service", zap.Error(err), zap.String("resourceType", job.ResourceType), zap.Any("resource", resource))
 			}

@@ -2,4 +2,4 @@ build/
 og-describer-template
 .idea
 .env
-local/
+.vscode
