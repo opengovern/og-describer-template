@@ -10,13 +10,18 @@ import (
 
 func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
-		Name: "steampipe-plugin-tailscale",
+		Name: "steampipe-plugin-fly",
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: essdk.ConfigInstance,
 			Schema:      essdk.ConfigSchema(),
 		},
 		DefaultTransform: transform.FromCamel(),
-		TableMap:         map[string]*plugin.Table{},
+		TableMap: map[string]*plugin.Table{
+			"fly_app":     tableFlyApp(ctx),
+			"fly_machine": tableFlyMachine(ctx),
+			"fly_volume":  tableFlyVolume(ctx),
+			"fly_secret":  tableFlySecret(ctx),
+		},
 	}
 	for key, table := range p.TableMap {
 		if table == nil {

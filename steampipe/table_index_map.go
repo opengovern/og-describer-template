@@ -1,20 +1,26 @@
 package steampipe
 
-// Please import resource clients file after it's genrated completly
+import (
+	"github.com/opengovern/og-describer-fly/pkg/sdk/es"
+)
 
 var Map = map[string]string{
-	// Example
-	// "AWS::IdentityStore::GroupMembership":                "aws_identitystore_group_membership",
+  "Fly/App": "fly_app",
+  "Fly/Machine": "fly_machine",
+  "Fly/Volume": "fly_volume",
+  "Fly/Secret": "fly_secret",
 }
 
 var DescriptionMap = map[string]interface{}{
-	// Example
-	// "AWS::EC2::VerifiedAccessInstance":                   opengovernance.EC2VerifiedAccessInstance{},
-	
+  "Fly/App": opengovernance.App{},
+  "Fly/Machine": opengovernance.Machine{},
+  "Fly/Volume": opengovernance.Volume{},
+  "Fly/Secret": opengovernance.Secret{},
 }
 
 var ReverseMap = map[string]string{
-	// Example:
-	// "aws_redshift_snapshot":                           "AWS::Redshift::Snapshot",
-
+  "fly_app": "Fly/App",
+  "fly_machine": "Fly/Machine",
+  "fly_volume": "Fly/Volume",
+  "fly_secret": "Fly/Secret",
 }
