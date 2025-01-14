@@ -136,7 +136,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/steampipe-plugin-github:0.0.1
             ghcr.io/${{ github.repository_owner }}/steampipe-plugin-github:${{ needs.build.outputs.latest_tag }}
-          file: steampipe-plugin-github/docker/Dockerfile
+          file: plugin/cloudql/docker/Dockerfile
           context: .
   deploy-local-describer:
     needs:
@@ -153,10 +153,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: local-og-describer-github
-          path: ./describer
+          path: .
       - name: Unpack Local Describer Artifact
         run: |
-          tar -xvf ./describer/local.tar -C ./describer
+          tar -xvf local.tar
       - name: Log in to Container Registry
         uses: docker/login-action@v2
         with:
