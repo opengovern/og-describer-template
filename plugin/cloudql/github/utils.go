@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation"
-	"github.com/opengovern/og-describer-github/steampipe-plugin-github/github/models"
+	"github.com/opengovern/og-describer-github/plugin/cloudql/github/models"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 
 	"github.com/google/go-github/v55/github"
