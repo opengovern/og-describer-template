@@ -1456,21 +1456,21 @@ type Package struct {
 
 type ContainerMetadata struct {
 	Container struct {
-		Tags []string 
-	} 
+		Tags []string
+	}
 }
 
 type ContainerPackageDescription struct {
-	ID             int               
-	Digest         string                   
-	CreatedAt      string            
-	UpdatedAt      string            
-	PackageURL       string            
-	Name           string           
-	MediaType      string            
-	TotalSize      int64             
-	Metadata       ContainerMetadata 
-	Manifest       interface{}       
+	ID         int
+	Digest     string
+	CreatedAt  string
+	UpdatedAt  string
+	PackageURL string
+	Name       string
+	MediaType  string
+	TotalSize  int64
+	Metadata   ContainerMetadata
+	Manifest   interface{}
 
 	// -- Add these new fields/methods: --
 
@@ -1637,13 +1637,13 @@ type CommitResponse struct {
 }
 
 type ArtifactDockerFileDescription struct {
-	Sha                     *string
-	Name                    *string
-	Path                    *string
-	LastUpdatedAt           *string
-	GitURL                  *string
-	HTMLURL                 *string
-	URI                     *string // Unique identifier
+	Sha  *string
+	Name *string
+	//Path                    *string
+	LastUpdatedAt *string
+	//GitURL                  *string
+	HTMLURL *string
+	//URI                     *string // Unique identifier
 	DockerfileContent       string
 	DockerfileContentBase64 *string
 	Repository              map[string]interface{}
