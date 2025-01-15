@@ -11,7 +11,7 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllPullRequests(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	org := ctx.Value("organization")
 	if org != nil {
 		orgName := org.(string)
@@ -48,7 +48,7 @@ func GetAllPullRequests(ctx context.Context, githubClient GitHubClient, organiza
 	return values, nil
 }
 
-func ListRepositoryPullRequests(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func ListRepositoryPullRequests(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	states := []githubv4.PullRequestState{githubv4.PullRequestStateOpen, githubv4.PullRequestStateClosed, githubv4.PullRequestStateMerged}
 	var query struct {

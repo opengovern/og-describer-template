@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func ListCodeOwners(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func ListCodeOwners(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var fileContent *github.RepositoryContent
 	var err error
 

@@ -20,7 +20,7 @@ import (
 // ListCommits fetches commits from all active repositories under the specified organization.
 // If a stream is provided, each commit is sent to the stream as it’s processed.
 // Otherwise, commits are collected and returned as a slice.
-func ListCommits(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func ListCommits(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	// Retrieve repositories while excluding archived and disabled ones
 	//repos, err := GetRepositoryListWithOptions(ctx, githubClient, organizationName, nil, true, true)
 	//if err != nil {

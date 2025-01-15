@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/context"
 )
 
-func GetReleaseList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetReleaseList(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	repositories, err := getRepositories(ctx, githubClient.RestClient, organizationName)
 	if err != nil {
 		return nil, err

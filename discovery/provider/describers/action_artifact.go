@@ -2,14 +2,15 @@ package describers
 
 import (
 	"context"
+	"strconv"
+	"time"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"strconv"
-	"time"
 )
 
-func GetAllArtifacts(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllArtifacts(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
@@ -27,7 +28,7 @@ func GetAllArtifacts(ctx context.Context, githubClient GitHubClient, organizatio
 	return values, nil
 }
 
-func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryArtifacts(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: maxPagesCount}
 	repoFullName := formRepositoryFullName(owner, repo)
@@ -71,7 +72,7 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient GitHubClient, stre
 	return values, nil
 }
 
-func GetArtifact(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+func GetArtifact(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	artifactID, err := strconv.ParseInt(resourceID, 10, 64)
 	if err != nil {

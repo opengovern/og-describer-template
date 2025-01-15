@@ -15,7 +15,7 @@ import (
 	"github.com/shurcooL/githubv4"
 )
 
-// GitHubClient custom struct for defining both rest and graphql clients
+// model.GitHubClient custom struct for defining both rest and graphql clients
 type GitHubClient struct {
 	RestClient    *github.Client
 	GraphQLClient *githubv4.Client
@@ -1439,7 +1439,7 @@ func getFileSHAs(client *github.Client, owner, repo string) ([]string, error) {
 	return fileSHAs, nil
 }
 
-func getPackages(ctx context.Context, githubClient GitHubClient, organizationName string) ([]*github.Package, error) {
+func getPackages(ctx context.Context, githubClient model.GitHubClient, organizationName string) ([]*github.Package, error) {
 	client := githubClient.RestClient
 	var packages []*github.Package
 	packageTypes := []string{"container", "maven", "npm", "rubygems", "nuget"}

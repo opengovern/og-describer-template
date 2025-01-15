@@ -2,13 +2,14 @@ package describers
 
 import (
 	"context"
+	"strconv"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"strconv"
 )
 
-func GetNugetPackageList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetNugetPackageList(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	page := 1
 	var values []models.Resource
@@ -55,7 +56,7 @@ func GetNugetPackageList(ctx context.Context, githubClient GitHubClient, organiz
 	return values, nil
 }
 
-func GetNugetPackage(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+func GetNugetPackage(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	packageType := "nuget"
 	respPackages, _, err := client.Organizations.GetPackage(ctx, organizationName, packageType, resourceID)

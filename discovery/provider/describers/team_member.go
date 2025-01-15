@@ -2,15 +2,16 @@ package describers
 
 import (
 	"context"
+	"strconv"
+	"strings"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"strconv"
-	"strings"
 )
 
-func GetAllTeamsMembers(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTeamsMembers(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	teams, err := getTeams(ctx, client)
 	if err != nil {
@@ -27,7 +28,7 @@ func GetAllTeamsMembers(ctx context.Context, githubClient GitHubClient, organiza
 	return values, nil
 }
 
-func tableGitHubTeamMemberList(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org, slug string) ([]models.Resource, error) {
+func tableGitHubTeamMemberList(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, org, slug string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit

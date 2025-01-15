@@ -3,11 +3,12 @@ package describers
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"strings"
 )
 
 type CollaboratorEdge struct {
@@ -15,7 +16,7 @@ type CollaboratorEdge struct {
 	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
 }
 
-func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllOrganizationsCollaborators(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var values []models.Resource
 	orgValues, err := GetOrganizationCollaborators(ctx, githubClient, stream, organizationName)
 	if err != nil {
@@ -25,7 +26,7 @@ func GetAllOrganizationsCollaborators(ctx context.Context, githubClient GitHubCl
 	return values, nil
 }
 
-func GetOrganizationCollaborators(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetOrganizationCollaborators(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	affiliation := githubv4.CollaboratorAffiliationAll
 	var query struct {

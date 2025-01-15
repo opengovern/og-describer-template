@@ -9,7 +9,7 @@ import (
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetAllExternalIdentities(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllExternalIdentities(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var values []models.Resource
 	orgValues, err := GetOrganizationExternalIdentities(ctx, githubClient, stream, organizationName)
 	if err != nil {
@@ -20,7 +20,7 @@ func GetAllExternalIdentities(ctx context.Context, githubClient GitHubClient, or
 	return values, nil
 }
 
-func GetOrganizationExternalIdentities(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit

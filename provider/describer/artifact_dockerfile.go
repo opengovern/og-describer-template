@@ -1,5 +1,5 @@
 // artifact_dockerfile.go
-package describers
+package describer
 
 import (
 	"context"
@@ -219,13 +219,10 @@ func GetDockerfile(
 	}
 
 	output := model.ArtifactDockerFileDescription{
-		Sha:  &contentData.Sha,
-		Name: &contentData.Name,
-		//Path:                    &contentData.Path,
-		LastUpdatedAt: &lastUpdatedAt,
-		//GitURL:                  &contentData.GitURL,
-		HTMLURL: &contentData.HTMLURL,
-		//URI:                     &contentData.HTMLURL,
+		Sha:                     &contentData.Sha,
+		Name:                    &contentData.Name,
+		LastUpdatedAt:           &lastUpdatedAt,
+		HTMLURL:                 &contentData.HTMLURL,
 		DockerfileContent:       string(decoded),
 		DockerfileContentBase64: &dockerfileB64,
 		Repository:              repoObj,
@@ -233,7 +230,7 @@ func GetDockerfile(
 	}
 
 	value := models.Resource{
-		ID:          contentData.HTMLURL,
+		ID:          *output.Sha,
 		Name:        *output.Name,
 		Description: output,
 	}

@@ -2,13 +2,14 @@ package describers
 
 import (
 	"context"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetLicenseList(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetLicenseList(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 
 	var query struct {
@@ -65,7 +66,7 @@ func GetLicenseList(ctx context.Context, githubClient GitHubClient, organization
 	return values, nil
 }
 
-func GetLicense(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+func GetLicense(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.GraphQLClient
 
 	variables := map[string]interface{}{

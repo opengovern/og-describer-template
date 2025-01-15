@@ -14,7 +14,7 @@ import (
 	resilientbridge "github.com/opengovern/resilient-bridge"
 )
 
-func GetAllWorkflowRuns(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllWorkflowRuns(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	// Retrieve only active (non-archived, non-disabled) repositories
 	repositories, err := GetRepositoryListWithOptions(ctx, githubClient, organizationName, nil, true, true)
 	if err != nil {
@@ -204,7 +204,7 @@ func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.Resilie
 	return values, nil
 }
 
-//func GetRepoWorkflowRun(ctx context.Context, client GitHubClient, organizationName string, repo string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+//func GetRepoWorkflowRun(ctx context.Context, client model.GitHubClient, organizationName string, repo string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 //	owner := organizationName
 //	workflowRunID, err := strconv.ParseInt(resourceID, 10, 64)
 //	if err != nil {

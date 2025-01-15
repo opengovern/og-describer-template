@@ -2,11 +2,12 @@ package describers
 
 import (
 	"context"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 )
 
-func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRepositoriesSBOMs(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
 	var repositoryName string
@@ -43,7 +44,7 @@ func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, org
 	return values, nil
 }
 
-func GetRepositorySBOMs(ctx context.Context, githubClient GitHubClient, owner, repo string) (*models.Resource, error) {
+func GetRepositorySBOMs(ctx context.Context, githubClient model.GitHubClient, owner, repo string) (*models.Resource, error) {
 	client := githubClient.RestClient
 	SBOM, _, err := client.DependencyGraph.GetSBOM(ctx, owner, repo)
 	if err != nil {

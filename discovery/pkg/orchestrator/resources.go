@@ -7,7 +7,6 @@ import (
 	"fmt"
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
 	"github.com/opengovern/og-describer-github/discovery/provider/describers"
-	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-describer-github/global/maps"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
@@ -49,7 +48,7 @@ func GetResources(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg global.IntegrationCredentials,
+	cfg model.IntegrationCredentials,
 	additionalParameters map[string]string,
 	stream *model.StreamSender,
 ) error {
@@ -60,7 +59,7 @@ func GetResources(
 	return nil
 }
 
-func describe(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
+func describe(ctx context.Context, logger *zap.Logger, accountCfg model.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
@@ -75,7 +74,7 @@ func GetSingleResource(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg global.IntegrationCredentials,
+	cfg model.IntegrationCredentials,
 	additionalParameters map[string]string,
 	resourceId string,
 	stream *model.StreamSender,
@@ -87,7 +86,7 @@ func GetSingleResource(
 	return nil
 }
 
-func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
+func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg model.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
 	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
