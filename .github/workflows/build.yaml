@@ -46,46 +46,46 @@ jobs:
         run: |
           git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
       - name: Build Github Plugin App
-        working-directory: ./plugin/cloudql
+        working-directory: ./cloudql
         run: make build
       - name: Pack Github Plugin Build
-        working-directory: ./plugin/cloudql
+        working-directory: ./cloudql
         run: |
           tar -cvf build.tar build
       - name: Upload Github Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
           name: steampipe-plugin-github
-          path: ./plugin/cloudql/build.tar
+          path: ./cloudql/build.tar
           retention-days: 1
       - name: Build Local Describer App
-        working-directory: ./describer
+        working-directory: ./discovery
         run: make build-describer
       - name: Pack Local Describer Build
-        working-directory: ./describer
+        working-directory: ./discovery
         run: |
           tar -cvf local.tar local
       - name: Upload Local Artifact
         uses: actions/upload-artifact@v3
         with:
           name: local-og-describer-github
-          path: ./describer/local.tar
+          path: ./discovery/local.tar
           retention-days: 1
       - name: Build Integration Plugin
-        working-directory: ./plugin/integration
+        working-directory: ./platform
         run: make build
       - name: Create output directory
         working-directory: .
         run: mkdir -p github-output
       - name: Copy steampipe plugin to output directory
         working-directory: .
-        run: cp ./plugin/cloudql/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
+        run: cp ./cloudql/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
       - name: Copy integration plugin to output directory
         working-directory: .
-        run: cp ./plugin/integration/build/integration-plugin ./github-output/
+        run: cp ./integration/build/integration-plugin ./github-output/
       - name: Copy manifest to output directory
         working-directory: .
-        run: cp ./plugin/integration/manifest.yaml ./github-output/
+        run: cp ./integration/manifest.yaml ./github-output/
       - name: Pack output
         working-directory: .
         run: |
