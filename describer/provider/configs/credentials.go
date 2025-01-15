@@ -1,7 +1,9 @@
 package configs
 
-import "github.com/opengovern/og-describer-github/plugin/integration/configs"
+import (
+	"github.com/opengovern/og-describer-github/global"
+)
 
 type IntegrationCredentials struct {
-	configs.IntegrationCredentials
+	global.IntegrationCredentials
 }
