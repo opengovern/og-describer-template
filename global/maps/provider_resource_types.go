@@ -3,7 +3,7 @@ package maps
 import (
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
 	"github.com/opengovern/og-describer-github/discovery/provider"
-	"github.com/opengovern/og-describer-github/discovery/provider/describers"
+	"github.com/opengovern/og-describer-github/discovery/describers"
 	 "github.com/opengovern/og-util/pkg/integration"
 )
 

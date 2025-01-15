@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
-	"github.com/opengovern/og-describer-github/discovery/provider/describers"
+	"github.com/opengovern/og-describer-github/discovery/describers"
 	"github.com/opengovern/og-describer-github/global/maps"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
