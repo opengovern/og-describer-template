@@ -2,13 +2,14 @@ package describers
 
 import (
 	"context"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
 
-func GetAllRepositoriesRuleSets(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
 	var repositoryName string
@@ -39,7 +40,7 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient GitHubClient, 
 	return values, nil
 }
 
-func GetRepositoryRuleSets(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	rulesetPageSize := pageSize
 	rulePageSize := pageSize

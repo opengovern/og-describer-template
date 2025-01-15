@@ -24,7 +24,7 @@ import (
 // -----------------------------------------------------------------------------
 func GetContainerPackageList(
 	ctx context.Context,
-	githubClient GitHubClient,
+	githubClient model.GitHubClient,
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {

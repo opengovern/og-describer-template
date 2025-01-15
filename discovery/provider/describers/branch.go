@@ -3,14 +3,15 @@ package describers
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"time"
 )
 
-func GetAllBranches(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllBranches(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
@@ -28,7 +29,7 @@ func GetAllBranches(ctx context.Context, githubClient GitHubClient, organization
 	return values, nil
 }
 
-func GetRepositoryBranches(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryBranches(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	graphQLClient := githubClient.GraphQLClient
 	restClient := githubClient.RestClient
 	var query struct {
@@ -210,7 +211,7 @@ func GetRepositoryBranches(ctx context.Context, githubClient GitHubClient, strea
 }
 
 //TODO: Change the get function api call (The resource type model in Get function is different from model in List function)
-//func GetRepositoryBranch(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, branchName string, stream *models.StreamSender) (*models.Resource, error) {
+//func GetRepositoryBranch(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, branchName string, stream *models.StreamSender) (*models.Resource, error) {
 //	branchInfo, _, err := githubClient.RestClient.Repositories.GetBranch(ctx, organizationName, repositoryName, branchName, true)
 //	if err != nil {
 //		return nil, err

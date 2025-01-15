@@ -21,7 +21,7 @@ const MAX_REPOS_TO_LIST = 250
 // GetRepositoryList calls GetRepositoryListWithOptions with default excludes (false, false).
 func GetRepositoryList(
 	ctx context.Context,
-	githubClient GitHubClient,
+	githubClient model.GitHubClient,
 	organizationName string,
 	stream *models.StreamSender,
 ) ([]models.Resource, error) {
@@ -33,7 +33,7 @@ func GetRepositoryList(
 // streamed and returned.
 func GetRepositoryListWithOptions(
 	ctx context.Context,
-	githubClient GitHubClient,
+	githubClient model.GitHubClient,
 	organizationName string,
 	stream *models.StreamSender,
 	excludeArchived bool,
@@ -164,7 +164,7 @@ func GetRepositoryListWithOptions(
 // GetRepository fetches a single repo, transforms it, fetches languages, enriches metrics, returns a single Resource.
 func GetRepository(
 	ctx context.Context,
-	githubClient GitHubClient,
+	githubClient model.GitHubClient,
 	organizationName string,
 	repositoryName string,
 	resourceID string, // optional

@@ -2,13 +2,14 @@ package describers
 
 import (
 	"context"
+	"strconv"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"strconv"
 )
 
-func GetAllRunners(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllRunners(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	owner := organizationName
 	repositories, err := getRepositories(ctx, client, owner)
@@ -26,7 +27,7 @@ func GetAllRunners(ctx context.Context, githubClient GitHubClient, organizationN
 	return values, nil
 }
 
-func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryRunners(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: maxPagesCount}
 	repoFullName := formRepositoryFullName(owner, repo)
@@ -74,7 +75,7 @@ func GetRepositoryRunners(ctx context.Context, githubClient GitHubClient, stream
 	return values, nil
 }
 
-func GetActionRunner(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+func GetActionRunner(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	runnerID, err := strconv.ParseInt(resourceID, 10, 64)
 	if err != nil {

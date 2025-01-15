@@ -3,13 +3,14 @@ package describers
 import (
 	"context"
 	"fmt"
+	"strconv"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"strconv"
 )
 
-func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 
 	var values []models.Resource
 	orgValues, err := GetOrganizationDependabotAlerts(ctx, githubClient, stream, organizationName)
@@ -20,7 +21,7 @@ func GetAllOrganizationsDependabotAlerts(ctx context.Context, githubClient GitHu
 	return values, nil
 }
 
-func GetOrganizationDependabotAlerts(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetOrganizationDependabotAlerts(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opt := &github.ListAlertsOptions{
 		ListCursorOptions: github.ListCursorOptions{First: maxPagesCount},

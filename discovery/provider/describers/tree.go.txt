@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func GetAllTrees(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllTrees(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
 	repositories, err := getRepositories(ctx, client, organizationName)
@@ -25,7 +25,7 @@ func GetAllTrees(ctx context.Context, githubClient GitHubClient, organizationNam
 	return values, nil
 }
 
-func GetRepositoryTrees(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryTrees(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	repository, _, err := client.Repositories.Get(ctx, owner, repo)
 	if err != nil {

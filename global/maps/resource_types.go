@@ -1,14 +1,18 @@
 package maps
 
 import (
-	"github.com/opengovern/og-describer-github/platform"
+	"github.com/opengovern/og-util/pkg/integration"
 	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
+)
+
+const (
+	IntegrationTypeGithubAccount = integration.Type("github_account") // example: aws_cloud, azure_subscription
 )
 
 var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	"Github/Container/Package": {
 		Name:            "Github/Container/Package",
-		IntegrationType: main.IntegrationTypeGithubAccount,
+		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -20,7 +24,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Repository": {
 		Name:            "Github/Repository",
-		IntegrationType: main.IntegrationTypeGithubAccount,
+		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -37,7 +41,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Artifact/DockerFile": {
 		Name:            "Github/Artifact/DockerFile",
-		IntegrationType: main.IntegrationTypeGithubAccount,
+		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -54,7 +58,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Actions/WorkflowRun": {
 		Name:            "Github/Actions/WorkflowRun",
-		IntegrationType: main.IntegrationTypeGithubAccount,
+		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{

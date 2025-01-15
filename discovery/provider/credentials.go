@@ -3,21 +3,20 @@ package provider
 import (
 	"encoding/json"
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
-	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe"
 )
 
 // AccountCredentialsFromMap TODO: converts a map to a configs.IntegrationCredentials.
-func AccountCredentialsFromMap(m map[string]any) (global.IntegrationCredentials, error) {
+func AccountCredentialsFromMap(m map[string]any) (model.IntegrationCredentials, error) {
 	mj, err := json.Marshal(m)
 	if err != nil {
-		return global.IntegrationCredentials{}, err
+		return model.IntegrationCredentials{}, err
 	}
 
-	var c global.IntegrationCredentials
+	var c model.IntegrationCredentials
 	err = json.Unmarshal(mj, &c)
 	if err != nil {
-		return global.IntegrationCredentials{}, err
+		return model.IntegrationCredentials{}, err
 	}
 
 	return c, nil

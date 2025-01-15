@@ -2,13 +2,14 @@ package describers
 
 import (
 	"context"
+	"time"
+
 	"github.com/google/go-github/v55/github"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"time"
 )
 
-func GetAllAuditLogs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllAuditLogs(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	var values []models.Resource
 	orgValues, err := GetRepositoryAuditLog(ctx, githubClient, stream, organizationName)
 	if err != nil {
@@ -18,7 +19,7 @@ func GetAllAuditLogs(ctx context.Context, githubClient GitHubClient, organizatio
 	return values, nil
 }
 
-func GetRepositoryAuditLog(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
+func GetRepositoryAuditLog(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, org string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	var phrase string
 	var include string

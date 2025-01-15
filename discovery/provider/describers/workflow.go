@@ -3,17 +3,18 @@ package describers
 import (
 	"context"
 	"fmt"
-	"github.com/opengovern/og-describer-github/discovery/pkg/models"
-	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"strconv"
 	"strings"
+
+	"github.com/opengovern/og-describer-github/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-github/discovery/provider"
 
 	goPipeline "github.com/buildkite/go-pipeline"
 
 	"github.com/google/go-github/v55/github"
 )
 
-func GetAllWorkflows(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
+func GetAllWorkflows(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
 	client := githubClient.RestClient
 
 	repositories, err := getRepositories(ctx, client, organizationName)
@@ -40,7 +41,7 @@ type FileContent struct {
 	Content    string
 }
 
-func GetRepositoryWorkflows(ctx context.Context, githubClient GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryWorkflows(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opts := &github.ListOptions{PerPage: pageSize}
 	repoFullName := formRepositoryFullName(owner, repo)
@@ -140,7 +141,7 @@ func decodeFileContentToPipeline(contentDetails FileContent) (*goPipeline.Pipeli
 	return pipeline, nil
 }
 
-func GetRepositoryWorkflow(ctx context.Context, githubClient GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
+func GetRepositoryWorkflow(ctx context.Context, githubClient model.GitHubClient, organizationName string, repositoryName string, resourceID string, stream *models.StreamSender) (*models.Resource, error) {
 	client := githubClient.RestClient
 	workflowID, err := strconv.ParseInt(resourceID, 10, 64)
 	if err != nil {
