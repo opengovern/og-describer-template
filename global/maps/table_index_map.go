@@ -1,4 +1,4 @@
-package global
+package maps
 
 import (
 	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/sdk/es"

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/jackc/pgtype"
 	"github.com/opengovern/og-describer-github/global"
+	"github.com/opengovern/og-describer-github/global/maps"
 	"github.com/opengovern/og-util/pkg/integration"
 	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
 	"github.com/opengovern/opencomply/services/integration/models"
@@ -84,8 +85,8 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]models.Integratio
 
 func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]interfaces.ResourceTypeConfiguration, error) {
 	resourceTypesMap := make(map[string]interfaces.ResourceTypeConfiguration)
-	for _, resourceType := range ResourceTypesList {
-		if v, ok := ResourceTypeConfigs[resourceType]; ok {
+	for _, resourceType := range maps.ResourceTypesList {
+		if v, ok := maps.ResourceTypeConfigs[resourceType]; ok {
 			resourceTypesMap[resourceType] = *v
 		} else {
 			resourceTypesMap[resourceType] = interfaces.ResourceTypeConfiguration{}
@@ -95,7 +96,7 @@ func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[st
 }
 
 func (i *Integration) GetResourceTypeFromTableName(tableName string) string {
-	if v, ok := TablesToResourceTypes[tableName]; ok {
+	if v, ok := maps.TablesToResourceTypes[tableName]; ok {
 		return v
 	}
 
