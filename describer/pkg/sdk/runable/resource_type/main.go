@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"os"
 	"sort"
 	"strings"
@@ -39,7 +39,7 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "provider/resource_types/resource-types.json"
+		rt := "provider/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -88,7 +88,7 @@ import (
 	model "github.com/opengovern/og-describer-%[2]s/pkg/sdk/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
-`, configs.OGPluginRepoURL, configs.IntegrationTypeLower))
+`, global.OGPluginRepoURL, global.IntegrationTypeLower))
 
 	// Iterate over each resource type to build its string representations
 	for _, resourceType := range resourceTypes {

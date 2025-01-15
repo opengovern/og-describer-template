@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"os"
 	"strings"
 )
@@ -36,7 +36,7 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "provider/resource_types/resource-types.json"
+		rt := "provider/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -63,7 +63,7 @@ import (
 )
 
 var Map = map[string]string{
-`, configs.OGPluginRepoURL))
+`, global.OGPluginRepoURL))
 	for _, resourceType := range resourceTypes {
 		b.WriteString(fmt.Sprintf("  \"%s\": \"%s\",\n", resourceType.ResourceName, resourceType.SteampipeTable))
 	}

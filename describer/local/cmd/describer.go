@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/opengovern/og-describer-github/global"
 	"os"
 	"strconv"
 	"strings"
@@ -13,9 +14,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/opengovern/og-describer-github/describer/pkg/describer"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
 	"github.com/opengovern/og-describer-github/describer/provider"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/spf13/cobra"
@@ -57,7 +56,7 @@ var describerCmd = &cobra.Command{
 			IntegrationID:   "",
 			ProviderID:      "",
 			DescribedAt:     time.Now().UnixMilli(),
-			IntegrationType: configs.IntegrationTypeLower,
+			IntegrationType: global.IntegrationTypeLower,
 			CipherText:      "",
 			IntegrationLabels: map[string]string{
 				"OrganizationName": OrganizationName,
@@ -79,7 +78,7 @@ var describerCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		plg := wrapper.Plugin()
+		plg := global.Plugin()
 
 		f := func(resource model.Resource) error {
 			if resource.Description == nil {
@@ -110,7 +109,7 @@ var describerCmd = &cobra.Command{
 			}
 
 			if plg != nil {
-				_, _, err = wrapper.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
+				_, _, err = global.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
 				if err != nil {
 					logger.Error("failed to build tags for service", zap.Error(err), zap.String("resourceType", job.ResourceType), zap.Any("resource", resource))
 				}
@@ -128,7 +127,7 @@ var describerCmd = &cobra.Command{
 				ResourceID:      resource.UniqueID(),
 				ResourceName:    resource.Name,
 				Description:     description,
-				IntegrationType: configs.IntegrationName,
+				IntegrationType: global.IntegrationName,
 				ResourceType:    strings.ToLower(job.ResourceType),
 				IntegrationID:   job.IntegrationID,
 				Metadata:        metadata,

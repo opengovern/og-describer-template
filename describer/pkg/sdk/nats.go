@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/opengovern/og-describer-github/describer/pkg/describer"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"os"
 	"runtime"
 	"time"
@@ -43,11 +43,11 @@ func NewWorker(
 		return nil, err
 	}
 
-	topic := configs.JobQueueTopic
+	topic := global.JobQueueTopic
 	if ManualTriggers == "true" {
-		topic = configs.JobQueueTopicManuals
+		topic = global.JobQueueTopicManuals
 	}
-	if err := jq.Stream(ctx, configs.StreamName, " describe job runner queue", []string{topic}, 200000); err != nil {
+	if err := jq.Stream(ctx, global.StreamName, " describe job runner queue", []string{topic}, 200000); err != nil {
 		logger.Error("failed to create stream", zap.Error(err))
 		return nil, err
 	}
@@ -62,13 +62,13 @@ func NewWorker(
 
 func (w *Worker) Run(ctx context.Context) error {
 	w.logger.Info("starting to consume")
-	topic := configs.JobQueueTopic
-	consumer := configs.ConsumerGroup
+	topic := global.JobQueueTopic
+	consumer := global.ConsumerGroup
 	if ManualTriggers == "true" {
-		topic = configs.JobQueueTopicManuals
-		consumer = configs.ConsumerGroupManuals
+		topic = global.JobQueueTopicManuals
+		consumer = global.ConsumerGroupManuals
 	}
-	consumeCtx, err := w.jq.ConsumeWithConfig(ctx, consumer, configs.StreamName, []string{topic}, jetstream.ConsumerConfig{
+	consumeCtx, err := w.jq.ConsumeWithConfig(ctx, consumer, global.StreamName, []string{topic}, jetstream.ConsumerConfig{
 		Replicas:          1,
 		AckPolicy:         jetstream.AckExplicitPolicy,
 		DeliverPolicy:     jetstream.DeliverAllPolicy,

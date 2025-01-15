@@ -1,8 +1,8 @@
-package wrapper
+package global
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-github/plugin/cloudql/github"
+	"github.com/opengovern/og-describer-github/cloudql/github"
 	"strings"
 
 	"go.uber.org/zap"

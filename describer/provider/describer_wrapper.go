@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/google/go-github/v55/github"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-describer-github/describer/provider/describers"
+	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/net/context"
@@ -13,7 +13,7 @@ import (
 )
 
 func DescribeByGithub(describe func(context.Context, describers.GitHubClient, string, *model.StreamSender) ([]model.Resource, error)) model.ResourceDescriber {
-	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
+	return func(ctx context.Context, cfg global.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 		ctx = describers.WithTriggerType(ctx, triggerType)
 
 		if cfg.PatToken == "" {
@@ -50,7 +50,7 @@ func DescribeByGithub(describe func(context.Context, describers.GitHubClient, st
 }
 
 func DescribeSingleByRepo(describe func(context.Context, describers.GitHubClient, string, string, string, *model.StreamSender) (*model.Resource, error)) model.SingleResourceDescriber {
-	return func(ctx context.Context, cfg configs.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, resourceID string, stream *model.StreamSender) (*model.Resource, error) {
+	return func(ctx context.Context, cfg global.IntegrationCredentials, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, resourceID string, stream *model.StreamSender) (*model.Resource, error) {
 		ctx = describers.WithTriggerType(ctx, triggerType)
 
 		if cfg.PatToken == "" {

@@ -1,4 +1,4 @@
-package configs
+package global
 
 const (
 	StreamName           = "og_describer_github"

@@ -1,4 +1,4 @@
-package wrapper
+package global
 
 import (
 	opengovernance "github.com/opengovern/og-describer-github/describer/pkg/sdk/es"

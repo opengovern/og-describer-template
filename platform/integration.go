@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/jackc/pgtype"
-	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
-	configs2 "github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/integration"
 	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
@@ -16,11 +14,11 @@ type Integration struct{}
 
 func (i *Integration) GetConfiguration() interfaces.IntegrationConfiguration {
 	return interfaces.IntegrationConfiguration{
-		NatsScheduledJobsTopic:   configs2.JobQueueTopic,
-		NatsManualJobsTopic:      configs2.JobQueueTopicManuals,
-		NatsStreamName:           configs2.StreamName,
-		NatsConsumerGroup:        configs2.ConsumerGroup,
-		NatsConsumerGroupManuals: configs2.ConsumerGroupManuals,
+		NatsScheduledJobsTopic:   global.JobQueueTopic,
+		NatsManualJobsTopic:      global.JobQueueTopicManuals,
+		NatsStreamName:           global.StreamName,
+		NatsConsumerGroup:        global.ConsumerGroup,
+		NatsConsumerGroupManuals: global.ConsumerGroupManuals,
 
 		SteampipePluginName: "github",
 
@@ -109,7 +107,7 @@ func (i *Integration) GetIntegrationType() integration.Type {
 }
 
 func (i *Integration) ListAllTables() map[string][]string {
-	plugin := wrapper.Plugin()
+	plugin := global.Plugin()
 	tables := make(map[string][]string)
 	for tableKey, table := range plugin.TableMap {
 		columnNames := make([]string, 0, len(table.Columns))
