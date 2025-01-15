@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/opengovern/og-describer-github/describer/pkg/describer"
+	"github.com/opengovern/og-describer-github/describer/pkg/orchestrator"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/describer/provider"
 	"github.com/opengovern/og-util/pkg/describe"
@@ -153,7 +153,7 @@ var describerCmd = &cobra.Command{
 		}
 		clientStream := (*model.StreamSender)(&f)
 
-		err = describer.GetResources(
+		err = orchestrator.GetResources(
 			ctx,
 			logger,
 			job.ResourceType,

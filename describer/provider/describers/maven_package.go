@@ -2,7 +2,7 @@ package describers
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
+	"github.com/opengovern/og-describer-github/describer/pkg/models"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
 )

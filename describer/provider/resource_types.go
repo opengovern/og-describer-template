@@ -1,7 +1,7 @@
 package provider
 
 import (
-	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-github/describer/pkg/models"
 	"github.com/opengovern/og-describer-github/describer/provider/describers"
 	"github.com/opengovern/og-describer-github/global"
 )

@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/model"
+	"github.com/opengovern/og-describer-github/describer/pkg/models"
+	model "github.com/opengovern/og-describer-github/describer/provider"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
 )

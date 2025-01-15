@@ -1,10 +1,10 @@
-package sdk
+package pkg
 
 import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/opengovern/og-describer-github/describer/pkg/describer"
+	"github.com/opengovern/og-describer-github/describer/pkg/orchestrator"
 	"github.com/opengovern/og-describer-github/global"
 	"os"
 	"runtime"
@@ -119,7 +119,7 @@ func (w *Worker) ProcessMessage(ctx context.Context, msg jetstream.Msg) error {
 
 	w.logger.Info("running job", zap.Uint("id", input.DescribeJob.JobID), zap.String("type", input.DescribeJob.ResourceType), zap.String("providerID", input.DescribeJob.ProviderID))
 
-	err = describer.DescribeHandler(ctx, w.logger, describer.TriggeredByLocal, input)
+	err = orchestrator.DescribeHandler(ctx, w.logger, orchestrator.TriggeredByLocal, input)
 	endTime := time.Now()
 
 	w.logger.Info("job completed", zap.Uint("id", input.DescribeJob.JobID), zap.String("type", input.DescribeJob.ResourceType), zap.String("providerID", input.DescribeJob.ProviderID), zap.Duration("duration", endTime.Sub(startTime)))

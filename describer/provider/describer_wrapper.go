@@ -3,7 +3,7 @@ package provider
 import (
 	"fmt"
 	"github.com/google/go-github/v55/github"
-	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-github/describer/pkg/models"
 	"github.com/opengovern/og-describer-github/describer/provider/describers"
 	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe/enums"

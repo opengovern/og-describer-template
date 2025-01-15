@@ -1,11 +1,11 @@
-package describer
+package orchestrator
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/go-errors/errors"
-	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-github/describer/pkg/models"
 	"github.com/opengovern/og-describer-github/describer/provider"
 	"github.com/opengovern/og-describer-github/global"
 	describe2 "github.com/opengovern/og-util/pkg/describe"
