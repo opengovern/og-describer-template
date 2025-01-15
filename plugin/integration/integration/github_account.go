@@ -84,13 +84,13 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]models.Integratio
 	return integrations, nil
 }
 
-func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]*interfaces.ResourceTypeConfiguration, error) {
-	resourceTypesMap := make(map[string]*interfaces.ResourceTypeConfiguration)
+func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]interfaces.ResourceTypeConfiguration, error) {
+	resourceTypesMap := make(map[string]interfaces.ResourceTypeConfiguration)
 	for _, resourceType := range configs.ResourceTypesList {
 		if v, ok := configs.ResourceTypeConfigs[resourceType]; ok {
-			resourceTypesMap[resourceType] = v
+			resourceTypesMap[resourceType] = *v
 		} else {
-			resourceTypesMap[resourceType] = nil
+			resourceTypesMap[resourceType] = interfaces.ResourceTypeConfiguration{}
 		}
 	}
 	return resourceTypesMap, nil
