@@ -2,19 +2,32 @@ package maps
 
 import (
 	"github.com/opengovern/og-util/pkg/integration"
-	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
 )
 
 const (
 	IntegrationTypeGithubAccount = integration.Type("github_account") // example: aws_cloud, azure_subscription
 )
 
-var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
+type ResourceTypeConfiguration struct {
+	Name            string           `json:"name"`
+	IntegrationType integration.Type `json:"integration_type"`
+	Description     string           `json:"description"`
+	Params          []Param          `json:"params"`
+}
+
+type Param struct {
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Required    bool    `json:"required"`
+	Default     *string `json:"default"`
+}
+
+var ResourceTypeConfigs = map[string]*ResourceTypeConfiguration{
 	"Github/Container/Package": {
 		Name:            "Github/Container/Package",
 		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []interfaces.Param{
+		Params: []Param{
 			{
 				Name:        "organization",
 				Description: `Please provide the organization name`,
@@ -26,7 +39,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Name:            "Github/Repository",
 		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []interfaces.Param{
+		Params: []Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
@@ -43,7 +56,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Name:            "Github/Artifact/DockerFile",
 		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []interfaces.Param{
+		Params: []Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
@@ -60,7 +73,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Name:            "Github/Actions/WorkflowRun",
 		IntegrationType: IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []interfaces.Param{
+		Params: []Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
