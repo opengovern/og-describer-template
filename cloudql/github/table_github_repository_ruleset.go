@@ -2,7 +2,8 @@ package github
 
 import (
 	"context"
-	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/sdk/es"
+
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 
 	"time"
 

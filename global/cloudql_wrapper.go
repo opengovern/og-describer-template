@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/opengovern/og-describer-github/cloudql/github"
 	"github.com/opengovern/og-describer-github/global/maps"
+
 	"strings"
 
 	"go.uber.org/zap"

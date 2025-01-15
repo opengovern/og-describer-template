@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 
-	"github.com/opengovern/og-describer-github/plugin/cloudql/github/models"
+	"github.com/opengovern/og-describer-github/cloudql/github/models"
 	"github.com/shurcooL/githubv4"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"

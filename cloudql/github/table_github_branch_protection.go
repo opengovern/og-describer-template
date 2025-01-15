@@ -1,8 +1,8 @@
 package github
 
 import (
-	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/sdk/es"
-	"github.com/opengovern/og-describer-github/plugin/cloudql/github/models"
+	"github.com/opengovern/og-describer-github/cloudql/github/models"
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"

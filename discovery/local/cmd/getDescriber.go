@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/opengovern/og-describer-github/discovery/pkg/orchestrator"
-	model "github.com/opengovern/og-describer-github/discovery/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
 	"github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe"
