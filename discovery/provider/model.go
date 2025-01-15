@@ -7,7 +7,6 @@ package provider
 import (
 	"encoding/json"
 	"time"
-
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"

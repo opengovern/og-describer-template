@@ -39,7 +39,7 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "provider/resource-types.json"
+		rt := "global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -85,7 +85,7 @@ func main() {
 import (
 	"%[1]s/provider/describer"
 	"%[1]s/provider/configs"
-	model "github.com/opengovern/og-describer-%[2]s/pkg/sdk/models"
+	model "github.com/opengovern/og-describer-%[2]s/pkg/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
 `, global.OGPluginRepoURL, global.IntegrationTypeLower))
