@@ -739,6 +739,8 @@ github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQ
 github.com/opencontainers/image-spec v1.1.0/go.mod h1:W4s4sFTMaBeK1BQLXbG4AdM2szdn85PY75RI83NrTrM=
 github.com/opengovern/og-util v1.7.2 h1:eLGgqSHQmYuSehRBXJcn61pD7uslCzZe9wbwJaEKbc0=
 github.com/opengovern/og-util v1.7.2/go.mod h1:ob8RSaNZG3RWnLH3lDXQaVpIf+B8Ry7ds3twYlDJPp0=
+github.com/opengovern/opencomply v0.0.0-20250115121742-8f098cd41cc1 h1:W0LSq51JIDJi2kPwg+8ElsQHe8I74XEP9tfEAB6IFKI=
+github.com/opengovern/opencomply v0.0.0-20250115121742-8f098cd41cc1/go.mod h1:DCq6ryCRpy85BFP/bEfz/HS0O8oEsU4l/cl9IoDVj/o=
 github.com/opengovern/opencomply v0.582.4-dev.0.0.20250110161755-c56630852bf4 h1:yKyA73PTmg1uGlofJp8zMbK5OPCV+2B4cOmTANQvfHI=
 github.com/opengovern/opencomply v0.582.4-dev.0.0.20250110161755-c56630852bf4/go.mod h1:DCq6ryCRpy85BFP/bEfz/HS0O8oEsU4l/cl9IoDVj/o=
 github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d h1:OnoG1Za89armxN1ZlEbr/eKvAdbRN6UGKXCFxee58s0=
