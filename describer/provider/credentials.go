@@ -3,21 +3,21 @@ package provider
 import (
 	"encoding/json"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe"
 )
 
 // AccountCredentialsFromMap TODO: converts a map to a configs.IntegrationCredentials.
-func AccountCredentialsFromMap(m map[string]any) (configs.IntegrationCredentials, error) {
+func AccountCredentialsFromMap(m map[string]any) (global.IntegrationCredentials, error) {
 	mj, err := json.Marshal(m)
 	if err != nil {
-		return configs.IntegrationCredentials{}, err
+		return global.IntegrationCredentials{}, err
 	}
 
-	var c configs.IntegrationCredentials
+	var c global.IntegrationCredentials
 	err = json.Unmarshal(mj, &c)
 	if err != nil {
-		return configs.IntegrationCredentials{}, err
+		return global.IntegrationCredentials{}, err
 	}
 
 	return c, nil

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../../../../provider/resource_types/resource-types.json"
+		rt := "../../../../provider/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -321,7 +321,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 
 			s := IntegrationType{
 				Name:            strings.TrimSuffix(t.Name.String(), "Description"),
-				IntegrationType: configs.IntegrationTypeLower,
+				IntegrationType: global.IntegrationTypeLower,
 				GetFilters:      map[string]string{},
 				ListFilters:     map[string]string{},
 			}
@@ -404,7 +404,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 			essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 			steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
 			"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-			`+configs.IntegrationTypeLower+` "`+configs.OGPluginRepoURL+`/provider/model"
+			`+global.IntegrationTypeLower+` "`+global.OGPluginRepoURL+`/provider/model"
             "runtime"
 		)
 

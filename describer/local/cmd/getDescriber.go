@@ -6,9 +6,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/opengovern/og-describer-github/describer/pkg/describer"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
 	"github.com/opengovern/og-describer-github/describer/provider"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/spf13/cobra"
@@ -45,7 +44,7 @@ var getDescriberCmd = &cobra.Command{
 			IntegrationID:   "",
 			ProviderID:      "",
 			DescribedAt:     time.Now().UnixMilli(),
-			IntegrationType: configs.IntegrationTypeLower,
+			IntegrationType: global.IntegrationTypeLower,
 			CipherText:      "",
 			IntegrationLabels: map[string]string{
 				"OrganizationName": OrganizationName,
@@ -67,7 +66,7 @@ var getDescriberCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		plg := wrapper.Plugin()
+		plg := global.Plugin()
 		additionalParameters["RepositoryName"] = RepositoryName
 
 		f := func(resource model.Resource) error {
@@ -99,7 +98,7 @@ var getDescriberCmd = &cobra.Command{
 			}
 
 			if plg != nil {
-				_, _, err = wrapper.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
+				_, _, err = global.ExtractTagsAndNames(logger, plg, job.ResourceType, resource)
 				if err != nil {
 					logger.Error("failed to build tags for service", zap.Error(err), zap.String("resourceType", job.ResourceType), zap.Any("resource", resource))
 				}
@@ -117,7 +116,7 @@ var getDescriberCmd = &cobra.Command{
 				ResourceID:      resource.UniqueID(),
 				ResourceName:    resource.Name,
 				Description:     description,
-				IntegrationType: configs.IntegrationName,
+				IntegrationType: global.IntegrationName,
 				ResourceType:    strings.ToLower(job.ResourceType),
 				IntegrationID:   job.IntegrationID,
 				Metadata:        metadata,

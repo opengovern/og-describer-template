@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
+	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/opengovern/og-util/proto/src/golang"
 	"go.uber.org/zap"
@@ -172,7 +172,7 @@ func (s *ResourceSender) flushBuffer(force bool) {
 			PlatformID:      resource.PlatformID,
 			ResourceID:      resource.ResourceID,
 			ResourceName:    resource.ResourceName,
-			IntegrationType: configs.IntegrationName,
+			IntegrationType: global.IntegrationName,
 			ResourceType:    strings.ToLower(resource.ResourceType),
 			IntegrationID:   resource.IntegrationID,
 			DescribedBy:     resource.DescribedBy,

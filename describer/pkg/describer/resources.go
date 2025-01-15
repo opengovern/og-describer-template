@@ -7,8 +7,8 @@ import (
 	"fmt"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/describer/provider"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-describer-github/describer/provider/describers"
+	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
 	"sort"
@@ -49,7 +49,7 @@ func GetResources(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg configs.IntegrationCredentials,
+	cfg global.IntegrationCredentials,
 	additionalParameters map[string]string,
 	stream *model.StreamSender,
 ) error {
@@ -60,7 +60,7 @@ func GetResources(
 	return nil
 }
 
-func describe(ctx context.Context, logger *zap.Logger, accountCfg configs.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
+func describe(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 	resourceTypeObject, ok := provider.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
@@ -75,7 +75,7 @@ func GetSingleResource(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg configs.IntegrationCredentials,
+	cfg global.IntegrationCredentials,
 	additionalParameters map[string]string,
 	resourceId string,
 	stream *model.StreamSender,
@@ -87,7 +87,7 @@ func GetSingleResource(
 	return nil
 }
 
-func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg configs.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
+func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
 	resourceTypeObject, ok := provider.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)

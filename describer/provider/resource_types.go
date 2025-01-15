@@ -2,14 +2,14 @@ package provider
 
 import (
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-describer-github/describer/provider/describers"
+	"github.com/opengovern/og-describer-github/global"
 )
 
 var ResourceTypes = map[string]model.ResourceType{
 
 	"Github/Actions/Artifact": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Actions/Artifact",
 		Tags: map[string][]string{
 			"category": {"Action"},
@@ -21,7 +21,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/Runner": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Actions/Runner",
 		Tags: map[string][]string{
 			"category": {"Action"},
@@ -33,7 +33,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/Secret": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Actions/Secret",
 		Tags: map[string][]string{
 			"category": {"Action"},
@@ -45,7 +45,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/WorkflowRun": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Actions/WorkflowRun",
 		Tags: map[string][]string{
 			"category": {"Action"},
@@ -57,7 +57,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Branch": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Branch",
 		Tags: map[string][]string{
 			"category": {"Branch"},
@@ -69,7 +69,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Branch/Protection": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Branch/Protection",
 		Tags: map[string][]string{
 			"category": {"Branch"},
@@ -81,7 +81,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Commit": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Commit",
 		Tags: map[string][]string{
 			"category": {"Commit"},
@@ -93,7 +93,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Issue": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Issue",
 		Tags: map[string][]string{
 			"category": {"Issue"},
@@ -105,7 +105,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/License": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/License",
 		Tags: map[string][]string{
 			"category": {"License"},
@@ -117,7 +117,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Organization",
 		Tags: map[string][]string{
 			"category": {"Organization"},
@@ -129,7 +129,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Collaborator": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Organization/Collaborator",
 		Tags: map[string][]string{
 			"category": {"Organization"},
@@ -141,7 +141,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Dependabot/Alert": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Organization/Dependabot/Alert",
 		Tags: map[string][]string{
 			"category": {"Organization"},
@@ -153,7 +153,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Member": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Organization/Member",
 		Tags: map[string][]string{
 			"category": {"Organization"},
@@ -165,7 +165,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Team": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Organization/Team",
 		Tags: map[string][]string{
 			"category": {"Organization"},
@@ -177,7 +177,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/PullRequest": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/PullRequest",
 		Tags: map[string][]string{
 			"category": {"PullRequest"},
@@ -189,7 +189,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Release": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Release",
 		Tags: map[string][]string{
 			"category": {"Release"},
@@ -201,7 +201,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -213,7 +213,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Collaborator": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/Collaborator",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -225,7 +225,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/DependabotAlert": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/DependabotAlert",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -237,7 +237,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Deployment": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/Deployment",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -249,7 +249,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Environment": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/Environment",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -261,7 +261,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Ruleset": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/Ruleset",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -273,7 +273,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/SBOM": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/SBOM",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -285,7 +285,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/VulnerabilityAlert": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Repository/VulnerabilityAlert",
 		Tags: map[string][]string{
 			"category": {"Repository"},
@@ -297,7 +297,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Tag": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Tag",
 		Tags: map[string][]string{
 			"category": {"Tag"},
@@ -309,7 +309,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Team/Member": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Team/Member",
 		Tags: map[string][]string{
 			"category": {"Team"},
@@ -321,7 +321,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/User": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/User",
 		Tags: map[string][]string{
 			"category": {"user"},
@@ -333,7 +333,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Workflow": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Workflow",
 		Tags: map[string][]string{
 			"category": {"workflow"},
@@ -345,7 +345,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Container/Package": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Container/Package",
 		Tags: map[string][]string{
 			"category": {"package"},
@@ -357,7 +357,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Package/Maven": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Package/Maven",
 		Tags: map[string][]string{
 			"category": {"package"},
@@ -369,7 +369,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/NPM/Package": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/NPM/Package",
 		Tags: map[string][]string{
 			"category": {"package"},
@@ -381,7 +381,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Nuget/Package": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Nuget/Package",
 		Tags: map[string][]string{
 			"category": {"package"},
@@ -393,7 +393,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Artifact/DockerFile": {
-		IntegrationType: configs.IntegrationName,
+		IntegrationType: global.IntegrationName,
 		ResourceName:    "Github/Artifact/DockerFile",
 		Tags: map[string][]string{
 			"category": {"artifact_dockerfile"},
