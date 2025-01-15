@@ -6,9 +6,9 @@ import (
 	"context"
 	"fmt"
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
-	"github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/opengovern/og-describer-github/discovery/provider/describers"
 	"github.com/opengovern/og-describer-github/global"
+	"github.com/opengovern/og-describer-github/global/maps"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
 	"sort"
@@ -17,7 +17,7 @@ import (
 
 func ListResourceTypes() []string {
 	var list []string
-	for k := range provider.ResourceTypes {
+	for k := range maps.ResourceTypes {
 		list = append(list, k)
 	}
 
@@ -26,11 +26,11 @@ func ListResourceTypes() []string {
 }
 
 func GetResourceType(resourceType string) (*model.ResourceType, error) {
-	if r, ok := provider.ResourceTypes[resourceType]; ok {
+	if r, ok := maps.ResourceTypes[resourceType]; ok {
 		return &r, nil
 	}
 	resourceType = strings.ToLower(resourceType)
-	for k, v := range provider.ResourceTypes {
+	for k, v := range maps.ResourceTypes {
 		k := strings.ToLower(k)
 		v := v
 		if k == resourceType {
@@ -41,7 +41,7 @@ func GetResourceType(resourceType string) (*model.ResourceType, error) {
 }
 
 func GetResourceTypesMap() map[string]model.ResourceType {
-	return provider.ResourceTypes
+	return maps.ResourceTypes
 }
 
 func GetResources(
@@ -61,7 +61,7 @@ func GetResources(
 }
 
 func describe(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
-	resourceTypeObject, ok := provider.ResourceTypes[resourceType]
+	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
 	}
@@ -88,7 +88,7 @@ func GetSingleResource(
 }
 
 func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg global.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
-	resourceTypeObject, ok := provider.ResourceTypes[resourceType]
+	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
 	}

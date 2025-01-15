@@ -1,11 +1,14 @@
-package main
+package maps
 
-import "github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
+import (
+	"github.com/opengovern/og-describer-github/platform"
+	"github.com/opengovern/opencomply/services/integration/integration-type/interfaces"
+)
 
 var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	"Github/Container/Package": {
 		Name:            "Github/Container/Package",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: main.IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -17,7 +20,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Repository": {
 		Name:            "Github/Repository",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: main.IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -34,7 +37,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Artifact/DockerFile": {
 		Name:            "Github/Artifact/DockerFile",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: main.IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{
@@ -51,7 +54,7 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	},
 	"Github/Actions/WorkflowRun": {
 		Name:            "Github/Actions/WorkflowRun",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: main.IntegrationTypeGithubAccount,
 		Description:     "",
 		Params: []interfaces.Param{
 			{

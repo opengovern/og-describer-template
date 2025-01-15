@@ -3,6 +3,7 @@ package global
 import (
 	"context"
 	"github.com/opengovern/og-describer-github/cloudql/github"
+	"github.com/opengovern/og-describer-github/global/maps"
 	"strings"
 
 	"go.uber.org/zap"
@@ -24,7 +25,7 @@ func buildContext() context.Context {
 
 func ExtractTableName(resourceType string) string {
 	resourceType = strings.ToLower(resourceType)
-	for k, v := range Map {
+	for k, v := range maps.Map {
 		if resourceType == strings.ToLower(k) {
 			return v
 		}
@@ -42,12 +43,12 @@ func ExtractTagsAndNames(logger *zap.Logger, plg *plugin.Plugin, resourceType st
 	if pluginTableName == "" {
 		return nil, "", fmt.Errorf("cannot find table name for resourceType: %s", resourceType)
 	}
-	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, DescriptionMap)
+	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, maps.DescriptionMap)
 }
 
 func ExtractResourceType(tableName string) string {
 	tableName = strings.ToLower(tableName)
-	return strings.ToLower(ReverseMap[tableName])
+	return strings.ToLower(maps.ReverseMap[tableName])
 }
 
 // GetResourceTypeByTableName TODO: use this in integration implementation

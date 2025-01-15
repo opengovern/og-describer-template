@@ -1,7 +1,8 @@
-package provider
+package maps
 
 import (
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
+	"github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/opengovern/og-describer-github/discovery/provider/describers"
 	"github.com/opengovern/og-describer-github/global"
 )
@@ -16,8 +17,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllArtifacts),
-		GetDescriber:  DescribeSingleByRepo(describers.GetArtifact),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllArtifacts),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetArtifact),
 	},
 
 	"Github/Actions/Runner": {
@@ -28,8 +29,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRunners),
-		GetDescriber:  DescribeSingleByRepo(describers.GetActionRunner),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRunners),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetActionRunner),
 	},
 
 	"Github/Actions/Secret": {
@@ -40,8 +41,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllSecrets),
-		GetDescriber:  DescribeSingleByRepo(describers.GetRepoActionSecret),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllSecrets),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetRepoActionSecret),
 	},
 
 	"Github/Actions/WorkflowRun": {
@@ -52,7 +53,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllWorkflowRuns),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllWorkflowRuns),
 		GetDescriber:  nil,
 	},
 
@@ -64,7 +65,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllBranches),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllBranches),
 		GetDescriber:  nil,
 	},
 
@@ -76,7 +77,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllBranchProtections),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllBranchProtections),
 		GetDescriber:  nil,
 	},
 
@@ -88,7 +89,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.ListCommits),
+		ListDescriber: provider.DescribeByGithub(describers.ListCommits),
 		GetDescriber:  nil,
 	},
 
@@ -100,8 +101,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetIssueList),
-		GetDescriber:  DescribeSingleByRepo(describers.GetIssue),
+		ListDescriber: provider.DescribeByGithub(describers.GetIssueList),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetIssue),
 	},
 
 	"Github/License": {
@@ -112,8 +113,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetLicenseList),
-		GetDescriber:  DescribeSingleByRepo(describers.GetLicense),
+		ListDescriber: provider.DescribeByGithub(describers.GetLicenseList),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetLicense),
 	},
 
 	"Github/Organization": {
@@ -124,7 +125,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetOrganizationList),
+		ListDescriber: provider.DescribeByGithub(describers.GetOrganizationList),
 		GetDescriber:  nil,
 	},
 
@@ -136,7 +137,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllOrganizationsCollaborators),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllOrganizationsCollaborators),
 		GetDescriber:  nil,
 	},
 
@@ -148,7 +149,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllOrganizationsDependabotAlerts),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllOrganizationsDependabotAlerts),
 		GetDescriber:  nil,
 	},
 
@@ -160,7 +161,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllMembers),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllMembers),
 		GetDescriber:  nil,
 	},
 
@@ -172,7 +173,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetOrganizationTeamList),
+		ListDescriber: provider.DescribeByGithub(describers.GetOrganizationTeamList),
 		GetDescriber:  nil,
 	},
 
@@ -184,7 +185,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllPullRequests),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllPullRequests),
 		GetDescriber:  nil,
 	},
 
@@ -196,7 +197,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetReleaseList),
+		ListDescriber: provider.DescribeByGithub(describers.GetReleaseList),
 		GetDescriber:  nil,
 	},
 
@@ -208,8 +209,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetRepositoryList),
-		GetDescriber:  DescribeSingleByRepo(describers.GetRepository),
+		ListDescriber: provider.DescribeByGithub(describers.GetRepositoryList),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetRepository),
 	},
 
 	"Github/Repository/Collaborator": {
@@ -220,7 +221,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesCollaborators),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesCollaborators),
 		GetDescriber:  nil,
 	},
 
@@ -232,7 +233,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesDependabotAlerts),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesDependabotAlerts),
 		GetDescriber:  nil,
 	},
 
@@ -244,7 +245,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesDeployments),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesDeployments),
 		GetDescriber:  nil,
 	},
 
@@ -256,7 +257,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesEnvironments),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesEnvironments),
 		GetDescriber:  nil,
 	},
 
@@ -268,7 +269,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesRuleSets),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesRuleSets),
 		GetDescriber:  nil,
 	},
 
@@ -280,7 +281,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesSBOMs),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesSBOMs),
 		GetDescriber:  nil,
 	},
 
@@ -292,7 +293,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllRepositoriesVulnerabilities),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllRepositoriesVulnerabilities),
 		GetDescriber:  nil,
 	},
 
@@ -304,7 +305,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllTags),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllTags),
 		GetDescriber:  nil,
 	},
 
@@ -316,7 +317,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllTeamsMembers),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllTeamsMembers),
 		GetDescriber:  nil,
 	},
 
@@ -328,7 +329,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetUser),
+		ListDescriber: provider.DescribeByGithub(describers.GetUser),
 		GetDescriber:  nil,
 	},
 
@@ -340,8 +341,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetAllWorkflows),
-		GetDescriber:  DescribeSingleByRepo(describers.GetRepositoryWorkflow),
+		ListDescriber: provider.DescribeByGithub(describers.GetAllWorkflows),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetRepositoryWorkflow),
 	},
 
 	"Github/Container/Package": {
@@ -352,7 +353,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetContainerPackageList),
+		ListDescriber: provider.DescribeByGithub(describers.GetContainerPackageList),
 		GetDescriber:  nil,
 	},
 
@@ -364,7 +365,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetMavenPackageList),
+		ListDescriber: provider.DescribeByGithub(describers.GetMavenPackageList),
 		GetDescriber:  nil,
 	},
 
@@ -376,7 +377,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetNPMPackageList),
+		ListDescriber: provider.DescribeByGithub(describers.GetNPMPackageList),
 		GetDescriber:  nil,
 	},
 
@@ -388,8 +389,8 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.GetNugetPackageList),
-		GetDescriber:  DescribeSingleByRepo(describers.GetNugetPackage),
+		ListDescriber: provider.DescribeByGithub(describers.GetNugetPackageList),
+		GetDescriber:  provider.DescribeSingleByRepo(describers.GetNugetPackage),
 	},
 
 	"Github/Artifact/DockerFile": {
@@ -400,7 +401,7 @@ var ResourceTypes = map[string]model.ResourceType{
 		},
 		Labels:        map[string]string{},
 		Annotations:   map[string]string{},
-		ListDescriber: DescribeByGithub(describers.ListArtifactDockerFiles),
+		ListDescriber: provider.DescribeByGithub(describers.ListArtifactDockerFiles),
 		GetDescriber:  nil,
 	},
 }
