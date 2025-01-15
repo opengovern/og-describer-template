@@ -1,7 +1,7 @@
 package github
 
 import (
-	opengovernance "github.com/opengovern/og-describer-github/describer/pkg/sdk/es"
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/sdk/es"
 
 	"github.com/opengovern/og-describer-github/plugin/cloudql/github/models"
 	"github.com/shurcooL/githubv4"
