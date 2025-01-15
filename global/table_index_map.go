@@ -1,7 +1,7 @@
 package global
 
 import (
-	opengovernance "github.com/opengovern/og-describer-github/describer/pkg/sdk/es"
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/sdk/es"
 )
 
 var Map = map[string]string{
