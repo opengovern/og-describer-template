@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/jackc/pgtype"
 	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
+	configs2 "github.com/opengovern/og-describer-github/describer/provider/configs"
 	"github.com/opengovern/og-describer-github/plugin/integration/configs"
 	"github.com/opengovern/og-describer-github/plugin/integration/discovery"
 	"github.com/opengovern/og-describer-github/plugin/integration/healthcheck"
@@ -17,11 +18,11 @@ type Integration struct{}
 
 func (i *Integration) GetConfiguration() interfaces.IntegrationConfiguration {
 	return interfaces.IntegrationConfiguration{
-		NatsScheduledJobsTopic:   configs.JobQueueTopic,
-		NatsManualJobsTopic:      configs.JobQueueTopicManuals,
-		NatsStreamName:           configs.StreamName,
-		NatsConsumerGroup:        configs.ConsumerGroup,
-		NatsConsumerGroupManuals: configs.ConsumerGroupManuals,
+		NatsScheduledJobsTopic:   configs2.JobQueueTopic,
+		NatsManualJobsTopic:      configs2.JobQueueTopicManuals,
+		NatsStreamName:           configs2.StreamName,
+		NatsConsumerGroup:        configs2.ConsumerGroup,
+		NatsConsumerGroupManuals: configs2.ConsumerGroupManuals,
 
 		SteampipePluginName: "github",
 
