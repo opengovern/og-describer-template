@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/opengovern/og-describer-github/describer/pkg/describer"
+	"github.com/opengovern/og-describer-github/describer/pkg/orchestrator"
 	model "github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
 	"github.com/opengovern/og-describer-github/describer/provider"
 	"github.com/opengovern/og-describer-github/global"
@@ -142,7 +142,7 @@ var getDescriberCmd = &cobra.Command{
 		}
 		clientStream := (*model.StreamSender)(&f)
 
-		err = describer.GetSingleResource(
+		err = orchestrator.GetSingleResource(
 			ctx,
 			logger,
 			job.ResourceType,

@@ -2,7 +2,7 @@
 
 // Implement types for each resource
 
-package model
+package provider
 
 import (
 	"encoding/json"

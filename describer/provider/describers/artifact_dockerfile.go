@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/model"
+	"github.com/opengovern/og-describer-github/describer/pkg/models"
+	model "github.com/opengovern/og-describer-github/describer/provider"
 	resilientbridge "github.com/opengovern/resilient-bridge"
 	"github.com/opengovern/resilient-bridge/adapters"
 	"github.com/opengovern/resilient-bridge/utils" // For ExtractExternalBaseImagesFromBase64

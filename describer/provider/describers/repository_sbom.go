@@ -2,8 +2,8 @@ package describers
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-github/describer/pkg/sdk/models"
-	"github.com/opengovern/og-describer-github/describer/provider/model"
+	"github.com/opengovern/og-describer-github/describer/pkg/models"
+	model "github.com/opengovern/og-describer-github/describer/provider"
 )
 
 func GetAllRepositoriesSBOMs(ctx context.Context, githubClient GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
