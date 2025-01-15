@@ -16,7 +16,7 @@ require (
 	github.com/jackc/pgtype v1.14.0
 	github.com/nats-io/nats.go v1.36.0
 	github.com/opengovern/og-util v1.7.2
-	github.com/opengovern/opencomply v0.0.0-20250115121742-8f098cd41cc1
+	github.com/opengovern/opencomply v0.0.0-20250115135113-a7dc767fb942
 	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.8.1

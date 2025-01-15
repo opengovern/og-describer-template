@@ -3,6 +3,7 @@ package integration
 import (
 	"encoding/json"
 	"github.com/jackc/pgtype"
+	"github.com/opengovern/og-describer-github/describer/pkg/wrapper"
 	"github.com/opengovern/og-describer-github/plugin/integration/configs"
 	"github.com/opengovern/og-describer-github/plugin/integration/discovery"
 	"github.com/opengovern/og-describer-github/plugin/integration/healthcheck"
@@ -106,4 +107,18 @@ func (i *Integration) GetResourceTypeFromTableName(tableName string) string {
 
 func (i *Integration) GetIntegrationType() integration.Type {
 	return configs.IntegrationTypeGithubAccount
+}
+
+func (i *Integration) ListAllTables() map[string][]string {
+	plugin := wrapper.Plugin()
+	tables := make(map[string][]string)
+	for tableKey, table := range plugin.TableMap {
+		columnNames := make([]string, 0, len(table.Columns))
+		for _, column := range table.Columns {
+			columnNames = append(columnNames, column.Name)
+		}
+		tables[tableKey] = columnNames
+	}
+
+	return tables
 }
