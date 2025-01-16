@@ -6,8 +6,8 @@
         "Action"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllArtifacts)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetArtifact)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllArtifacts)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetArtifact)",
     "SteampipeTable": "github_actions_artifact",
     "Model": "Artifact"
   },
@@ -18,8 +18,8 @@
         "Action"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRunners)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetActionRunner)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRunners)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetActionRunner)",
     "SteampipeTable": "github_actions_runner",
     "Model": "Runner"
   },
@@ -30,8 +30,8 @@
         "Action"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllSecrets)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepoActionSecret)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllSecrets)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetRepoActionSecret)",
     "SteampipeTable": "github_actions_secret",
     "Model": "Secret"
   },
@@ -42,7 +42,7 @@
         "Action"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllWorkflowRuns)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllWorkflowRuns)",
     "GetDescriber": "",
     "SteampipeTable": "github_actions_workflow_run",
     "Model": "WorkflowRun"
@@ -54,7 +54,7 @@
         "Branch"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllBranches)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllBranches)",
     "GetDescriber": "",
     "SteampipeTable": "github_branch",
     "Model": "Branch"
@@ -66,7 +66,7 @@
         "Branch"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllBranchProtections)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllBranchProtections)",
     "GetDescriber": "",
     "SteampipeTable": "github_branch_protection",
     "Model": "BranchProtection"
@@ -78,7 +78,7 @@
         "Commit"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.ListCommits)",
+    "ListDescriber": "DescribeByGithub(describers.ListCommits)",
     "GetDescriber": "",
     "SteampipeTable": "github_commit",
     "Model": "Commit"
@@ -90,8 +90,8 @@
         "Issue"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetIssueList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetIssue)",
+    "ListDescriber": "DescribeByGithub(describers.GetIssueList)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetIssue)",
     "SteampipeTable": "github_issue",
     "Model": "Issue"
   },
@@ -102,8 +102,8 @@
         "License"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetLicenseList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetLicense)",
+    "ListDescriber": "DescribeByGithub(describers.GetLicenseList)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetLicense)",
     "SteampipeTable": "github_license",
     "Model": "License"
   },
@@ -114,7 +114,7 @@
         "Organization"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetOrganizationList)",
+    "ListDescriber": "DescribeByGithub(describers.GetOrganizationList)",
     "GetDescriber": "",
     "SteampipeTable": "github_organization",
     "Model": "Organization"
@@ -126,7 +126,7 @@
         "Organization"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllOrganizationsCollaborators)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllOrganizationsCollaborators)",
     "GetDescriber": "",
     "SteampipeTable": "github_organization_collaborator",
     "Model": "OrgCollaborators"
@@ -138,7 +138,7 @@
         "Organization"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllOrganizationsDependabotAlerts)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllOrganizationsDependabotAlerts)",
     "GetDescriber": "",
     "SteampipeTable": "github_organization_dependabot_alert",
     "Model": "OrgAlertDependabot"
@@ -150,7 +150,7 @@
         "Organization"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllMembers)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllMembers)",
     "GetDescriber": "",
     "SteampipeTable": "github_organization_member",
     "Model": "OrgMembers"
@@ -162,7 +162,7 @@
         "Organization"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetOrganizationTeamList)",
+    "ListDescriber": "DescribeByGithub(describers.GetOrganizationTeamList)",
     "GetDescriber": "",
     "SteampipeTable": "github_organization_team",
     "Model": "Team"
@@ -174,7 +174,7 @@
         "PullRequest"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllPullRequests)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllPullRequests)",
     "GetDescriber": "",
     "SteampipeTable": "github_pull_request",
     "Model": "PullRequest"
@@ -186,7 +186,7 @@
         "Release"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetReleaseList)",
+    "ListDescriber": "DescribeByGithub(describers.GetReleaseList)",
     "GetDescriber": "",
     "SteampipeTable": "github_release",
     "Model": "Release"
@@ -198,8 +198,8 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetRepositoryList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepository)",
+    "ListDescriber": "DescribeByGithub(describers.GetRepositoryList)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetRepository)",
     "SteampipeTable": "github_repository",
     "Model": "Repository"
   },
@@ -210,7 +210,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesCollaborators)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesCollaborators)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_collaborator",
     "Model": "RepoCollaborators"
@@ -222,7 +222,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesDependabotAlerts)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesDependabotAlerts)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_dependabot_alert",
     "Model": "RepoAlertDependabot"
@@ -234,7 +234,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesDeployments)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesDeployments)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_deployment",
     "Model": "RepoDeployment"
@@ -246,7 +246,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesEnvironments)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesEnvironments)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_environment",
     "Model": "RepoEnvironment"
@@ -258,7 +258,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesRuleSets)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesRuleSets)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_ruleset",
     "Model": "RepoRuleSet"
@@ -270,7 +270,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesSBOMs)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesSBOMs)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_sbom",
     "Model": "RepoSBOM"
@@ -282,7 +282,7 @@
         "Repository"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllRepositoriesVulnerabilities)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesVulnerabilities)",
     "GetDescriber": "",
     "SteampipeTable": "github_repository_vulnerability_alert",
     "Model": "RepoVulnerabilityAlert"
@@ -294,7 +294,7 @@
         "Tag"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTags)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllTags)",
     "GetDescriber": "",
     "SteampipeTable": "github_tag",
     "Model": "Tag"
@@ -306,7 +306,7 @@
         "Team"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllTeamsMembers)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllTeamsMembers)",
     "GetDescriber": "",
     "SteampipeTable": "github_team_member",
     "Model": "TeamMembers"
@@ -318,7 +318,7 @@
         "user"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetUser)",
+    "ListDescriber": "DescribeByGithub(describers.GetUser)",
     "GetDescriber": "",
     "SteampipeTable": "github_user",
     "Model": "User"
@@ -330,8 +330,8 @@
         "workflow"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetAllWorkflows)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetRepositoryWorkflow)",
+    "ListDescriber": "DescribeByGithub(describers.GetAllWorkflows)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetRepositoryWorkflow)",
     "SteampipeTable": "github_workflow",
     "Model": "Workflow"
   },
@@ -343,7 +343,7 @@
         "package"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetContainerPackageList)",
+    "ListDescriber": "DescribeByGithub(describers.GetContainerPackageList)",
     "GetDescriber": "",
     "SteampipeTable": "github_container_package",
     "Model": "ContainerPackage"
@@ -355,7 +355,7 @@
         "package"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetMavenPackageList)",
+    "ListDescriber": "DescribeByGithub(describers.GetMavenPackageList)",
     "GetDescriber": "",
     "SteampipeTable": "github_maven_package",
     "Model": "PackageDetail"
@@ -367,7 +367,7 @@
         "package"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetNPMPackageList)",
+    "ListDescriber": "DescribeByGithub(describers.GetNPMPackageList)",
     "GetDescriber": "",
     "SteampipeTable": "github_npm_package",
     "Model": "PackageDetail"
@@ -379,8 +379,8 @@
         "package"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.GetNugetPackageList)",
-    "GetDescriber": "DescribeSingleByRepo(describer.GetNugetPackage)",
+    "ListDescriber": "DescribeByGithub(describers.GetNugetPackageList)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetNugetPackage)",
     "SteampipeTable": "github_nuget_package",
     "Model": "Package"
   },
@@ -391,7 +391,7 @@
         "artifact_dockerfile"
       ]
     },
-    "ListDescriber": "DescribeByGithub(describer.ListArtifactDockerFiles)",
+    "ListDescriber": "DescribeByGithub(describers.ListArtifactDockerFiles)",
     "GetDescriber": "",
     "SteampipeTable": "github_artifact_dockerfile",
     "Model": "ArtifactDockerFile"

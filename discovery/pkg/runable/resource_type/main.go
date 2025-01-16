@@ -55,13 +55,13 @@ func main() {
 	// Define the template with Labels and Annotations included
 	tmpl, err := template.New("").Parse(fmt.Sprintf(`
 	"{{ .ResourceName }}": {
-		IntegrationType:      configs.IntegrationName,
+		IntegrationType:      IntegrationName,
 		ResourceName:         "{{ .ResourceName }}",
 		Tags:                 {{ .TagsString }},
 		Labels:               {{ .LabelsString }},
 		Annotations:          {{ .AnnotationsString }},
-		ListDescriber:        {{ .ListDescriber }},
-		GetDescriber:         {{ if .GetDescriber }}{{ .GetDescriber }}{{ else }}nil{{ end }},
+		ListDescriber:        provider.{{ .ListDescriber }},
+		GetDescriber:         {{ if .GetDescriber }}provider.{{ .GetDescriber }}{{ else }}nil{{ end }},
 	},
 `))
 	if err != nil {
@@ -70,7 +70,7 @@ func main() {
 
 	// Set default output paths if not provided
 	if output == nil || len(*output) == 0 {
-		v := "provider/provider_resource_types.go"
+		v := "global/maps/provider_resource_types.go"
 		output = &v
 	}
 
@@ -81,14 +81,19 @@ func main() {
 
 	// Initialize a strings.Builder to construct the output file content
 	b := &strings.Builder{}
-	b.WriteString(fmt.Sprintf(`package provider
+	b.WriteString(fmt.Sprintf(`package maps
 import (
-	"%[1]s/provider/describer"
-	"%[1]s/provider/configs"
-	model "github.com/opengovern/og-describer-%[2]s/pkg/models"
+	"%[1]s/discovery/describers"
+	"%[1]s/discovery/provider"
+	model "github.com/opengovern/og-describer-%[2]s/discovery/pkg/models"
+	 "github.com/opengovern/og-util/pkg/integration"
+)
+
+const (
+	IntegrationName      = integration.Type("%[3]s")          
 )
 var ResourceTypes = map[string]model.ResourceType{
-`, global.OGPluginRepoURL, global.IntegrationTypeLower))
+`, global.OGPluginRepoURL, global.IntegrationTypeLower,global.IntegrationName))
 
 	// Iterate over each resource type to build its string representations
 	for _, resourceType := range resourceTypes {

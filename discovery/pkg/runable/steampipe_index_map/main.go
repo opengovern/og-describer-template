@@ -36,12 +36,12 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "provider/resource-types.json"
+		rt := "global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
 	if indexMap == nil || len(*indexMap) == 0 {
-		v := "steampipe/table_index_map.go"
+		v := "global/maps/table_index_map.go"
 		indexMap = &v
 	}
 
@@ -56,10 +56,10 @@ func main() {
 
 	// Generate the index map file as before
 	b := &strings.Builder{}
-	b.WriteString(fmt.Sprintf(`package steampipe
+	b.WriteString(fmt.Sprintf(`package maps
 
 import (
-	"%[1]s/pkg/sdk/es"
+	"%[1]s/discovery/pkg/es"
 )
 
 var Map = map[string]string{
