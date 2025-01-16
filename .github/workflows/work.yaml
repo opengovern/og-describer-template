@@ -53,7 +53,7 @@ jobs:
         run: |
           tar -cvf build.tar build
       - name: Upload Github Plugin Artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@latest
         with:
           name: steampipe-plugin-github
           path: ./cloudql/build.tar
@@ -66,7 +66,7 @@ jobs:
         run: |
           tar -cvf local.tar local
       - name: Upload Local Artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@latest
         with:
           name: local-og-describer-github
           path: ./discovery/local.tar
@@ -91,7 +91,7 @@ jobs:
         run: |
           tar -czf github-plugin.tar github-plugin
       - name: Upload github outputs artifact
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@latest
         with:
           name: github-plugins
           path: ./github-plugin.tar
