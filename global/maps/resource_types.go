@@ -74,6 +74,23 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 			},
 		},
 	},
+	"Github/PullRequest": {
+		Name:            "Github/PullRequest",
+		IntegrationType: IntegrationTypeGithubAccount,
+		Description:     "",
+		Params: []Param{
+			{
+				Name:        "organization",
+				Description: `Please provide the organization name`,
+				Required:    false,
+			},
+			{
+				Name:        "repository",
+				Description: `Please provide the repo name (i.e. "internal-tools")`,
+				Required:    false,
+			},
+		},
+	},
 }
 
 var TablesToResourceTypes = map[string]string{
