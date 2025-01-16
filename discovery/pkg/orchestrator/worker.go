@@ -84,7 +84,7 @@ func doDescribe(
 	describeToken string,
 	useOpenSearch bool) ([]string, error) {
 	logger.Info("Making New Resource Sender")
-	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, useOpenSearch, logger)
+	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, params,useOpenSearch, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to resource sender: %w", err)
 	}
