@@ -15,7 +15,7 @@ jobs:
       latest_tag: ${{ steps.set_latest_tag.outputs.latest_tag }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install musl cc
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
@@ -114,7 +114,7 @@ jobs:
     environment: main
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download Github Plugin Artifact
         uses: actions/download-artifact@v4
         with:
@@ -148,7 +148,7 @@ jobs:
     environment: main
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download Local Describer Artifact
         uses: actions/download-artifact@v4
         with:
@@ -182,7 +182,7 @@ jobs:
     environment: main
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download Integration Plugin Artifact
         uses: actions/download-artifact@v4
         with:
