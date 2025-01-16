@@ -40,6 +40,7 @@ type ResourceSender struct {
 	grpcEndpoint              string
 	ingestionPipelineEndpoint string
 	jobID                     uint
+	params                    map[string]string
 
 	client     golang.EsSinkServiceClient
 	httpClient *http.Client
@@ -48,7 +49,7 @@ type ResourceSender struct {
 	useOpenSearch bool
 }
 
-func NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint string, describeToken string, jobID uint, useOpenSearch bool, logger *zap.Logger) (*ResourceSender, error) {
+func NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint string, describeToken string, jobID uint, params map[string]string, useOpenSearch bool, logger *zap.Logger) (*ResourceSender, error) {
 	rs := ResourceSender{
 		authToken:                 describeToken,
 		logger:                    logger,
@@ -59,6 +60,7 @@ func NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint string, describeT
 		grpcEndpoint:              grpcEndpoint,
 		ingestionPipelineEndpoint: ingestionPipelineEndpoint,
 		jobID:                     jobID,
+		params:                    params,
 		useOpenSearch:             useOpenSearch,
 
 		httpClient: &http.Client{Timeout: 10 * time.Second},
@@ -174,10 +176,13 @@ func (s *ResourceSender) flushBuffer(force bool) {
 			ResourceName:    resource.ResourceName,
 			IntegrationType: global.IntegrationName,
 			ResourceType:    strings.ToLower(resource.ResourceType),
-			IntegrationID:   resource.IntegrationID,
-			DescribedBy:     resource.DescribedBy,
-			DescribedAt:     resource.DescribedAt,
-			Tags:            resource.CanonicalTags,
+			Metadata: es.LookupResourceMetadata{
+				Parameters: es.ConvertMapToString(s.params),
+			},
+			IntegrationID: resource.IntegrationID,
+			DescribedBy:   resource.DescribedBy,
+			DescribedAt:   resource.DescribedAt,
+			Tags:          resource.CanonicalTags,
 		}
 		lookupKeys, lookupIdx := lookupResource.KeysAndIndex()
 		lookupResource.EsID = es.HashOf(lookupKeys...)
