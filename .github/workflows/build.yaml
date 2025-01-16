@@ -76,25 +76,25 @@ jobs:
         run: make build
       - name: Create output directory
         working-directory: .
-        run: mkdir -p github-output
+        run: mkdir -p github-plugin
       - name: Copy steampipe plugin to output directory
         working-directory: .
-        run: cp ./cloudql/build/steampipe-plugin-github.plugin ./github-output/cloudql-plugin
+        run: cp ./cloudql/build/steampipe-plugin-github.plugin ./github-plugin/cloudql-plugin
       - name: Copy integration plugin to output directory
         working-directory: .
-        run: cp ./platform/build/integration-plugin ./github-output/
+        run: cp ./platform/build/integration-plugin ./github-plugin/
       - name: Copy manifest to output directory
         working-directory: .
-        run: cp ./platform/manifest.yaml ./github-output/
+        run: cp ./platform/manifest.yaml ./github-plugin/
       - name: Pack output
         working-directory: .
         run: |
-          tar -czf github-output.tar github-output
+          tar -czf github-plugin.tar github-plugin
       - name: Upload github outputs artifact
         uses: actions/upload-artifact@v3
         with:
-          name: github-outputs
-          path: ./github-output.tar
+          name: github-plugins
+          path: ./github-plugin.tar
           retention-days: 1
 
       - name: Set Latest Tag Output
@@ -186,16 +186,16 @@ jobs:
       - name: Download Integration Plugin Artifact
         uses: actions/download-artifact@v3
         with:
-          name: github-outputs
+          name: github-plugins
       - name: Unpack Integration Plugin Artifact
         run: |
-          tar -xvf github-output.tar
+          tar -xvf github-plugin.tar
       - name: Pack folder content into a zip file for release
         run: |
-          cd github-output
-          zip -r github-output.zip .
+          cd github-plugin
+          zip -r github-plugin.zip .
       - name: Release Integration Plugin
         uses: softprops/action-gh-release@v2
         with:
-          files: ./github-output/github-output.zip
+          files: ./github-plugin/github-plugin.zip
           tag_name: ${{ needs.build.outputs.latest_tag }}
