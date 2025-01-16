@@ -50,6 +50,7 @@ func Do(ctx context.Context,
 	vlt vault.VaultSourceConfig,
 	logger *zap.Logger,
 	job describe2.DescribeJob,
+	params map[string]string,
 	grpcEndpoint string,
 	describeDeliverToken string,
 	ingestionPipelineEndpoint string,
@@ -70,13 +71,14 @@ func Do(ctx context.Context,
 	}
 	// logger.Info("decrypted config", zap.Any("config", config))
 
-	return doDescribe(ctx, logger, job, config, grpcEndpoint, ingestionPipelineEndpoint, describeDeliverToken, useOpenSearch)
+	return doDescribe(ctx, logger, job, params, config, grpcEndpoint, ingestionPipelineEndpoint, describeDeliverToken, useOpenSearch)
 }
 
 func doDescribe(
 	ctx context.Context,
 	logger *zap.Logger,
 	job describe2.DescribeJob,
+	params map[string]string,
 	config map[string]any,
 	grpcEndpoint, ingestionPipelineEndpoint string,
 	describeToken string,
