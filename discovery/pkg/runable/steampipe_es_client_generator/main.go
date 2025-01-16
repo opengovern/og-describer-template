@@ -23,7 +23,7 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-const PluginPath = "../../../../steampipe-plugin-github/github"
+var PluginPath = fmt.Sprintf("../../../../cloudql/"+global.IntegrationTypeLower)
 
 type IntegrationType struct {
 	Name            string
@@ -47,7 +47,7 @@ func main() {
 		output = &v
 	}
 	if file == nil || len(*file) == 0 {
-		v := "../../../../provider/model/model.go"
+		v := "../../../provider/model.go"
 		file = &v
 	}
 
@@ -404,7 +404,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 			essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 			steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
 			"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-			`+global.IntegrationTypeLower+` "`+global.OGPluginRepoURL+`/provider/model"
+			`+global.IntegrationTypeLower+` "`+global.OGPluginRepoURL+`/discovery/provider"
             "runtime"
 		)
 
