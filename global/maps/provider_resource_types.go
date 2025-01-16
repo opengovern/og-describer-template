@@ -2,17 +2,14 @@ package maps
 import (
 	"github.com/opengovern/og-describer-github/discovery/describers"
 	"github.com/opengovern/og-describer-github/discovery/provider"
+	"github.com/opengovern/og-describer-github/platform/constants"
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
 	model "github.com/opengovern/og-describer-github/discovery/pkg/models"
-	 "github.com/opengovern/og-util/pkg/integration"
-)
-
-const (
-	IntegrationName      = integration.Type("github_account")          
 )
 var ResourceTypes = map[string]model.ResourceType{
 
 	"Github/Actions/Artifact": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Actions/Artifact",
 		Tags:                 map[string][]string{
             "category": {"Action"},
@@ -26,7 +23,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/Runner": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Actions/Runner",
 		Tags:                 map[string][]string{
             "category": {"Action"},
@@ -40,7 +37,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/Secret": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Actions/Secret",
 		Tags:                 map[string][]string{
             "category": {"Action"},
@@ -54,7 +51,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Actions/WorkflowRun": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Actions/WorkflowRun",
 		Tags:                 map[string][]string{
             "category": {"Action"},
@@ -68,7 +65,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Branch": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Branch",
 		Tags:                 map[string][]string{
             "category": {"Branch"},
@@ -82,7 +79,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Branch/Protection": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Branch/Protection",
 		Tags:                 map[string][]string{
             "category": {"Branch"},
@@ -96,7 +93,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Commit": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Commit",
 		Tags:                 map[string][]string{
             "category": {"Commit"},
@@ -110,7 +107,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Issue": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Issue",
 		Tags:                 map[string][]string{
             "category": {"Issue"},
@@ -124,7 +121,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/License": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/License",
 		Tags:                 map[string][]string{
             "category": {"License"},
@@ -138,7 +135,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
@@ -152,7 +149,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Collaborator": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization/Collaborator",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
@@ -166,7 +163,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Dependabot/Alert": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization/Dependabot/Alert",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
@@ -180,7 +177,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Member": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization/Member",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
@@ -194,7 +191,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Organization/Team": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization/Team",
 		Tags:                 map[string][]string{
             "category": {"Organization"},
@@ -208,7 +205,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/PullRequest": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/PullRequest",
 		Tags:                 map[string][]string{
             "category": {"PullRequest"},
@@ -222,7 +219,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Release": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Release",
 		Tags:                 map[string][]string{
             "category": {"Release"},
@@ -236,7 +233,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -250,7 +247,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Collaborator": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/Collaborator",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -264,7 +261,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/DependabotAlert": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/DependabotAlert",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -278,7 +275,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Deployment": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/Deployment",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -292,7 +289,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Environment": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/Environment",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -306,7 +303,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/Ruleset": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/Ruleset",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -320,7 +317,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/SBOM": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/SBOM",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -334,7 +331,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Repository/VulnerabilityAlert": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Repository/VulnerabilityAlert",
 		Tags:                 map[string][]string{
             "category": {"Repository"},
@@ -348,7 +345,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Tag": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Tag",
 		Tags:                 map[string][]string{
             "category": {"Tag"},
@@ -362,7 +359,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Team/Member": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Team/Member",
 		Tags:                 map[string][]string{
             "category": {"Team"},
@@ -376,7 +373,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/User": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/User",
 		Tags:                 map[string][]string{
             "category": {"user"},
@@ -390,7 +387,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Workflow": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Workflow",
 		Tags:                 map[string][]string{
             "category": {"workflow"},
@@ -404,7 +401,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Container/Package": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Container/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
@@ -418,7 +415,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Package/Maven": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Package/Maven",
 		Tags:                 map[string][]string{
             "category": {"package"},
@@ -432,7 +429,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/NPM/Package": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/NPM/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
@@ -446,7 +443,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Nuget/Package": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Nuget/Package",
 		Tags:                 map[string][]string{
             "category": {"package"},
@@ -460,7 +457,7 @@ var ResourceTypes = map[string]model.ResourceType{
 	},
 
 	"Github/Artifact/DockerFile": {
-		IntegrationType:      IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Artifact/DockerFile",
 		Tags:                 map[string][]string{
             "category": {"artifact_dockerfile"},
@@ -472,4 +469,351 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        provider.DescribeByGithub(describers.ListArtifactDockerFiles),
 		GetDescriber:         nil,
 	},
+}
+
+
+var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
+
+	"Github/Actions/Artifact": {
+		Name:         "Github/Actions/Artifact",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Actions/Runner": {
+		Name:         "Github/Actions/Runner",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Actions/Secret": {
+		Name:         "Github/Actions/Secret",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Actions/WorkflowRun": {
+		Name:         "Github/Actions/WorkflowRun",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		Params:           	[]interfaces.Param{
+			{
+				Name:  "organization",
+				Description: "Please provide the organization name",
+				Required:    false,
+				Default:     nil,
+			},
+			
+			{
+				Name:  "repository",
+				Description: "Please provide the repo name (i.e. internal-tools)",
+				Required:    false,
+				Default:     nil,
+			},
+			
+			{
+				Name:  "run_number",
+				Description: "Please provide the run number",
+				Required:    false,
+				Default:     nil,
+			},
+			      },
+		
+	},
+
+	"Github/Branch": {
+		Name:         "Github/Branch",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Branch/Protection": {
+		Name:         "Github/Branch/Protection",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Commit": {
+		Name:         "Github/Commit",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Issue": {
+		Name:         "Github/Issue",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/License": {
+		Name:         "Github/License",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization": {
+		Name:         "Github/Organization",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization/Collaborator": {
+		Name:         "Github/Organization/Collaborator",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization/Dependabot/Alert": {
+		Name:         "Github/Organization/Dependabot/Alert",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization/Member": {
+		Name:         "Github/Organization/Member",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization/Team": {
+		Name:         "Github/Organization/Team",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/PullRequest": {
+		Name:         "Github/PullRequest",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		Params:           	[]interfaces.Param{
+			{
+				Name:  "organization",
+				Description: "Please provide the organization name",
+				Required:    false,
+				Default:     nil,
+			},
+			
+			{
+				Name:  "repository",
+				Description: "Please provide the repo name (i.e. internal-tools)",
+				Required:    false,
+				Default:     nil,
+			},
+			      },
+		
+	},
+
+	"Github/Release": {
+		Name:         "Github/Release",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository": {
+		Name:         "Github/Repository",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		Params:           	[]interfaces.Param{
+			{
+				Name:  "organization",
+				Description: "Please provide the organization name",
+				Required:    false,
+				Default:     nil,
+			},
+			
+			{
+				Name:  "repository",
+				Description: "Please provide the repo name (i.e. internal-tools)",
+				Required:    false,
+				Default:     nil,
+			},
+			      },
+		
+	},
+
+	"Github/Repository/Collaborator": {
+		Name:         "Github/Repository/Collaborator",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/DependabotAlert": {
+		Name:         "Github/Repository/DependabotAlert",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/Deployment": {
+		Name:         "Github/Repository/Deployment",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/Environment": {
+		Name:         "Github/Repository/Environment",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/Ruleset": {
+		Name:         "Github/Repository/Ruleset",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/SBOM": {
+		Name:         "Github/Repository/SBOM",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/VulnerabilityAlert": {
+		Name:         "Github/Repository/VulnerabilityAlert",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Tag": {
+		Name:         "Github/Tag",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Team/Member": {
+		Name:         "Github/Team/Member",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/User": {
+		Name:         "Github/User",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Workflow": {
+		Name:         "Github/Workflow",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Container/Package": {
+		Name:         "Github/Container/Package",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		Params:           	[]interfaces.Param{
+			{
+				Name:  "organization",
+				Description: "Please provide the organization name",
+				Required:    false,
+				Default:     nil,
+			},
+			      },
+		
+	},
+
+	"Github/Package/Maven": {
+		Name:         "Github/Package/Maven",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/NPM/Package": {
+		Name:         "Github/NPM/Package",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Nuget/Package": {
+		Name:         "Github/Nuget/Package",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Artifact/DockerFile": {
+		Name:         "Github/Artifact/DockerFile",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		Params:           	[]interfaces.Param{
+			{
+				Name:  "organization",
+				Description: "Please provide the organization name",
+				Required:    false,
+				Default:     nil,
+			},
+			
+			{
+				Name:  "repository",
+				Description: "Please provide the repo name (i.e. internal-tools)",
+				Required:    false,
+				Default:     nil,
+			},
+			      },
+		
+	},
+}
+
+
+var ResourceTypesList = []string{
+  "Github/Actions/Artifact",
+  "Github/Actions/Runner",
+  "Github/Actions/Secret",
+  "Github/Actions/WorkflowRun",
+  "Github/Branch",
+  "Github/Branch/Protection",
+  "Github/Commit",
+  "Github/Issue",
+  "Github/License",
+  "Github/Organization",
+  "Github/Organization/Collaborator",
+  "Github/Organization/Dependabot/Alert",
+  "Github/Organization/Member",
+  "Github/Organization/Team",
+  "Github/PullRequest",
+  "Github/Release",
+  "Github/Repository",
+  "Github/Repository/Collaborator",
+  "Github/Repository/DependabotAlert",
+  "Github/Repository/Deployment",
+  "Github/Repository/Environment",
+  "Github/Repository/Ruleset",
+  "Github/Repository/SBOM",
+  "Github/Repository/VulnerabilityAlert",
+  "Github/Tag",
+  "Github/Team/Member",
+  "Github/User",
+  "Github/Workflow",
+  "Github/Container/Package",
+  "Github/Package/Maven",
+  "Github/NPM/Package",
+  "Github/Nuget/Package",
+  "Github/Artifact/DockerFile",
 }

@@ -26,7 +26,7 @@ func buildContext() context.Context {
 
 func ExtractTableName(resourceType string) string {
 	resourceType = strings.ToLower(resourceType)
-	for k, v := range maps.Map {
+	for k, v := range maps.ResourceTypesToTables {
 		if resourceType == strings.ToLower(k) {
 			return v
 		}
@@ -44,12 +44,12 @@ func ExtractTagsAndNames(logger *zap.Logger, plg *plugin.Plugin, resourceType st
 	if pluginTableName == "" {
 		return nil, "", fmt.Errorf("cannot find table name for resourceType: %s", resourceType)
 	}
-	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, maps.DescriptionMap)
+	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, maps.ResourceTypeToDescription)
 }
 
 func ExtractResourceType(tableName string) string {
 	tableName = strings.ToLower(tableName)
-	return strings.ToLower(maps.ReverseMap[tableName])
+	return strings.ToLower(maps.TablesToResourceTypes[tableName])
 }
 
 // GetResourceTypeByTableName TODO: use this in integration implementation

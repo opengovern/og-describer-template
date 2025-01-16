@@ -38,14 +38,29 @@
   {
     "ResourceName": "Github/Actions/WorkflowRun",
     "Tags": {
-      "category": [
-        "Action"
-      ]
+      "category": ["Action"]
     },
     "ListDescriber": "DescribeByGithub(describers.GetAllWorkflowRuns)",
     "GetDescriber": "",
     "SteampipeTable": "github_actions_workflow_run",
-    "Model": "WorkflowRun"
+    "Model": "WorkflowRun",
+    "Params": [
+      {
+        "Name": "repository",
+        "Description": "Please provide the repo name (i.e. internal-tools)",
+        "Required": false
+      },
+      {
+        "Name": "organization",
+        "Description": "Please provide the organization name",
+        "Required": false
+      },
+      {
+        "Name": "run_number",
+        "Description": "Please provide the run number",
+        "Required": false
+      }
+    ]
   },
   {
     "ResourceName": "Github/Branch",
@@ -170,14 +185,24 @@
   {
     "ResourceName": "Github/PullRequest",
     "Tags": {
-      "category": [
-        "PullRequest"
-      ]
+      "category": ["PullRequest"]
     },
     "ListDescriber": "DescribeByGithub(describers.GetAllPullRequests)",
     "GetDescriber": "",
     "SteampipeTable": "github_pull_request",
-    "Model": "PullRequest"
+    "Model": "PullRequest",
+    "Params": [
+      {
+        "Name": "organization",
+        "Description": "Please provide the organization name",
+        "Required": false
+      },
+      {
+        "Name": "repository",
+        "Description": "Please provide the repo name (i.e. internal-tools)",
+        "Required": false
+      }
+    ]
   },
   {
     "ResourceName": "Github/Release",
@@ -194,14 +219,24 @@
   {
     "ResourceName": "Github/Repository",
     "Tags": {
-      "category": [
-        "Repository"
-      ]
+      "category": ["Repository"]
     },
     "ListDescriber": "DescribeByGithub(describers.GetRepositoryList)",
     "GetDescriber": "DescribeSingleByRepo(describers.GetRepository)",
     "SteampipeTable": "github_repository",
-    "Model": "Repository"
+    "Model": "Repository",
+    "Params": [
+      {
+        "Name": "repository",
+        "Description": "Please provide the repo name (i.e. internal-tools)",
+        "Required": false
+      },
+      {
+        "Name": "organization",
+        "Description": "Please provide the organization name",
+        "Required": false
+      }
+    ]
   },
   {
     "ResourceName": "Github/Repository/Collaborator",
@@ -346,7 +381,14 @@
     "ListDescriber": "DescribeByGithub(describers.GetContainerPackageList)",
     "GetDescriber": "",
     "SteampipeTable": "github_container_package",
-    "Model": "ContainerPackage"
+    "Model": "ContainerPackage",
+    "Params": [
+      {
+        "Name": "organization",
+        "Description": "Please provide the organization name",
+        "Required": false
+      }
+    ]
   },
   {
     "ResourceName": "Github/Package/Maven",
@@ -387,13 +429,23 @@
   {
     "ResourceName": "Github/Artifact/DockerFile",
     "Tags": {
-      "category": [
-        "artifact_dockerfile"
-      ]
+      "category": ["artifact_dockerfile"]
     },
     "ListDescriber": "DescribeByGithub(describers.ListArtifactDockerFiles)",
     "GetDescriber": "",
     "SteampipeTable": "github_artifact_dockerfile",
-    "Model": "ArtifactDockerFile"
+    "Model": "ArtifactDockerFile",
+    "Params": [
+      {
+        "Name": "repository",
+        "Description": "Please provide the repo name (i.e. internal-tools)",
+        "Required": false
+      },
+      {
+        "Name": "organization",
+        "Description": "Please provide the organization name",
+        "Required": false
+      }
+    ]
   }
 ]

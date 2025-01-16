@@ -4,7 +4,7 @@ import (
 	"github.com/opengovern/og-describer-github/discovery/pkg/es"
 )
 
-var Map = map[string]string{
+var ResourceTypesToTables = map[string]string{
   "Github/Actions/Artifact": "github_actions_artifact",
   "Github/Actions/Runner": "github_actions_runner",
   "Github/Actions/Secret": "github_actions_secret",
@@ -40,7 +40,7 @@ var Map = map[string]string{
   "Github/Artifact/DockerFile": "github_artifact_dockerfile",
 }
 
-var DescriptionMap = map[string]interface{}{
+var ResourceTypeToDescription = map[string]interface{}{
   "Github/Actions/Artifact": opengovernance.Artifact{},
   "Github/Actions/Runner": opengovernance.Runner{},
   "Github/Actions/Secret": opengovernance.Secret{},
@@ -76,7 +76,7 @@ var DescriptionMap = map[string]interface{}{
   "Github/Artifact/DockerFile": opengovernance.ArtifactDockerFile{},
 }
 
-var ReverseMap = map[string]string{
+var TablesToResourceTypes = map[string]string{
   "github_actions_artifact": "Github/Actions/Artifact",
   "github_actions_runner": "Github/Actions/Runner",
   "github_actions_secret": "Github/Actions/Secret",

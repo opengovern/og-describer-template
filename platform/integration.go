@@ -107,7 +107,7 @@ func (i *Integration) GetResourceTypeFromTableName(tableName string) string {
 }
 
 func (i *Integration) GetIntegrationType() integration.Type {
-	return constants.IntegrationTypeGithubAccount
+	return constants.IntegrationName
 }
 
 func (i *Integration) ListAllTables() map[string][]interfaces.CloudQLColumn {

@@ -13,7 +13,7 @@ var Manifest []byte
 var SetupMd []byte
 
 const (
-	IntegrationTypeGithubAccount = integration.Type("github_account") // example: aws_cloud, azure_subscription
+	IntegrationName = integration.Type("github_account") // example: aws_cloud, azure_subscription
 )
 
 const (

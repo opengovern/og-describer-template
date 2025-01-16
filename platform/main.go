@@ -17,7 +17,7 @@ func main() {
 	})
 
 	var pluginMap = map[string]plugin.Plugin{
-		constants.IntegrationTypeGithubAccount.String(): &interfaces.IntegrationTypePlugin{Impl: &i},
+		constants.IntegrationName.String(): &interfaces.IntegrationTypePlugin{Impl: &i},
 	}
 
 	plugin.Serve(&plugin.ServeConfig{

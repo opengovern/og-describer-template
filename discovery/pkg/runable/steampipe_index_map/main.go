@@ -62,21 +62,21 @@ import (
 	"%[1]s/discovery/pkg/es"
 )
 
-var Map = map[string]string{
+var ResourceTypesToTables = map[string]string{
 `, global.OGPluginRepoURL))
 	for _, resourceType := range resourceTypes {
 		b.WriteString(fmt.Sprintf("  \"%s\": \"%s\",\n", resourceType.ResourceName, resourceType.SteampipeTable))
 	}
 	b.WriteString(fmt.Sprintf(`}
 
-var DescriptionMap = map[string]interface{}{
+var ResourceTypeToDescription = map[string]interface{}{
 `))
 	for _, resourceType := range resourceTypes {
 		b.WriteString(fmt.Sprintf("  \"%s\": opengovernance.%s{},\n", resourceType.ResourceName, resourceType.Model))
 	}
 	b.WriteString(fmt.Sprintf(`}
 
-var ReverseMap = map[string]string{
+var TablesToResourceTypes = map[string]string{
 `))
 
 	// Build the reverse map
