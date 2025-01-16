@@ -3,9 +3,10 @@ package main
 import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
+	"github.com/opengovern/og-describer-github/platform/constants"
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
 	"os"
 )
-
 
 func main() {
 	i := Integration{}
@@ -16,11 +17,11 @@ func main() {
 	})
 
 	var pluginMap = map[string]plugin.Plugin{
-		IntegrationTypeGithubAccount.String(): &IntegrationTypePlugin{Impl: &i},
+		constants.IntegrationTypeGithubAccount.String(): &interfaces.IntegrationTypePlugin{Impl: &i},
 	}
 
 	plugin.Serve(&plugin.ServeConfig{
-		HandshakeConfig: HandshakeConfig,
+		HandshakeConfig: interfaces.HandshakeConfig,
 		Plugins:         pluginMap,
 		Logger:          logger,
 	})

@@ -2,39 +2,20 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/opengovern/og-describer-github/platform/constants"
 	"strconv"
 
-	"github.com/hashicorp/go-plugin"
 	"github.com/jackc/pgtype"
 	"github.com/opengovern/og-describer-github/global"
 	"github.com/opengovern/og-describer-github/global/maps"
 	"github.com/opengovern/og-util/pkg/integration"
-	"github.com/opengovern/opencomply/services/integration/models"
-	"net/rpc"
-
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
 )
 
 type Integration struct{}
 
-
-
-
-type IntegrationConfiguration struct {
-	NatsScheduledJobsTopic   string
-	NatsManualJobsTopic      string
-	NatsStreamName           string
-	NatsConsumerGroup        string
-	NatsConsumerGroupManuals string
-
-	SteampipePluginName string
-
-	UISpec []byte
-
-	DescriberDeploymentName string
-	DescriberRunCommand     string
-}
-func (i *Integration) GetConfiguration() IntegrationConfiguration {
-	return IntegrationConfiguration{
+func (i *Integration) GetConfiguration() interfaces.IntegrationConfiguration {
+	return interfaces.IntegrationConfiguration{
 		NatsScheduledJobsTopic:   global.JobQueueTopic,
 		NatsManualJobsTopic:      global.JobQueueTopicManuals,
 		NatsStreamName:           global.StreamName,
@@ -43,10 +24,12 @@ func (i *Integration) GetConfiguration() IntegrationConfiguration {
 
 		SteampipePluginName: "github",
 
-		UISpec: UISpec,
+		UISpec:   constants.UISpec,
+		Manifest: constants.Manifest,
+		SetupMD:  constants.SetupMd,
 
-		DescriberDeploymentName: DescriberDeploymentName,
-		DescriberRunCommand:     DescriberRunCommand,
+		DescriberDeploymentName: constants.DescriberDeploymentName,
+		DescriberRunCommand:     constants.DescriberRunCommand,
 	}
 }
 
@@ -68,13 +51,13 @@ func (i *Integration) HealthCheck(jsonData []byte, providerId string, labels map
 	return isHealthy, err
 }
 
-func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]models.Integration, error) {
+func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integration, error) {
 	var credentials global.IntegrationCredentials
 	err := json.Unmarshal(jsonData, &credentials)
 	if err != nil {
 		return nil, err
 	}
-	var integrations []models.Integration
+	var integrations []integration.Integration
 	accounts, err := GithubIntegrationDiscovery(Config{
 		Token: credentials.PatToken,
 	})
@@ -94,7 +77,7 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]models.Integratio
 		if err != nil {
 			return nil, err
 		}
-		integrations = append(integrations, models.Integration{
+		integrations = append(integrations, integration.Integration{
 			ProviderID: strconv.FormatInt(a.ID, 10),
 			Name:       a.Login,
 			Labels:     integrationLabelsJsonb,
@@ -103,13 +86,13 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]models.Integratio
 	return integrations, nil
 }
 
-func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]maps.ResourceTypeConfiguration, error) {
-	resourceTypesMap := make(map[string]maps.ResourceTypeConfiguration)
+func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]interfaces.ResourceTypeConfiguration, error) {
+	resourceTypesMap := make(map[string]interfaces.ResourceTypeConfiguration)
 	for _, resourceType := range maps.ResourceTypesList {
 		if v, ok := maps.ResourceTypeConfigs[resourceType]; ok {
 			resourceTypesMap[resourceType] = *v
 		} else {
-			resourceTypesMap[resourceType] = maps.ResourceTypeConfiguration{}
+			resourceTypesMap[resourceType] = interfaces.ResourceTypeConfiguration{}
 		}
 	}
 	return resourceTypesMap, nil
@@ -124,94 +107,19 @@ func (i *Integration) GetResourceTypeFromTableName(tableName string) string {
 }
 
 func (i *Integration) GetIntegrationType() integration.Type {
-	return IntegrationTypeGithubAccount
+	return constants.IntegrationTypeGithubAccount
 }
 
-func (i *Integration) ListAllTables() map[string][]string {
+func (i *Integration) ListAllTables() map[string][]interfaces.CloudQLColumn {
 	plugin := global.Plugin()
-	tables := make(map[string][]string)
+	tables := make(map[string][]interfaces.CloudQLColumn)
 	for tableKey, table := range plugin.TableMap {
-		columnNames := make([]string, 0, len(table.Columns))
+		columns := make([]interfaces.CloudQLColumn, 0, len(table.Columns))
 		for _, column := range table.Columns {
-			columnNames = append(columnNames, column.Name)
+			columns = append(columns, interfaces.CloudQLColumn{Name: column.Name, Type: column.Type.String()})
 		}
-		tables[tableKey] = columnNames
+		tables[tableKey] = columns
 	}
 
 	return tables
-}
-var HandshakeConfig = plugin.HandshakeConfig{
-	ProtocolVersion:  1,
-	MagicCookieKey:   "platform-integration-plugin",
-	MagicCookieValue: "integration",
-}
-
-type IntegrationTypePlugin struct {
-	Impl IntegrationType
-}
-type IntegrationType interface {
-	GetIntegrationType() integration.Type
-	GetConfiguration() IntegrationConfiguration
-	GetResourceTypesByLabels(map[string]string) (map[string]maps.ResourceTypeConfiguration, error)
-	HealthCheck(jsonData []byte, providerId string, labels map[string]string, annotations map[string]string) (bool, error)
-	DiscoverIntegrations(jsonData []byte) ([]models.Integration, error)
-	GetResourceTypeFromTableName(tableName string) string
-	ListAllTables() map[string][]string
-}
-type IntegrationTypeRPCServer struct {
-	Impl IntegrationType
-}
-type IntegrationTypeRPC struct {
-	client *rpc.Client
-}
-func (p *IntegrationTypePlugin) Server(*plugin.MuxBroker) (any, error) {
-	return &IntegrationTypeRPCServer{Impl: p.Impl}, nil
-}
-
-func (IntegrationTypePlugin) Client(b *plugin.MuxBroker, c *rpc.Client) (any, error) {
-	return &IntegrationTypeRPC{client: c}, nil
-}
-
-
-func (i *IntegrationTypeRPCServer) GetIntegrationType(_ struct{}, integrationType *integration.Type) error {
-	*integrationType = i.Impl.GetIntegrationType()
-	return nil
-}
-
-func (i *IntegrationTypeRPCServer) GetConfiguration(_ struct{}, configuration *IntegrationConfiguration) error {
-	*configuration = i.Impl.GetConfiguration()
-	return nil
-}
-
-func (i *IntegrationTypeRPCServer) GetResourceTypesByLabels(labels map[string]string, resourceTypes *map[string]maps.ResourceTypeConfiguration) error {
-	var err error
-	*resourceTypes, err = i.Impl.GetResourceTypesByLabels(labels)
-	return err
-}
-type HealthCheckRequest struct {
-	JsonData    []byte
-	ProviderId  string
-	Labels      map[string]string
-	Annotations map[string]string
-}
-func (i *IntegrationTypeRPCServer) HealthCheck(request HealthCheckRequest, result *bool) error {
-	var err error
-	*result, err = i.Impl.HealthCheck(request.JsonData, request.ProviderId, request.Labels, request.Annotations)
-	return err
-}
-
-func (i *IntegrationTypeRPCServer) DiscoverIntegrations(jsonData []byte, integrations *[]models.Integration) error {
-	var err error
-	*integrations, err = i.Impl.DiscoverIntegrations(jsonData)
-	return err
-}
-
-func (i *IntegrationTypeRPCServer) GetResourceTypeFromTableName(tableName string, resourceType *string) error {
-	*resourceType = i.Impl.GetResourceTypeFromTableName(tableName)
-	return nil
-}
-
-func (i *IntegrationTypeRPCServer) ListAllTables(_ struct{}, tables *map[string][]string) error {
-	*tables = i.Impl.ListAllTables()
-	return nil
 }

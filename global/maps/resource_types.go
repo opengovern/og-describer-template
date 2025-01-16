@@ -1,33 +1,16 @@
 package maps
 
 import (
-	"github.com/opengovern/og-util/pkg/integration"
+	"github.com/opengovern/og-describer-github/platform/constants"
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
 )
 
-const (
-	IntegrationTypeGithubAccount = integration.Type("github_account") // example: aws_cloud, azure_subscription
-)
-
-type ResourceTypeConfiguration struct {
-	Name            string           `json:"name"`
-	IntegrationType integration.Type `json:"integration_type"`
-	Description     string           `json:"description"`
-	Params          []Param          `json:"params"`
-}
-
-type Param struct {
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Required    bool    `json:"required"`
-	Default     *string `json:"default"`
-}
-
-var ResourceTypeConfigs = map[string]*ResourceTypeConfiguration{
+var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 	"Github/Container/Package": {
 		Name:            "Github/Container/Package",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: constants.IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []Param{
+		Params: []interfaces.Param{
 			{
 				Name:        "organization",
 				Description: `Please provide the organization name`,
@@ -37,9 +20,9 @@ var ResourceTypeConfigs = map[string]*ResourceTypeConfiguration{
 	},
 	"Github/Repository": {
 		Name:            "Github/Repository",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: constants.IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []Param{
+		Params: []interfaces.Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
@@ -54,9 +37,9 @@ var ResourceTypeConfigs = map[string]*ResourceTypeConfiguration{
 	},
 	"Github/Artifact/DockerFile": {
 		Name:            "Github/Artifact/DockerFile",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: constants.IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []Param{
+		Params: []interfaces.Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
@@ -71,9 +54,9 @@ var ResourceTypeConfigs = map[string]*ResourceTypeConfiguration{
 	},
 	"Github/Actions/WorkflowRun": {
 		Name:            "Github/Actions/WorkflowRun",
-		IntegrationType: IntegrationTypeGithubAccount,
+		IntegrationType: constants.IntegrationTypeGithubAccount,
 		Description:     "",
-		Params: []Param{
+		Params: []interfaces.Param{
 			{
 				Name:        "repository",
 				Description: `Please provide the repo name (i.e. "internal-tools")`,
