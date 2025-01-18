@@ -36,7 +36,7 @@ import "github.com/opengovern/og-util/pkg/integration"
 const (
 	IntegrationTypeLower = "integrationType"                    // example: aws, azure
 	IntegrationName      = integration.Type("INTEGRATION_NAME") // example: AWS_ACCOUNT, AZURE_SUBSCRIPTION
-	OGPluginRepoURL      = "repo-url"                           // example: github.com/opengovern/og-describer-aws
+	OGPluginRepoURL      = "repo-url"                           // example: github.com/opengovern/og-describers-aws
 )
 
 ```
@@ -116,7 +116,7 @@ go run pkg/sdk/runable/steampipe_index_map/main.go
 
 ## 6. Test the describer
 
-First you nedd to add credentials to the [describer.go](./command/cmd/describer.go).
+First you nedd to add credentials to the [describer.go](provider/local/cmd/describer.go).
 Then you can run the describer with the following command:
 
 ```bash
@@ -131,7 +131,7 @@ result will be saved in the output.json file.
 
 You can connect the describer to steampipe. For this, you should implement the steampipe plugin.
 
-You can use the [example plugin](./plugin/cohereai) as a reference. Example is for describing CohereAI datasets resource.
+You can use the [example plugin](cloudql/cohereai) as a reference. Example is for describing CohereAI datasets resource.
 
 ### 7.1 Add Table for the resource
 
@@ -146,7 +146,7 @@ Add you function to [plugin.go] file in the [plugin.go](./plugin/cohereai/plugin
 
 ## 8. Run the plugin
 
-Build the plugin with the [Dockefile](./plugin/cohereai/Dockerfile) and run the plugin with the following command:
+Build the plugin with the [Dockefile](cloudql/cohereai/Dockerfile) and run the plugin with the following command:
 
 ## 9. Test the plugin
 
