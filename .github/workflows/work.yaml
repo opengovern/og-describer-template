@@ -74,6 +74,8 @@ jobs:
       - name: Add Tag to Release
         run: |
           echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
+          export TAG=$GITHUB_OUTPUT
+          ls
           ./update-manifest.sh
         working-directory: ./platform
       - name: Check manifest file
