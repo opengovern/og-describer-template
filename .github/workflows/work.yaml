@@ -42,15 +42,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}-
             ${{ runner.os }}-go-
-
-      - name: Build Render Plugin App
+      - name: Configure Git for Private Repos
+        run: |
+          git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
+      - name: Build render Plugin App
         working-directory: ./cloudql
         run: make build
-      - name: Pack Render Plugin Build
+      - name: Pack render Plugin Build
         working-directory: ./cloudql
         run: |
           tar -cvf build.tar build
-      - name: Upload Render Plugin Artifact
+      - name: Upload render Plugin Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
           name: steampipe-plugin-render
@@ -58,7 +60,7 @@ jobs:
           retention-days: 1
       - name: Build Local Describer App
         working-directory: ./discovery
-        run: make build-describers
+        run: make build-describer
       - name: Pack Local Describer Build
         working-directory: ./discovery
         run: |
@@ -66,7 +68,7 @@ jobs:
       - name: Upload Local Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: local-og-describers-render
+          name: local-og-describer-render
           path: ./discovery/local.tar
           retention-days: 1
       - name: Build Integration Plugin
@@ -113,12 +115,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Download Render Plugin Artifact
+      - name: Download render Plugin Artifact
         uses: actions/download-artifact@v4
         with:
           name: steampipe-plugin-render
           path: .
-      - name: Unpack Render Plugin Artifact
+      - name: Unpack render Plugin Artifact
         run: |
           tar -xvf build.tar
       - name: Log in to Container Registry
@@ -127,7 +129,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
-      - name: Build and Push Docker Image for Render Plugin
+      - name: Build and Push Docker Image for render Plugin
         uses: docker/build-push-action@v4
         with:
           push: true
@@ -150,7 +152,7 @@ jobs:
       - name: Download Local Describer Artifact
         uses: actions/download-artifact@v4
         with:
-          name: local-og-describers-render
+          name: local-og-describer-render
           path: .
       - name: Unpack Local Describer Artifact
         run: |
