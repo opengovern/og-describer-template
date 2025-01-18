@@ -2,8 +2,8 @@ package global
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-azure/cloudql/entraid"
-	"github.com/opengovern/og-describer-azure/global/maps"
+	"github.com/opengovern/og-describer-entraid/cloudql/entraid"
+	"github.com/opengovern/og-describer-entraid/global/maps"
 
 	"strings"
 

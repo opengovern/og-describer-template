@@ -2,7 +2,7 @@ package provider
 
 import (
 	"encoding/json"
-	model "github.com/opengovern/og-describer-azure/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-entraid/discovery/pkg/models"
 	"github.com/opengovern/og-util/pkg/describe"
 )
 

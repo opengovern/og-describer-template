@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-azure/global"
+	"github.com/opengovern/og-describer-entraid/global"
 	"os"
 	"strings"
 )

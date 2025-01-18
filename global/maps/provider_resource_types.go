@@ -1,218 +1,457 @@
 package maps
 import (
-
+	"github.com/opengovern/og-describer-entraid/discovery/describers"
+	"github.com/opengovern/og-describer-entraid/discovery/provider"
+	"github.com/opengovern/og-describer-entraid/platform/constants"
 	"github.com/opengovern/og-util/pkg/integration/interfaces"
-	model "github.com/opengovern/og-describer-azure/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-entraid/discovery/pkg/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
+
+	"Microsoft.Entra/groups": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/groups",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdGroup),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/groupMemberships": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/groupMemberships",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdGroupMembership),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/devices": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/devices",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdDevice),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/applications": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/applications",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdApplication),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/appRegistrations": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/appRegistrations",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdAppRegistration),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/enterpriseApplication": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/enterpriseApplication",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdEnterpriseApplication),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/managedIdentity": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/managedIdentity",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdManagedIdentity),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/microsoftApplication": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/microsoftApplication",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20Group.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdMicrosoftApplication),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/domains": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/domains",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdDomain),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/tenant": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/tenant",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdTenant),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/identityproviders": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/identityproviders",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdIdentityProvider),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/securitydefaultspolicy": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/securitydefaultspolicy",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdSecurityDefaultsPolicy),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/authorizationpolicy": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/authorizationpolicy",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdAuthorizationPolicy),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/conditionalaccesspolicy": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/conditionalaccesspolicy",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdConditionalAccessPolicy),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/adminconsentrequestpolicy": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/adminconsentrequestpolicy",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdAdminConsentRequestPolicy),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/userregistrationdetails": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/userregistrationdetails",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdUserRegistrationDetails),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/serviceprincipals": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/serviceprincipals",
+		Tags:                 map[string][]string{
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdServicePrinciple),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/users": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/users",
+		Tags:                 map[string][]string{
+            "logo_uri": {"https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20AD%20User.svg"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdUsers),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/directoryroles": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/directoryroles",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdDirectoryRole),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/directorysettings": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/directorysettings",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.AdDirectorySetting),
+		GetDescriber:         nil,
+	},
 }
 
 
 var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
+
+	"Microsoft.Entra/groups": {
+		Name:         "Microsoft.Entra/groups",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/groupMemberships": {
+		Name:         "Microsoft.Entra/groupMemberships",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/devices": {
+		Name:         "Microsoft.Entra/devices",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/applications": {
+		Name:         "Microsoft.Entra/applications",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/appRegistrations": {
+		Name:         "Microsoft.Entra/appRegistrations",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/enterpriseApplication": {
+		Name:         "Microsoft.Entra/enterpriseApplication",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/managedIdentity": {
+		Name:         "Microsoft.Entra/managedIdentity",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/microsoftApplication": {
+		Name:         "Microsoft.Entra/microsoftApplication",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/domains": {
+		Name:         "Microsoft.Entra/domains",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/tenant": {
+		Name:         "Microsoft.Entra/tenant",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/identityproviders": {
+		Name:         "Microsoft.Entra/identityproviders",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/securitydefaultspolicy": {
+		Name:         "Microsoft.Entra/securitydefaultspolicy",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/authorizationpolicy": {
+		Name:         "Microsoft.Entra/authorizationpolicy",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/conditionalaccesspolicy": {
+		Name:         "Microsoft.Entra/conditionalaccesspolicy",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/adminconsentrequestpolicy": {
+		Name:         "Microsoft.Entra/adminconsentrequestpolicy",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/userregistrationdetails": {
+		Name:         "Microsoft.Entra/userregistrationdetails",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/serviceprincipals": {
+		Name:         "Microsoft.Entra/serviceprincipals",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/users": {
+		Name:         "Microsoft.Entra/users",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/directoryroles": {
+		Name:         "Microsoft.Entra/directoryroles",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/directorysettings": {
+		Name:         "Microsoft.Entra/directorysettings",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
 }
 
 
 var ResourceTypesList = []string{
-  "Microsoft.App/containerApps",
-  "Microsoft.Blueprint/blueprints",
-  "Microsoft.Cdn/profiles",
-  "Microsoft.Compute/cloudServices",
-  "Microsoft.ContainerInstance/containerGroups",
-  "Microsoft.DataMigration/services",
-  "Microsoft.DataProtection/backupVaults",
-  "Microsoft.DataProtection/backupJobs",
-  "Microsoft.DataProtection/backupVaults/backupPolicies",
-  "Microsoft.Logic/integrationAccounts",
-  "Microsoft.Network/bastionHosts",
-  "Microsoft.Network/connections",
-  "Microsoft.Network/firewallPolicies",
-  "Microsoft.Network/localNetworkGateways",
-  "Microsoft.Network/privateLinkServices",
-  "Microsoft.Network/publicIPPrefixes",
-  "Microsoft.Network/virtualHubs",
-  "Microsoft.Network/virtualWans",
-  "Microsoft.Network/vpnGateways",
-  "Microsoft.Network/vpnGateways/vpnConnections",
-  "Microsoft.Network/vpnSites",
-  "Microsoft.OperationalInsights/workspaces",
-  "Microsoft.StreamAnalytics/cluster",
-  "Microsoft.TimeSeriesInsights/environments",
-  "Microsoft.VirtualMachineImages/imageTemplates",
-  "Microsoft.Web/serverFarms",
-  "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
-  "Microsoft.Automation/automationAccounts",
-  "Microsoft.Automation/automationAccounts/variables",
-  "Microsoft.Network/dnsZones",
-  "Microsoft.Databricks/workspaces",
-  "Microsoft.Network/privateDnsZones",
-  "Microsoft.Network/privateEndpoints",
-  "Microsoft.Network/networkWatchers",
-  "Microsoft.Resources/subscriptions/resourceGroups",
-  "Microsoft.Web/staticSites",
-  "Microsoft.Web/sites/slots",
-  "Microsoft.CognitiveServices/accounts",
-  "Microsoft.Sql/managedInstances",
-  "Microsoft.Sql/virtualclusters",
-  "Microsoft.Sql/managedInstances/databases",
-  "Microsoft.Sql/servers/databases",
-  "Microsoft.Storage/storageAccounts/largeFileSharesState",
-  "Microsoft.DBforPostgreSQL/servers",
-  "Microsoft.DBforPostgreSQL/flexibleservers",
-  "Microsoft.AnalysisServices/servers",
-  "Microsoft.Security/pricings",
-  "Microsoft.Insights/guestDiagnosticSettings",
-  "Microsoft.Insights/autoscaleSettings",
-  "Microsoft.Web/hostingEnvironments",
-  "Microsoft.Cache/redis",
-  "Microsoft.ContainerRegistry/registries",
-  "Microsoft.DataFactory/factories/pipelines",
-  "Microsoft.Compute/resourceSku",
-  "Microsoft.Network/expressRouteCircuits",
-  "Microsoft.Management/managementgroups",
-  "microsoft.SqlVirtualMachine/SqlVirtualMachines",
-  "Microsoft.SqlVirtualMachine/SqlVirtualMachineGroups",
-  "Microsoft.Storage/storageAccounts/tableServices",
-  "Microsoft.Synapse/workspaces",
-  "Microsoft.Synapse/workspaces/bigdatapools",
-  "Microsoft.Synapse/workspaces/sqlpools",
-  "Microsoft.StreamAnalytics/streamingJobs",
-  "Microsoft.CostManagement/CostBySubscription",
-  "Microsoft.ContainerService/managedClusters",
-  "Microsoft.ContainerService/serviceVersions",
-  "Microsoft.DataFactory/factories",
-  "Microsoft.Sql/servers",
-  "Microsoft.Sql/servers/jobagents",
-  "Microsoft.Security/autoProvisioningSettings",
-  "Microsoft.Insights/logProfiles",
-  "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
-  "Microsoft.Network/loadBalancers",
-  "Microsoft.Network/azureFirewalls",
-  "Microsoft.Management/locks",
-  "Microsoft.Compute/virtualMachineScaleSets/networkInterfaces",
-  "Microsoft.Network/frontDoors",
-  "Microsoft.Authorization/policyAssignments",
-  "Microsoft.Authorization/userEffectiveAccess",
-  "Microsoft.Search/searchServices",
-  "Microsoft.Security/settings",
-  "Microsoft.RecoveryServices/vaults",
-  "Microsoft.RecoveryServices/vaults/backupJobs",
-  "Microsoft.RecoveryServices/vaults/backupPolicies",
-  "Microsoft.RecoveryServices/vaults/backupItems",
-  "Microsoft.Compute/diskEncryptionSets",
-  "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
-  "Microsoft.EventGrid/topics",
-  "Microsoft.EventHub/namespaces",
-  "Microsoft.EventHub/namespaces/eventHubs",
-  "Microsoft.MachineLearningServices/workspaces",
-  "Microsoft.Dashboard/grafana",
-  "Microsoft.DesktopVirtualization/workspaces",
-  "Microsoft.Network/trafficManagerProfiles",
-  "Microsoft.Network/dnsResolvers",
-  "Microsoft.CostManagement/CostByResourceType",
-  "Microsoft.Network/networkInterfaces",
-  "Microsoft.Network/publicIPAddresses",
-  "Microsoft.HealthcareApis/services",
-  "Microsoft.ServiceBus/namespaces",
-  "Microsoft.Web/sites",
-  "Microsoft.Compute/availabilitySets",
-  "Microsoft.Network/virtualNetworks",
-  "Microsoft.Security/securityContacts",
-  "Microsoft.EventGrid/domains",
-  "Microsoft.KeyVault/deletedVaults",
-  "Microsoft.Storage/storageAccounts/tableServices/tables",
-  "Microsoft.Compute/snapshots",
-  "Microsoft.Kusto/clusters",
-  "Microsoft.StorageSync/storageSyncServices",
-  "Microsoft.Security/locations/jitNetworkAccessPolicies",
-  "Microsoft.Network/virtualNetworks/subnets",
-  "Microsoft.Network/loadBalancers/backendAddressPools",
-  "Microsoft.Network/loadBalancers/loadBalancingRules",
-  "Microsoft.DataLakeStore/accounts",
-  "Microsoft.StorageCache/caches",
-  "Microsoft.Batch/batchAccounts",
-  "Microsoft.Network/networkSecurityGroups",
-  "Microsoft.Authorization/roleDefinitions",
-  "Microsoft.Network/applicationSecurityGroups",
-  "Microsoft.Authorization/roleAssignment",
-  "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
-  "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections",
-  "Microsoft.Network/networkWatchers/flowLogs",
-  "microsoft.Sql/servers/elasticpools",
-  "Microsoft.Security/subAssessments",
-  "Microsoft.Compute/disks",
-  "Microsoft.Devices/ProvisioningServices",
-  "Microsoft.HDInsight/clusters",
-  "Microsoft.ServiceFabric/clusters",
-  "Microsoft.SignalRService/signalR",
-  "Microsoft.Storage/storageAccounts/blob",
-  "Microsoft.Storage/storageaccounts/blobservices/containers",
-  "Microsoft.Storage/storageAccounts/blobServices",
-  "Microsoft.Storage/storageAccounts/queueServices",
-  "Microsoft.ApiManagement/service",
-  "Microsoft.ApiManagement/backend",
-  "Microsoft.Compute/virtualMachineScaleSets",
-  "Microsoft.DataFactory/factories/datasets",
-  "Microsoft.Authorization/policyDefinitions",
-  "Microsoft.Resources/subscriptions/locations",
-  "Microsoft.Compute/diskAccesses",
-  "Microsoft.DBforMySQL/servers",
-  "Microsoft.DBforMySQL/flexibleservers",
-  "Microsoft.Cache/redisenterprise",
-  "Microsoft.DataLakeAnalytics/accounts",
-  "Microsoft.Insights/activityLogAlerts",
-  "Microsoft.Network/loadBalancers/outboundRules",
-  "Microsoft.HybridCompute/machines",
-  "Microsoft.Network/loadBalancers/inboundNatRules",
-  "Microsoft.Resources/providers",
-  "Microsoft.Network/routeTables",
-  "Microsoft.DocumentDB/databaseAccounts",
-  "Microsoft.DocumentDB/restorableDatabaseAccounts",
-  "Microsoft.Network/applicationGateways",
-  "Microsoft.Security/automations",
-  "Microsoft.Kubernetes/connectedClusters",
-  "Microsoft.KeyVault/vaults/keys",
-  "Microsoft.KeyVault/vaults/certificates",
-  "Microsoft.KeyVault/vaults/keys/Versions",
-  "Microsoft.DBforMariaDB/servers",
-  "Microsoft.DBforMariaDB/servers/databases",
-  "Microsoft.Web/plan",
-  "Microsoft.Resources/tenants",
-  "Microsoft.Network/virtualNetworkGateways",
-  "Microsoft.Devices/iotHubs",
-  "Microsoft.Logic/workflows",
-  "Microsoft.Sql/flexibleServers",
-  "Microsoft.Resources/links",
-  "Microsoft.Resources/subscriptions",
-  "Microsoft.Compute/images",
-  "Microsoft.Compute/virtualMachines",
-  "Microsoft.Network/natGateways",
-  "Microsoft.Network/loadBalancers/probes",
-  "Microsoft.KeyVault/vaults",
-  "Microsoft.KeyVault/managedHsms",
-  "Microsoft.KeyVault/vaults/secrets",
-  "Microsoft.AppConfiguration/configurationStores",
-  "Microsoft.Storage/storageAccounts",
-  "Microsoft.AppPlatform/Spring",
-  "Microsoft.Compute/galleries",
-  "Microsoft.Compute/hostGroups",
-  "Microsoft.Compute/hostGroups/hosts",
-  "Microsoft.Compute/restorePointCollections",
-  "Microsoft.Compute/sshPublicKeys",
-  "Microsoft.Cdn/profiles/endpoints",
-  "Microsoft.BotService/botServices",
-  "Microsoft.DocumentDB/cassandraClusters",
-  "Microsoft.Network/ddosProtectionPlans",
-  "microsoft.Sql/instancePools",
-  "microsoft.NetApp/netAppAccounts",
-  "Microsoft.NetApp/netAppAccounts/capacityPools",
-  "Microsoft.DesktopVirtualization/hostpools",
-  "Microsoft.Devtestlab/labs",
-  "Microsoft.Purview/Accounts",
-  "Microsoft.PowerBIDedicated/capacities",
-  "Microsoft.Insights/components",
-  "Microsoft.Lighthouse/definition",
-  "Microsoft.Lighthouse/assignment",
-  "Microsoft.Maintenance/maintenanceConfigurations",
-  "Microsoft.Monitor/logProfiles",
-  "Microsoft.Resources/subscriptions/resources",
+  "Microsoft.Entra/groups",
+  "Microsoft.Entra/groupMemberships",
+  "Microsoft.Entra/devices",
+  "Microsoft.Entra/applications",
+  "Microsoft.Entra/appRegistrations",
+  "Microsoft.Entra/enterpriseApplication",
+  "Microsoft.Entra/managedIdentity",
+  "Microsoft.Entra/microsoftApplication",
+  "Microsoft.Entra/domains",
+  "Microsoft.Entra/tenant",
+  "Microsoft.Entra/identityproviders",
+  "Microsoft.Entra/securitydefaultspolicy",
+  "Microsoft.Entra/authorizationpolicy",
+  "Microsoft.Entra/conditionalaccesspolicy",
+  "Microsoft.Entra/adminconsentrequestpolicy",
+  "Microsoft.Entra/userregistrationdetails",
+  "Microsoft.Entra/serviceprincipals",
+  "Microsoft.Entra/users",
+  "Microsoft.Entra/directoryroles",
+  "Microsoft.Entra/directorysettings",
 }

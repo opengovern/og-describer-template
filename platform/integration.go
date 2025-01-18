@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/opengovern/og-describer-azure/platform/constants"
-	"github.com/opengovern/og-describer-azure/global"
-	"github.com/opengovern/og-describer-azure/global/maps"
+	"github.com/opengovern/og-describer-entraid/platform/constants"
+	"github.com/opengovern/og-describer-entraid/global"
+	"github.com/opengovern/og-describer-entraid/global/maps"
 	"github.com/opengovern/og-util/pkg/integration"
 	"github.com/opengovern/og-util/pkg/integration/interfaces"
 )
@@ -19,7 +19,7 @@ func (i *Integration) GetConfiguration() (interfaces.IntegrationConfiguration, e
 		NatsConsumerGroup:        global.ConsumerGroup,
 		NatsConsumerGroupManuals: global.ConsumerGroupManuals,
 
-		SteampipePluginName: "github",
+		SteampipePluginName: "entraid",
 
 		UISpec:   constants.UISpec,
 		Manifest: constants.Manifest,
@@ -74,7 +74,6 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integ
 
 	return integrations, nil
 
-	return integrations, nil
 }
 
 func (i *Integration) GetResourceTypesByLabels(labels map[string]string) (map[string]interfaces.ResourceTypeConfiguration, error) {
