@@ -1,10 +1,10 @@
 {
-  "integration_type_id": "azure_cloud_account",
-  "integration_name": "Azure Cloud Account",
-  "help_text_md": "Azure Cloud Account integration facilitates secure connections to your Azure resources. [Documentation](https://docs.microsoft.com/azure).",
-  "platform_documentation": "https://docs.microsoft.com/azure",
-  "provider_documentation": "https://azure.microsoft.com",
-  "icon": "azure.svg",
+  "integration_type_id": "entraid_directory",
+  "integration_name": "EntraID Directory",
+  "help_text_md": "Manage and monitor your EntraID Directory integrations seamlessly. [Learn more](https://docs.entraid.com).",
+  "platform_documentation": "https://docs.microsoft.com/entraid",
+  "provider_documentation": "https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id",
+  "icon": "entraid.svg",
   "discover": {
     "credentials": [
       {

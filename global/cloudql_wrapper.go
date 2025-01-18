@@ -2,7 +2,7 @@ package global
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-azure/cloudql/azure"
+	"github.com/opengovern/og-describer-azure/cloudql/entraid"
 	"github.com/opengovern/og-describer-azure/global/maps"
 
 	"strings"
@@ -36,7 +36,7 @@ func ExtractTableName(resourceType string) string {
 }
 
 func Plugin() *plugin.Plugin {
-	return azure.Plugin(buildContext())
+	return entraid.Plugin(buildContext())
 }
 
 func ExtractTagsAndNames(logger *zap.Logger, plg *plugin.Plugin, resourceType string, source interface{}) (map[string]string, string, error) {

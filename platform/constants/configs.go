@@ -13,10 +13,10 @@ var Manifest []byte
 var SetupMd []byte
 
 const (
-	IntegrationName = integration.Type("azure_subscription") // example: aws_cloud, azure_subscription
+	IntegrationName = integration.Type("entraid_directory") // example: aws_cloud, azure_subscription
 )
 
 const (
-	DescriberDeploymentName = "og-describer-azure"
-	DescriberRunCommand     = "/og-describer-azure"
+	DescriberDeploymentName = "og-describer-entraid"
+	DescriberRunCommand     = "/og-describer-entraid"
 )

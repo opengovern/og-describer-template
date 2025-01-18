@@ -68,7 +68,7 @@ jobs:
       - name: Upload Local Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: local-og-describer-azure
+          name: local-og-describer-entraid
           path: ./discovery/local.tar
           retention-days: 1
       - name: Add Tag to Release
@@ -160,7 +160,7 @@ jobs:
       - name: Download Local Describer Artifact
         uses: actions/download-artifact@v4
         with:
-          name: local-og-describer-azure
+          name: local-og-describer-entraid
           path: .
       - name: Unpack Local Describer Artifact
         run: |
@@ -176,8 +176,8 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/og-describer-azure:local-latest
-            ghcr.io/${{ github.repository_owner }}/og-describer-azure:local-${{ needs.build.outputs.latest_tag }}
+            ghcr.io/${{ github.repository_owner }}/og-describer-entraid:local-latest
+            ghcr.io/${{ github.repository_owner }}/og-describer-entraid:local-${{ needs.build.outputs.latest_tag }}
           file: discovery/DockerFile
           context: .
   release-integration-plugin:

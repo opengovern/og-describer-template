@@ -1,4 +1,4 @@
-module github.com/opengovern/og-describer-azure
+module github.com/opengovern/og-describer-entraid
 
 go 1.23.3
 

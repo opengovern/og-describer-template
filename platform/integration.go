@@ -36,14 +36,14 @@ func (i *Integration) HealthCheck(jsonData []byte, providerId string, labels map
 	if err != nil {
 		return false, err
 	}
-return AzureIntegrationHealthcheck(Config{
-		TenantID:       credentials.TenantID,
-		ClientID:       credentials.ClientID,
-		ClientSecret:   credentials.ClientPassword,
-		CertPath:       "",
-		CertContent:    credentials.Certificate,
-		CertPassword:   credentials.CertificatePassword,
-		SubscriptionID: providerId,
+
+	return EntraidIntegrationHealthcheck(Config{
+		TenantID:     providerId,
+		ClientID:     credentials.ClientID,
+		ClientSecret: credentials.ClientPassword,
+		CertPath:     "",
+		CertContent:  credentials.Certificate,
+		CertPassword: credentials.CertificatePassword,
 	})
 }
 
@@ -54,7 +54,7 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integ
 		return nil, err
 	}
 	var integrations []integration.Integration
-	subscriptions, err := AzureIntegrationDiscovery(Config{
+	directories, err := EntraidIntegrationDiscovery(Config{
 		TenantID:     credentials.TenantID,
 		ClientID:     credentials.ClientID,
 		ClientSecret: credentials.ClientPassword,
@@ -65,12 +65,14 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integ
 	if err != nil {
 		return nil, err
 	}
-	for _, s := range subscriptions {
+	for _, s := range directories {
 		integrations = append(integrations, integration.Integration{
-			ProviderID: s.SubscriptionID,
-			Name:       s.DisplayName,
+			ProviderID: s.TenantID,
+			Name:       s.Name,
 		})
 	}
+
+	return integrations, nil
 
 	return integrations, nil
 }

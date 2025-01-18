@@ -1,103 +1,117 @@
-# Azure Subscriptions Integration Setup Guide for opencomply
+# Microsoft Entra ID Integration Setup Guide for opencomply
 
-This guide provides step-by-step instructions to integrate your Azure subscriptions with opencomply by creating a Service Principal with read-only access. This integration enables opencomply to provide visibility and governance capabilities over your Azure resources.
+This guide provides step-by-step instructions to integrate Azure Entra ID with opencomply by creating a Service Principal (SPN) with the necessary API permissions. This integration enables opencomply to provide comprehensive governance and compliance capabilities over your Azure Entra ID resources.
 
 ## Table of Contents
 
-- [Azure Subscriptions Integration Setup Guide for opencomply](#azure-subscriptions-integration-setup-guide-for-opencomply)
+- [Microsoft Entra ID Integration Setup Guide for opencomply](#microsoft-entra-id-integration-setup-guide-for-opencomply)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
-    - [1. Clone the Integration Scripts Repository](#1-clone-the-integration-scripts-repository)
-    - [2. Run the Reader Role Assignment Script](#2-run-the-reader-role-assignment-script)
-    - [3. Setup opencomply](#3-setup-opencomply)
-      - [Navigate to the opencomply Dashboard:](#navigate-to-the-opencomply-dashboard)
-      - [Access the Integrations Section:](#access-the-integrations-section)
-      - [Enter the Required Details:](#enter-the-required-details)
-      - [Complete the Integration:](#complete-the-integration)
+    - [1. Create a Service Principal in Azure Entra ID](#1-create-a-service-principal-in-azure-entra-id)
+      - [Sign in to the Azure Portal](#sign-in-to-the-azure-portal)
+      - [Navigate to Azure Active Directory](#navigate-to-azure-active-directory)
+      - [Register a New Application](#register-a-new-application)
+    - [2. Assign API Permissions to the Service Principal](#2-assign-api-permissions-to-the-service-principal)
+      - [Navigate to API Permissions](#navigate-to-api-permissions)
+      - [Add Permissions](#add-permissions)
+      - [Select Required Permissions](#select-required-permissions)
+    - [3. Grant Admin Consent for the Permissions](#3-grant-admin-consent-for-the-permissions)
+      - [Grant Consent](#grant-consent)
+    - [4. Obtain Required Credentials](#4-obtain-required-credentials)
+      - [Generate a Client Secret](#generate-a-client-secret)
+      - [Collect Application Details](#collect-application-details)
+    - [5. Configure opencomply](#5-configure-opencomply)
 
 ## Prerequisites
 
 Before you begin, ensure the following prerequisites are met:
 
-- **Azure CLI Installed and Authenticated**: The Azure CLI must be installed on your machine and authenticated with sufficient privileges.
-  - **Install Azure CLI**: Follow the [Azure CLI Installation Guide](https://learn.microsoft.com/cli/azure/install-azure-cli) to install the Azure CLI.
-  - **Authenticate**: Run the following command and follow the prompts to authenticate:
-
-    ```bash
-    az login
-    ```
-
-- **opencomply Installed and Running**: Ensure that opencomply is installed and operational. Refer to the [opencomply Installation Documentation](https://github.com/opengovern/integration-automation-scripts) if needed.
+- **Azure Portal Access**: You must have access to the Azure portal with sufficient privileges to create applications and assign permissions in Azure Entra ID (formerly Azure Active Directory).
+- **Global Administrator Role**: You may need Global Administrator privileges to grant admin consent for API permissions.
+- **opencomply Access**: Ensure that you have administrator access to the opencomply portal.
 
 ## Steps
 
-Follow the steps below to set up the Azure subscriptions integration with opencomply.
+Follow the steps below to set up the Azure Entra ID integration with opencomply.
 
-### 1. Clone the Integration Scripts Repository
+### 1. Create a Service Principal in Azure Entra ID
 
-The integration scripts automate the creation of the Service Principal (SPN) and role assignment.
+#### Sign in to the Azure Portal
 
-```bash
-# Clone the repository
-git clone https://github.com/opengovern/integration-automation-scripts.git
-# Navigate to the Azure directory
-cd integration-automation-scripts/azure-subscriptions
-```
+- Go to [https://portal.azure.com](https://portal.azure.com) and sign in with your administrator account.
 
-### 2. Run the Reader Role Assignment Script
+#### Navigate to Azure Active Directory
 
-Execute the script to create a Service Principal (SPN) and assign it the Reader role across all your Azure subscriptions.
+- In the left-hand navigation pane, select **Azure Active Directory**.
 
-- Make the Script Executable (if not already):
+#### Register a New Application
 
-  ```bash
-  chmod +x assign_reader_role.sh
-  ```
+- Under **Manage**, select **App registrations**.
+- Click on **New registration**.
+  - **Name**: Enter a name for the application (e.g., opencomply Integration).
+  - **Supported account types**: Select **Accounts in this organizational directory only**.
+  - **Redirect URI**: Leave this field blank.
+- Click **Register**.
 
-- Run the Script:
+### 2. Assign API Permissions to the Service Principal
 
-  ```bash
-  ./assign_reader_role.sh
-  ```
+#### Navigate to API Permissions
 
-The script will perform the following actions:
+- In your application's overview page, select **API permissions** from the left-hand menu.
 
-- Create a Service Principal with the necessary permissions.
-- Assign the Reader role to the Service Principal for each Azure subscription in your tenant.
+#### Add Permissions
 
-**Note**: Ensure you have the necessary permissions to create Service Principals and assign roles in your Azure tenant.
+- Click on **Add a permission**.
+- Choose **Microsoft Graph**.
+- Select **Application permissions**.
 
-### 3. Setup opencomply
+#### Select Required Permissions
 
-After running the script, it will output essential details required for configuring opencomply:
+Search for and select the following permissions:
 
-- Tenant ID
-- Application (Client) ID
-- Object ID
-- Client Secret
+- Application.Read.All
+- AuditLog.Read.All
+- Directory.Read.All
+- Domain.Read.All
+- Group.Read.All
+- IdentityProvider.Read.All
+- Policy.Read.All
+- User.Read.All
 
-Use the credentials obtained to configure Azure integration within opencomply.
+After selecting all the permissions, click **Add permissions**.
 
-#### Navigate to the opencomply Dashboard:
+### 3. Grant Admin Consent for the Permissions
 
-Open your web browser and go to the opencomply portal. Log in with your administrator credentials.
+#### Grant Consent
 
-#### Access the Integrations Section:
+- Back on the API permissions page, click on **Grant admin consent for [Your Organization]**.
+- Confirm by clicking **Yes**.
+- Ensure that the status for each permission shows **Granted for [Your Organization]**.
 
-- In the sidebar, click on Integrations.
-- Select Azure from the list of available integrations.
-- Click on Add New Integration and choose New SPN from the options.
+### 4. Obtain Required Credentials
 
-#### Enter the Required Details:
+#### Generate a Client Secret
 
-In the integration wizard, provide the following details:
+- Navigate to **Certificates & secrets** in the left-hand menu.
+- Under **Client secrets**, click **New client secret**.
+  - **Description**: Enter a description (e.g., opencomply Secret).
+  - **Expires**: Select an appropriate expiration period.
+- Click **Add**.
 
-- **Tenant ID**: Enter the Tenant ID obtained from the script output.
-- **Application (Client) ID**: Enter the Application (Client) ID.
-- **Client Secret**: Enter the Client Secret. Ensure this is stored securely.
-- **Object ID**: Enter the Object ID associated with the Service Principal.
+**Important**: Copy the **Value** of the client secret now; it will not be shown again.
 
-#### Complete the Integration:
+#### Collect Application Details
 
-Follow the on-screen instructions to complete the integration process. Once completed, your Azure subscriptions will be linked with opencomply, providing enhanced visibility and governance over your Azure resources.
+- Go back to the **Overview** page of your application.
+- Note down the following:
+  - **Application (client) ID**
+  - **Directory (tenant) ID**
+  - **Object ID** (found under **Managed application in local directory**)
+
+### 5. Configure opencomply
+
+Use the credentials obtained to configure Azure Entra ID integration within opencomply.
+
+- Click **Confirm** to finalize the integration.
+- Wait for opencomply to validate the credentials and establish the integration.

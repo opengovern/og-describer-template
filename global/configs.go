@@ -3,9 +3,9 @@ package global
 import "github.com/opengovern/og-util/pkg/integration"
 
 const (
-	IntegrationTypeLower = "azure_subscription"                                    // example: aws, azure
-	IntegrationName      = integration.Type("azure_subscription")          // example: AWS_ACCOUNT, AZURE_SUBSCRIPTION
-	OGPluginRepoURL      = "github.com/opengovern/og-describer-azure" // example: github.com/opengovern/og-describer-aws
+	IntegrationTypeLower = "entraid"                                    // example: aws, azure
+	IntegrationName      = integration.Type("entraid_directory")          // example: AWS_ACCOUNT, AZURE_SUBSCRIPTION
+	OGPluginRepoURL      = "github.com/opengovern/og-describer-entraid" // example: github.com/opengovern/og-describer-aws
 )
 
 
