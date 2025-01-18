@@ -15,7 +15,6 @@ func ListApps(ctx context.Context, handler *resilientbridge.ResilientBridge, app
 	var wg sync.WaitGroup
 	flyChan := make(chan models.Resource)
 	errorChan := make(chan error, 1) // Buffered channel to capture errors
-
 	go func() {
 		defer close(flyChan)
 		defer close(errorChan)
@@ -65,7 +64,7 @@ func GetApp(ctx context.Context, handler *resilientbridge.ResilientBridge, appNa
 
 func processApps(ctx context.Context, handler *resilientbridge.ResilientBridge, flyChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var ListAppResponse provider.ListAppsResponse
-	baseURL := "/v1/apps"
+	baseURL := "/apps"
 
 	params := url.Values{}
 	params.Set("org_slug", "personal")
@@ -74,14 +73,12 @@ func processApps(ctx context.Context, handler *resilientbridge.ResilientBridge, 
 	req := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
 		Endpoint: finalURL,
-		Headers:  map[string]string{"accept": "application/json"},
+		Headers:  map[string]string{"Content-Type": "application/json"},
 	}
-
 	resp, err := handler.Request("fly", req)
 	if err != nil {
 		return fmt.Errorf("request execution failed: %w", err)
 	}
-
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("error %d: %s", resp.StatusCode, string(resp.Data))
 	}
@@ -112,7 +109,7 @@ func processApps(ctx context.Context, handler *resilientbridge.ResilientBridge, 
 
 func processApp(ctx context.Context, handler *resilientbridge.ResilientBridge, resourceID string) (*provider.AppJSON, error) {
 	var app provider.AppJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s", baseURL, resourceID)
 

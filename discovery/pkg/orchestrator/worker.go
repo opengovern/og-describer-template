@@ -50,6 +50,7 @@ func Do(ctx context.Context,
 	vlt vault.VaultSourceConfig,
 	logger *zap.Logger,
 	job describe2.DescribeJob,
+	params map[string]string,
 	grpcEndpoint string,
 	describeDeliverToken string,
 	ingestionPipelineEndpoint string,
@@ -68,21 +69,22 @@ func Do(ctx context.Context,
 	if err != nil {
 		return nil, fmt.Errorf("decrypt error: %w", err)
 	}
-	logger.Info("decrypted config", zap.Any("config", config))
+	// logger.Info("decrypted config", zap.Any("config", config))
 
-	return doDescribe(ctx, logger, job, config, grpcEndpoint, ingestionPipelineEndpoint, describeDeliverToken, useOpenSearch)
+	return doDescribe(ctx, logger, job, params, config, grpcEndpoint, ingestionPipelineEndpoint, describeDeliverToken, useOpenSearch)
 }
 
 func doDescribe(
 	ctx context.Context,
 	logger *zap.Logger,
 	job describe2.DescribeJob,
+	params map[string]string,
 	config map[string]any,
 	grpcEndpoint, ingestionPipelineEndpoint string,
 	describeToken string,
 	useOpenSearch bool) ([]string, error) {
 	logger.Info("Making New Resource Sender")
-	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, useOpenSearch, logger)
+	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, params, useOpenSearch, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to resource sender: %w", err)
 	}

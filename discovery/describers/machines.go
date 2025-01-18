@@ -452,7 +452,7 @@ func GetMachine(ctx context.Context, handler *resilientbridge.ResilientBridge, a
 
 func processMachines(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, flyChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var machines []provider.MachineJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s/machines", baseURL, appName)
 
@@ -885,7 +885,7 @@ func processMachines(ctx context.Context, handler *resilientbridge.ResilientBrid
 
 func processMachine(ctx context.Context, handler *resilientbridge.ResilientBridge, appName, resourceID string) (*provider.MachineJSON, error) {
 	var machine provider.MachineJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s/machines/%s", baseURL, appName, resourceID)
 

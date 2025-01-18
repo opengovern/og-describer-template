@@ -78,7 +78,7 @@ func GetVolume(ctx context.Context, handler *resilientbridge.ResilientBridge, ap
 
 func processVolumes(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, flyChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var volumes []provider.VolumeJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s/volumes", baseURL, appName)
 
@@ -137,7 +137,7 @@ func processVolumes(ctx context.Context, handler *resilientbridge.ResilientBridg
 
 func processVolume(ctx context.Context, handler *resilientbridge.ResilientBridge, appName, resourceID string) (*provider.VolumeJSON, error) {
 	var volume provider.VolumeJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s/volumes/%s", baseURL, appName, resourceID)
 

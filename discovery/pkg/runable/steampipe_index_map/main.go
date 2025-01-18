@@ -36,12 +36,14 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../../../../provider/resource_types/resource-types.json"
+		rt := "global/maps/resource-types.json"
+		//rt := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
 	if indexMap == nil || len(*indexMap) == 0 {
-		v := "../../../../steampipe/table_index_map.gen.go"
+		v := "global/maps/table_index_map.gen.go"
+		//v := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/global/maps/table_index_map.gen.go"
 		indexMap = &v
 	}
 
@@ -56,27 +58,27 @@ func main() {
 
 	// Generate the index map file as before
 	b := &strings.Builder{}
-	b.WriteString(fmt.Sprintf(`package steampipe
+	b.WriteString(fmt.Sprintf(`package maps
 
 import (
-	"%[1]s/pkg/sdk/es"
+	"%[1]s/discovery/pkg/es"
 )
 
-var Map = map[string]string{
+var ResourceTypesToTables = map[string]string{
 `, global.OGPluginRepoURL))
 	for _, resourceType := range resourceTypes {
 		b.WriteString(fmt.Sprintf("  \"%s\": \"%s\",\n", resourceType.ResourceName, resourceType.SteampipeTable))
 	}
 	b.WriteString(fmt.Sprintf(`}
 
-var DescriptionMap = map[string]interface{}{
+var ResourceTypeToDescription = map[string]interface{}{
 `))
 	for _, resourceType := range resourceTypes {
 		b.WriteString(fmt.Sprintf("  \"%s\": opengovernance.%s{},\n", resourceType.ResourceName, resourceType.Model))
 	}
 	b.WriteString(fmt.Sprintf(`}
 
-var ReverseMap = map[string]string{
+var TablesToResourceTypes = map[string]string{
 `))
 
 	// Build the reverse map

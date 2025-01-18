@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/opengovern/og-describer-fly/global"
 	"os"
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/opengovern/og-describer-fly/global"
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
 )
 
 // Define the ResourceType struct with Labels and Annotations
@@ -25,6 +27,8 @@ type ResourceType struct {
 	Labels            map[string]string
 	AnnotationsString string `json:"-"`
 	LabelsString      string `json:"-"`
+	Params            []interfaces.Param
+	ParamsString      string `json:"-"`
 }
 
 var (
@@ -39,7 +43,8 @@ func main() {
 	var resourceTypes []ResourceType
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../../../../provider/resource_types/resource-types.json"
+		rt := "global/maps/resource-types.json"
+		//rt := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly//global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -55,13 +60,27 @@ func main() {
 	// Define the template with Labels and Annotations included
 	tmpl, err := template.New("").Parse(fmt.Sprintf(`
 	"{{ .ResourceName }}": {
-		IntegrationType:      configs.IntegrationName,
+		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "{{ .ResourceName }}",
 		Tags:                 {{ .TagsString }},
 		Labels:               {{ .LabelsString }},
 		Annotations:          {{ .AnnotationsString }},
-		ListDescriber:        {{ .ListDescriber }},
-		GetDescriber:         {{ if .GetDescriber }}{{ .GetDescriber }}{{ else }}nil{{ end }},
+		ListDescriber:        provider.{{ .ListDescriber }},
+		GetDescriber:         {{ if .GetDescriber }}provider.{{ .GetDescriber }}{{ else }}nil{{ end }},
+	},
+`))
+	if err != nil {
+		panic(err)
+	}
+
+	// Define the template with Labels and Annotations included
+	paramtmpl, err := template.New("").Parse(fmt.Sprintf(`
+	"{{ .ResourceName }}": {
+		Name:         "{{ .ResourceName }}",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		{{ if .Params }}Params:           	{{ .ParamsString }}
+		{{ else }}{{ end }}
 	},
 `))
 	if err != nil {
@@ -70,22 +89,20 @@ func main() {
 
 	// Set default output paths if not provided
 	if output == nil || len(*output) == 0 {
-		v := "../../../../provider/provider_resource_types.gen.go"
+		v := "global/maps/provider_resource_types.gen.go"
+		//v := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/global/maps/provider_resource_types.gen.go"
 		output = &v
-	}
-
-	if resourceTypesList == nil || len(*resourceTypesList) == 0 {
-		v := "resource_types_list.go"
-		resourceTypesList = &v
 	}
 
 	// Initialize a strings.Builder to construct the output file content
 	b := &strings.Builder{}
-	b.WriteString(fmt.Sprintf(`package provider
+	b.WriteString(fmt.Sprintf(`package maps
 import (
-	"%[1]s/provider/describers"
-	"%[1]s/provider/configs"
-	model "github.com/opengovern/og-describers-%[2]s/pkg/sdk/models"
+	"%[1]s/discovery/describers"
+	"%[1]s/discovery/provider"
+	"%[1]s/platform/constants"
+	"github.com/opengovern/og-util/pkg/integration/interfaces"
+	model "github.com/opengovern/og-describer-%[2]s/discovery/pkg/models"
 )
 var ResourceTypes = map[string]model.ResourceType{
 `, global.OGPluginRepoURL, global.IntegrationTypeLower))
@@ -163,15 +180,47 @@ var ResourceTypes = map[string]model.ResourceType{
 	}
 	b.WriteString("}\n")
 
-	// Write the generated content to the output file
-	err = os.WriteFile(*output, []byte(b.String()), os.ModePerm)
-	if err != nil {
-		panic(err)
+	b.WriteString(fmt.Sprintf(`
+
+var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
+`))
+	for _, resourceType := range resourceTypes {
+		paramStringBuilder := strings.Builder{}
+		paramStringBuilder.WriteString("[]interfaces.Param{")
+		var paramLines []string
+		for _, v := range resourceType.Params {
+			var defaultVal string
+
+			if v.Default == nil {
+				defaultVal = `nil` // Set empty string if Default is nil
+			} else {
+				defaultVal = fmt.Sprintf(`"%s"`, *v.Default) // Dereference the pointer and format it
+			}
+			var param = fmt.Sprintf(`
+			{
+				Name:  "%[1]s",
+				Description: "%[2]s",
+				Required:    %[3]t,
+				Default:     %[4]s,
+			},
+			`, v.Name, v.Description, v.Required, defaultVal)
+			paramLines = append(paramLines, fmt.Sprintf("%s", param))
+		}
+		sort.Strings(paramLines) // Sort for consistency
+		for _, l := range paramLines {
+			paramStringBuilder.WriteString(l)
+		}
+		paramStringBuilder.WriteString("      },")
+		resourceType.ParamsString = paramStringBuilder.String()
+		err = paramtmpl.Execute(b, resourceType)
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	// Generate the index map file as before
-	b = &strings.Builder{}
-	b.WriteString(fmt.Sprintf(`package configs
+	b.WriteString("}\n")
+
+	b.WriteString(fmt.Sprintf(`
 
 var ResourceTypesList = []string{
 `))
@@ -180,11 +229,16 @@ var ResourceTypesList = []string{
 	}
 	b.WriteString(fmt.Sprintf(`}`))
 
-	// Write the index map to the specified file
-	err = os.WriteFile(*resourceTypesList, []byte(b.String()), os.ModePerm)
+	// Write the generated content to the output file
+	err = os.WriteFile(*output, []byte(b.String()), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
+
+	// Generate the index map file as before
+
+	// Write the index map to the specified file
+
 }
 
 // escapeString ensures that any quotes in the strings are properly escaped

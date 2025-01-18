@@ -2,19 +2,15 @@ package global
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-fly/cloudql/fly"
-	steampipe2 "github.com/opengovern/og-describer-fly/global/maps"
-	"strings"
-
-	"go.uber.org/zap"
-
-	"github.com/hashicorp/go-hclog"
-
 	"fmt"
-
+	"github.com/hashicorp/go-hclog"
+	"github.com/opengovern/og-describer-fly/cloudql/fly"
+	"github.com/opengovern/og-describer-fly/global/maps"
 	"github.com/opengovern/og-util/pkg/steampipe"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/context_key"
+	"go.uber.org/zap"
+	"strings"
 )
 
 func buildContext() context.Context {
@@ -25,7 +21,7 @@ func buildContext() context.Context {
 
 func ExtractTableName(resourceType string) string {
 	resourceType = strings.ToLower(resourceType)
-	for k, v := range steampipe2.Map {
+	for k, v := range maps.ResourceTypesToTables {
 		if resourceType == strings.ToLower(k) {
 			return v
 		}
@@ -43,12 +39,12 @@ func ExtractTagsAndNames(logger *zap.Logger, plg *plugin.Plugin, resourceType st
 	if pluginTableName == "" {
 		return nil, "", fmt.Errorf("cannot find table name for resourceType: %s", resourceType)
 	}
-	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, steampipe2.DescriptionMap)
+	return steampipe.ExtractTagsAndNames(plg, logger, pluginTableName, resourceType, source, maps.ResourceTypeToDescription)
 }
 
 func ExtractResourceType(tableName string) string {
 	tableName = strings.ToLower(tableName)
-	return strings.ToLower(steampipe2.ReverseMap[tableName])
+	return strings.ToLower(maps.TablesToResourceTypes[tableName])
 }
 
 // GetResourceTypeByTableName TODO: use this in integration implementation

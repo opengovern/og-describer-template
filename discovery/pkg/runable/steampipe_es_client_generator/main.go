@@ -23,7 +23,9 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-const PluginPath = "../../../../plugin/fly"
+var PluginPath = fmt.Sprintf("../../../../cloudql/" + global.IntegrationTypeLower)
+
+//var PluginPath = "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly//cloudql/fly"
 
 type IntegrationType struct {
 	Name            string
@@ -44,10 +46,12 @@ type ResourceType struct {
 func main() {
 	if output == nil || len(*output) == 0 {
 		v := "../../es/resources_clients.go"
+		//v := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/discovery/pkg/es/resources_clients.go"
 		output = &v
 	}
 	if file == nil || len(*file) == 0 {
-		v := "../../../../provider/model/model.go"
+		v := "../../../provider/model.go"
+		//v := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/discovery/provider/model.go"
 		file = &v
 	}
 
@@ -57,7 +61,8 @@ func main() {
 	}
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
-		rt := "../../../../provider/resource_types/resource-types.json"
+		rt := "../../../../global/maps/resource-types.json"
+		//rt := "/mnt/c/Users/ASUS/GolandProjects/og-describer-fly/global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -404,7 +409,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 			essdk "github.com/opengovern/og-util/pkg/opengovernance-es-sdk"
 			steampipesdk "github.com/opengovern/og-util/pkg/steampipe"
 			"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-			`+global.IntegrationTypeLower+` "`+global.OGPluginRepoURL+`/provider/model"
+			`+global.IntegrationTypeLower+` "`+global.OGPluginRepoURL+`/discovery/provider"
             "runtime"
 		)
 

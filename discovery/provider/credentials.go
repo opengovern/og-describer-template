@@ -6,7 +6,7 @@ import (
 	"github.com/opengovern/og-util/pkg/describe"
 )
 
-// AccountCredentialsFromMap TODO: converts a map to an configs.IntegrationCredentials.
+// AccountCredentialsFromMap TODO: converts a map to a configs.IntegrationCredentials.
 func AccountCredentialsFromMap(m map[string]any) (model.IntegrationCredentials, error) {
 	mj, err := json.Marshal(m)
 	if err != nil {
@@ -34,9 +34,13 @@ func AdjustResource(job describe.DescribeJob, resource *model.Resource) error {
 	return nil
 }
 
-// GetAdditionalParameters TODO: pass additional parameters needed in describers wrappers in /provider/describer_wrapper.go
+// GetAdditionalParameters TODO: pass additional parameters needed in describer wrappers in /provider/describer_wrapper.go
 func GetAdditionalParameters(job describe.DescribeJob) (map[string]string, error) {
 	additionalParameters := make(map[string]string)
+
+	if _, ok := job.IntegrationLabels["param"]; ok {
+		additionalParameters["param"] = job.IntegrationLabels["param"]
+	}
 
 	return additionalParameters, nil
 }

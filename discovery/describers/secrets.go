@@ -46,7 +46,7 @@ func ListSecrets(ctx context.Context, handler *resilientbridge.ResilientBridge, 
 
 func processSecrets(ctx context.Context, handler *resilientbridge.ResilientBridge, appName string, flyChan chan<- models.Resource, wg *sync.WaitGroup) error {
 	var secrets []provider.SecretJSON
-	baseURL := "/v1/apps/"
+	baseURL := "/apps/"
 
 	finalURL := fmt.Sprintf("%s%s/secrets", baseURL, appName)
 

@@ -5,8 +5,8 @@ package orchestrator
 import (
 	"context"
 	"fmt"
-	"github.com/opengovern/og-describer-fly/discovery/describers"
-	models2 "github.com/opengovern/og-describer-fly/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-fly/discovery/pkg/models"
+	"github.com/opengovern/og-describer-fly/discovery/provider"
 	"github.com/opengovern/og-describer-fly/global/maps"
 	"github.com/opengovern/og-util/pkg/describe/enums"
 	"go.uber.org/zap"
@@ -24,7 +24,7 @@ func ListResourceTypes() []string {
 	return list
 }
 
-func GetResourceType(resourceType string) (*models2.ResourceType, error) {
+func GetResourceType(resourceType string) (*model.ResourceType, error) {
 	if r, ok := maps.ResourceTypes[resourceType]; ok {
 		return &r, nil
 	}
@@ -39,7 +39,7 @@ func GetResourceType(resourceType string) (*models2.ResourceType, error) {
 	return nil, fmt.Errorf("resource type %s not found", resourceType)
 }
 
-func GetResourceTypesMap() map[string]models2.ResourceType {
+func GetResourceTypesMap() map[string]model.ResourceType {
 	return maps.ResourceTypes
 }
 
@@ -48,9 +48,9 @@ func GetResources(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg models2.IntegrationCredentials,
+	cfg model.IntegrationCredentials,
 	additionalParameters map[string]string,
-	stream *models2.StreamSender,
+	stream *model.StreamSender,
 ) error {
 	_, err := describe(ctx, logger, cfg, resourceType, triggerType, additionalParameters, stream)
 	if err != nil {
@@ -59,12 +59,12 @@ func GetResources(
 	return nil
 }
 
-func describe(ctx context.Context, logger *zap.Logger, accountCfg models2.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *models2.StreamSender) ([]models2.Resource, error) {
+func describe(ctx context.Context, logger *zap.Logger, accountCfg model.IntegrationCredentials, resourceType string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) ([]model.Resource, error) {
 	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
 	}
-	ctx = describers.WithLogger(ctx, logger)
+	ctx = provider.WithLogger(ctx, logger)
 
 	return resourceTypeObject.ListDescriber(ctx, accountCfg, triggerType, additionalParameters, stream)
 }
@@ -74,10 +74,10 @@ func GetSingleResource(
 	logger *zap.Logger,
 	resourceType string,
 	triggerType enums.DescribeTriggerType,
-	cfg models2.IntegrationCredentials,
+	cfg model.IntegrationCredentials,
 	additionalParameters map[string]string,
 	resourceId string,
-	stream *models2.StreamSender,
+	stream *model.StreamSender,
 ) error {
 	_, err := describeSingle(ctx, logger, cfg, resourceType, resourceId, triggerType, additionalParameters, stream)
 	if err != nil {
@@ -86,12 +86,12 @@ func GetSingleResource(
 	return nil
 }
 
-func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg models2.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *models2.StreamSender) (*models2.Resource, error) {
+func describeSingle(ctx context.Context, logger *zap.Logger, accountCfg model.IntegrationCredentials, resourceType string, resourceID string, triggerType enums.DescribeTriggerType, additionalParameters map[string]string, stream *model.StreamSender) (*model.Resource, error) {
 	resourceTypeObject, ok := maps.ResourceTypes[resourceType]
 	if !ok {
 		return nil, fmt.Errorf("unsupported resource type: %s", resourceType)
 	}
-	ctx = describers.WithLogger(ctx, logger)
+	ctx = provider.WithLogger(ctx, logger)
 
-	return resourceTypeObject.GetDescriber(ctx, accountCfg, triggerType, additionalParameters, resourceID)
+	return resourceTypeObject.GetDescriber(ctx, accountCfg, triggerType, additionalParameters, resourceID, stream)
 }

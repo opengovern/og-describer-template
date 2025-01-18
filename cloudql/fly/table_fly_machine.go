@@ -2,7 +2,7 @@ package fly
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-fly/discovery/pkg/es"
+	opengovernance "github.com/opengovern/og-describer-fly/discovery/pkg/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
