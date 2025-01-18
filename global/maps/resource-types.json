@@ -1,0 +1,2925 @@
+[
+  {
+    "ResourceName": "Microsoft.App/containerApps",
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Container%20App.svg"
+      ]
+    },
+    "ListDescriber": "DescribeBySubscription(describers.AppContainerApps)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_app_containerapps",
+    "Model": "ContainerApp"
+  },
+  {
+    "ResourceName": "Microsoft.Blueprint/blueprints",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Blueprint.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.BlueprintBlueprint)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_blueprint_blueprints",
+    "Model": "Blueprint"
+  },
+  {
+    "ResourceName": "Microsoft.Cdn/profiles",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/CDN%20Profile.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CdnProfiles)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cdn_profiles",
+    "Model": "CDNProfile"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/cloudServices",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Cloud%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeCloudServices)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_cloudservices",
+    "Model": "ComputeCloudService"
+  },
+  {
+    "ResourceName": "Microsoft.ContainerInstance/containerGroups",
+
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Container%20Instance.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ContainerInstanceContainerGroups)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_container_group",
+    "Model": "ContainerInstanceContainerGroup"
+  },
+  {
+    "ResourceName": "Microsoft.DataMigration/services",
+
+    "Tags": {
+      "category": ["Migration"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Database%20Migration%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataMigrationServices)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_datamigration_services",
+    "Model": "DataMigrationService"
+  },
+  {
+    "ResourceName": "Microsoft.DataProtection/backupVaults",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Backup%20vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataProtectionBackupVaults)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dataprotection_backupvaults",
+    "Model": "DataProtectionBackupVaults"
+  },
+  {
+    "ResourceName": "Microsoft.DataProtection/backupJobs",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataProtectionBackupJobs)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_data_protection_backup_job",
+    "Model": "DataProtectionJob"
+  },
+  {
+    "ResourceName": "Microsoft.DataProtection/backupVaults/backupPolicies",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Backup%20vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataProtectionBackupVaultsBackupPolicies)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dataprotection_backuppolicies",
+    "Model": "DataProtectionBackupVaultsBackupPolicies"
+  },
+  {
+    "ResourceName": "Microsoft.Logic/integrationAccounts",
+
+    "Tags": {
+      "category": ["Integration"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Integration%20Account.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LogicIntegrationAccounts)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_logic_integrationaccounts",
+    "Model": "LogicIntegrationAccounts"
+  },
+  {
+    "ResourceName": "Microsoft.Network/bastionHosts",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Bastion.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkBastionHosts)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_bastion_host",
+    "Model": "BastionHosts"
+  },
+  {
+    "ResourceName": "Microsoft.Network/connections",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Hybrid%20Connection.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkConnections)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_connections",
+    "Model": "Connection"
+  },
+  {
+    "ResourceName": "Microsoft.Network/firewallPolicies",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Firewall%20Policy.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.FirewallPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_firewall_policy",
+    "Model": "FirewallPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Network/localNetworkGateways",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Local%20Network%20Gateway.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LocalNetworkGateway)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_localnetworkgateways",
+    "Model": "LocalNetworkGateway"
+  },
+  {
+    "ResourceName": "Microsoft.Network/privateLinkServices",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Private%20link%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PrivateLinkService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_privatelinkservices",
+    "Model": "PrivateLinkService"
+  },
+  {
+    "ResourceName": "Microsoft.Network/publicIPPrefixes",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Public%20IP%20Prefix.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PublicIPPrefix)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_publicipprefixes",
+    "Model": "PublicIPPrefix"
+  },
+  {
+    "ResourceName": "Microsoft.Network/virtualHubs",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Virtual%20Hub.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkVirtualHubs)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_virtualhubs",
+    "Model": "VirtualHubs"
+  },
+  {
+    "ResourceName": "Microsoft.Network/virtualWans",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20WAN.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkVirtualWans)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_virtualwans",
+    "Model": "VirtualWans"
+  },
+  {
+    "ResourceName": "Microsoft.Network/vpnGateways",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Network%20Gateway.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.VpnGateway)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_vpngateways",
+    "Model": "VpnGateway"
+  },
+  {
+    "ResourceName": "Microsoft.Network/vpnGateways/vpnConnections",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkVpnGatewaysVpnConnections)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_vpnconnections",
+    "Model": "VpnGatewayVpnConnection"
+  },
+  {
+    "ResourceName": "Microsoft.Network/vpnSites",
+
+    "Tags": {
+      "category": ["Networking"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkVpnGatewaysVpnSites)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_vpnsites",
+    "Model": "VpnSite"
+  },
+  {
+    "ResourceName": "Microsoft.OperationalInsights/workspaces",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.OperationalInsightsWorkspaces)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_operationalinsights_workspaces",
+    "Model": "OperationalInsightsWorkspaces"
+  },
+  {
+    "ResourceName": "Microsoft.StreamAnalytics/cluster",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Stream%20Analytics%20Cluster.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StreamAnalyticsCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_streamanalytics_cluster",
+    "Model": "StreamAnalyticsCluster"
+  },
+  {
+    "ResourceName": "Microsoft.TimeSeriesInsights/environments",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Time%20Series%20Insights%20Environment.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.TimeSeriesInsightsEnvironments)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_timeseriesinsights_environments",
+    "Model": "TimeSeriesInsightsEnvironments"
+  },
+  {
+    "ResourceName": "Microsoft.VirtualMachineImages/imageTemplates",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Image%20Template.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.VirtualMachineImagesImageTemplates)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_virtualmachineimages_imagetemplates",
+    "Model": "VirtualMachineImagesImageTemplates"
+  },
+  {
+    "ResourceName": "Microsoft.Web/serverFarms",
+
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Server%20Farm.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.WebServerFarms)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_web_serverfarms",
+    "Model": "WebServerFarms"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Machine%20Scale%20Set.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeVirtualMachineScaleSetVm)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_virtual_machine_scale_set_vm",
+    "Model": "ComputeVirtualMachineScaleSetVm"
+  },
+  {
+    "ResourceName": "Microsoft.Automation/automationAccounts",
+
+    "Tags": {
+      "category": ["Management \u0026 Governance"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Automation%20Account.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AutomationAccounts)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_automation_account",
+    "Model": "AutomationAccounts"
+  },
+  {
+    "ResourceName": "Microsoft.Automation/automationAccounts/variables",
+
+    "Tags": {
+      "category": ["Management \u0026 Governance"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Automation%20Variable.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AutomationVariables)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_automation_variable_string",
+      "azurerm_automation_variable_int",
+      "azurerm_automation_variable_datetime",
+      "azurerm_automation_variable_bool"
+    ],
+
+    "SteampipeTable": "azure_automation_variable",
+    "Model": "AutomationVariables"
+  },
+  {
+    "ResourceName": "Microsoft.Network/dnsZones",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/DNS%20Zone%20(Public).svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DNSZones)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dns_zone",
+    "Model": "DNSZones"
+  },
+  {
+    "ResourceName": "Microsoft.Databricks/workspaces",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Databricks.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DatabricksWorkspaces)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_databricks_workspaces",
+    "Model": "DatabricksWorkspace"
+  },
+  {
+    "ResourceName": "Microsoft.Network/privateDnsZones",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/DNS%20Zone%20(Private).svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PrivateDnsZones)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_private_dns_zone",
+    "Model": "PrivateDNSZones"
+  },
+  {
+    "ResourceName": "Microsoft.Network/privateEndpoints",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Private%20Endpoint.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PrivateEndpoints)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_privateendpoints",
+    "Model": "PrivateEndpoint"
+  },
+  {
+    "ResourceName": "Microsoft.Network/networkWatchers",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Network%20Watcher.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkWatcher)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_watcher",
+    "Model": "NetworkWatcher"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/subscriptions/resourceGroups",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Resource%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ResourceGroup)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_resource_group",
+    "Model": "ResourceGroup"
+  },
+  {
+    "ResourceName": "Microsoft.Web/staticSites",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Static%20Web%20App.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppServiceWebApp)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_app_service_web_app",
+    "Model": "AppServiceWebApp"
+  },
+  {
+    "ResourceName": "Microsoft.Web/sites/slots",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Static%20Web%20App.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppServiceWebAppSlot)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_app_service_web_app_slot",
+    "Model": "AppServiceWebAppSlot"
+  },
+
+  {
+    "ResourceName": "Microsoft.CognitiveServices/accounts",
+
+    "Tags": {
+      "category": ["AI + ML"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Cognitive%20Services.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CognitiveAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cognitive_account",
+    "Model": "CognitiveAccount"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/managedInstances",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Managed%20Instance.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MssqlManagedInstance)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_mssql_managed_instance",
+      "azurerm_sql_managed_instance"
+    ],
+
+    "SteampipeTable": "azure_mssql_managed_instance",
+    "Model": "MssqlManagedInstance"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/virtualclusters",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Database.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlVirtualClusters)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_virtualclusters",
+    "Model": "SqlVirtualClusters"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/managedInstances/databases",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Managed%20Instance.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MssqlManagedInstanceDatabases)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_managedinstancesdatabases",
+    "Model": "MssqlManagedInstanceDatabases"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/servers/databases",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Database.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlDatabase)",
+    "GetDescriber": "",
+    "TerraformName": ["azurerm_mssql_database", "azurerm_sql_database"],
+
+    "SteampipeTable": "azure_sql_database",
+    "Model": "SqlDatabase"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/largeFileSharesState",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/File%20Share.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageFileShare)",
+    "GetDescriber": "",
+    "TerraformName": ["azurerm_storage_share_file", "azure_storage_share"],
+
+    "SteampipeTable": "azure_storage_share_file",
+    "Model": "StorageFileShare"
+  },
+  {
+    "ResourceName": "Microsoft.DBforPostgreSQL/servers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Database%20for%20PostgreSQL.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PostgresqlServer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_postgresql_server",
+    "Model": "PostgresqlServer"
+  },
+  {
+    "ResourceName": "Microsoft.DBforPostgreSQL/flexibleservers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Database%20for%20PostgreSQL.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PostgresqlFlexibleservers)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dbforpostgresql_flexibleservers",
+    "Model": "PostgresqlFlexibleServer"
+  },
+  {
+    "ResourceName": "Microsoft.AnalysisServices/servers",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Analysis%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AnalysisService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_analysisservices_servers",
+    "Model": "AnalysisServiceServer"
+  },
+  {
+    "ResourceName": "Microsoft.Security/pricings",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterSubscriptionPricing)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_subscription_pricing",
+    "Model": "SecurityCenterSubscriptionPricing"
+  },
+  {
+    "ResourceName": "Microsoft.Insights/guestDiagnosticSettings",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Diagnostics%20Setting.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DiagnosticSetting)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_diagnostic_setting",
+    "Model": "DiagnosticSetting"
+  },
+  {
+    "ResourceName": "Microsoft.Insights/autoscaleSettings",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AutoscaleSetting)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_autoscale_setting",
+    "Model": "AutoscaleSetting"
+  },
+  {
+    "ResourceName": "Microsoft.Web/hostingEnvironments",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Service%20Environment.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppServiceEnvironment)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_app_service_environment",
+    "Model": "AppServiceEnvironment"
+  },
+  {
+    "ResourceName": "Microsoft.Cache/redis",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cache%20for%20Redis.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RedisCache)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_redis_cache",
+    "Model": "RedisCache"
+  },
+  {
+    "ResourceName": "Microsoft.ContainerRegistry/registries",
+
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Container%20Registry.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ContainerRegistry)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_container_registry",
+    "Model": "ContainerRegistry"
+  },
+  {
+    "ResourceName": "Microsoft.DataFactory/factories/pipelines",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Factory.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataFactoryPipeline)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_data_factory_pipeline",
+    "Model": "DataFactoryPipeline"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/resourceSku",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeResourceSKU)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_resource_sku",
+    "Model": "ComputeResourceSKU"
+  },
+  {
+    "ResourceName": "Microsoft.Network/expressRouteCircuits",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/ExpressRoute%20Circuit.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ExpressRouteCircuit)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_express_route_circuit",
+    "Model": "ExpressRouteCircuit"
+  },
+  {
+    "ResourceName": "Microsoft.Management/managementgroups",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Management%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ManagementGroup)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_management_group",
+    "Model": "ManagementGroup"
+  },
+  {
+    "ResourceName": "microsoft.SqlVirtualMachine/SqlVirtualMachines",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Server.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServerVirtualMachine)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mssql_virtual_machine",
+    "Model": "SqlServerVirtualMachine"
+  },
+  {
+    "ResourceName": "Microsoft.SqlVirtualMachine/SqlVirtualMachineGroups",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Server.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServerVirtualMachineGroups)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_virtualmachinegroups",
+    "Model": "SqlServerVirtualMachineGroup"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/tableServices",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Table.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageTableService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_table_service",
+    "Model": "StorageTableService"
+  },
+  {
+    "ResourceName": "Microsoft.Synapse/workspaces",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Synapse%20Analytics.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SynapseWorkspace)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_synapse_workspace",
+    "Model": "SynapseWorkspace"
+  },
+  {
+    "ResourceName": "Microsoft.Synapse/workspaces/bigdatapools",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Synapse%20Analytics.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SynapseWorkspaceBigdataPools)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_synapse_workspacesbigdatapools",
+    "Model": "SynapseWorkspaceBigdatapools"
+  },
+  {
+    "ResourceName": "Microsoft.Synapse/workspaces/sqlpools",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Synapse%20Analytics.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SynapseWorkspaceSqlpools)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_synapse_workspacessqlpools",
+    "Model": "SynapseWorkspaceSqlpools"
+  },
+  {
+    "ResourceName": "Microsoft.StreamAnalytics/streamingJobs",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Stream%20Analytics%20job.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StreamAnalyticsJob)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_stream_analytics_job",
+    "Model": "StreamAnalyticsJob"
+  },
+  {
+    "ResourceName": "Microsoft.CostManagement/CostBySubscription",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.DailyCostBySubscription)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_costmanagement_costbysubscription",
+    "Model": "CostManagementCostBySubscription"
+  },
+  {
+    "ResourceName": "Microsoft.ContainerService/managedClusters",
+
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/AKS%20Hybrid%20Cluster.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KubernetesCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_kubernetes_cluster",
+    "Model": "KubernetesCluster"
+  },
+  {
+    "ResourceName": "Microsoft.ContainerService/serviceVersions",
+
+    "Tags": {
+      "category": ["Container"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KubernetesServiceVersion)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_kubernetes_service_version",
+    "Model": "KubernetesServiceVersion"
+  },
+  {
+    "ResourceName": "Microsoft.DataFactory/factories",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Factory.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataFactory)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_data_factory",
+    "Model": "DataFactory"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/servers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Server.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_server",
+    "Model": "SqlServer"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/servers/jobagents",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Elastic%20Job%20Agent.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServerJobAgents)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_serversjobagents",
+    "Model": "SqlServerJobAgent"
+  },
+  {
+    "ResourceName": "Microsoft.Security/autoProvisioningSettings",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterAutoProvisioning)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_auto_provisioning",
+    "Model": "SecurityCenterAutoProvisioning"
+  },
+  {
+    "ResourceName": "Microsoft.Insights/logProfiles",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.LogProfile)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_log_profile",
+    "Model": "LogProfile"
+  },
+  {
+    "ResourceName": "Microsoft.DataBoxEdge/dataBoxEdgeDevices",
+
+    "Tags": {
+      "category": ["IoT \u0026 Devices"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Box%20Edge.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataboxEdgeDevice)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_databox_edge_device",
+    "Model": "DataboxEdgeDevice"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Load%20Balancer.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb",
+    "Model": "LoadBalancer"
+  },
+  {
+    "ResourceName": "Microsoft.Network/azureFirewalls",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Firewall.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkAzureFirewall)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_firewall",
+    "Model": "NetworkAzureFirewall"
+  },
+  {
+    "ResourceName": "Microsoft.Management/locks",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Resource%20Lock.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ManagementLock)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_management_lock",
+    "Model": "ManagementLock"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/virtualMachineScaleSets/networkInterfaces",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Network%20Interface.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeVirtualMachineScaleSetNetworkInterface)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_virtual_machine_scale_set_network_interface",
+    "Model": "ComputeVirtualMachineScaleSetNetworkInterface"
+  },
+  {
+    "ResourceName": "Microsoft.Network/frontDoors",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Front%20Door.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.FrontDoor)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_frontdoor",
+    "Model": "Frontdoor"
+  },
+  {
+    "ResourceName": "Microsoft.Authorization/policyAssignments",
+
+    "Tags": {
+      "category": ["Identify \u0026 Access"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Policy%20Assignment.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PolicyAssignment)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_policy_assignment",
+    "Model": "PolicyAssignment"
+  },
+  {
+    "ResourceName": "Microsoft.Authorization/userEffectiveAccess",
+
+    "Tags": {
+      "category": ["Identify \u0026 Access"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Policy%20Assignment.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.UserEffectiveAccess)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_user_effective_access",
+    "Model": "UserEffectiveAccess"
+  },
+  {
+    "ResourceName": "Microsoft.Search/searchServices",
+
+    "Tags": {
+      "category": ["AI + ML"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Search%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SearchService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_search_service",
+    "Model": "SearchService"
+  },
+  {
+    "ResourceName": "Microsoft.Security/settings",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterSetting)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_setting",
+    "Model": "SecurityCenterSetting"
+  },
+  {
+    "ResourceName": "Microsoft.RecoveryServices/vaults",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Recovery%20Services%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RecoveryServicesVault)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_recovery_services_vault",
+    "Model": "RecoveryServicesVault"
+  },
+  {
+    "ResourceName": "Microsoft.RecoveryServices/vaults/backupJobs",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RecoveryServicesBackupJobs)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_recovery_services_backup_job",
+    "Model": "RecoveryServicesBackupJob"
+  },
+  {
+    "ResourceName": "Microsoft.RecoveryServices/vaults/backupPolicies",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RecoveryServicesBackupPolicies)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_recovery_services_backup_policy",
+    "Model": "RecoveryServicesBackupPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.RecoveryServices/vaults/backupItems",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RecoveryServicesBackupItem)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_recovery_services_backup_item",
+    "Model": "RecoveryServicesBackupItem"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/diskEncryptionSets",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Disk%20Encryption%20Set.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeDiskEncryptionSet)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_disk_encryption_set",
+    "Model": "ComputeDiskEncryptionSet"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cosmos%20DB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DocumentDBSQLDatabase)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_sql_database",
+    "Model": "CosmosdbSqlDatabase"
+  },
+  {
+    "ResourceName": "Microsoft.EventGrid/topics",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Event%20Grid%20Topic.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.EventGridTopic)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_eventgrid_topic",
+    "Model": "EventGridTopic"
+  },
+  {
+    "ResourceName": "Microsoft.EventHub/namespaces",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Event%20Hub.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.EventhubNamespace)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_eventhub_namespace",
+    "Model": "EventhubNamespace"
+  },
+  {
+    "ResourceName": "Microsoft.EventHub/namespaces/eventHubs",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Event%20Hub.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.EventhubNamespaceEventhub)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_eventhub_namespaceeventhubs",
+    "Model": "EventhubNamespaceEventhub"
+  },
+  {
+    "ResourceName": "Microsoft.MachineLearningServices/workspaces",
+
+    "Tags": {
+      "category": ["AI + ML"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Machine%20Learning%20Studio%20Workspace%20(classic).svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MachineLearningWorkspace)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_machine_learning_workspace",
+    "Model": "MachineLearningWorkspace"
+  },
+  {
+    "ResourceName": "Microsoft.Dashboard/grafana",
+
+    "Tags": {
+      "category": ["Managed Services"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Managed%20Grafana.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DashboardGrafana)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dashboard_grafana",
+    "Model": "DashboardGrafana"
+  },
+  {
+    "ResourceName": "Microsoft.DesktopVirtualization/workspaces",
+
+    "Tags": {
+      "category": ["End User"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Windows%20Virtual%20Desktop.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DesktopVirtualizationWorkspaces)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_desktopvirtualization_workspace",
+    "Model": "DesktopVirtualizationWorkspace"
+  },
+  {
+    "ResourceName": "Microsoft.Network/trafficManagerProfiles",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Traffic%20Manager%20profile.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.TrafficManagerProfile)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_trafficmanager_profile",
+    "Model": "TrafficManagerProfile"
+  },
+  {
+    "ResourceName": "Microsoft.Network/dnsResolvers",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/DNS%20Private%20Resolver.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DNSResolvers)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_dnsresolver",
+    "Model": "DNSResolver"
+  },
+  {
+    "ResourceName": "Microsoft.CostManagement/CostByResourceType",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.DailyCostByResourceType)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_costmanagement_costbyresourcetype",
+    "Model": "CostManagementCostByResourceType"
+  },
+  {
+    "ResourceName": "Microsoft.Network/networkInterfaces",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Network%20Interface.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkInterface)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_interface",
+    "Model": "NetworkInterface"
+  },
+  {
+    "ResourceName": "Microsoft.Network/publicIPAddresses",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Public%20IP%20Address.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PublicIPAddress)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_public_ip",
+    "Model": "PublicIPAddress"
+  },
+  {
+    "ResourceName": "Microsoft.HealthcareApis/services",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.HealthcareService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_healthcare_service",
+    "Model": "HealthcareService"
+  },
+  {
+    "ResourceName": "Microsoft.ServiceBus/namespaces",
+
+    "Tags": {
+      "category": ["Intergration"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Service%20Bus.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ServicebusNamespace)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_servicebus_namespace",
+    "Model": "ServicebusNamespace"
+  },
+  {
+    "ResourceName": "Microsoft.Web/sites",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppServiceFunctionApp)",
+    "GetDescriber": "",
+    "TerraformName": ["azurerm_app_service", "azurerm_function_app"],
+
+    "SteampipeTable": "azure_app_service_function_app",
+    "Model": "AppServiceFunctionApp"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/availabilitySets",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Machine%20Availability%20Set.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeAvailabilitySet)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_availability_set",
+    "Model": "ComputeAvailabilitySet"
+  },
+  {
+    "ResourceName": "Microsoft.Network/virtualNetworks",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Network.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.VirtualNetwork)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_virtual_network",
+    "Model": "VirtualNetwork"
+  },
+  {
+    "ResourceName": "Microsoft.Security/securityContacts",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterContact)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_contact",
+    "Model": "SecurityCenterContact"
+  },
+
+  {
+    "ResourceName": "Microsoft.EventGrid/domains",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Event%20Grid%20Domain.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.EventGridDomain)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_eventgrid_domain",
+    "Model": "EventGridDomain"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/deletedVaults",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DeletedVault)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_deleted_vault",
+    "Model": "KeyVaultDeletedVault"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/tableServices/tables",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Table.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageTable)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_table",
+    "Model": "StorageTable"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/snapshots",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Managed%20Disk%20Snapshot.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeSnapshots)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_snapshot",
+    "Model": "ComputeSnapshots"
+  },
+  {
+    "ResourceName": "Microsoft.Kusto/clusters",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_Grouped/Data/Azure%20Data%20Explorer%20Cluster.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KustoCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_kusto_cluster",
+    "Model": "KustoCluster"
+  },
+  {
+    "ResourceName": "Microsoft.StorageSync/storageSyncServices",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Sync%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageSync)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_sync",
+    "Model": "StorageSync"
+  },
+  {
+    "ResourceName": "Microsoft.Security/locations/jitNetworkAccessPolicies",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterJitNetworkAccessPolicy)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_jit_network_access_policy",
+    "Model": "SecurityCenterJitNetworkAccessPolicy"
+  },
+  {
+    "ResourceName": "Microsoft.Network/virtualNetworks/subnets",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Subnet.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.Subnet)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_subnet",
+    "Model": "Subnet"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers/backendAddressPools",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Load%20Balancer%20Backend%20pool.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancerBackendAddressPool)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb_backend_address_pool",
+    "Model": "LoadBalancerBackendAddressPool"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers/loadBalancingRules",
+
+    "Tags": {
+      "category": ["Networking"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancerRule)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb_rule",
+    "Model": "LoadBalancerRule"
+  },
+  {
+    "ResourceName": "Microsoft.DataLakeStore/accounts",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Lake.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataLakeStore)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_data_lake_store",
+    "Model": "DataLakeStore"
+  },
+  {
+    "ResourceName": "Microsoft.StorageCache/caches",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_Grouped/Data/HPC%20Cache.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.HpcCache)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_hpc_cache",
+    "Model": "HpcCache"
+  },
+  {
+    "ResourceName": "Microsoft.Batch/batchAccounts",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Batch%20Account.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.BatchAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_batch_account",
+    "Model": "BatchAccount"
+  },
+  {
+    "ResourceName": "Microsoft.Network/networkSecurityGroups",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Network%20Security%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkSecurityGroup)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_security_group",
+    "Model": "NetworkSecurityGroup"
+  },
+  {
+    "ResourceName": "Microsoft.Authorization/roleDefinitions",
+
+    "Tags": {
+      "category": ["Identify \u0026 Access"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Role%20(Custom).svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RoleDefinition)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_role_definition",
+    "Model": "RoleDefinition"
+  },
+  {
+    "ResourceName": "Microsoft.Network/applicationSecurityGroups",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Security%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkApplicationSecurityGroups)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_application_security_group",
+    "Model": "NetworkApplicationSecurityGroups"
+  },
+  {
+    "ResourceName": "Microsoft.Authorization/roleAssignment",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.RoleAssignment)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_role_assignment",
+    "Model": "RoleAssignment"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cosmos%20DB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DocumentDBMongoDatabase)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_mongo_database",
+    "Model": "CosmosdbMongoDatabase"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cosmos%20DB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DocumentDBMongoCollection)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_mongo_collection",
+    "Model": "CosmosdbMongoCollection"
+  },
+  {
+    "ResourceName": "Microsoft.Network/networkWatchers/flowLogs",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkWatcherFlowLog)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_watcher_flow_log",
+    "Model": "NetworkWatcherFlowLog"
+  },
+  {
+    "ResourceName": "microsoft.Sql/servers/elasticpools",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Elastic%20Pool.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServerElasticPool)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mssql_elasticpool",
+    "Model": "SqlServerElasticPool"
+  },
+  {
+    "ResourceName": "Microsoft.Security/subAssessments",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterSubAssessment)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_sub_assessment",
+    "Model": "SecurityCenterSubAssessment"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/disks",
+
+    "Tags": {
+      "category": ["Storage"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeDisk)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_disk",
+    "Model": "ComputeDisk"
+  },
+  {
+    "ResourceName": "Microsoft.Devices/ProvisioningServices",
+
+    "Tags": {
+      "category": ["IoT \u0026 Devices"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/IoT%20Hub.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.IOTHubDps)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_iothub_dps",
+    "Model": "IOTHubDps"
+  },
+  {
+    "ResourceName": "Microsoft.HDInsight/clusters",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/HDInsight%20Cluster.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.HdInsightCluster)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_hdinsight_hadoop_cluster",
+      "azurerm_hdinsight_hbase_cluster",
+      "azurerm_hdinsight_interactive_query_cluster",
+      "azurerm_hdinsight_kafka_cluster",
+      "azurerm_hdinsight_spark_cluster"
+    ],
+
+    "SteampipeTable": "azure_hdinsight_cluster",
+    "Model": "HdinsightCluster"
+  },
+  {
+    "ResourceName": "Microsoft.ServiceFabric/clusters",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Service%20Fabric%20Managed%20Cluster.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ServiceFabricCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_service_fabric_cluster",
+    "Model": "ServiceFabricCluster"
+  },
+  {
+    "ResourceName": "Microsoft.SignalRService/signalR",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SignalR.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SignalrService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_signalr_service",
+    "Model": "SignalrService"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/blob",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Blob.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageBlob)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_blob",
+    "Model": "StorageBlob"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageaccounts/blobservices/containers",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Container.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageContainer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_container",
+    "Model": "StorageContainer"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/blobServices",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Blob.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageBlobService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_blob_service",
+    "Model": "StorageBlobService"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts/queueServices",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account%20Queue.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageQueue)",
+    "GetDescriber": "",
+    "TerraformName": ["azurerm_storage_queue", "azure_storage_queue"],
+
+    "SteampipeTable": "azure_storage_queue",
+    "Model": "StorageQueue"
+  },
+  {
+    "ResourceName": "Microsoft.ApiManagement/service",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/API%20Management%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.APIManagement)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_api_management",
+    "Model": "APIManagement"
+  },
+  {
+    "ResourceName": "Microsoft.ApiManagement/backend",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/API%20Management%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.APIManagementBackend)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_api_management_backend",
+    "Model": "APIManagementBackend"
+  },
+
+  {
+    "ResourceName": "Microsoft.Compute/virtualMachineScaleSets",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Machine%20Scale%20Set.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeVirtualMachineScaleSet)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_virtual_machine_scale_set",
+      "azurerm_orchestrated_virtual_machine_scale_set",
+      "azurerm_linux_virtual_machine_scale_set",
+      "azurerm_windows_virtual_machine_scale_set"
+    ],
+
+    "SteampipeTable": "azure_compute_virtual_machine_scale_set",
+    "Model": "ComputeVirtualMachineScaleSet"
+  },
+  {
+    "ResourceName": "Microsoft.DataFactory/factories/datasets",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Factory.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataFactoryDataset)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_data_factory_dataset_azure_blob",
+      "azurerm_data_factory_dataset_binary",
+      "azurerm_data_factory_dataset_cosmosdb_sqlapi",
+      "azurerm_data_factory_dataset_delimited_text",
+      "azurerm_data_factory_dataset_http",
+      "azurerm_data_factory_dataset_json",
+      "azurerm_data_factory_dataset_mysql",
+      "azurerm_data_factory_dataset_parquet",
+      "azurerm_data_factory_dataset_postgresql",
+      "azurerm_data_factory_dataset_snowflake",
+      "azurerm_data_factory_dataset_sql_server_table",
+      "azurerm_data_factory_custom_dataset"
+    ],
+
+    "SteampipeTable": "azure_data_factory_dataset",
+    "Model": "DataFactoryDataset"
+  },
+  {
+    "ResourceName": "Microsoft.Authorization/policyDefinitions",
+
+    "Tags": {
+      "category": ["Identify \u0026 Access"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Policy%20Definition.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PolicyDefinition)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_policy_definition",
+    "Model": "PolicyDefinition"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/subscriptions/locations",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.Location)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_location",
+    "Model": "Location"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/diskAccesses",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Disk%20Access.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeDiskAccess)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_disk_access",
+    "Model": "ComputeDiskAccess"
+  },
+  {
+    "ResourceName": "Microsoft.DBforMySQL/servers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Database%20for%20MySQL.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MysqlServer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mysql_server",
+    "Model": "MysqlServer"
+  },
+  {
+    "ResourceName": "Microsoft.DBforMySQL/flexibleservers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Wordpress%20and%20MySQL%20Flexible%20server.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MysqlFlexibleservers)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_dbformysql_flexibleservers",
+    "Model": "MysqlFlexibleserver"
+  },
+  {
+    "ResourceName": "Microsoft.Cache/redisenterprise",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cache%20for%20Redis.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CacheRedisEnterprise)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cache_redisenterprise",
+    "Model": "RedisEnterpriseCache"
+  },
+  {
+    "ResourceName": "Microsoft.DataLakeAnalytics/accounts",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Data%20Lake%20Analytics.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DataLakeAnalyticsAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_data_lake_analytics_account",
+    "Model": "DataLakeAnalyticsAccount"
+  },
+  {
+    "ResourceName": "Microsoft.Insights/activityLogAlerts",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.LogAlert)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_log_alert",
+    "Model": "LogAlert"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers/outboundRules",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Load%20Balancer%20Backend%20Outbound%20Rule.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancerOutboundRule)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb_outbound_rule",
+    "Model": "LoadBalancerOutboundRule"
+  },
+  {
+    "ResourceName": "Microsoft.HybridCompute/machines",
+
+    "Tags": {
+      "category": ["Compute"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.HybridComputeMachine)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_hybrid_compute_machine",
+    "Model": "HybridComputeMachine"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers/inboundNatRules",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Load%20Balancer%20Inbound%20NAT%20Rule.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancerNatRule)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb_nat_rule",
+    "Model": "LoadBalancerNatRule"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/providers",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.ResourceProvider)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_provider",
+    "Model": "ResourceProvider"
+  },
+  {
+    "ResourceName": "Microsoft.Network/routeTables",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Route%20Table.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.RouteTables)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_route_table",
+    "Model": "RouteTables"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/databaseAccounts",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cosmos%20DB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CosmosdbAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_account",
+    "Model": "CosmosdbAccount"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/restorableDatabaseAccounts",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Cosmos%20DB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CosmosdbRestorableDatabaseAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_restorable_database_account",
+    "Model": "CosmosdbRestorableDatabaseAccount"
+  },
+  {
+    "ResourceName": "Microsoft.Network/applicationGateways",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Gateway.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ApplicationGateway)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_application_gateway",
+    "Model": "ApplicationGateway"
+  },
+  {
+    "ResourceName": "Microsoft.Security/automations",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.SecurityCenterAutomation)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_security_center_automation",
+    "Model": "SecurityCenterAutomation"
+  },
+  {
+    "ResourceName": "Microsoft.Kubernetes/connectedClusters",
+
+    "Tags": {
+      "category": ["Container"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Kubernetes%20Cluster%20(Operator%20Nexus).svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.HybridKubernetesConnectedCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_hybrid_kubernetes_connected_cluster",
+    "Model": "HybridKubernetesConnectedCluster"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/vaults/keys",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVaultKey)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_key",
+    "Model": "KeyVaultKey"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/vaults/certificates",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVaultCertificate)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_certificate",
+    "Model": "KeyVaultCertificate"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/vaults/keys/Versions",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVaultKey)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_key_version",
+    "Model": "KeyVaultKeyVersion"
+  },
+  {
+    "ResourceName": "Microsoft.DBforMariaDB/servers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Database%20for%20MariaDB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MariadbServer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mariadb_server",
+    "Model": "MariadbServer"
+  },
+  {
+    "ResourceName": "Microsoft.DBforMariaDB/servers/databases",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Database%20for%20MariaDB.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MariadbDatabases)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mariadb_databases",
+    "Model": "MariadbDatabase"
+  },
+
+  {
+    "ResourceName": "Microsoft.Web/plan",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Service%20plan.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppServicePlan)",
+    "GetDescriber": "",
+    "TerraformName": ["azurerm_app_service_plan", "azurerm_service_plan"],
+
+    "SteampipeTable": "azure_app_service_plan",
+    "Model": "AppServicePlan"
+  },
+
+  {
+    "ResourceName": "Microsoft.Resources/tenants",
+
+    "Tags": null,
+
+    "ListDescriber": "DescribeBySubscription(describers.Tenant)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_tenant",
+    "Model": "Tenant"
+  },
+  {
+    "ResourceName": "Microsoft.Network/virtualNetworkGateways",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Network%20Gateway.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.VirtualNetworkGateway)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_virtual_network_gateway",
+    "Model": "VirtualNetworkGateway"
+  },
+  {
+    "ResourceName": "Microsoft.Devices/iotHubs",
+
+    "Tags": {
+      "category": ["IoT \u0026 Devices"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/IoT%20Hub.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.IOTHub)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_iothub",
+    "Model": "IOTHub"
+  },
+  {
+    "ResourceName": "Microsoft.Logic/workflows",
+
+    "Tags": {
+      "category": ["Integration"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LogicAppWorkflow)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_logic_app_workflow",
+    "Model": "LogicAppWorkflow"
+  },
+  {
+    "ResourceName": "Microsoft.Sql/flexibleServers",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SQL%20Server.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlServerFlexibleServer)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_mysql_flexible_server",
+    "Model": "SqlServerFlexibleServer"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/links",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Resource%20Management%20Private%20Link.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ResourceLink)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_resource_link",
+    "Model": "ResourceLink"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/subscriptions",
+
+    "Tags": {
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Subscription.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.Subscription)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_subscription",
+    "Model": "Subscription"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/images",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Machine%20Image.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeImage)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_image",
+    "Model": "ComputeImage"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/virtualMachines",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Virtual%20Machine.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeVirtualMachine)",
+    "GetDescriber": "",
+    "TerraformName": [
+      "azurerm_linux_virtual_machine",
+      "azurerm_windows_virtual_machine"
+    ],
+
+    "SteampipeTable": "azure_compute_virtual_machine",
+    "Model": "ComputeVirtualMachine"
+  },
+  {
+    "ResourceName": "Microsoft.Network/natGateways",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/NAT%20Gateway.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NatGateway)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_nat_gateway",
+    "Model": "NatGateway"
+  },
+  {
+    "ResourceName": "Microsoft.Network/loadBalancers/probes",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Load%20Balancer%20Health%20Probe.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LoadBalancerProbe)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lb_probe",
+    "Model": "LoadBalancerProbe"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/vaults",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVault)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault",
+    "Model": "KeyVault"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/managedHsms",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault%20HSM.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVaultManagedHardwareSecurityModule)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_managed_hardware_security_module",
+    "Model": "KeyVaultManagedHardwareSecurityModule"
+  },
+  {
+    "ResourceName": "Microsoft.KeyVault/vaults/secrets",
+
+    "Tags": {
+      "category": ["Security"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Key%20Vault%20Secret.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.KeyVaultSecret)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_key_vault_secret",
+    "Model": "KeyVaultSecret"
+  },
+  {
+    "ResourceName": "Microsoft.AppConfiguration/configurationStores",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/App%20Configuration.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.AppConfiguration)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_app_configuration",
+    "Model": "AppConfiguration"
+  },
+  {
+    "ResourceName": "Microsoft.Storage/storageAccounts",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Storage%20Account.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.StorageAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_storage_account",
+    "Model": "StorageAccount"
+  },
+  {
+    "ResourceName": "Microsoft.AppPlatform/Spring",
+
+    "Tags": {
+      "category": ["PaaS"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Spring%20Cloud.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SpringCloudService)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_spring_cloud_service",
+    "Model": "SpringCloudService"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/galleries",
+
+    "Tags": {
+      "category": ["General"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Compute%20Gallery.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeGallery)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_image_gallery",
+    "Model": "ComputeImageGallery"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/hostGroups",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Host%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeHostGroup)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_host_group",
+    "Model": "ComputeHostGroup"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/hostGroups/hosts",
+
+    "Tags": {
+      "category": ["Compute"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Host%20Group.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeHost)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_host",
+    "Model": "ComputeHostGroupHost"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/restorePointCollections",
+
+    "Tags": {
+      "category": ["Backup"]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeRestorePointCollection)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_restore_point_collection",
+    "Model": "ComputeRestorePointCollection"
+  },
+  {
+    "ResourceName": "Microsoft.Compute/sshPublicKeys",
+
+    "Tags": {
+      "category": ["Management \u0026 Governance"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/SSH%20key.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ComputeSSHPublicKey)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_compute_ssh_key",
+    "Model": "ComputeSSHPublicKey"
+  },
+  {
+    "ResourceName": "Microsoft.Cdn/profiles/endpoints",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/CDN%20Profile.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.CdnEndpoint)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cdn_endpoint",
+    "Model": "CDNEndpoint"
+  },
+  {
+    "ResourceName": "Microsoft.BotService/botServices",
+
+    "Tags": {
+      "category": ["AI + ML"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Bot%20Service.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.BotServiceBot)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_botservice_bot",
+    "Model": "BotServiceBot"
+  },
+  {
+    "ResourceName": "Microsoft.DocumentDB/cassandraClusters",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20Managed%20Instance%20for%20Apache%20Cassandra.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DocumentDBCassandraCluster)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_cosmosdb_cassandra_cluster",
+    "Model": "CosmosdbCassandraCluster"
+  },
+  {
+    "ResourceName": "Microsoft.Network/ddosProtectionPlans",
+
+    "Tags": {
+      "category": ["Networking"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/DDoS%20Protection%20Plan.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetworkDDoSProtectionPlan)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_network_ddos_protection_plan",
+    "Model": "NetworkDDoSProtectionPlan"
+  },
+  {
+    "ResourceName": "microsoft.Sql/instancePools",
+
+    "Tags": {
+      "category": ["Database"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Instance%20Pool.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.SqlInstancePool)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_sql_instance_pool",
+    "Model": "SqlInstancePool"
+  },
+  {
+    "ResourceName": "microsoft.NetApp/netAppAccounts",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20NetApp%20Files.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetAppAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_netapp_account",
+    "Model": "NetAppAccount"
+  },
+  {
+    "ResourceName": "Microsoft.NetApp/netAppAccounts/capacityPools",
+
+    "Tags": {
+      "category": ["Storage"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Azure%20NetApp%20Files.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.NetAppCapacityPool)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_netapp_capacity_pool",
+    "Model": "NetAppCapacityPool"
+  },
+  {
+    "ResourceName": "Microsoft.DesktopVirtualization/hostpools",
+
+    "Tags": {
+      "category": ["End User"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Windows%20Virtual%20Desktop.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DesktopVirtualizationHostPool)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_desktop_virtualization_host_pool",
+    "Model": "DesktopVirtualizationHostPool"
+  },
+  {
+    "ResourceName": "Microsoft.Devtestlab/labs",
+
+    "Tags": {
+      "category": ["DevOps + Testing"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/DevTest%20Lab.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.DevTestLabLab)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_devtestlab_lab",
+    "Model": "DevTestLabLab"
+  },
+  {
+    "ResourceName": "Microsoft.Purview/Accounts",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Purview%20Account.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PurviewAccount)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_purview_account",
+    "Model": "PurviewAccount"
+  },
+  {
+    "ResourceName": "Microsoft.PowerBIDedicated/capacities",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Power%20BI%20Embedded.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.PowerBIDedicatedCapacity)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_powerbidedicated_capacity",
+    "Model": "PowerBIDedicatedCapacity"
+  },
+  {
+    "ResourceName": "Microsoft.Insights/components",
+
+    "Tags": {
+      "category": ["Data and Analytics"],
+      "logo_uri": [
+        "https://raw.githubusercontent.com/opengovernance-io/Azure-Design/master/SVG_Azure_All/Application%20Insights.svg"
+      ]
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.ApplicationInsights)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_application_insight",
+    "Model": "ApplicationInsightsComponent"
+  },
+  {
+    "ResourceName": "Microsoft.Lighthouse/definition",
+
+    "Tags": {
+      "category": [],
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LighthouseDefinition)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lighthouse_definition",
+    "Model": "LighthouseDefinition"
+  },
+  {
+    "ResourceName": "Microsoft.Lighthouse/assignment",
+
+    "Tags": {
+      "category": [],
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.LighthouseAssignments)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_lighthouse_assignment",
+    "Model": "LighthouseAssignment"
+  },
+  {
+    "ResourceName": "Microsoft.Maintenance/maintenanceConfigurations",
+
+    "Tags": {
+      "category": [],
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MaintenanceConfiguration)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_maintenance_configuration",
+    "Model": "MaintenanceConfiguration"
+  },
+  {
+    "ResourceName": "Microsoft.Monitor/logProfiles",
+
+    "Tags": {
+      "category": [],
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.MonitorLogProfiles)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_monitor_log_profile",
+    "Model": "MonitorLogProfile"
+  },
+  {
+    "ResourceName": "Microsoft.Resources/subscriptions/resources",
+
+    "Tags": {
+      "logo_uri": []
+    },
+
+    "ListDescriber": "DescribeBySubscription(describers.Resources)",
+    "GetDescriber": "",
+    "SteampipeTable": "azure_resource",
+    "Model": "GenericResource"
+  }
+]
