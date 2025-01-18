@@ -2,7 +2,8 @@ package entraid
 
 import (
 	"context"
-	"github.com/opengovern/og-describer-entraid/pkg/sdk/es"
+
+	opengovernance "github.com/opengovern/og-describer-entraid/discovery/pkg/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"

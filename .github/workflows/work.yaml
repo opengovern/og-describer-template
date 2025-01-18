@@ -45,17 +45,17 @@ jobs:
       - name: Configure Git for Private Repos
         run: |
           git config --global url.https://$GH_ACCESS_TOKEN@github.com/opengovern.insteadOf https://github.com/opengovern
-      - name: Build azure Plugin App
+      - name: Build entraid Plugin App
         working-directory: ./cloudql
         run: make build
-      - name: Pack azure Plugin Build
+      - name: Pack entraid Plugin Build
         working-directory: ./cloudql
         run: |
           tar -cvf build.tar build
-      - name: Upload azure Plugin Artifact
+      - name: Upload entraid Plugin Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: steampipe-plugin-azure
+          name: steampipe-plugin-entraid
           path: ./cloudql/build.tar
           retention-days: 1
       - name: Build Local Describer App
@@ -84,25 +84,25 @@ jobs:
         run: make build
       - name: Create output directory
         working-directory: .
-        run: mkdir -p azure-plugin
+        run: mkdir -p entraid-plugin
       - name: Copy steampipe plugin to output directory
         working-directory: .
-        run: cp ./cloudql/build/steampipe-plugin-azure.plugin ./azure-plugin/cloudql-plugin
+        run: cp ./cloudql/build/steampipe-plugin-entraid.plugin ./entraid-plugin/cloudql-plugin
       - name: Copy integration plugin to output directory
         working-directory: .
-        run: cp ./platform/build/integration-plugin ./azure-plugin/
+        run: cp ./platform/build/integration-plugin ./entraid-plugin/
       - name: Copy manifest to output directory
         working-directory: .
-        run: cp ./platform/constants/manifest.yaml ./azure-plugin/
+        run: cp ./platform/constants/manifest.yaml ./entraid-plugin/
       - name: Pack output
         working-directory: .
         run: |
-          tar -czf azure-plugin.tar azure-plugin
-      - name: Upload azure outputs artifact
+          tar -czf entraid-plugin.tar entraid-plugin
+      - name: Upload entraid outputs artifact
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: azure-plugins
-          path: ./azure-plugin.tar
+          name: entraid-plugins
+          path: ./entraid-plugin.tar
           retention-days: 1
 
       - name: Set Latest Tag Output
@@ -113,7 +113,7 @@ jobs:
           else
             echo "latest_tag=${{ steps.tag_version.outputs.new_tag }}" >> "$GITHUB_OUTPUT"
           fi
-  deploy-azure-plugin:
+  deploy-entraid-plugin:
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -123,12 +123,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      - name: Download azure Plugin Artifact
+      - name: Download entraid Plugin Artifact
         uses: actions/download-artifact@v4
         with:
-          name: steampipe-plugin-azure
+          name: steampipe-plugin-entraid
           path: .
-      - name: Unpack azure Plugin Artifact
+      - name: Unpack entraid Plugin Artifact
         run: |
           tar -xvf build.tar
       - name: Log in to Container Registry
@@ -142,8 +142,8 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-azure:0.0.1
-            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-azure:${{ needs.build.outputs.latest_tag }}
+            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-entraid:0.0.1
+            ghcr.io/${{ github.repository_owner }}/steampipe-plugin-entraid:${{ needs.build.outputs.latest_tag }}
           file: cloudql/docker/Dockerfile
           context: .
   deploy-local-describer:
@@ -194,16 +194,16 @@ jobs:
       - name: Download Integration Plugin Artifact
         uses: actions/download-artifact@v4
         with:
-          name: azure-plugins
+          name: entraid-plugins
       - name: Unpack Integration Plugin Artifact
         run: |
-          tar -xvf azure-plugin.tar
+          tar -xvf entraid-plugin.tar
       - name: Pack folder content into a zip file for release
         run: |
-          cd azure-plugin
-          zip -r azure-plugin.zip .
+          cd entraid-plugin
+          zip -r entraid-plugin.zip .
       - name: Release Integration Plugin
         uses: softprops/action-gh-release@v2
         with:
-          files: ./azure-plugin/azure-plugin.zip
+          files: ./entraid-plugin/entraid-plugin.zip
           tag_name: ${{ needs.build.outputs.latest_tag }}

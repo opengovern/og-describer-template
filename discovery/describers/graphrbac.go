@@ -22,8 +22,8 @@ import (
 	"github.com/microsoftgraph/msgraph-sdk-go/reports"
 	"github.com/microsoftgraph/msgraph-sdk-go/serviceprincipals"
 	users2 "github.com/microsoftgraph/msgraph-sdk-go/users"
-	models2 "github.com/opengovern/og-describer-entraid/pkg/sdk/models"
-	"github.com/opengovern/og-describer-entraid/provider/model"
+	models2 "github.com/opengovern/og-describer-entraid/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-entraid/discovery/provider"
 	"strings"
 	"time"
 )

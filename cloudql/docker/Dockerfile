@@ -1,3 +1,3 @@
 FROM alpine:latest
 
-COPY ../build/steampipe-plugin-azure.plugin /steampipe-plugin-azure.plugin
+COPY ../build/steampipe-plugin-entraid.plugin /steampipe-plugin-entraid.plugin
