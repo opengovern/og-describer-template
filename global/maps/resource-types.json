@@ -1,0 +1,30 @@
+[
+  {
+    "ResourceName": "Fly/App",
+    "ListDescriber": "DescribeListByFly(describer.ListApps)",
+    "GetDescriber": "DescribeSingleByFly(describer.GetApp)",
+    "SteampipeTable": "fly_app",
+    "Model": "App"
+  },
+  {
+    "ResourceName": "Fly/Machine",
+    "ListDescriber": "DescribeListByFly(describer.ListMachines)",
+    "GetDescriber": "DescribeSingleByFly(describer.GetMachine)",
+    "SteampipeTable": "fly_machine",
+    "Model": "Machine"
+  },
+  {
+    "ResourceName": "Fly/Volume",
+    "ListDescriber": "DescribeListByFly(describer.ListVolumes)",
+    "GetDescriber": "DescribeSingleByFly(describer.GetVolume)",
+    "SteampipeTable": "fly_volume",
+    "Model": "Volume"
+  },
+  {
+    "ResourceName": "Fly/Secret",
+    "ListDescriber": "DescribeListByFly(describer.ListSecrets)",
+    "GetDescriber": "",
+    "SteampipeTable": "fly_secret",
+    "Model": "Secret"
+  }
+]
