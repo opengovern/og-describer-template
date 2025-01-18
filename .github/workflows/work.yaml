@@ -77,7 +77,7 @@ jobs:
           export TAG=$GITHUB_OUTPUT
           ls
           ./update-manifest.sh
-        working-directory: ./platform
+        working-directory: ./platform/constants
       - name: Check manifest file
         run: cat ./platform/constants/manifest.yaml
       - name: Build Integration Plugin
