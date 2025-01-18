@@ -1,5 +1,5 @@
 build/
-og-describer-template
+og-describer-*
 .idea
-command/output.json
-command/credentials.json
+.env
+.vscode
