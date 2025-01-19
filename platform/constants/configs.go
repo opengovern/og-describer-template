@@ -17,6 +17,6 @@ const (
 )
 
 const (
-	DescriberDeploymentName = "og-describers-render"
-	DescriberRunCommand     = "/og-describers-render"
+	DescriberDeploymentName = "og-describer-render"
+	DescriberRunCommand     = "/og-describer-render"
 )
