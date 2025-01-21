@@ -1,2 +1,5 @@
-IntegrationType: github_account
+IntegrationType: entraid_directory
 DescriberURL:  ghcr.io/opengovern/og-describer-entraid
+Publisher: opencomply.io
+Author : opencomply engineering team
+SupportedPlatformVersion: 2.x.x
