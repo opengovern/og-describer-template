@@ -15,7 +15,7 @@ require (
 	github.com/hashicorp/go-plugin v1.6.0
 	github.com/jackc/pgtype v1.14.4
 	github.com/nats-io/nats.go v1.36.0
-	github.com/opengovern/og-util v1.11.0
+	github.com/opengovern/og-util v1.12.0
 	github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.8.1
