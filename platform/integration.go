@@ -19,7 +19,7 @@ func (i *Integration) GetConfiguration() (interfaces.IntegrationConfiguration, e
 		NatsConsumerGroup:        global.ConsumerGroup,
 		NatsConsumerGroupManuals: global.ConsumerGroupManuals,
 
-		SteampipePluginName: "template",
+		SteampipePluginName: "render",
 
 		UISpec:   constants.UISpec,
 		Manifest: constants.Manifest,

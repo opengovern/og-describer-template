@@ -1,4 +1,4 @@
-IntegrationType: render
+IntegrationType: render_account
 DescriberURL:  ghcr.io/opengovern/og-describer-render
 Publisher: opencomply.io
 Author : opencomply engineering team
