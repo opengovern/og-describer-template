@@ -2,6 +2,9 @@ package provider
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
+
 	model "github.com/opengovern/og-describer-entraid/discovery/pkg/models"
 	"github.com/opengovern/og-util/pkg/describe"
 )
@@ -22,25 +25,42 @@ func AccountCredentialsFromMap(m map[string]any) (model.IntegrationCredentials, 
 	return c, nil
 }
 
-// GetResourceMetadata TODO: Get metadata as a map to add to the resources
 func GetResourceMetadata(job describe.DescribeJob, resource model.Resource) (map[string]string, error) {
-	metadata := make(map[string]string)
+	azureMetadata := Metadata{
+		ID:               resource.ID,
+		Name:             resource.Name,
+		SubscriptionID:   job.ProviderID,
+		Location:         resource.Location,
+		CloudEnvironment: "AzurePublicCloud",
+		ResourceType:     strings.ToLower(job.ResourceType),
+		IntegrationID:    job.IntegrationID,
+	}
+	azureMetadataBytes, err := json.Marshal(azureMetadata)
+	if err != nil {
+		return nil, fmt.Errorf("marshal metadata: %v", err.Error())
+	}
 
+	metadata := make(map[string]string)
+	err = json.Unmarshal(azureMetadataBytes, &metadata)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal metadata: %v", err.Error())
+	}
 	return metadata, nil
 }
 
-// AdjustResource TODO: Do any needed adjustment on resource object before storing
 func AdjustResource(job describe.DescribeJob, resource *model.Resource) error {
+	resource.Location = fixAzureLocation(resource.Location)
+	resource.Type = strings.ToLower(job.ResourceType)
 	return nil
 }
 
-// GetAdditionalParameters TODO: pass additional parameters needed in describer wrappers in /provider/describer_wrapper.go
+func fixAzureLocation(l string) string {
+	return strings.ToLower(strings.ReplaceAll(l, " ", ""))
+}
+
 func GetAdditionalParameters(job describe.DescribeJob) (map[string]string, error) {
 	additionalParameters := make(map[string]string)
-
-	if _, ok := job.IntegrationLabels["OrganizationName"]; ok {
-		additionalParameters["OrganizationName"] = job.IntegrationLabels["OrganizationName"]
-	}
+	additionalParameters["subscriptionId"] = job.ProviderID
 
 	return additionalParameters, nil
 }
