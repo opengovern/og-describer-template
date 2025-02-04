@@ -23,7 +23,7 @@ var (
 	pluginPath        = flag.String("pluginPath", "", "Location of the steampipe plugin")
 )
 
-var PluginPath = fmt.Sprintf("../../../../cloudql/"+global.IntegrationTypeLower)
+var PluginPath = fmt.Sprintf("../../../../cloudql/" + global.IntegrationTypeLower)
 
 type IntegrationType struct {
 	Name            string
