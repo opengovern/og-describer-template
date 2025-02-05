@@ -7479,3 +7479,230 @@ func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 }
 
 // ==========================  END: ArtifactDockerFile =============================
+
+// ==========================  START: Webhook =============================
+
+type Webhook struct {
+	ResourceID      string                    `json:"resource_id"`
+	PlatformID      string                    `json:"platform_id"`
+	Description     github.WebhookDescription `json:"Description"`
+	Metadata        github.Metadata           `json:"metadata"`
+	DescribedBy     string                    `json:"described_by"`
+	ResourceType    string                    `json:"resource_type"`
+	IntegrationType string                    `json:"integration_type"`
+	IntegrationID   string                    `json:"integration_id"`
+}
+
+type WebhookHit struct {
+	ID      string        `json:"_id"`
+	Score   float64       `json:"_score"`
+	Index   string        `json:"_index"`
+	Type    string        `json:"_type"`
+	Version int64         `json:"_version,omitempty"`
+	Source  Webhook       `json:"_source"`
+	Sort    []interface{} `json:"sort"`
+}
+
+type WebhookHits struct {
+	Total essdk.SearchTotal `json:"total"`
+	Hits  []WebhookHit      `json:"hits"`
+}
+
+type WebhookSearchResponse struct {
+	PitID string      `json:"pit_id"`
+	Hits  WebhookHits `json:"hits"`
+}
+
+type WebhookPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewWebhookPaginator(filters []essdk.BoolFilter, limit *int64) (WebhookPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_repository_webhook", filters, limit)
+	if err != nil {
+		return WebhookPaginator{}, err
+	}
+
+	p := WebhookPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p WebhookPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p WebhookPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p WebhookPaginator) NextPage(ctx context.Context) ([]Webhook, error) {
+	var response WebhookSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []Webhook
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listWebhookFilters = map[string]string{
+	"active":         "Description.Active",
+	"config":         "Description.Config",
+	"created_at":     "Description.CreatedAt",
+	"deliveries_url": "Description.DeliveriesURL",
+	"events":         "Description.Events",
+	"id":             "Description.ID",
+	"last_response":  "Description.LastResponse",
+	"name":           "Description.Name",
+	"ping_url":       "Description.PingURL",
+	"test_url":       "Description.TestURL",
+	"type":           "Description.Type",
+	"updated_at":     "Description.UpdatedAt",
+	"url":            "Description.URL",
+}
+
+func ListWebhook(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListWebhook")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewWebhookPaginator(essdk.BuildFilter(ctx, d.QueryContext, listWebhookFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListWebhook NewWebhookPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListWebhook paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getWebhookFilters = map[string]string{
+	"active":         "Description.Active",
+	"config":         "Description.Config",
+	"created_at":     "Description.CreatedAt",
+	"deliveries_url": "Description.DeliveriesURL",
+	"events":         "Description.Events",
+	"id":             "Description.ID",
+	"last_response":  "Description.LastResponse",
+	"name":           "Description.Name",
+	"ping_url":       "Description.PingURL",
+	"test_url":       "Description.TestURL",
+	"type":           "Description.Type",
+	"updated_at":     "Description.UpdatedAt",
+	"url":            "Description.URL",
+}
+
+func GetWebhook(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetWebhook")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewWebhookPaginator(essdk.BuildFilter(ctx, d.QueryContext, getWebhookFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: Webhook =============================

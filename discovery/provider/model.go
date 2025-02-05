@@ -6,11 +6,11 @@ package provider
 
 import (
 	"encoding/json"
-	"time"
 	goPipeline "github.com/buildkite/go-pipeline"
 	"github.com/google/go-github/v55/github"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+	"time"
 )
 
 type Metadata struct{}
@@ -1647,4 +1647,62 @@ type ArtifactDockerFileDescription struct {
 	DockerfileContentBase64 *string
 	Repository              map[string]interface{}
 	Images                  []string // New field to store extracted base images
+}
+
+type WebhookConfigJSON struct {
+	URL         string      `json:"url"`
+	ContentType string      `json:"content_type"`
+	Secret      *string     `json:"secret,omitempty"`
+	InsecureSSL interface{} `json:"insecure_ssl"` // Can be string or number
+}
+
+type WebhookConfig struct {
+	URL         string
+	ContentType string
+	Secret      *string
+	InsecureSSL interface{}
+}
+
+type HookResponseJSON struct {
+	Code    *int    `json:"code"`
+	Status  string  `json:"status"`
+	Message *string `json:"message"`
+}
+
+type HookResponse struct {
+	Code    *int
+	Status  string
+	Message *string
+}
+
+type WebhookJSON struct {
+	Type          string            `json:"type"`
+	ID            int64             `json:"id"`
+	Name          string            `json:"name"`
+	Active        bool              `json:"active"`
+	Events        []string          `json:"events"`
+	Config        WebhookConfigJSON `json:"config"`
+	UpdatedAt     time.Time         `json:"updated_at"`
+	CreatedAt     time.Time         `json:"created_at"`
+	URL           string            `json:"url"`
+	TestURL       string            `json:"test_url"`
+	PingURL       string            `json:"ping_url"`
+	DeliveriesURL string            `json:"deliveries_url"`
+	LastResponse  HookResponseJSON  `json:"last_response"`
+}
+
+type WebhookDescription struct {
+	Type          string
+	ID            int64
+	Name          string
+	Active        bool
+	Events        []string
+	Config        WebhookConfig
+	UpdatedAt     time.Time
+	CreatedAt     time.Time
+	URL           string
+	TestURL       string
+	PingURL       string
+	DeliveriesURL string
+	LastResponse  HookResponse
 }

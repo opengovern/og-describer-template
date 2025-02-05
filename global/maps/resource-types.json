@@ -447,5 +447,17 @@
         "Required": false
       }
     ]
+  },
+  {
+    "ResourceName": "Github/Repository/Webhook",
+    "Tags": {
+      "category": [
+        "repository"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListRepositoryWebhooks)",
+    "GetDescriber": "DescribeSingleByRepo(describers.GetRepositoryWebhook)",
+    "SteampipeTable": "github_repository_webhook",
+    "Model": "Webhook"
   }
 ]

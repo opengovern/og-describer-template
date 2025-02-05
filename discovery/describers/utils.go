@@ -1357,6 +1357,7 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 	for {
 		repos, resp, err := client.Repositories.ListByOrg(ctx, owner, opt)
 		if err != nil {
+			fmt.Printf("failed: %v\n", err)
 			return nil, err
 		}
 
