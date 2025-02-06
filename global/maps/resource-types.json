@@ -75,5 +75,12 @@
     "GetDescriber": "DescribeSingleByRender(describer.GetService)",
     "SteampipeTable": "render_service",
     "Model": "Service"
+  },
+  {
+    "ResourceName": "Render/Postgresql/Backup",
+    "ListDescriber": "DescribeListByRender(describer.ListPostgresqlBackups)",
+    "GetDescriber": "",
+    "SteampipeTable": "render_postgresql_backup",
+    "Model": "PostgresqlBackup"
   }
 ]

@@ -209,3 +209,56 @@ func GetProjects(ctx context.Context, handler *RenderAPIHandler) ([]ProjectJSON,
 	}
 	return projects, nil
 }
+
+func GetPostgresqlInstances(ctx context.Context, handler *RenderAPIHandler) ([]PostgresJSON, error) {
+	var postgresInstances []PostgresJSON
+	var postgresListResponse []PostgresResponse
+	var resp *http.Response
+	baseURL := "https://api.render.com/v1/postgres"
+	cursor := ""
+
+	for {
+		params := url.Values{}
+		params.Set("limit", Limit)
+		params.Set("includeReplicas", IncludeReplicas)
+		if cursor != "" {
+			params.Set("cursor", cursor)
+		}
+		finalURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
+
+		req, err := http.NewRequest("GET", finalURL, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create request: %w", err)
+		}
+
+		requestFunc := func(req *http.Request) (*http.Response, error) {
+			var e error
+			resp, e = handler.Client.Do(req)
+			if e != nil {
+				return nil, fmt.Errorf("request execution failed: %w", e)
+			}
+			defer resp.Body.Close()
+
+			if e = json.NewDecoder(resp.Body).Decode(&postgresListResponse); e != nil {
+				return nil, fmt.Errorf("failed to decode response: %w", e)
+			}
+			for i, postgresResp := range postgresListResponse {
+				postgresInstances = append(postgresInstances, postgresResp.Postgres)
+				if i == len(postgresListResponse)-1 {
+					cursor = postgresResp.Cursor
+				}
+			}
+			return resp, nil
+		}
+		err = handler.DoRequest(ctx, req, requestFunc)
+		if err != nil {
+			return nil, fmt.Errorf("error during request handling: %w", err)
+		}
+
+		if len(postgresListResponse) < 100 {
+			break
+		}
+	}
+
+	return postgresInstances, nil
+}

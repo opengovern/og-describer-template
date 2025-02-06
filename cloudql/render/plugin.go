@@ -28,6 +28,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"render_project":           tableRenderProject(ctx),
 			"render_route":             tableRenderRoute(ctx),
 			"render_service":           tableRenderService(ctx),
+			"render_postgresql_backup": tableRenderPostgresqlBackup(ctx),
 		},
 	}
 	for key, table := range p.TableMap {

@@ -460,3 +460,15 @@ type RouteDescription struct {
 	Destination string
 	Priority    int
 }
+
+type PostgresqlBackupJSON struct {
+	ID        string `json:"id"`
+	CreatedAt string `json:"createdAt"`
+	URL       string `json:"url"`
+}
+
+type PostgresqlBackupDescription struct {
+	ID        string
+	CreatedAt string
+	URL       string
+}
