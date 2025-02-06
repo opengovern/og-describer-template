@@ -119,6 +119,16 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:   provider.DescribeListByRender(describers.ListServices),
 		GetDescriber:    provider.DescribeSingleByRender(describers.GetService),
 	},
+
+	"Render/Postgresql/Backup": {
+		IntegrationType: constants.IntegrationName,
+		ResourceName:    "Render/Postgresql/Backup",
+		Tags:            map[string][]string{},
+		Labels:          map[string]string{},
+		Annotations:     map[string]string{},
+		ListDescriber:   provider.DescribeListByRender(describers.ListPostgresqlBackups),
+		GetDescriber:    nil,
+	},
 }
 
 var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
@@ -188,6 +198,12 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		IntegrationType: constants.IntegrationName,
 		Description:     "",
 	},
+
+	"Render/Postgresql/Backup": {
+		Name:            "Render/Postgresql/Backup",
+		IntegrationType: constants.IntegrationName,
+		Description:     "",
+	},
 }
 
 var ResourceTypesList = []string{
@@ -202,4 +218,5 @@ var ResourceTypesList = []string{
 	"Render/Project",
 	"Render/Route",
 	"Render/Service",
+	"Render/Postgresql/Backup",
 }

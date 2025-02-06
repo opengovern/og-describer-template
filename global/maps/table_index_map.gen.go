@@ -16,6 +16,7 @@ var ResourceTypesToTables = map[string]string{
   "Render/Project": "render_project",
   "Render/Route": "render_route",
   "Render/Service": "render_service",
+  "Render/Postgresql/Backup": "render_postgresql_backup",
 }
 
 var ResourceTypeToDescription = map[string]interface{}{
@@ -30,6 +31,7 @@ var ResourceTypeToDescription = map[string]interface{}{
   "Render/Project": opengovernance.Project{},
   "Render/Route": opengovernance.Route{},
   "Render/Service": opengovernance.Service{},
+  "Render/Postgresql/Backup": opengovernance.PostgresqlBackup{},
 }
 
 var TablesToResourceTypes = map[string]string{
@@ -44,4 +46,5 @@ var TablesToResourceTypes = map[string]string{
   "render_project": "Render/Project",
   "render_route": "Render/Route",
   "render_service": "Render/Service",
+  "render_postgresql_backup": "Render/Postgresql/Backup",
 }
