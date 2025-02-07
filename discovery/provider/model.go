@@ -12,7 +12,7 @@ type OwnerJSON struct {
 	ID                   string `json:"id"`
 	Name                 string `json:"name"`
 	Email                string `json:"email"`
-	TwoFactorAuthEnabled bool   `json:"twoFactorAuthEnabled"`
+	TwoFactorAuthEnabled bool   `json:"two_factor_auth_enabled"` // converted to snake_case from "twoFactorAuthEnabled"
 	Type                 string `json:"type"`
 }
 
@@ -31,11 +31,11 @@ type ProjectResponse struct {
 
 type ProjectJSON struct {
 	ID             string    `json:"id"`
-	CreatedAt      time.Time `json:"createdAt"`
-	UpdatedAt      time.Time `json:"updatedAt"`
+	CreatedAt      time.Time `json:"created_at"`      // converted to snake_case from "createdAt"
+	UpdatedAt      time.Time `json:"updated_at"`      // converted to snake_case from "updatedAt"
 	Name           string    `json:"name"`
 	Owner          OwnerJSON `json:"owner"`
-	EnvironmentIDs []string  `json:"environmentIds"`
+	EnvironmentIDs []string  `json:"environment_ids"` // converted to snake_case from "environmentIds"
 }
 
 type ProjectDescription struct {
@@ -55,32 +55,32 @@ type EnvironmentResponse struct {
 type EnvironmentJSON struct {
 	ID              string   `json:"id"`
 	Name            string   `json:"name"`
-	ProjectID       string   `json:"projectId"`
-	DatabasesIDs    []string `json:"databasesIds"`
-	RedisIDs        []string `json:"redisIds"`
-	ServiceIDs      []string `json:"serviceIds"`
-	EnvGroupIDs     []string `json:"envGroupIds"`
-	ProtectedStatus string   `json:"protectedStatus"`
+	ProjectID       string   `json:"project_id"`       // converted to snake_case from "projectId"
+	DatabasesIDs    []string `json:"databases_ids"`    // converted to snake_case from "databasesIds"
+	RedisIDs        []string `json:"redis_ids"`        // converted to snake_case from "redisIds"
+	ServiceIDs      []string `json:"service_ids"`      // converted to snake_case from "serviceIds"
+	EnvGroupIDs     []string `json:"env_group_ids"`    // converted to snake_case from "envGroupIds"
+	ProtectedStatus string   `json:"protected_status"` // converted to snake_case from "protectedStatus"
 }
 
 type EnvironmentDescription struct {
 	ID              string   `json:"id"`
 	Name            string   `json:"name"`
-	ProjectID       string   `json:"projectId"`
-	DatabasesIDs    []string `json:"databasesIds"`
-	RedisIDs        []string `json:"redisIds"`
-	ServiceIDs      []string `json:"serviceIds"`
-	EnvGroupIDs     []string `json:"envGroupIds"`
-	ProtectedStatus string   `json:"protectedStatus"`
+	ProjectID       string   `json:"project_id"`       // converted to snake_case from "projectId"
+	DatabasesIDs    []string `json:"databases_ids"`    // converted to snake_case from "databasesIds"
+	RedisIDs        []string `json:"redis_ids"`        // converted to snake_case from "redisIds"
+	ServiceIDs      []string `json:"service_ids"`      // converted to snake_case from "serviceIds"
+	EnvGroupIDs     []string `json:"env_group_ids"`    // converted to snake_case from "envGroupIds"
+	ProtectedStatus string   `json:"protected_status"` // converted to snake_case from "protectedStatus"
 }
 
 type IPAllowJSON struct {
-	CIDRBlock   string `json:"cidrBlock"`
+	CIDRBlock   string `json:"cidr_block"` // converted to snake_case from "cidrBlock"
 	Description string `json:"description"`
 }
 
 type IPAllow struct {
-	CIDRBlock   string `json:"cidrBlock"`
+	CIDRBlock   string `json:"cidr_block"` // converted to snake_case from "cidrBlock"
 	Description string `json:"description"`
 }
 
@@ -101,27 +101,27 @@ type PostgresResponse struct {
 
 type PostgresJSON struct {
 	ID                      string            `json:"id"`
-	IPAllowList             []IPAllowJSON     `json:"ipAllowList"`
-	CreatedAt               time.Time         `json:"createdAt"`
-	UpdatedAt               time.Time         `json:"updatedAt"`
-	ExpiresAt               time.Time         `json:"expiresAt"`
-	DatabaseName            string            `json:"databaseName"`
-	DatabaseUser            string            `json:"databaseUser"`
-	EnvironmentID           string            `json:"environmentId"`
-	HighAvailabilityEnabled bool              `json:"highAvailabilityEnabled"`
+	IPAllowList             []IPAllowJSON     `json:"ip_allow_list"`              // converted to snake_case from "ipAllowList"
+	CreatedAt               time.Time         `json:"created_at"`                 // converted to snake_case from "createdAt"
+	UpdatedAt               time.Time         `json:"updated_at"`                 // converted to snake_case from "updatedAt"
+	ExpiresAt               time.Time         `json:"expires_at"`                 // converted to snake_case from "expiresAt"
+	DatabaseName            string            `json:"database_name"`              // converted to snake_case from "databaseName"
+	DatabaseUser            string            `json:"database_user"`              // converted to snake_case from "databaseUser"
+	EnvironmentID           string            `json:"environment_id"`             // converted to snake_case from "environmentId"
+	HighAvailabilityEnabled bool              `json:"high_availability_enabled"`  // converted to snake_case from "highAvailabilityEnabled"
 	Name                    string            `json:"name"`
 	Owner                   OwnerJSON         `json:"owner"`
 	Plan                    string            `json:"plan"`
-	DiskSizeGB              int               `json:"diskSizeGB"`
-	PrimaryPostgresID       string            `json:"primaryPostgresID"`
+	DiskSizeGB              int               `json:"disk_size_gb"`       // converted to snake_case from "diskSizeGB"
+	PrimaryPostgresID       string            `json:"primary_postgres_id"`// converted to snake_case from "primaryPostgresID"
 	Region                  string            `json:"region"`
-	ReadReplicas            []ReadReplicaJSON `json:"readReplicas"`
+	ReadReplicas            []ReadReplicaJSON `json:"read_replicas"`      // converted to snake_case from "readReplicas"
 	Role                    string            `json:"role"`
 	Status                  string            `json:"status"`
 	Version                 string            `json:"version"`
 	Suspended               string            `json:"suspended"`
 	Suspenders              []string          `json:"suspenders"`
-	DashboardURL            string            `json:"dashboardUrl"`
+	DashboardURL            string            `json:"dashboard_url"` // converted to snake_case from "dashboardUrl"
 }
 
 type PostgresDescription struct {
@@ -151,7 +151,7 @@ type PostgresDescription struct {
 
 type BuildFilterJSON struct {
 	Paths        []string `json:"paths"`
-	IgnoredPaths []string `json:"ignoredPaths"`
+	IgnoredPaths []string `json:"ignored_paths"` // converted to snake_case from "ignoredPaths"
 }
 
 type BuildFilter struct {
@@ -170,12 +170,12 @@ type RegistryCredential struct {
 }
 
 type ServiceDetailsJSON struct {
-	BuildCommand string           `json:"buildCommand"`
-	ParentServer ParentServerJSON `json:"parentServer"`
-	PublishPath  string           `json:"publishPath"`
+	BuildCommand string           `json:"build_command"` // converted to snake_case from "buildCommand"
+	ParentServer ParentServerJSON `json:"parent_server"` // converted to snake_case from "parentServer"
+	PublishPath  string           `json:"publish_path"`  // converted to snake_case from "publishPath"
 	Previews     PreviewsJSON     `json:"previews"`
 	URL          string           `json:"url"`
-	BuildPlan    string           `json:"buildPlan"`
+	BuildPlan    string           `json:"build_plan"` // converted to snake_case from "buildPlan"
 }
 
 type ServiceDetails struct {
@@ -212,25 +212,25 @@ type ServiceResponse struct {
 
 type ServiceJSON struct {
 	ID                 string                 `json:"id"`
-	AutoDeploy         string                 `json:"autoDeploy"`
+	AutoDeploy         string                 `json:"auto_deploy"`         // converted to snake_case from "autoDeploy"
 	Branch             string                 `json:"branch"`
-	BuildFilter        BuildFilterJSON        `json:"buildFilter"`
-	CreatedAt          time.Time              `json:"createdAt"`
-	DashboardURL       string                 `json:"dashboardUrl"`
-	EnvironmentID      string                 `json:"environmentId"`
-	ImagePath          string                 `json:"imagePath"`
+	BuildFilter        BuildFilterJSON        `json:"build_filter"`        // converted to snake_case from "buildFilter"
+	CreatedAt          time.Time              `json:"created_at"`          // converted to snake_case from "createdAt"
+	DashboardURL       string                 `json:"dashboard_url"`       // converted to snake_case from "dashboardUrl"
+	EnvironmentID      string                 `json:"environment_id"`      // converted to snake_case from "environmentId"
+	ImagePath          string                 `json:"image_path"`          // converted to snake_case from "imagePath"
 	Name               string                 `json:"name"`
-	NotifyOnFail       string                 `json:"notifyOnFail"`
-	OwnerID            string                 `json:"ownerId"`
-	RegistryCredential RegistryCredentialJSON `json:"registryCredential"`
+	NotifyOnFail       string                 `json:"notify_on_fail"`      // converted to snake_case from "notifyOnFail"
+	OwnerID            string                 `json:"owner_id"`            // converted to snake_case from "ownerId"
+	RegistryCredential RegistryCredentialJSON `json:"registry_credential"` // converted to snake_case from "registryCredential"
 	Repo               string                 `json:"repo"`
-	RootDir            string                 `json:"rootDir"`
+	RootDir            string                 `json:"root_dir"`            // converted to snake_case from "rootDir"
 	Slug               string                 `json:"slug"`
 	Suspended          string                 `json:"suspended"`
 	Suspenders         []string               `json:"suspenders"`
 	Type               string                 `json:"type"`
-	UpdatedAt          time.Time              `json:"updatedAt"`
-	ServiceDetails     ServiceDetailsJSON     `json:"serviceDetails"`
+	UpdatedAt          time.Time              `json:"updated_at"`      // converted to snake_case from "updatedAt"
+	ServiceDetails     ServiceDetailsJSON     `json:"service_details"` // converted to snake_case from "serviceDetails"
 }
 
 type ServiceDescription struct {
@@ -263,13 +263,13 @@ type JobResponse struct {
 
 type JobJSON struct {
 	ID           string    `json:"id"`
-	ServiceID    string    `json:"serviceId"`
-	StartCommand string    `json:"startCommand"`
-	PlanID       string    `json:"planId"`
+	ServiceID    string    `json:"service_id"`    // converted to snake_case from "serviceId"
+	StartCommand string    `json:"start_command"` // converted to snake_case from "startCommand"
+	PlanID       string    `json:"plan_id"`       // converted to snake_case from "planId"
 	Status       string    `json:"status"`
-	CreatedAt    time.Time `json:"createdAt"`
-	StartedAt    time.Time `json:"startedAt"`
-	FinishedAt   time.Time `json:"finishedAt"`
+	CreatedAt    time.Time `json:"created_at"`   // converted to snake_case from "createdAt"
+	StartedAt    time.Time `json:"started_at"`   // converted to snake_case from "startedAt"
+	FinishedAt   time.Time `json:"finished_at"`  // converted to snake_case from "finishedAt"
 }
 
 type JobDescription struct {
@@ -291,11 +291,11 @@ type DiskResponse struct {
 type DiskJSON struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
-	SizeGB    int       `json:"sizeGB"`
-	MountPath string    `json:"mountPath"`
-	ServiceID string    `json:"serviceId"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	SizeGB    int       `json:"size_gb"`    // converted to snake_case from "sizeGB"
+	MountPath string    `json:"mount_path"` // converted to snake_case from "mountPath"
+	ServiceID string    `json:"service_id"` // converted to snake_case from "serviceId"
+	CreatedAt time.Time `json:"created_at"` // converted to snake_case from "createdAt"
+	UpdatedAt time.Time `json:"updated_at"` // converted to snake_case from "updatedAt"
 }
 
 type DiskDescription struct {
@@ -311,7 +311,7 @@ type DiskDescription struct {
 type CommitJSON struct {
 	ID        string    `json:"id"`
 	Message   string    `json:"message"`
-	CreatedAt time.Time `json:"createdAt"`
+	CreatedAt time.Time `json:"created_at"` // converted to snake_case from "createdAt"
 }
 
 type Commit struct {
@@ -323,7 +323,7 @@ type Commit struct {
 type ImageJSON struct {
 	Ref                string `json:"ref"`
 	SHA                string `json:"sha"`
-	RegistryCredential string `json:"registryCredential"`
+	RegistryCredential string `json:"registry_credential"` // converted to snake_case from "registryCredential"
 }
 
 type Image struct {
@@ -343,9 +343,9 @@ type DeployJSON struct {
 	Image      ImageJSON  `json:"image"`
 	Status     string     `json:"status"`
 	Trigger    string     `json:"trigger"`
-	FinishedAt time.Time  `json:"finishedAt"`
-	CreatedAt  time.Time  `json:"createdAt"`
-	UpdatedAt  time.Time  `json:"updatedAt"`
+	FinishedAt time.Time  `json:"finished_at"` // converted to snake_case from "finishedAt"
+	CreatedAt  time.Time  `json:"created_at"`  // converted to snake_case from "createdAt"
+	UpdatedAt  time.Time  `json:"updated_at"`  // converted to snake_case from "updatedAt"
 }
 
 type DeployDescription struct {
@@ -368,10 +368,10 @@ type BlueprintJSON struct {
 	ID       string    `json:"id"`
 	Name     string    `json:"name"`
 	Status   string    `json:"status"`
-	AutoSync bool      `json:"autoSync"`
+	AutoSync bool      `json:"auto_sync"` // converted to snake_case from "autoSync"
 	Repo     string    `json:"repo"`
 	Branch   string    `json:"branch"`
-	LastSync time.Time `json:"lastSync"`
+	LastSync time.Time `json:"last_sync"` // converted to snake_case from "lastSync"
 }
 
 type BlueprintDescription struct {
@@ -404,11 +404,11 @@ type EnvGroupResponse struct {
 type EnvGroupJSON struct {
 	ID            string            `json:"id"`
 	Name          string            `json:"name"`
-	OwnerID       string            `json:"ownerId"`
-	CreatedAt     time.Time         `json:"createdAt"`
-	UpdatedAt     time.Time         `json:"updatedAt"`
-	ServiceLinks  []ServiceLinkJSON `json:"serviceLinks"`
-	EnvironmentID string            `json:"environmentId"`
+	OwnerID       string            `json:"owner_id"`      // converted to snake_case from "ownerId"
+	CreatedAt     time.Time         `json:"created_at"`    // converted to snake_case from "createdAt"
+	UpdatedAt     time.Time         `json:"updated_at"`    // converted to snake_case from "updatedAt"
+	ServiceLinks  []ServiceLinkJSON `json:"service_links"` // converted to snake_case from "serviceLinks"
+	EnvironmentID string            `json:"environment_id"`// converted to snake_case from "environmentId"
 }
 
 type EnvGroupDescription struct {
@@ -463,7 +463,7 @@ type RouteDescription struct {
 
 type PostgresqlBackupJSON struct {
 	ID        string `json:"id"`
-	CreatedAt string `json:"createdAt"`
+	CreatedAt string `json:"created_at"` // converted to snake_case from "createdAt"
 	URL       string `json:"url"`
 }
 
