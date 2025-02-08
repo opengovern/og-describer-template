@@ -23,12 +23,12 @@ func tableRenderEnvironment(ctx context.Context) *plugin.Table {
 			// Top columns
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the environment.", Transform: transform.FromField("Description.ID")},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the environment.", Transform: transform.FromField("Description.Name")},
-			{Name: "projectId", Type: proto.ColumnType_STRING, Description: "The ID of the project associated with the environment.", Transform: transform.FromField("Description.ProjectID")},
-			{Name: "databasesIds", Type: proto.ColumnType_JSON, Description: "A list of database IDs associated with the environment.", Transform: transform.FromField("Description.DatabasesIDs")},
-			{Name: "redisIds", Type: proto.ColumnType_JSON, Description: "A list of Redis instance IDs associated with the environment.", Transform: transform.FromField("Description.RedisIDs")},
-			{Name: "serviceIds", Type: proto.ColumnType_JSON, Description: "A list of service IDs associated with the environment.", Transform: transform.FromField("Description.ServiceIDs")},
-			{Name: "envGroupIds", Type: proto.ColumnType_JSON, Description: "A list of environment group IDs associated with the environment.", Transform: transform.FromField("Description.EnvGroupIDs")},
-			{Name: "protectedStatus", Type: proto.ColumnType_STRING, Description: "The protected status of the environment.", Transform: transform.FromField("Description.ProtectedStatus")},
+			{Name: "project_id", Type: proto.ColumnType_STRING, Description: "The ID of the project associated with the environment.", Transform: transform.FromField("Description.ProjectID")},
+			{Name: "databases_ids", Type: proto.ColumnType_JSON, Description: "A list of database IDs associated with the environment.", Transform: transform.FromField("Description.DatabasesIDs")},
+			{Name: "redis_ids", Type: proto.ColumnType_JSON, Description: "A list of Redis instance IDs associated with the environment.", Transform: transform.FromField("Description.RedisIDs")},
+			{Name: "service_ids", Type: proto.ColumnType_JSON, Description: "A list of service IDs associated with the environment.", Transform: transform.FromField("Description.ServiceIDs")},
+			{Name: "env_group_ids", Type: proto.ColumnType_JSON, Description: "A list of environment group IDs associated with the environment.", Transform: transform.FromField("Description.EnvGroupIDs")},
+			{Name: "protected_status", Type: proto.ColumnType_STRING, Description: "The protected status of the environment.", Transform: transform.FromField("Description.ProtectedStatus")},
 		}),
 	}
 }

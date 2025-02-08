@@ -26,9 +26,9 @@ func tableRenderDeploy(ctx context.Context) *plugin.Table {
 			{Name: "image", Type: proto.ColumnType_JSON, Description: "The image details used in the deployment.", Transform: transform.FromField("Description.Image")},
 			{Name: "status", Type: proto.ColumnType_STRING, Description: "The current status of the deployment (e.g., pending, completed).", Transform: transform.FromField("Description.Status")},
 			{Name: "trigger", Type: proto.ColumnType_STRING, Description: "The trigger that initiated the deployment.", Transform: transform.FromField("Description.Trigger")},
-			{Name: "finishedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment finished.", Transform: transform.FromField("Description.FinishedAt")},
-			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment was created.", Transform: transform.FromField("Description.CreatedAt")},
-			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last update to the deployment.", Transform: transform.FromField("Description.UpdatedAt")},
+			{Name: "finished_at", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment finished.", Transform: transform.FromField("Description.FinishedAt")},
+			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of when the deployment was created.", Transform: transform.FromField("Description.CreatedAt")},
+			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last update to the deployment.", Transform: transform.FromField("Description.UpdatedAt")},
 		}),
 	}
 }

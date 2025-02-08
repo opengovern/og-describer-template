@@ -24,10 +24,10 @@ func tableRenderBlueprint(ctx context.Context) *plugin.Table {
 			{Name: "id", Type: proto.ColumnType_STRING, Description: "The unique identifier for the blueprint.", Transform: transform.FromField("Description.ID")},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the blueprint.", Transform: transform.FromField("Description.Name")},
 			{Name: "status", Type: proto.ColumnType_STRING, Description: "The current status of the blueprint (e.g., active, inactive).", Transform: transform.FromField("Description.Status")},
-			{Name: "autoSync", Type: proto.ColumnType_BOOL, Description: "Indicates whether auto-sync is enabled for the blueprint.", Transform: transform.FromField("Description.AutoSync")},
+			{Name: "auto_sync", Type: proto.ColumnType_BOOL, Description: "Indicates whether auto-sync is enabled for the blueprint.", Transform: transform.FromField("Description.AutoSync")},
 			{Name: "repo", Type: proto.ColumnType_STRING, Description: "The repository associated with the blueprint.", Transform: transform.FromField("Description.Repo")},
 			{Name: "branch", Type: proto.ColumnType_STRING, Description: "The branch in the repository for the blueprint.", Transform: transform.FromField("Description.Branch")},
-			{Name: "lastSync", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last sync for the blueprint.", Transform: transform.FromField("Description.LastSync")},
+			{Name: "last_sync", Type: proto.ColumnType_TIMESTAMP, Description: "The timestamp of the last sync for the blueprint.", Transform: transform.FromField("Description.LastSync")},
 		}),
 	}
 }
