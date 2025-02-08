@@ -23,6 +23,12 @@ func tableGitHubUserColumns() []*plugin.Column {
 	cols := sharedUserColumns()
 
 	counts := []*plugin.Column{
+		{
+			Name:        "organization",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "",
+		},
 		{Name: "repositories_total_disk_usage", Type: proto.ColumnType_INT, Description: "Total disk spaced used by the users repositories.",
 			Transform: transform.FromField("Description.RepositoriesTotalDiskUsage")},
 		{Name: "followers_total_count", Type: proto.ColumnType_INT, Description: "Count of how many users this user follows.",

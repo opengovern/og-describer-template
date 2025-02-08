@@ -157,7 +157,7 @@ func getVersionOutput(
 	}
 
 	// Deduplicate by (version.ID + actualDigest)
-	deduped := deduplicateVersionOutputsByDigest(concurrentResults, version.ID)
+	deduped := deduplicateVersionOutputsByDigest(concurrentResults, version.ID, org)
 	return deduped, nil
 }
 
@@ -167,7 +167,7 @@ func getVersionOutput(
 //   - Collapses duplicates by (ID, actualDigest).
 //
 // -----------------------------------------------------------------------------
-func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID int) []models.Resource {
+func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID int, organization string) []models.Resource {
 	// Key = "versionID|digest"
 	type dedupKey struct {
 		versionID string
@@ -208,6 +208,7 @@ func deduplicateVersionOutputsByDigest(resources []models.Resource, versionID in
 	// Convert the deduped map back to a []models.Resource
 	for _, cpdPtr := range dedupMap {
 		cpd := *cpdPtr
+		cpd.Organization = organization
 		res := models.Resource{
 			ID:          strconv.Itoa(cpd.ID),
 			Name:        cpd.Name,
@@ -301,6 +302,7 @@ func fetchAndAssembleOutput(
 		TotalSize:             totalSize,
 		Metadata:              version.Metadata,
 		Manifest:              manifestInterface,
+		Organization:          org,
 	}
 	return ov, nil
 }

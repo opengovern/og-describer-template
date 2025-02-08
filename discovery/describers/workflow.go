@@ -96,6 +96,8 @@ func GetRepositoryWorkflows(ctx context.Context, githubClient model.GitHubClient
 					WorkFlowFileContent:     &content,
 					WorkFlowFileContentJson: fileContent,
 					Pipeline:                pipeline,
+					Organization:            owner,
+					RepositoryName:          repo,
 				},
 			}
 			if stream != nil {
@@ -187,6 +189,8 @@ func GetRepositoryWorkflow(ctx context.Context, githubClient model.GitHubClient,
 			WorkFlowFileContent:     &content,
 			WorkFlowFileContentJson: fileContent,
 			Pipeline:                pipeline,
+			Organization:            organizationName,
+			RepositoryName:          repositoryName,
 		},
 	}
 	if stream != nil {

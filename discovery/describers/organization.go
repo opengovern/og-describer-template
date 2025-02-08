@@ -43,6 +43,7 @@ func GetOrganizationList(ctx context.Context, githubClient model.GitHubClient, o
 		ID:   strconv.Itoa(org.Id),
 		Name: org.Name,
 		Description: model.OrganizationDescription{
+			Organization:                           organizationName,
 			Id:                                     org.Id,
 			NodeId:                                 org.NodeId,
 			Name:                                   org.Name,

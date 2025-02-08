@@ -1526,6 +1526,7 @@ func fetchPackageDetails(sdk *resilientbridge.ResilientBridge, org, packageType,
 	}
 
 	var values []models.Resource
+	pd.Organization = org
 
 	value := models.Resource{
 		ID:          strconv.Itoa(pd.ID),

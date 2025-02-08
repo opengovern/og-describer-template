@@ -4,6 +4,7 @@ import (
 	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableGitHubNPMPackage() *plugin.Table {
@@ -30,6 +31,12 @@ func tableGitHubNPMPackage() *plugin.Table {
 			// Nested structure columns
 			{Name: "owner", Type: proto.ColumnType_JSON, Description: "Owner details of the package."},
 			{Name: "repository", Type: proto.ColumnType_JSON, Description: "Repository details associated with the package."},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
 		}),
 	}
 }

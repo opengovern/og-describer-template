@@ -24,6 +24,18 @@ func tableGitHubRelease() *plugin.Table {
 			{Name: "repository_full_name", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
 				Description: "Full name of the repository that contains the release."},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
 
 			// Other columns
 			{Name: "assets", Type: proto.ColumnType_JSON,

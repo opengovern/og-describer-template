@@ -191,21 +191,26 @@ func GetRepositoryCommits(ctx context.Context, sdk *resilientbridge.ResilientBri
 				})
 			}
 
+			repoFullName := formRepositoryFullName(owner, repo)
+
 			value := models.Resource{
 				ID:   commit.SHA,
 				Name: commit.SHA,
 				Description: model.CommitDescription{
-					SHA:          &commit.SHA,
-					NodeID:       &commit.NodeID,
-					CommitDetail: commitDetail,
-					URL:          &commit.URL,
-					HTMLURL:      &commit.HTMLURL,
-					CommentsURL:  &commit.CommentsURL,
-					Author:       author,
-					Committer:    commiter,
-					Parents:      parents,
-					Stats:        stats,
-					Files:        files,
+					SHA:                &commit.SHA,
+					NodeID:             &commit.NodeID,
+					CommitDetail:       commitDetail,
+					URL:                &commit.URL,
+					HTMLURL:            &commit.HTMLURL,
+					CommentsURL:        &commit.CommentsURL,
+					Author:             author,
+					Committer:          commiter,
+					Parents:            parents,
+					Stats:              stats,
+					Files:              files,
+					Organization:       owner,
+					RepositoryName:     repo,
+					RepositoryFullName: repoFullName,
 				},
 			}
 			results[j.index] = value

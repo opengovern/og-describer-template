@@ -24,6 +24,12 @@ func tableGitHubContainerPackage() *plugin.Table {
 				Transform:   transform.FromField("Description.ID"),
 				Description: "Unique identifier for the package."},
 			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
 				Name:        "digest",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Digest"),

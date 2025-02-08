@@ -54,6 +54,7 @@ func GetUser(ctx context.Context, githubClient model.GitHubClient, organizationN
 			SponsorsTotalCount:            user.Sponsors.TotalCount,
 			StarredRepositoriesTotalCount: user.StarredRepositories.TotalCount,
 			WatchingTotalCount:            user.Watching.TotalCount,
+			Organization:                  organizationName,
 		},
 	}
 	if stream != nil {

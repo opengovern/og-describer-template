@@ -267,6 +267,7 @@ func GetIssueList(ctx context.Context, githubClient model.GitHubClient, organiza
 						Labels:                  labels,
 						AssigneesTotalCount:     issue.Assignees.TotalCount,
 						Assignees:               assignees,
+						Organization:            organizationName,
 					},
 				}
 				if stream != nil {
@@ -532,6 +533,7 @@ func GetIssue(ctx context.Context, githubClient model.GitHubClient, organization
 			Labels:                  labels,
 			AssigneesTotalCount:     query.Repository.Issue.Assignees.TotalCount,
 			Assignees:               assignees,
+			Organization:            organizationName,
 		},
 	}
 	if stream != nil {

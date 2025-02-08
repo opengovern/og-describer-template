@@ -33,6 +33,8 @@ func GetReleaseList(ctx context.Context, githubClient model.GitHubClient, organi
 					Description: model.ReleaseDescription{
 						RepositoryRelease:  *release,
 						RepositoryFullName: r.GetFullName(),
+						Organization:       organizationName,
+						RepositoryName:     r.GetName(),
 					},
 				}
 				if stream != nil {

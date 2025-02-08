@@ -62,6 +62,7 @@ func ListRepositoryWebhooks(ctx context.Context, githubClient model.GitHubClient
 					PingURL:       webhook.PingURL,
 					DeliveriesURL: webhook.DeliveriesURL,
 					LastResponse:  lastResponse,
+					Organization:  organizationName,
 				},
 			}
 			if stream != nil {

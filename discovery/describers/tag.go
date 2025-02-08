@@ -67,6 +67,8 @@ func GetRepositoryTags(ctx context.Context, githubClient model.GitHubClient, str
 					TaggerLogin:        tag.Target.Tag.Tagger.Name,
 					Message:            tag.Target.Tag.Message,
 					Commit:             tag.Target.Commit,
+					Organization:       owner,
+					RepositoryName:     repo,
 				},
 			}
 			if stream != nil {

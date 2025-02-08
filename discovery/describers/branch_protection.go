@@ -174,6 +174,8 @@ func GetRepositoryBranchProtections(ctx context.Context, githubClient model.GitH
 					BypassPullRequestAllowanceApps:  bypassPullRequestAllowanceApps,
 					BypassPullRequestAllowanceTeams: bypassPullRequestAllowanceTeams,
 					BypassPullRequestAllowanceUsers: bypassPullRequestAllowanceUsers,
+					Organization:                    owner,
+					RepositoryName:                  repo,
 				},
 			}
 			if stream != nil {

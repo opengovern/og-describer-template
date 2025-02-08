@@ -52,6 +52,7 @@ func GetLicenseList(ctx context.Context, githubClient model.GitHubClient, organi
 				Limitations:    query.Repository.LicenseInfo.Limitations,
 				Permissions:    query.Repository.LicenseInfo.Permissions,
 				PseudoLicense:  query.Repository.LicenseInfo.PseudoLicense,
+				Organization:   organizationName,
 			},
 		}
 		if stream != nil {
@@ -101,6 +102,7 @@ func GetLicense(ctx context.Context, githubClient model.GitHubClient, organizati
 			Limitations:    query.License.Limitations,
 			Permissions:    query.License.Permissions,
 			PseudoLicense:  query.License.PseudoLicense,
+			Organization:   organizationName,
 		},
 	}
 	if stream != nil {

@@ -72,8 +72,10 @@ func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClie
 				ID:   strconv.Itoa(deployment.Id),
 				Name: strconv.Itoa(deployment.Id),
 				Description: model.RepoDeploymentDescription{
-					Deployment:   deployment,
-					RepoFullName: repoFullName,
+					Deployment:     deployment,
+					RepoFullName:   repoFullName,
+					Organization:   owner,
+					RepositoryName: repo,
 				},
 			}
 			if stream != nil {

@@ -22,6 +22,18 @@ func gitHubRepositoryEnvironmentColumns() []*plugin.Column {
 		{Name: "name", Type: proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Name"),
 			Description: "The name of the environment."},
+		{
+			Name:        "organization",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "",
+		},
+		{
+			Name:        "repository_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.RepositoryName"),
+			Description: "",
+		},
 	}
 }
 

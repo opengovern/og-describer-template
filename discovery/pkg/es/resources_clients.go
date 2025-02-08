@@ -100,7 +100,9 @@ var listArtifactFilters = map[string]string{
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"size_in_bytes":        "Description.SizeInBytes",
 }
 
@@ -170,7 +172,9 @@ var getArtifactFilters = map[string]string{
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"size_in_bytes":        "Description.SizeInBytes",
 }
 
@@ -314,8 +318,10 @@ var listRunnerFilters = map[string]string{
 	"id":                   "Description.ID",
 	"labels":               "Description.Labels",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"os":                   "Description.OS",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"status":               "Description.Status",
 }
 
@@ -384,8 +390,10 @@ var getRunnerFilters = map[string]string{
 	"id":                   "Description.ID",
 	"labels":               "Description.Labels",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"os":                   "Description.OS",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"status":               "Description.Status",
 }
 
@@ -526,7 +534,9 @@ func (p SecretPaginator) NextPage(ctx context.Context) ([]Secret, error) {
 
 var listSecretFilters = map[string]string{
 	"name":                      "Description.Name",
+	"organization":              "Description.Organization",
 	"repository_full_name":      "Description.RepoFullName",
+	"repository_name":           "Description.RepositoryName",
 	"selected_repositories_url": "Description.SelectedRepositoriesURL",
 	"visibility":                "Description.Visibility",
 }
@@ -593,7 +603,9 @@ func ListSecret(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 
 var getSecretFilters = map[string]string{
 	"name":                      "Description.Name",
+	"organization":              "Description.Organization",
 	"repository_full_name":      "Description.RepoFullName",
+	"repository_name":           "Description.RepositoryName",
 	"selected_repositories_url": "Description.SelectedRepositoriesURL",
 	"visibility":                "Description.Visibility",
 }
@@ -747,8 +759,11 @@ var listWorkflowRunFilters = map[string]string{
 	"html_url":             "Description.HTMLURL",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"referenced_workflows": "Description.ReferencedWorkflows",
 	"repository":           "Description.Repository",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"run_attempt":          "Description.RunAttempt",
 	"run_number":           "Description.RunNumber",
 	"run_started_at":       "Description.RunStartedAt",
@@ -831,8 +846,11 @@ var getWorkflowRunFilters = map[string]string{
 	"html_url":             "Description.HTMLURL",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"referenced_workflows": "Description.ReferencedWorkflows",
 	"repository":           "Description.Repository",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"run_attempt":          "Description.RunAttempt",
 	"run_number":           "Description.RunNumber",
 	"run_started_at":       "Description.RunStartedAt",
@@ -980,8 +998,10 @@ var listBranchFilters = map[string]string{
 	"branch_protection_rule": "Description.BranchProtectionRule",
 	"commit":                 "Description.Commit",
 	"name":                   "Description.Name",
+	"organization":           "Description.Organization",
 	"protected":              "Description.Protected",
 	"repository_full_name":   "Description.RepoFullName",
+	"repository_name":        "Description.RepositoryName",
 }
 
 func ListBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1048,8 +1068,10 @@ var getBranchFilters = map[string]string{
 	"branch_protection_rule": "Description.BranchProtectionRule",
 	"commit":                 "Description.Commit",
 	"name":                   "Description.Name",
+	"organization":           "Description.Organization",
 	"protected":              "Description.Protected",
 	"repository_full_name":   "Description.RepoFullName",
+	"repository_name":        "Description.RepositoryName",
 }
 
 func GetBranch(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1205,11 +1227,13 @@ var listBranchProtectionFilters = map[string]string{
 	"lock_branch":                         "Description.LockBranch",
 	"matching_branches":                   "Description.MatchingBranches",
 	"node_id":                             "Description.NodeId",
+	"organization":                        "Description.Organization",
 	"pattern":                             "Description.Pattern",
 	"push_allowance_apps":                 "Description.PushAllowanceApps",
 	"push_allowance_teams":                "Description.PushAllowanceTeams",
 	"push_allowance_users":                "Description.PushAllowanceUsers",
 	"repository_full_name":                "Description.RepoFullName",
+	"repository_name":                     "Description.RepositoryName",
 	"require_last_push_approval":          "Description.RequireLastPushApproval",
 	"required_approving_review_count":     "Description.RequiredApprovingReviewCount",
 	"required_deployment_environments":    "Description.RequiredDeploymentEnvironments",
@@ -1304,11 +1328,13 @@ var getBranchProtectionFilters = map[string]string{
 	"lock_branch":                         "Description.LockBranch",
 	"matching_branches":                   "Description.MatchingBranches",
 	"node_id":                             "Description.NodeId",
+	"organization":                        "Description.Organization",
 	"pattern":                             "Description.Pattern",
 	"push_allowance_apps":                 "Description.PushAllowanceApps",
 	"push_allowance_teams":                "Description.PushAllowanceTeams",
 	"push_allowance_users":                "Description.PushAllowanceUsers",
 	"repository_full_name":                "Description.RepoFullName",
+	"repository_name":                     "Description.RepositoryName",
 	"require_last_push_approval":          "Description.RequireLastPushApproval",
 	"required_approving_review_count":     "Description.RequiredApprovingReviewCount",
 	"required_deployment_environments":    "Description.RequiredDeploymentEnvironments",
@@ -1461,17 +1487,20 @@ func (p CommitPaginator) NextPage(ctx context.Context) ([]Commit, error) {
 }
 
 var listCommitFilters = map[string]string{
-	"author":        "Description.Author",
-	"comments_url":  "Description.CommentsURL",
-	"commit_detail": "Description.CommitDetail",
-	"commiter":      "Description.Committer",
-	"files":         "Description.Files",
-	"html_url":      "Description.HTMLURL",
-	"node_id":       "Description.NodeID",
-	"parents":       "Description.Parents",
-	"sha":           "Description.SHA",
-	"stats":         "Description.Stats",
-	"url":           "Description.URL",
+	"author":               "Description.Author",
+	"comments_url":         "Description.CommentsURL",
+	"commit_detail":        "Description.CommitDetail",
+	"commiter":             "Description.Committer",
+	"files":                "Description.Files",
+	"html_url":             "Description.HTMLURL",
+	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
+	"parents":              "Description.Parents",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
+	"sha":                  "Description.SHA",
+	"stats":                "Description.Stats",
+	"url":                  "Description.URL",
 }
 
 func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1535,17 +1564,20 @@ func ListCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 }
 
 var getCommitFilters = map[string]string{
-	"author":        "Description.Author",
-	"comments_url":  "Description.CommentsURL",
-	"commit_detail": "Description.CommitDetail",
-	"commiter":      "Description.Committer",
-	"files":         "Description.Files",
-	"html_url":      "Description.HTMLURL",
-	"node_id":       "Description.NodeID",
-	"parents":       "Description.Parents",
-	"sha":           "Description.SHA",
-	"stats":         "Description.Stats",
-	"url":           "Description.URL",
+	"author":               "Description.Author",
+	"comments_url":         "Description.CommentsURL",
+	"commit_detail":        "Description.CommitDetail",
+	"commiter":             "Description.Committer",
+	"files":                "Description.Files",
+	"html_url":             "Description.HTMLURL",
+	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
+	"parents":              "Description.Parents",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
+	"sha":                  "Description.SHA",
+	"stats":                "Description.Stats",
+	"url":                  "Description.URL",
 }
 
 func GetCommit(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -1708,6 +1740,7 @@ var listIssueFilters = map[string]string{
 	"milestone":                  "Description.Milestone",
 	"node_id":                    "Description.NodeId",
 	"number":                     "Description.Number",
+	"organization":               "Description.Organization",
 	"repository_full_name":       "Description.RepositoryFullName",
 	"state":                      "Description.State",
 	"state_reason":               "Description.StateReason",
@@ -1808,6 +1841,7 @@ var getIssueFilters = map[string]string{
 	"milestone":                  "Description.Milestone",
 	"node_id":                    "Description.NodeId",
 	"number":                     "Description.Number",
+	"organization":               "Description.Organization",
 	"repository_full_name":       "Description.RepositoryFullName",
 	"state":                      "Description.State",
 	"state_reason":               "Description.StateReason",
@@ -1968,6 +2002,7 @@ var listLicenseFilters = map[string]string{
 	"limitations":    "Description.Limitations",
 	"name":           "Description.Name",
 	"nickname":       "Description.Nickname",
+	"organization":   "Description.Organization",
 	"permissions":    "Description.Permissions",
 	"pseudo_license": "Description.PseudoLicense",
 	"spdx_id":        "Description.SpdxId",
@@ -2044,6 +2079,7 @@ var getLicenseFilters = map[string]string{
 	"limitations":    "Description.Limitations",
 	"name":           "Description.Name",
 	"nickname":       "Description.Nickname",
+	"organization":   "Description.Organization",
 	"permissions":    "Description.Permissions",
 	"pseudo_license": "Description.PseudoLicense",
 	"spdx_id":        "Description.SpdxId",
@@ -2229,6 +2265,7 @@ var listOrganizationFilters = map[string]string{
 	"name":                                         "Description.Name",
 	"new_team_url":                                 "Description.NewTeamUrl",
 	"node_id":                                      "Description.NodeId",
+	"organization":                                 "Description.Organization",
 	"packages_total_count":                         "Description.PackagesTotalCount",
 	"pinnable_items_total_count":                   "Description.PinnableItemsTotalCount",
 	"pinned_items_remaining":                       "Description.PinnedItemsRemaining",
@@ -2363,6 +2400,7 @@ var getOrganizationFilters = map[string]string{
 	"name":                                         "Description.Name",
 	"new_team_url":                                 "Description.NewTeamUrl",
 	"node_id":                                      "Description.NodeId",
+	"organization":                                 "Description.Organization",
 	"packages_total_count":                         "Description.PackagesTotalCount",
 	"pinnable_items_total_count":                   "Description.PinnableItemsTotalCount",
 	"pinned_items_remaining":                       "Description.PinnedItemsRemaining",
@@ -2748,6 +2786,7 @@ var listOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
+	"organization":                         "Description.Organization",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -2829,6 +2868,7 @@ var getOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
+	"organization":                         "Description.Organization",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -3234,8 +3274,10 @@ var listPullRequestFilters = map[string]string{
 	"milestone":                   "Description.Milestone",
 	"node_id":                     "Description.NodeId",
 	"number":                      "Description.Number",
+	"organization":                "Description.Organization",
 	"permalink":                   "Description.Permalink",
 	"repository_full_name":        "Description.RepoFullName",
+	"repository_name":             "Description.RepositoryName",
 	"revert_url":                  "Description.RevertUrl",
 	"review_decision":             "Description.ReviewDecision",
 	"review_requests_total_count": "Description.ReviewRequestsTotalCount",
@@ -3359,8 +3401,10 @@ var getPullRequestFilters = map[string]string{
 	"milestone":                   "Description.Milestone",
 	"node_id":                     "Description.NodeId",
 	"number":                      "Description.Number",
+	"organization":                "Description.Organization",
 	"permalink":                   "Description.Permalink",
 	"repository_full_name":        "Description.RepoFullName",
+	"repository_name":             "Description.RepositoryName",
 	"revert_url":                  "Description.RevertUrl",
 	"review_decision":             "Description.ReviewDecision",
 	"review_requests_total_count": "Description.ReviewRequestsTotalCount",
@@ -3509,10 +3553,10 @@ func (p RepositoryPaginator) NextPage(ctx context.Context) ([]Repository, error)
 }
 
 var listRepositoryFilters = map[string]string{
-	"GitHubRepoID":               "Description.GitHubRepoID",
 	"created_at":                 "Description.CreatedAt",
 	"default_branch_ref":         "Description.DefaultBranchRef",
 	"description":                "Description.Description",
+	"github_repo_id":             "Description.GitHubRepoID",
 	"homepage_url":               "Description.HomepageURL",
 	"is_active":                  "Description.IsActive",
 	"is_empty":                   "Description.IsEmpty",
@@ -3532,6 +3576,7 @@ var listRepositoryFilters = map[string]string{
 	"pushed_at":                  "Description.PushedAt",
 	"repo_settings":              "Description.RepositorySettings",
 	"repo_urls":                  "Description.RepoURLs",
+	"repository_full_name":       "Description.RepositoryFullName",
 	"security_settings":          "Description.SecuritySettings",
 	"source":                     "Description.Source",
 	"topics":                     "Description.Topics",
@@ -3600,10 +3645,10 @@ func ListRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getRepositoryFilters = map[string]string{
-	"GitHubRepoID":               "Description.GitHubRepoID",
 	"created_at":                 "Description.CreatedAt",
 	"default_branch_ref":         "Description.DefaultBranchRef",
 	"description":                "Description.Description",
+	"github_repo_id":             "Description.GitHubRepoID",
 	"homepage_url":               "Description.HomepageURL",
 	"is_active":                  "Description.IsActive",
 	"is_empty":                   "Description.IsEmpty",
@@ -3623,6 +3668,7 @@ var getRepositoryFilters = map[string]string{
 	"pushed_at":                  "Description.PushedAt",
 	"repo_settings":              "Description.RepositorySettings",
 	"repo_urls":                  "Description.RepoURLs",
+	"repository_full_name":       "Description.RepositoryFullName",
 	"security_settings":          "Description.SecuritySettings",
 	"source":                     "Description.Source",
 	"topics":                     "Description.Topics",
@@ -3775,8 +3821,10 @@ var listReleaseFilters = map[string]string{
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
 	"prerelease":           "Description.Prerelease",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"tag_name":             "Description.TagName",
 	"tarball_url":          "Description.TarballURL",
 	"target_commitish":     "Description.TargetCommitish",
@@ -3855,8 +3903,10 @@ var getReleaseFilters = map[string]string{
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeID",
+	"organization":         "Description.Organization",
 	"prerelease":           "Description.Prerelease",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"tag_name":             "Description.TagName",
 	"tarball_url":          "Description.TarballURL",
 	"target_commitish":     "Description.TargetCommitish",
@@ -4002,8 +4052,10 @@ func (p RepoCollaboratorsPaginator) NextPage(ctx context.Context) ([]RepoCollabo
 
 var listRepoCollaboratorsFilters = map[string]string{
 	"affiliation":          "Description.Affiliation",
+	"organization":         "Description.Organization",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"user_login":           "Description.UserLogin",
 }
 
@@ -4069,8 +4121,10 @@ func ListRepoCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 
 var getRepoCollaboratorsFilters = map[string]string{
 	"affiliation":          "Description.Affiliation",
+	"organization":         "Description.Organization",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"user_login":           "Description.UserLogin",
 }
 
@@ -4209,7 +4263,10 @@ func (p RepoAlertDependabotPaginator) NextPage(ctx context.Context) ([]RepoAlert
 	return values, nil
 }
 
-var listRepoAlertDependabotFilters = map[string]string{}
+var listRepoAlertDependabotFilters = map[string]string{
+	"organization":    "Description.Organization",
+	"repository_name": "Description.RepositoryName",
+}
 
 func ListRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListRepoAlertDependabot")
@@ -4271,7 +4328,10 @@ func ListRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin
 	return nil, nil
 }
 
-var getRepoAlertDependabotFilters = map[string]string{}
+var getRepoAlertDependabotFilters = map[string]string{
+	"organization":    "Description.Organization",
+	"repository_name": "Description.RepositoryName",
+}
 
 func GetRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetRepoAlertDependabot")
@@ -4417,10 +4477,12 @@ var listRepoDeploymentFilters = map[string]string{
 	"latest_environment":   "Description.LatestEnvironment",
 	"latest_status":        "Description.LatestStatus",
 	"node_id":              "Description.NodeId",
+	"organization":         "Description.Organization",
 	"original_environment": "Description.OriginalEnvironment",
 	"payload":              "Description.Payload",
 	"ref":                  "Description.Ref",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"state":                "Description.State",
 	"task":                 "Description.Task",
 }
@@ -4494,10 +4556,12 @@ var getRepoDeploymentFilters = map[string]string{
 	"latest_environment":   "Description.LatestEnvironment",
 	"latest_status":        "Description.LatestStatus",
 	"node_id":              "Description.NodeId",
+	"organization":         "Description.Organization",
 	"original_environment": "Description.OriginalEnvironment",
 	"payload":              "Description.Payload",
 	"ref":                  "Description.Ref",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"state":                "Description.State",
 	"task":                 "Description.Task",
 }
@@ -4641,7 +4705,9 @@ var listRepoEnvironmentFilters = map[string]string{
 	"id":                   "Description.Id",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeId",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 }
 
 func ListRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -4708,7 +4774,9 @@ var getRepoEnvironmentFilters = map[string]string{
 	"id":                   "Description.Id",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeId",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 }
 
 func GetRepoEnvironment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -4853,7 +4921,9 @@ var listRepoRuleSetFilters = map[string]string{
 	"enforcement":          "Description.Enforcement",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"rules":                "Description.Rules",
 }
 
@@ -4924,7 +4994,9 @@ var getRepoRuleSetFilters = map[string]string{
 	"enforcement":          "Description.Enforcement",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_name":      "Description.RepositoryName",
 	"rules":                "Description.Rules",
 }
 
@@ -5069,8 +5141,10 @@ var listRepoSBOMFilters = map[string]string{
 	"document_describes":   "Description.DocumentDescribes",
 	"document_namespace":   "Description.DocumentNamespace",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"packages":             "Description.Packages",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"spdx_id":              "Description.SPDXID",
 	"spdx_version":         "Description.SPDXVersion",
 }
@@ -5141,8 +5215,10 @@ var getRepoSBOMFilters = map[string]string{
 	"document_describes":   "Description.DocumentDescribes",
 	"document_namespace":   "Description.DocumentNamespace",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"packages":             "Description.Packages",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"spdx_id":              "Description.SPDXID",
 	"spdx_version":         "Description.SPDXVersion",
 }
@@ -5290,7 +5366,9 @@ var listRepoVulnerabilityAlertFilters = map[string]string{
 	"dismisser":                    "Description.Dismisser",
 	"node_id":                      "Description.NodeID",
 	"number":                       "Description.Number",
+	"organization":                 "Description.Organization",
 	"repository_full_name":         "Description.RepositoryFullName",
+	"repository_name":              "Description.RepositoryName",
 	"security_advisory":            "Description.SecurityAdvisory",
 	"security_vulnerability":       "Description.SecurityVulnerability",
 	"severity":                     "Description.Severity",
@@ -5368,7 +5446,9 @@ var getRepoVulnerabilityAlertFilters = map[string]string{
 	"dismisser":                    "Description.Dismisser",
 	"node_id":                      "Description.NodeID",
 	"number":                       "Description.Number",
+	"organization":                 "Description.Organization",
 	"repository_full_name":         "Description.RepositoryFullName",
+	"repository_name":              "Description.RepositoryName",
 	"security_advisory":            "Description.SecurityAdvisory",
 	"security_vulnerability":       "Description.SecurityVulnerability",
 	"severity":                     "Description.Severity",
@@ -5517,7 +5597,9 @@ var listTagFilters = map[string]string{
 	"commit":               "Description.Commit",
 	"message":              "Description.Message",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"tagger_login":         "Description.TaggerLogin",
 	"tagger_name":          "Description.TaggerName",
 }
@@ -5586,7 +5668,9 @@ var getTagFilters = map[string]string{
 	"commit":               "Description.Commit",
 	"message":              "Description.Message",
 	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
 	"tagger_login":         "Description.TaggerLogin",
 	"tagger_name":          "Description.TaggerName",
 }
@@ -6225,6 +6309,7 @@ var listUserFilters = map[string]string{
 	"name":                             "Description.Name",
 	"node_id":                          "Description.NodeId",
 	"open_pull_requests_total_count":   "Description.OpenPullRequestsTotalCount",
+	"organization":                     "Description.Organization",
 	"organizations_total_count":        "Description.OrganizationsTotalCount",
 	"packages_total_count":             "Description.PackagesTotalCount",
 	"pinned_items_remaining":           "Description.PinnedItemsRemaining",
@@ -6344,6 +6429,7 @@ var getUserFilters = map[string]string{
 	"name":                             "Description.Name",
 	"node_id":                          "Description.NodeId",
 	"open_pull_requests_total_count":   "Description.OpenPullRequestsTotalCount",
+	"organization":                     "Description.Organization",
 	"organizations_total_count":        "Description.OrganizationsTotalCount",
 	"packages_total_count":             "Description.PackagesTotalCount",
 	"pinned_items_remaining":           "Description.PinnedItemsRemaining",
@@ -6507,9 +6593,11 @@ var listWorkflowFilters = map[string]string{
 	"id":                         "Description.ID",
 	"name":                       "Description.Name",
 	"node_id":                    "Description.NodeID",
+	"organization":               "Description.Organization",
 	"path":                       "Description.Path",
 	"pipeline":                   "Description.Pipeline",
 	"repository_full_name":       "Description.RepositoryFullName",
+	"repository_name":            "Description.RepositoryName",
 	"state":                      "Description.State",
 	"url":                        "Description.URL",
 	"workflow_file_content":      "Description.WorkFlowFileContent",
@@ -6582,9 +6670,11 @@ var getWorkflowFilters = map[string]string{
 	"id":                         "Description.ID",
 	"name":                       "Description.Name",
 	"node_id":                    "Description.NodeID",
+	"organization":               "Description.Organization",
 	"path":                       "Description.Path",
 	"pipeline":                   "Description.Pipeline",
 	"repository_full_name":       "Description.RepositoryFullName",
+	"repository_name":            "Description.RepositoryName",
 	"state":                      "Description.State",
 	"url":                        "Description.URL",
 	"workflow_file_content":      "Description.WorkFlowFileContent",
@@ -6727,16 +6817,17 @@ func (p ContainerPackagePaginator) NextPage(ctx context.Context) ([]ContainerPac
 }
 
 var listContainerPackageFilters = map[string]string{
-	"created_at":  "Description.CreatedAt",
-	"digest":      "Description.Digest",
-	"id":          "Description.ID",
-	"manifest":    "Description.Manifest",
-	"media_type":  "Description.MediaType",
-	"metadata":    "Description.Metadata",
-	"name":        "Description.Name",
-	"package_url": "Description.PackageURL",
-	"total_size":  "Description.TotalSize",
-	"updated_at":  "Description.UpdatedAt",
+	"created_at":   "Description.CreatedAt",
+	"digest":       "Description.Digest",
+	"id":           "Description.ID",
+	"manifest":     "Description.Manifest",
+	"media_type":   "Description.MediaType",
+	"metadata":     "Description.Metadata",
+	"name":         "Description.Name",
+	"organization": "Description.Organization",
+	"package_url":  "Description.PackageURL",
+	"total_size":   "Description.TotalSize",
+	"updated_at":   "Description.UpdatedAt",
 }
 
 func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6800,16 +6891,17 @@ func ListContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 }
 
 var getContainerPackageFilters = map[string]string{
-	"created_at":  "Description.CreatedAt",
-	"digest":      "Description.Digest",
-	"id":          "Description.ID",
-	"manifest":    "Description.Manifest",
-	"media_type":  "Description.MediaType",
-	"metadata":    "Description.Metadata",
-	"name":        "Description.Name",
-	"package_url": "Description.PackageURL",
-	"total_size":  "Description.TotalSize",
-	"updated_at":  "Description.UpdatedAt",
+	"created_at":   "Description.CreatedAt",
+	"digest":       "Description.Digest",
+	"id":           "Description.ID",
+	"manifest":     "Description.Manifest",
+	"media_type":   "Description.MediaType",
+	"metadata":     "Description.Metadata",
+	"name":         "Description.Name",
+	"organization": "Description.Organization",
+	"package_url":  "Description.PackageURL",
+	"total_size":   "Description.TotalSize",
+	"updated_at":   "Description.UpdatedAt",
 }
 
 func GetContainerPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6947,7 +7039,9 @@ func (p PackageDetailPaginator) NextPage(ctx context.Context) ([]PackageDetail, 
 	return values, nil
 }
 
-var listPackageDetailFilters = map[string]string{}
+var listPackageDetailFilters = map[string]string{
+	"organization": "Description.Organization",
+}
 
 func ListPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListPackageDetail")
@@ -7009,7 +7103,9 @@ func ListPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 	return nil, nil
 }
 
-var getPackageDetailFilters = map[string]string{}
+var getPackageDetailFilters = map[string]string{
+	"organization": "Description.Organization",
+}
 
 func GetPackageDetail(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetPackageDetail")
@@ -7146,7 +7242,9 @@ func (p PackagePaginator) NextPage(ctx context.Context) ([]Package, error) {
 	return values, nil
 }
 
-var listPackageFilters = map[string]string{}
+var listPackageFilters = map[string]string{
+	"organization": "Description.Organization",
+}
 
 func ListPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListPackage")
@@ -7208,7 +7306,9 @@ func ListPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	return nil, nil
 }
 
-var getPackageFilters = map[string]string{}
+var getPackageFilters = map[string]string{
+	"organization": "Description.Organization",
+}
 
 func GetPackage(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetPackage")
@@ -7346,13 +7446,16 @@ func (p ArtifactDockerFilePaginator) NextPage(ctx context.Context) ([]ArtifactDo
 }
 
 var listArtifactDockerFileFilters = map[string]string{
-	"dockerfile_content": "Description.DockerfileContent",
-	"html_url":           "Description.HTMLURL",
-	"images":             "Description.Images",
-	"last_updated_at":    "Description.LastUpdatedAt",
-	"name":               "Description.Name",
-	"repository":         "Description.Repository",
-	"sha":                "Description.Sha",
+	"dockerfile_content":   "Description.DockerfileContent",
+	"html_url":             "Description.HTMLURL",
+	"images":               "Description.Images",
+	"last_updated_at":      "Description.LastUpdatedAt",
+	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
+	"repository":           "Description.Repository",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
+	"sha":                  "Description.Sha",
 }
 
 func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -7416,13 +7519,16 @@ func ListArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.
 }
 
 var getArtifactDockerFileFilters = map[string]string{
-	"dockerfile_content": "Description.DockerfileContent",
-	"html_url":           "Description.HTMLURL",
-	"images":             "Description.Images",
-	"last_updated_at":    "Description.LastUpdatedAt",
-	"name":               "Description.Name",
-	"repository":         "Description.Repository",
-	"sha":                "Description.Sha",
+	"dockerfile_content":   "Description.DockerfileContent",
+	"html_url":             "Description.HTMLURL",
+	"images":               "Description.Images",
+	"last_updated_at":      "Description.LastUpdatedAt",
+	"name":                 "Description.Name",
+	"organization":         "Description.Organization",
+	"repository":           "Description.Repository",
+	"repository_full_name": "Description.RepositoryFullName",
+	"repository_name":      "Description.RepositoryName",
+	"sha":                  "Description.Sha",
 }
 
 func GetArtifactDockerFile(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -7569,6 +7675,7 @@ var listWebhookFilters = map[string]string{
 	"id":             "Description.ID",
 	"last_response":  "Description.LastResponse",
 	"name":           "Description.Name",
+	"organization":   "Description.Organization",
 	"ping_url":       "Description.PingURL",
 	"test_url":       "Description.TestURL",
 	"type":           "Description.Type",
@@ -7645,6 +7752,7 @@ var getWebhookFilters = map[string]string{
 	"id":             "Description.ID",
 	"last_response":  "Description.LastResponse",
 	"name":           "Description.Name",
+	"organization":   "Description.Organization",
 	"ping_url":       "Description.PingURL",
 	"test_url":       "Description.TestURL",
 	"type":           "Description.Type",

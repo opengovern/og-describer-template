@@ -22,6 +22,18 @@ func tableGitHubRepositorySbom() *plugin.Table {
 				Description: "The full name of the repository (login/repo-name).",
 			},
 			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
+			{
 				Name:        "spdx_id",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.SPDXID"),
