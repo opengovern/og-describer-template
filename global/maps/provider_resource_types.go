@@ -483,6 +483,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        provider.DescribeByGithub(describers.ListRepositoryWebhooks),
 		GetDescriber:         provider.DescribeSingleByRepo(describers.GetRepositoryWebhook),
 	},
+
+	"Github/Artifact/AI/Model": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Github/Artifact/AI/Model",
+		Tags:                 map[string][]string{
+            "category": {"Artifact"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeByGithub(describers.ListArtifactAIModels),
+		GetDescriber:         nil,
+	},
 }
 
 
@@ -800,6 +814,13 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Description:                 "",
 		
 	},
+
+	"Github/Artifact/AI/Model": {
+		Name:         "Github/Artifact/AI/Model",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
 }
 
 
@@ -838,4 +859,5 @@ var ResourceTypesList = []string{
   "Github/Nuget/Package",
   "Github/Artifact/DockerFile",
   "Github/Repository/Webhook",
+  "Github/Artifact/AI/Model",
 }

@@ -44,7 +44,6 @@ func main() {
 
 	if resourceTypesFile == nil || len(*resourceTypesFile) == 0 {
 		rt := "global/maps/resource-types.json"
-		//rt := "/mnt/c/Users/ASUS/GolandProjects/og-describer-github/global/maps/resource-types.json"
 		resourceTypesFile = &rt
 	}
 
@@ -90,7 +89,6 @@ func main() {
 	// Set default output paths if not provided
 	if output == nil || len(*output) == 0 {
 		v := "global/maps/provider_resource_types.go"
-		//v := "/mnt/c/Users/ASUS/GolandProjects/og-describer-github/global/maps/provider_resource_types.go"
 		output = &v
 	}
 

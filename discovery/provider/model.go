@@ -1769,3 +1769,11 @@ type WebhookDescription struct {
 	LastResponse  HookResponse
 	Organization  string
 }
+
+type ArtifactAIModelDescription struct {
+	Name               string
+	RepositoryID       int64
+	RepositoryName     string
+	RepositoryFullName string
+	Extensions         map[string][]string
+}

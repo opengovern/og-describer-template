@@ -39,6 +39,7 @@ var ResourceTypesToTables = map[string]string{
   "Github/Nuget/Package": "github_nuget_package",
   "Github/Artifact/DockerFile": "github_artifact_dockerfile",
   "Github/Repository/Webhook": "github_repository_webhook",
+  "Github/Artifact/AI/Model": "github_artifact_ai_model",
 }
 
 var ResourceTypeToDescription = map[string]interface{}{
@@ -76,6 +77,7 @@ var ResourceTypeToDescription = map[string]interface{}{
   "Github/Nuget/Package": opengovernance.Package{},
   "Github/Artifact/DockerFile": opengovernance.ArtifactDockerFile{},
   "Github/Repository/Webhook": opengovernance.Webhook{},
+  "Github/Artifact/AI/Model": opengovernance.ArtifactAIModel{},
 }
 
 var TablesToResourceTypes = map[string]string{
@@ -113,4 +115,5 @@ var TablesToResourceTypes = map[string]string{
   "github_nuget_package": "Github/Nuget/Package",
   "github_artifact_dockerfile": "Github/Artifact/DockerFile",
   "github_repository_webhook": "Github/Repository/Webhook",
+  "github_artifact_ai_model": "Github/Artifact/AI/Model",
 }
