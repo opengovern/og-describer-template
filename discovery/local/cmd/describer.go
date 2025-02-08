@@ -55,7 +55,7 @@ var describerCmd = &cobra.Command{
 		logger, _ := zap.NewProduction()
 
 		creds, err := provider.AccountCredentialsFromMap(map[string]any{
-			"api_key": "rnd_KLHHqnWW3r2PUrwmFRbgezg07HXC",
+			"api_key": APIKey,
 		})
 		if err != nil {
 			return fmt.Errorf(" account credentials: %w", err)
