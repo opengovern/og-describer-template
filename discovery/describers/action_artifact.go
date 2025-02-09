@@ -54,6 +54,8 @@ func GetRepositoryArtifacts(ctx context.Context, githubClient model.GitHubClient
 					CreatedAt:          &createdAt,
 					ExpiresAt:          &expiresAt,
 					RepoFullName:       &repoFullName,
+					Organization:       owner,
+					RepositoryName:     repo,
 				},
 			}
 			if stream != nil {
@@ -98,6 +100,8 @@ func GetArtifact(ctx context.Context, githubClient model.GitHubClient, organizat
 			CreatedAt:          &createdAt,
 			ExpiresAt:          &expiresAt,
 			RepoFullName:       &repoFullName,
+			Organization:       organizationName,
+			RepositoryName:     repositoryName,
 		},
 	}
 	if stream != nil {

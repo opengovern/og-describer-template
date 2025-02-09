@@ -64,6 +64,8 @@ func GetRepositorySBOMs(ctx context.Context, githubClient model.GitHubClient, ow
 			DocumentDescribes:  SBOM.GetSBOM().DocumentDescribes,
 			DocumentNamespace:  SBOM.GetSBOM().GetDocumentNamespace(),
 			Packages:           SBOM.GetSBOM().Packages,
+			Organization:       owner,
+			RepositoryName:     repo,
 		},
 	}
 	return &value, nil

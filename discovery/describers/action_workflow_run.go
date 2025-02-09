@@ -188,6 +188,11 @@ func GetRepositoryWorkflowRuns(ctx context.Context, sdk *resilientbridge.Resilie
 			name = *runDetail.Name
 		}
 
+		repoFullName := formRepositoryFullName(owner, repo)
+
+		runDetail.Organization = owner
+		runDetail.RepositoryName = repo
+		runDetail.RepositoryFullName = repoFullName
 		value := models.Resource{
 			ID:          strconv.Itoa(runDetail.ID),
 			Name:        name,
@@ -441,6 +446,8 @@ func fetchRunDetails(sdk *resilientbridge.ResilientBridge, owner, repo string, r
 		return model.WorkflowRunDescription{}, fmt.Errorf("error decoding run details: %w", err)
 	}
 
+	repoFullName := formRepositoryFullName(owner, repo)
+
 	return model.WorkflowRunDescription{
 		ID:                  fullDetail.ID,
 		Name:                &fullDetail.Name,
@@ -461,6 +468,9 @@ func fetchRunDetails(sdk *resilientbridge.ResilientBridge, owner, repo string, r
 		Repository:          fullDetail.Repository,
 		HeadRepository:      fullDetail.HeadRepository,
 		ReferencedWorkflows: fullDetail.ReferencedWorkflows,
+		Organization:        owner,
+		RepositoryName:      repo,
+		RepositoryFullName:  repoFullName,
 	}, nil
 }
 

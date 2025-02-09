@@ -52,6 +52,8 @@ func GetRepositorySecrets(ctx context.Context, githubClient model.GitHubClient, 
 					Visibility:              &secret.Visibility,
 					SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
 					RepoFullName:            &repoFullName,
+					Organization:            owner,
+					RepositoryName:          repo,
 				},
 			}
 			if stream != nil {
@@ -90,6 +92,8 @@ func GetRepoActionSecret(ctx context.Context, githubClient model.GitHubClient, o
 			Visibility:              &secret.Visibility,
 			SelectedRepositoriesURL: &secret.SelectedRepositoriesURL,
 			RepoFullName:            &repoFullName,
+			Organization:            organizationName,
+			RepositoryName:          repositoryName,
 		},
 	}
 	if stream != nil {

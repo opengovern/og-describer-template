@@ -20,6 +20,18 @@ func gitHubRepositoryCollaboratorColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.Permission")},
 		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The login of the collaborator",
 			Transform: transform.FromField("Description.UserLogin")},
+		{
+			Name:        "organization",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "",
+		},
+		{
+			Name:        "repository_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.RepositoryName"),
+			Description: "",
+		},
 	}
 }
 

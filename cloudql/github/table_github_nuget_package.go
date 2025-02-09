@@ -4,6 +4,7 @@ import (
 	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func tableGitHubNugetPackage() *plugin.Table {
@@ -24,6 +25,12 @@ func tableGitHubNugetPackage() *plugin.Table {
 			{Name: "url", Type: proto.ColumnType_STRING, Description: "URL where the package can be accessed."},
 			{Name: "createdAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was created."},
 			{Name: "updatedAt", Type: proto.ColumnType_TIMESTAMP, Description: "Timestamp when the package was last updated."},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
 		}),
 	}
 }

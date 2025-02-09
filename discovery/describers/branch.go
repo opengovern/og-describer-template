@@ -192,6 +192,8 @@ func GetRepositoryBranches(ctx context.Context, githubClient model.GitHubClient,
 					BranchProtectionRule: branchProtctionRule,
 					RepoFullName:         &repoFullName,
 					Protected:            protected,
+					Organization:         owner,
+					RepositoryName:       repo,
 				},
 			}
 			if stream != nil {

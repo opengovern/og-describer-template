@@ -76,10 +76,12 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubCl
 				ID:   strconv.Itoa(collaborator.Node.Id),
 				Name: collaborator.Node.Name,
 				Description: model.RepoCollaboratorsDescription{
-					Affiliation:  "ALL",
-					RepoFullName: repoFullName,
-					Permission:   collaborator.Permission,
-					UserLogin:    collaborator.Node.Login,
+					Affiliation:    "ALL",
+					RepoFullName:   repoFullName,
+					Permission:     collaborator.Permission,
+					UserLogin:      collaborator.Node.Login,
+					Organization:   owner,
+					RepositoryName: repo,
 				},
 			}
 			if stream != nil {

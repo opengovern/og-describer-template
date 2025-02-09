@@ -22,6 +22,24 @@ func tableGitHubCommit() *plugin.Table {
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
+				Name:        "repository_full_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryFullName"),
+				Description: "",
+			},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
+			{
 				Name:        "sha",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.SHA"),

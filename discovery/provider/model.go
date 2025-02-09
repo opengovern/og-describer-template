@@ -25,6 +25,8 @@ type ArtifactDescription struct {
 	CreatedAt          *string
 	ExpiresAt          *string
 	RepoFullName       *string
+	Organization       string
+	RepositoryName     string
 }
 
 type RunnerLabels struct {
@@ -34,13 +36,15 @@ type RunnerLabels struct {
 }
 
 type RunnerDescription struct {
-	ID           *int64
-	Name         *string
-	OS           *string
-	Status       *string
-	Busy         *bool
-	Labels       []*RunnerLabels
-	RepoFullName *string
+	ID             *int64
+	Name           *string
+	OS             *string
+	Status         *string
+	Busy           *bool
+	Labels         []*RunnerLabels
+	RepoFullName   *string
+	Organization   string
+	RepositoryName string
 }
 
 type SecretDescription struct {
@@ -50,6 +54,8 @@ type SecretDescription struct {
 	Visibility              *string
 	SelectedRepositoriesURL *string
 	RepoFullName            *string
+	Organization            string
+	RepositoryName          string
 }
 
 type SimpleActor struct {
@@ -90,6 +96,9 @@ type WorkflowRunDescription struct {
 	ReferencedWorkflows []interface{}
 	ArtifactCount       int
 	Artifacts           []WorkflowArtifact
+	Organization        string
+	RepositoryName      string
+	RepositoryFullName  string
 }
 
 type WorkflowRunsResponse struct {
@@ -138,18 +147,19 @@ type AuditEntryData struct {
 }
 
 type AuditLogDescription struct {
-	ID            *string
-	CreatedAt     *string
-	Organization  *string
-	Phrase        *string
-	Include       *string
-	Action        *string
-	Actor         *string
-	ActorLocation *ActorLocation
-	Team          *string
-	UserLogin     *string
-	Repo          *string
-	Data          *AuditEntryData
+	ID             *string
+	CreatedAt      *string
+	Organization   *string
+	Phrase         *string
+	Include        *string
+	Action         *string
+	Actor          *string
+	ActorLocation  *ActorLocation
+	Team           *string
+	UserLogin      *string
+	Repo           *string
+	Data           *AuditEntryData
+	RepositoryName string
 }
 
 //type BlobDescription struct {
@@ -263,6 +273,8 @@ type BranchDescription struct {
 	Commit               BaseCommit
 	BranchProtectionRule BranchProtectionRule
 	Protected            bool
+	Organization         string
+	RepositoryName       string
 }
 
 type BranchApp struct {
@@ -317,6 +329,8 @@ type BranchProtectionDescription struct {
 	BypassPullRequestAllowanceApps  []BranchApp
 	BypassPullRequestAllowanceTeams []BranchTeam
 	BypassPullRequestAllowanceUsers []BranchUser
+	Organization                    string
+	RepositoryName                  string
 }
 
 type TreeJSON struct {
@@ -471,17 +485,20 @@ type CommitResp struct {
 }
 
 type CommitDescription struct {
-	SHA          *string
-	NodeID       *string
-	CommitDetail CommitDetail
-	URL          *string
-	HTMLURL      *string
-	CommentsURL  *string
-	Author       User
-	Committer    User
-	Parents      []Parent
-	Stats        Stats
-	Files        []File
+	SHA                *string
+	NodeID             *string
+	CommitDetail       CommitDetail
+	URL                *string
+	HTMLURL            *string
+	CommentsURL        *string
+	Author             User
+	Committer          User
+	Parents            []Parent
+	Stats              Stats
+	Files              []File
+	Organization       string
+	RepositoryName     string
+	RepositoryFullName string
 }
 
 type Milestone struct {
@@ -636,6 +653,7 @@ type IssueDescription struct {
 	Labels                  map[string]Label
 	AssigneesTotalCount     int
 	Assignees               []BaseUser
+	Organization            string
 }
 
 //type IssueCommentDescription struct {
@@ -661,6 +679,7 @@ type LicenseDescription struct {
 	Limitations    []steampipemodels.LicenseRule
 	Permissions    []steampipemodels.LicenseRule
 	PseudoLicense  bool
+	Organization   string
 }
 
 type OrganizationDescription struct {
@@ -738,6 +757,7 @@ type OrganizationDescription struct {
 	PublicRepositoriesTotalCount           int
 	RepositoriesTotalCount                 int
 	RepositoriesTotalDiskUsage             int
+	Organization                           string
 }
 
 type OrgCollaboratorsDescription struct {
@@ -774,6 +794,7 @@ type OrgAlertDependabotDescription struct {
 	DismissedReason             string
 	DismissedComment            string
 	FixedAt                     github.Timestamp
+	Organization                string
 }
 
 type OrgExternalIdentityDescription struct {
@@ -859,6 +880,8 @@ type PullRequestDescription struct {
 	ReviewsTotalCount        int
 	LabelsTotalCount         int
 	AssigneesTotalCount      int
+	Organization             string
+	RepositoryName           string
 }
 
 type License struct {
@@ -1168,7 +1191,7 @@ type RepositoryDescription struct {
 	Visibility              string
 	DefaultBranchRef        json.RawMessage
 	Permissions             *Permissions
-	Organization            *Organization
+	OrganizationObject      *Organization
 	Parent                  *RepositoryDescription
 	Source                  *RepositoryDescription
 	PrimaryLanguage         *string
@@ -1177,6 +1200,8 @@ type RepositoryDescription struct {
 	SecuritySettings        SecuritySettings
 	RepoURLs                RepoURLs
 	Metrics                 Metrics
+	Organization            string
+	RepositoryFullName      string
 }
 
 type MinimalRepoInfo struct {
@@ -1191,13 +1216,17 @@ type MinimalRepoInfo struct {
 type ReleaseDescription struct {
 	github.RepositoryRelease
 	RepositoryFullName string
+	Organization       string
+	RepositoryName     string
 }
 
 type RepoCollaboratorsDescription struct {
-	Affiliation  string
-	RepoFullName string
-	Permission   githubv4.RepositoryPermission
-	UserLogin    string
+	Affiliation    string
+	RepoFullName   string
+	Permission     githubv4.RepositoryPermission
+	UserLogin      string
+	Organization   string
+	RepositoryName string
 }
 
 type RepoAlertDependabotDescription struct {
@@ -1227,21 +1256,29 @@ type RepoAlertDependabotDescription struct {
 	DismissedReason             string
 	DismissedComment            string
 	FixedAt                     github.Timestamp
+	Organization                string
+	RepositoryName              string
 }
 
 type RepoDeploymentDescription struct {
 	steampipemodels.Deployment
-	RepoFullName string
+	RepoFullName   string
+	Organization   string
+	RepositoryName string
 }
 
 type RepoEnvironmentDescription struct {
 	steampipemodels.Environment
-	RepoFullName string
+	RepoFullName   string
+	Organization   string
+	RepositoryName string
 }
 
 type RepoRuleSetDescription struct {
 	steampipemodels.Ruleset
-	RepoFullName string
+	RepoFullName   string
+	Organization   string
+	RepositoryName string
 }
 
 type RepoSBOMDescription struct {
@@ -1254,6 +1291,8 @@ type RepoSBOMDescription struct {
 	DocumentDescribes  []string
 	DocumentNamespace  string
 	Packages           []*github.RepoDependencies
+	Organization       string
+	RepositoryName     string
 }
 
 type RepoVulnerabilityAlertDescription struct {
@@ -1276,18 +1315,22 @@ type RepoVulnerabilityAlertDescription struct {
 	VulnerableRequirements     string
 	Severity                   githubv4.SecurityAdvisorySeverity
 	CvssScore                  float64
+	Organization               string
+	RepositoryName             string
 }
 
 type SearchCodeDescription struct {
 	*github.CodeResult
 	RepoFullName string
 	Query        string
+	Organization string
 }
 
 type SearchCommitDescription struct {
 	*github.CommitResult
 	RepoFullName string
 	Query        string
+	Organization string
 }
 
 type SearchIssueDescription struct {
@@ -1295,12 +1338,14 @@ type SearchIssueDescription struct {
 	RepoFullName string
 	Query        string
 	TextMatches  []steampipemodels.TextMatch
+	Organization string
 }
 
 type StarDescription struct {
 	RepoFullName string
 	StarredAt    steampipemodels.NullableTime
 	Url          string
+	Organization string
 }
 
 type StargazerDescription struct {
@@ -1308,6 +1353,7 @@ type StargazerDescription struct {
 	StarredAt    steampipemodels.NullableTime
 	UserLogin    string
 	UserDetail   steampipemodels.BasicUser
+	Organization string
 }
 
 type TagDescription struct {
@@ -1318,6 +1364,8 @@ type TagDescription struct {
 	TaggerLogin        string
 	Message            string
 	Commit             steampipemodels.BaseCommit
+	Organization       string
+	RepositoryName     string
 }
 
 type ParentTeam struct {
@@ -1369,11 +1417,13 @@ type TeamMembersDescription struct {
 type TrafficViewDailyDescription struct {
 	*github.TrafficData
 	RepositoryFullName string
+	Organization       string
 }
 
 type TrafficViewWeeklyDescription struct {
 	*github.TrafficData
 	RepositoryFullName string
+	Organization       string
 }
 
 type TreeDescription struct {
@@ -1387,6 +1437,7 @@ type TreeDescription struct {
 	Type               string
 	Size               int
 	URL                string
+	Organization       string
 }
 
 type UserDescription struct {
@@ -1409,6 +1460,7 @@ type UserDescription struct {
 	SponsorsTotalCount            int
 	StarredRepositoriesTotalCount int
 	WatchingTotalCount            int
+	Organization                  string
 }
 
 type WorkflowDescription struct {
@@ -1426,6 +1478,8 @@ type WorkflowDescription struct {
 	WorkFlowFileContent     *string
 	WorkFlowFileContentJson *github.RepositoryContent
 	Pipeline                *goPipeline.Pipeline
+	Organization            string
+	RepositoryName          string
 }
 
 type CodeOwnerDescription struct {
@@ -1436,6 +1490,7 @@ type CodeOwnerDescription struct {
 	Teams              []string
 	PreComments        []string
 	LineComment        string
+	Organization       string
 }
 
 type OwnerLogin struct {
@@ -1460,16 +1515,17 @@ type ContainerMetadata struct {
 }
 
 type ContainerPackageDescription struct {
-	ID         int
-	Digest     string
-	CreatedAt  string
-	UpdatedAt  string
-	PackageURL string
-	Name       string
-	MediaType  string
-	TotalSize  int64
-	Metadata   ContainerMetadata
-	Manifest   interface{}
+	ID           int
+	Digest       string
+	CreatedAt    string
+	UpdatedAt    string
+	PackageURL   string
+	Name         string
+	MediaType    string
+	TotalSize    int64
+	Metadata     ContainerMetadata
+	Manifest     interface{}
+	Organization string
 
 	// -- Add these new fields/methods: --
 
@@ -1556,25 +1612,28 @@ type PackageDetailDescription struct {
 	UpdatedAt    string      `json:"updated_at"`
 	Repository   Repository  `json:"repository"`
 	HTMLURL      string      `json:"html_url"`
+	Organization string
 }
 
 type PackageDescription struct {
-	ID         string
-	RegistryID string
-	Name       string
-	URL        string
-	CreatedAt  github.Timestamp
-	UpdatedAt  github.Timestamp
+	ID           string
+	RegistryID   string
+	Name         string
+	URL          string
+	CreatedAt    github.Timestamp
+	UpdatedAt    github.Timestamp
+	Organization string
 }
 
 type PackageVersionDescription struct {
-	ID          int
-	Name        string
-	PackageName string
-	VersionURI  string
-	Digest      *string
-	CreatedAt   github.Timestamp
-	UpdatedAt   github.Timestamp
+	ID           int
+	Name         string
+	PackageName  string
+	VersionURI   string
+	Digest       *string
+	CreatedAt    github.Timestamp
+	UpdatedAt    github.Timestamp
+	Organization string
 }
 
 type CodeSearchResult struct {
@@ -1647,6 +1706,9 @@ type ArtifactDockerFileDescription struct {
 	DockerfileContentBase64 *string
 	Repository              map[string]interface{}
 	Images                  []string // New field to store extracted base images
+	Organization            string
+	RepositoryName          string
+	RepositoryFullName      string
 }
 
 type WebhookConfigJSON struct {
@@ -1705,4 +1767,13 @@ type WebhookDescription struct {
 	PingURL       string
 	DeliveriesURL string
 	LastResponse  HookResponse
+	Organization  string
+}
+
+type ArtifactAIModelDescription struct {
+	Name               string
+	RepositoryID       int64
+	RepositoryName     string
+	RepositoryFullName string
+	Extensions         map[string][]string
 }

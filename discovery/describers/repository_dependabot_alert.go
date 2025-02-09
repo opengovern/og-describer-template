@@ -87,6 +87,8 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHu
 					DismissedReason:             alert.GetDismissedReason(),
 					DismissedComment:            alert.GetDismissedComment(),
 					FixedAt:                     alert.GetFixedAt(),
+					Organization:                owner,
+					RepositoryName:              repo,
 				},
 			}
 			if stream != nil {

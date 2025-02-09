@@ -155,6 +155,8 @@ func ListRepositoryPullRequests(ctx context.Context, githubClient model.GitHubCl
 					ReviewsTotalCount:        issue.Reviews.TotalCount,
 					LabelsTotalCount:         issue.Labels.TotalCount,
 					AssigneesTotalCount:      issue.Assignees.TotalCount,
+					Organization:             owner,
+					RepositoryName:           repo,
 				},
 			}
 			if stream != nil {

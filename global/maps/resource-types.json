@@ -459,5 +459,17 @@
     "GetDescriber": "DescribeSingleByRepo(describers.GetRepositoryWebhook)",
     "SteampipeTable": "github_repository_webhook",
     "Model": "Webhook"
+  },
+  {
+    "ResourceName": "Github/Artifact/AI/Model",
+    "Tags": {
+      "category": [
+        "Artifact"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListArtifactAIModels)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_artifact_ai_model",
+    "Model": "ArtifactAIModel"
   }
 ]

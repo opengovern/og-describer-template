@@ -22,6 +22,12 @@ func tableGitHubTag() *plugin.Table {
 			{Name: "repository_full_name", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
 				Description: "Full name of the repository that contains the tag."},
+			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
 			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the tag.",
 				Transform: transform.FromField("Description.Name")},
 			{Name: "tagger_date", Type: proto.ColumnType_TIMESTAMP,
@@ -35,6 +41,12 @@ func tableGitHubTag() *plugin.Table {
 				Transform: transform.FromField("Description.Message")},
 			{Name: "commit", Type: proto.ColumnType_JSON, Description: "Commit the tag is associated with.",
 				Transform: transform.FromField("Description.Commit")},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
 		}),
 	}
 }

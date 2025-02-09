@@ -28,6 +28,18 @@ func tableGitHubActionsRepositoryRunner() *plugin.Table {
 				Description: "Full name of the repository that contains the runners.",
 			},
 			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
 				Name:        "id",
 				Type:        proto.ColumnType_INT,
 				Transform:   transform.FromField("Description.ID"),

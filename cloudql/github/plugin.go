@@ -61,6 +61,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"github_nuget_package":       tableGitHubNugetPackage(),
 			"github_artifact_dockerfile": tableGitHubArtifactDockerFile(),
 			"github_repository_webhook":  tableGithubRepositoryWebhook(),
+			"github_artifact_ai_model":   tableGitHubArtifactAIModel(),
 		},
 	}
 	for key, table := range p.TableMap {

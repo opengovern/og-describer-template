@@ -49,6 +49,7 @@ func GetStarList(ctx context.Context, githubClient model.GitHubClient, organizat
 					RepoFullName: star.Node.NameWithOwner,
 					StarredAt:    star.StarredAt,
 					Url:          star.Node.Url,
+					Organization: organizationName,
 				},
 			}
 			if stream != nil {

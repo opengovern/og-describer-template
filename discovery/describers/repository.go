@@ -205,6 +205,9 @@ func GetRepository(
 	if resourceID == "" {
 		resourceID = strconv.Itoa(finalDetail.GitHubRepoID)
 	}
+	repoFullName := formRepositoryFullName(organizationName, repositoryName)
+	finalDetail.Organization = organizationName
+	finalDetail.RepositoryFullName = repoFullName
 	value := models.Resource{
 		ID:          resourceID,
 		Name:        *finalDetail.Name,
@@ -294,6 +297,8 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 		}
 	}
 
+	repoFullName := detail.FullName
+
 	finalDetail := &model.RepositoryDescription{
 		GitHubRepoID:            detail.ID,
 		NodeID:                  &detail.NodeID,
@@ -314,9 +319,11 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 		Visibility:              detail.Visibility,
 		DefaultBranchRef:        dbBytes,
 		Permissions:             detail.Permissions,
-		Organization:            finalOrg,
+		OrganizationObject:      finalOrg,
 		Parent:                  parent,
 		Source:                  source,
+		Organization:            finalOrg.Login,
+		RepositoryFullName:      repoFullName,
 
 		// Single primary language from /repos
 		PrimaryLanguage: detail.PrimaryLanguage,

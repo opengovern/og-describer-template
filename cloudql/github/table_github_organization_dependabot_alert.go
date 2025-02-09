@@ -11,6 +11,12 @@ import (
 func gitHubDependabotAlertColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
+			Name:        "organization",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "",
+		},
+		{
 			Name:        "alert_number",
 			Type:        proto.ColumnType_INT,
 			Description: "The security alert number.",

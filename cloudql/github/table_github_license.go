@@ -28,6 +28,12 @@ func tableGitHubLicense() *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.SpdxId")},
 			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
 				Name:        "name",
 				Description: "The name of the license.",
 				Type:        proto.ColumnType_STRING,

@@ -67,6 +67,7 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient model.Git
 					DismissedReason:             alert.GetDismissedReason(),
 					DismissedComment:            alert.GetDismissedComment(),
 					FixedAt:                     alert.GetFixedAt(),
+					Organization:                org,
 				},
 			}
 			if stream != nil {

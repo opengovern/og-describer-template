@@ -13,6 +13,18 @@ func sharedPullRequestColumns() []*plugin.Column {
 		{Name: "repository_full_name", Type: proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.RepoFullName"),
 			Description: "The full name of the repository the pull request belongs to."},
+		{
+			Name:        "organization",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "",
+		},
+		{
+			Name:        "repository_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.RepositoryName"),
+			Description: "",
+		},
 		{Name: "number", Type: proto.ColumnType_INT,
 			Transform:   transform.FromField("Description.Number"),
 			Description: "The number of the pull request."},

@@ -94,7 +94,8 @@ func ListArtifactDockerFiles(
 				githubClient,
 				organizationName,         // org name
 				item.Repository.FullName, // e.g. "my-org/my-repo"
-				item.Path,                // e.g. "path/to/Dockerfile"
+				item.Repository.Name,
+				item.Path, // e.g. "path/to/Dockerfile"
 				stream,
 			)
 			if err != nil {
@@ -137,7 +138,7 @@ func ListArtifactDockerFiles(
 func GetDockerfile(
 	ctx context.Context,
 	githubClient model.GitHubClient,
-	organizationName, repoFullName, filePath string,
+	organizationName, repoFullName, repo, filePath string,
 	stream *models.StreamSender,
 ) (*models.Resource, error) {
 
@@ -230,6 +231,9 @@ func GetDockerfile(
 		DockerfileContentBase64: &dockerfileB64,
 		Repository:              repoObj,
 		Images:                  images,
+		Organization:            organizationName,
+		RepositoryName:          repo,
+		RepositoryFullName:      repoFullName,
 	}
 
 	value := models.Resource{

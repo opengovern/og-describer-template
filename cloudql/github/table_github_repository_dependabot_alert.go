@@ -29,6 +29,18 @@ func tableGitHubRepositoryDependabotAlert() *plugin.Table {
 					Transform:   transform.FromQual("Description.RepoFullName"),
 					Description: "The full name of the repository (login/repo-name).",
 				},
+				{
+					Name:        "organization",
+					Type:        proto.ColumnType_STRING,
+					Transform:   transform.FromField("Description.Organization"),
+					Description: "",
+				},
+				{
+					Name:        "repository_name",
+					Type:        proto.ColumnType_STRING,
+					Transform:   transform.FromField("Description.RepositoryName"),
+					Description: "",
+				},
 			}...,
 		)),
 	}

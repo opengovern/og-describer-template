@@ -26,6 +26,18 @@ func tableGitHubWorkflow() *plugin.Table {
 				Transform:   transform.FromField("Description.RepositoryFullName"),
 				Description: "Full name of the repository that contains the workflow."},
 			{
+				Name:        "repository_name",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.RepositoryName"),
+				Description: "",
+			},
+			{
+				Name:        "organization",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("Description.Organization"),
+				Description: "",
+			},
+			{
 				Name: "name", Type: proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Name"),
 				Description: "The name of the workflow."},
