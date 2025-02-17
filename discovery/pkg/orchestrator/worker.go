@@ -8,6 +8,7 @@ import (
 	model "github.com/opengovern/og-describer-template/discovery/pkg/models"
 	"github.com/opengovern/og-describer-template/discovery/provider"
 	"github.com/opengovern/og-describer-template/global"
+	"github.com/opengovern/og-describer-template/global/constants"
 	describe2 "github.com/opengovern/og-util/pkg/describe"
 	"github.com/opengovern/og-util/pkg/es"
 	"github.com/opengovern/og-util/pkg/vault"
@@ -84,7 +85,7 @@ func doDescribe(
 	describeToken string,
 	useOpenSearch bool) ([]string, error) {
 	logger.Info("Making New Resource Sender")
-	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, params,useOpenSearch, logger)
+	rs, err := NewResourceSender(grpcEndpoint, ingestionPipelineEndpoint, describeToken, job.JobID, params, useOpenSearch, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to resource sender: %w", err)
 	}
@@ -155,7 +156,7 @@ func doDescribe(
 			ResourceID:      resource.UniqueID(),
 			ResourceName:    resource.Name,
 			Description:     description,
-			IntegrationType: global.IntegrationName,
+			IntegrationType: constants.IntegrationName,
 			ResourceType:    strings.ToLower(job.ResourceType),
 			IntegrationID:   job.IntegrationID,
 			Metadata:        metadata,

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/opengovern/og-describer-template/global"
+	constants2 "github.com/opengovern/og-describer-template/global/constants"
 	"github.com/opengovern/og-describer-template/global/maps"
 	"github.com/opengovern/og-describer-template/platform/constants"
 	"github.com/opengovern/og-util/pkg/integration"
@@ -31,7 +32,7 @@ func (i *Integration) GetConfiguration() (interfaces.IntegrationConfiguration, e
 }
 
 func (i *Integration) HealthCheck(jsonData []byte, providerId string, labels map[string]string, annotations map[string]string) (bool, error) {
-	var credentials global.IntegrationCredentials
+	var credentials constants2.IntegrationCredentials
 	err := json.Unmarshal(jsonData, &credentials)
 	if err != nil {
 		return false, err
@@ -43,7 +44,7 @@ func (i *Integration) HealthCheck(jsonData []byte, providerId string, labels map
 }
 
 func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integration, error) {
-	var credentials global.IntegrationCredentials
+	var credentials constants2.IntegrationCredentials
 	err := json.Unmarshal(jsonData, &credentials)
 	if err != nil {
 		return nil, err
@@ -56,18 +57,18 @@ func (i *Integration) DiscoverIntegrations(jsonData []byte) ([]integration.Integ
 }
 
 func (i *Integration) GetResourceTypesByLabels(labels map[string]string) ([]interfaces.ResourceTypeConfiguration, error) {
-	var resourceTypesMap  []interfaces.ResourceTypeConfiguration
+	var resourceTypesMap []interfaces.ResourceTypeConfiguration
 	for _, resourceType := range maps.ResourceTypesList {
-		var resource  interfaces.ResourceTypeConfiguration
+		var resource interfaces.ResourceTypeConfiguration
 		if v, ok := maps.ResourceTypeConfigs[resourceType]; ok {
-			resource.Description =v.Description
-			resource.Params =v.Params
+			resource.Description = v.Description
+			resource.Params = v.Params
 			resource.Name = v.Name
 			resource.IntegrationType = v.IntegrationType
-			resource.Table =  maps.ResourceTypesToTables[v.Name]
+			resource.Table = maps.ResourceTypesToTables[v.Name]
 			resourceTypesMap = append(resourceTypesMap, resource)
-			
-		} 
+
+		}
 	}
 	return resourceTypesMap, nil
 }
