@@ -286,6 +286,62 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        provider.DescribeADByTenantID(describers.AdDirectorySetting),
 		GetDescriber:         nil,
 	},
+
+	"Microsoft.Entra/applicationapproleassignedto": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/applicationapproleassignedto",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.ApplicationAppRoleAssignedTo),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/serviceprincipalapproleassignedto": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/serviceprincipalapproleassignedto",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.ServicePrincipalAppRoleAssignedTo),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/serviceprincipalapproleassignment": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/serviceprincipalapproleassignment",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.ServicePrincipalAppRoleAssignment),
+		GetDescriber:         nil,
+	},
+
+	"Microsoft.Entra/userapproleassignment": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Microsoft.Entra/userapproleassignment",
+		Tags:                 map[string][]string{
+            "logo_uri": {},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeADByTenantID(describers.UserAppRoleAssignment),
+		GetDescriber:         nil,
+	},
 }
 
 
@@ -430,6 +486,34 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Description:                 "",
 		
 	},
+
+	"Microsoft.Entra/applicationapproleassignedto": {
+		Name:         "Microsoft.Entra/applicationapproleassignedto",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/serviceprincipalapproleassignedto": {
+		Name:         "Microsoft.Entra/serviceprincipalapproleassignedto",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/serviceprincipalapproleassignment": {
+		Name:         "Microsoft.Entra/serviceprincipalapproleassignment",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Microsoft.Entra/userapproleassignment": {
+		Name:         "Microsoft.Entra/userapproleassignment",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
 }
 
 
@@ -454,4 +538,8 @@ var ResourceTypesList = []string{
   "Microsoft.Entra/users",
   "Microsoft.Entra/directoryroles",
   "Microsoft.Entra/directorysettings",
+  "Microsoft.Entra/applicationapproleassignedto",
+  "Microsoft.Entra/serviceprincipalapproleassignedto",
+  "Microsoft.Entra/serviceprincipalapproleassignment",
+  "Microsoft.Entra/userapproleassignment",
 }

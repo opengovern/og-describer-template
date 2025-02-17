@@ -4743,3 +4743,889 @@ func GetAdMicrosoftApplication(ctx context.Context, d *plugin.QueryData, _ *plug
 }
 
 // ==========================  END: AdMicrosoftApplication =============================
+
+// ==========================  START: ApplicationAppRoleAssignedTo =============================
+
+type ApplicationAppRoleAssignedTo struct {
+	ResourceID      string                                          `json:"resource_id"`
+	PlatformID      string                                          `json:"platform_id"`
+	Description     entraid.ApplicationAppRoleAssignedToDescription `json:"Description"`
+	Metadata        entraid.Metadata                                `json:"metadata"`
+	DescribedBy     string                                          `json:"described_by"`
+	ResourceType    string                                          `json:"resource_type"`
+	IntegrationType string                                          `json:"integration_type"`
+	IntegrationID   string                                          `json:"integration_id"`
+}
+
+type ApplicationAppRoleAssignedToHit struct {
+	ID      string                       `json:"_id"`
+	Score   float64                      `json:"_score"`
+	Index   string                       `json:"_index"`
+	Type    string                       `json:"_type"`
+	Version int64                        `json:"_version,omitempty"`
+	Source  ApplicationAppRoleAssignedTo `json:"_source"`
+	Sort    []interface{}                `json:"sort"`
+}
+
+type ApplicationAppRoleAssignedToHits struct {
+	Total essdk.SearchTotal                 `json:"total"`
+	Hits  []ApplicationAppRoleAssignedToHit `json:"hits"`
+}
+
+type ApplicationAppRoleAssignedToSearchResponse struct {
+	PitID string                           `json:"pit_id"`
+	Hits  ApplicationAppRoleAssignedToHits `json:"hits"`
+}
+
+type ApplicationAppRoleAssignedToPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewApplicationAppRoleAssignedToPaginator(filters []essdk.BoolFilter, limit *int64) (ApplicationAppRoleAssignedToPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_applicationapproleassignedto", filters, limit)
+	if err != nil {
+		return ApplicationAppRoleAssignedToPaginator{}, err
+	}
+
+	p := ApplicationAppRoleAssignedToPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p ApplicationAppRoleAssignedToPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p ApplicationAppRoleAssignedToPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p ApplicationAppRoleAssignedToPaginator) NextPage(ctx context.Context) ([]ApplicationAppRoleAssignedTo, error) {
+	var response ApplicationAppRoleAssignedToSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []ApplicationAppRoleAssignedTo
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listApplicationAppRoleAssignedToFilters = map[string]string{
+	"app_id":                  "Description.AppId",
+	"app_role_id":             "Description.AppRoleId",
+	"created_date_time":       "Description.CreatedDateTime",
+	"deleted_date_time":       "Description.DeletedDateTime",
+	"id":                      "Description.Id",
+	"platform_integration_id": "IntegrationID",
+	"principal_display_name":  "Description.PrincipalDisplayName",
+	"principal_id":            "Description.PrincipalId",
+	"principal_type":          "Description.PrincipalType",
+	"resource_display_name":   "Description.ResourceDisplayName",
+	"resource_id":             "Description.ResourceId",
+}
+
+func ListApplicationAppRoleAssignedTo(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListApplicationAppRoleAssignedTo")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewApplicationAppRoleAssignedToPaginator(essdk.BuildFilter(ctx, d.QueryContext, listApplicationAppRoleAssignedToFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo NewApplicationAppRoleAssignedToPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListApplicationAppRoleAssignedTo paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getApplicationAppRoleAssignedToFilters = map[string]string{
+	"app_id":                  "Description.AppId",
+	"app_role_id":             "Description.AppRoleId",
+	"created_date_time":       "Description.CreatedDateTime",
+	"deleted_date_time":       "Description.DeletedDateTime",
+	"id":                      "Description.Id",
+	"platform_integration_id": "IntegrationID",
+	"principal_display_name":  "Description.PrincipalDisplayName",
+	"principal_id":            "Description.PrincipalId",
+	"principal_type":          "Description.PrincipalType",
+	"resource_display_name":   "Description.ResourceDisplayName",
+	"resource_id":             "Description.ResourceId",
+}
+
+func GetApplicationAppRoleAssignedTo(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetApplicationAppRoleAssignedTo")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewApplicationAppRoleAssignedToPaginator(essdk.BuildFilter(ctx, d.QueryContext, getApplicationAppRoleAssignedToFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: ApplicationAppRoleAssignedTo =============================
+
+// ==========================  START: ServicePrincipalAppRoleAssignedTo =============================
+
+type ServicePrincipalAppRoleAssignedTo struct {
+	ResourceID      string                                               `json:"resource_id"`
+	PlatformID      string                                               `json:"platform_id"`
+	Description     entraid.ServicePrincipalAppRoleAssignedToDescription `json:"Description"`
+	Metadata        entraid.Metadata                                     `json:"metadata"`
+	DescribedBy     string                                               `json:"described_by"`
+	ResourceType    string                                               `json:"resource_type"`
+	IntegrationType string                                               `json:"integration_type"`
+	IntegrationID   string                                               `json:"integration_id"`
+}
+
+type ServicePrincipalAppRoleAssignedToHit struct {
+	ID      string                            `json:"_id"`
+	Score   float64                           `json:"_score"`
+	Index   string                            `json:"_index"`
+	Type    string                            `json:"_type"`
+	Version int64                             `json:"_version,omitempty"`
+	Source  ServicePrincipalAppRoleAssignedTo `json:"_source"`
+	Sort    []interface{}                     `json:"sort"`
+}
+
+type ServicePrincipalAppRoleAssignedToHits struct {
+	Total essdk.SearchTotal                      `json:"total"`
+	Hits  []ServicePrincipalAppRoleAssignedToHit `json:"hits"`
+}
+
+type ServicePrincipalAppRoleAssignedToSearchResponse struct {
+	PitID string                                `json:"pit_id"`
+	Hits  ServicePrincipalAppRoleAssignedToHits `json:"hits"`
+}
+
+type ServicePrincipalAppRoleAssignedToPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewServicePrincipalAppRoleAssignedToPaginator(filters []essdk.BoolFilter, limit *int64) (ServicePrincipalAppRoleAssignedToPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_serviceprincipalapproleassignedto", filters, limit)
+	if err != nil {
+		return ServicePrincipalAppRoleAssignedToPaginator{}, err
+	}
+
+	p := ServicePrincipalAppRoleAssignedToPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p ServicePrincipalAppRoleAssignedToPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p ServicePrincipalAppRoleAssignedToPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p ServicePrincipalAppRoleAssignedToPaginator) NextPage(ctx context.Context) ([]ServicePrincipalAppRoleAssignedTo, error) {
+	var response ServicePrincipalAppRoleAssignedToSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []ServicePrincipalAppRoleAssignedTo
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listServicePrincipalAppRoleAssignedToFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"service_principal_id":   "Description.ServicePrincipalId",
+}
+
+func ListServicePrincipalAppRoleAssignedTo(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListServicePrincipalAppRoleAssignedTo")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewServicePrincipalAppRoleAssignedToPaginator(essdk.BuildFilter(ctx, d.QueryContext, listServicePrincipalAppRoleAssignedToFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo NewServicePrincipalAppRoleAssignedToPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignedTo paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getServicePrincipalAppRoleAssignedToFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"service_principal_id":   "Description.ServicePrincipalId",
+}
+
+func GetServicePrincipalAppRoleAssignedTo(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetServicePrincipalAppRoleAssignedTo")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewServicePrincipalAppRoleAssignedToPaginator(essdk.BuildFilter(ctx, d.QueryContext, getServicePrincipalAppRoleAssignedToFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: ServicePrincipalAppRoleAssignedTo =============================
+
+// ==========================  START: ServicePrincipalAppRoleAssignment =============================
+
+type ServicePrincipalAppRoleAssignment struct {
+	ResourceID      string                                               `json:"resource_id"`
+	PlatformID      string                                               `json:"platform_id"`
+	Description     entraid.ServicePrincipalAppRoleAssignmentDescription `json:"Description"`
+	Metadata        entraid.Metadata                                     `json:"metadata"`
+	DescribedBy     string                                               `json:"described_by"`
+	ResourceType    string                                               `json:"resource_type"`
+	IntegrationType string                                               `json:"integration_type"`
+	IntegrationID   string                                               `json:"integration_id"`
+}
+
+type ServicePrincipalAppRoleAssignmentHit struct {
+	ID      string                            `json:"_id"`
+	Score   float64                           `json:"_score"`
+	Index   string                            `json:"_index"`
+	Type    string                            `json:"_type"`
+	Version int64                             `json:"_version,omitempty"`
+	Source  ServicePrincipalAppRoleAssignment `json:"_source"`
+	Sort    []interface{}                     `json:"sort"`
+}
+
+type ServicePrincipalAppRoleAssignmentHits struct {
+	Total essdk.SearchTotal                      `json:"total"`
+	Hits  []ServicePrincipalAppRoleAssignmentHit `json:"hits"`
+}
+
+type ServicePrincipalAppRoleAssignmentSearchResponse struct {
+	PitID string                                `json:"pit_id"`
+	Hits  ServicePrincipalAppRoleAssignmentHits `json:"hits"`
+}
+
+type ServicePrincipalAppRoleAssignmentPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewServicePrincipalAppRoleAssignmentPaginator(filters []essdk.BoolFilter, limit *int64) (ServicePrincipalAppRoleAssignmentPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_serviceprincipalapproleassignment", filters, limit)
+	if err != nil {
+		return ServicePrincipalAppRoleAssignmentPaginator{}, err
+	}
+
+	p := ServicePrincipalAppRoleAssignmentPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p ServicePrincipalAppRoleAssignmentPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p ServicePrincipalAppRoleAssignmentPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p ServicePrincipalAppRoleAssignmentPaginator) NextPage(ctx context.Context) ([]ServicePrincipalAppRoleAssignment, error) {
+	var response ServicePrincipalAppRoleAssignmentSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []ServicePrincipalAppRoleAssignment
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listServicePrincipalAppRoleAssignmentFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"service_principal_id":   "Description.ServicePrincipalId",
+}
+
+func ListServicePrincipalAppRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListServicePrincipalAppRoleAssignment")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewServicePrincipalAppRoleAssignmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listServicePrincipalAppRoleAssignmentFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment NewServicePrincipalAppRoleAssignmentPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListServicePrincipalAppRoleAssignment paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getServicePrincipalAppRoleAssignmentFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"service_principal_id":   "Description.ServicePrincipalId",
+}
+
+func GetServicePrincipalAppRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetServicePrincipalAppRoleAssignment")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewServicePrincipalAppRoleAssignmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getServicePrincipalAppRoleAssignmentFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: ServicePrincipalAppRoleAssignment =============================
+
+// ==========================  START: UserAppRoleAssignment =============================
+
+type UserAppRoleAssignment struct {
+	ResourceID      string                                   `json:"resource_id"`
+	PlatformID      string                                   `json:"platform_id"`
+	Description     entraid.UserAppRoleAssignmentDescription `json:"Description"`
+	Metadata        entraid.Metadata                         `json:"metadata"`
+	DescribedBy     string                                   `json:"described_by"`
+	ResourceType    string                                   `json:"resource_type"`
+	IntegrationType string                                   `json:"integration_type"`
+	IntegrationID   string                                   `json:"integration_id"`
+}
+
+type UserAppRoleAssignmentHit struct {
+	ID      string                `json:"_id"`
+	Score   float64               `json:"_score"`
+	Index   string                `json:"_index"`
+	Type    string                `json:"_type"`
+	Version int64                 `json:"_version,omitempty"`
+	Source  UserAppRoleAssignment `json:"_source"`
+	Sort    []interface{}         `json:"sort"`
+}
+
+type UserAppRoleAssignmentHits struct {
+	Total essdk.SearchTotal          `json:"total"`
+	Hits  []UserAppRoleAssignmentHit `json:"hits"`
+}
+
+type UserAppRoleAssignmentSearchResponse struct {
+	PitID string                    `json:"pit_id"`
+	Hits  UserAppRoleAssignmentHits `json:"hits"`
+}
+
+type UserAppRoleAssignmentPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewUserAppRoleAssignmentPaginator(filters []essdk.BoolFilter, limit *int64) (UserAppRoleAssignmentPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "microsoft_entra_userapproleassignment", filters, limit)
+	if err != nil {
+		return UserAppRoleAssignmentPaginator{}, err
+	}
+
+	p := UserAppRoleAssignmentPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p UserAppRoleAssignmentPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p UserAppRoleAssignmentPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p UserAppRoleAssignmentPaginator) NextPage(ctx context.Context) ([]UserAppRoleAssignment, error) {
+	var response UserAppRoleAssignmentSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []UserAppRoleAssignment
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listUserAppRoleAssignmentFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"user_id":                "Description.AppId",
+}
+
+func ListUserAppRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListUserAppRoleAssignment")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewUserAppRoleAssignmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, listUserAppRoleAssignmentFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListUserAppRoleAssignment NewUserAppRoleAssignmentPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListUserAppRoleAssignment paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getUserAppRoleAssignmentFilters = map[string]string{
+	"app_role_id":            "Description.AppRoleId",
+	"created_date_time":      "Description.CreatedDateTime",
+	"deleted_date_time":      "Description.DeletedDateTime",
+	"id":                     "Description.Id",
+	"principal_display_name": "Description.PrincipalDisplayName",
+	"principal_id":           "Description.PrincipalId",
+	"principal_type":         "Description.PrincipalType",
+	"resource_display_name":  "Description.ResourceDisplayName",
+	"resource_id":            "Description.ResourceId",
+	"user_id":                "Description.AppId",
+}
+
+func GetUserAppRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetUserAppRoleAssignment")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewUserAppRoleAssignmentPaginator(essdk.BuildFilter(ctx, d.QueryContext, getUserAppRoleAssignmentFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: UserAppRoleAssignment =============================

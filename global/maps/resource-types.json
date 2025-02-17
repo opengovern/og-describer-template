@@ -214,5 +214,45 @@
     "GetDescriber": "",
     "SteampipeTable": "entraid_directory_setting",
     "Model": "AdDirectorySetting"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/applicationapproleassignedto",
+    "Tags": {
+      "logo_uri": []
+    },
+    "ListDescriber": "DescribeADByTenantID(describers.ApplicationAppRoleAssignedTo)",
+    "GetDescriber": "",
+    "SteampipeTable": "entraid_application_app_role_assigned_to",
+    "Model": "ApplicationAppRoleAssignedTo"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/serviceprincipalapproleassignedto",
+    "Tags": {
+      "logo_uri": []
+    },
+    "ListDescriber": "DescribeADByTenantID(describers.ServicePrincipalAppRoleAssignedTo)",
+    "GetDescriber": "",
+    "SteampipeTable": "entraid_service_principal_app_role_assigned_to",
+    "Model": "ServicePrincipalAppRoleAssignedTo"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/serviceprincipalapproleassignment",
+    "Tags": {
+      "logo_uri": []
+    },
+    "ListDescriber": "DescribeADByTenantID(describers.ServicePrincipalAppRoleAssignment)",
+    "GetDescriber": "",
+    "SteampipeTable": "entraid_service_principal_app_role_assignment",
+    "Model": "ServicePrincipalAppRoleAssignment"
+  },
+  {
+    "ResourceName": "Microsoft.Entra/userapproleassignment",
+    "Tags": {
+      "logo_uri": []
+    },
+    "ListDescriber": "DescribeADByTenantID(describers.UserAppRoleAssignment)",
+    "GetDescriber": "",
+    "SteampipeTable": "entraid_user_app_role_assignment",
+    "Model": "UserAppRoleAssignment"
   }
 ]

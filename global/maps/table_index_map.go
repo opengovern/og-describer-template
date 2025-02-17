@@ -25,6 +25,10 @@ var ResourceTypesToTables = map[string]string{
   "Microsoft.Entra/users": "entraid_user",
   "Microsoft.Entra/directoryroles": "entraid_directory_role",
   "Microsoft.Entra/directorysettings": "entraid_directory_setting",
+  "Microsoft.Entra/applicationapproleassignedto": "entraid_application_app_role_assigned_to",
+  "Microsoft.Entra/serviceprincipalapproleassignedto": "entraid_service_principal_app_role_assigned_to",
+  "Microsoft.Entra/serviceprincipalapproleassignment": "entraid_service_principal_app_role_assignment",
+  "Microsoft.Entra/userapproleassignment": "entraid_user_app_role_assignment",
 }
 
 var ResourceTypeToDescription = map[string]interface{}{
@@ -48,6 +52,10 @@ var ResourceTypeToDescription = map[string]interface{}{
   "Microsoft.Entra/users": opengovernance.AdUsers{},
   "Microsoft.Entra/directoryroles": opengovernance.AdDirectoryRole{},
   "Microsoft.Entra/directorysettings": opengovernance.AdDirectorySetting{},
+  "Microsoft.Entra/applicationapproleassignedto": opengovernance.ApplicationAppRoleAssignedTo{},
+  "Microsoft.Entra/serviceprincipalapproleassignedto": opengovernance.ServicePrincipalAppRoleAssignedTo{},
+  "Microsoft.Entra/serviceprincipalapproleassignment": opengovernance.ServicePrincipalAppRoleAssignment{},
+  "Microsoft.Entra/userapproleassignment": opengovernance.UserAppRoleAssignment{},
 }
 
 var TablesToResourceTypes = map[string]string{
@@ -71,4 +79,8 @@ var TablesToResourceTypes = map[string]string{
   "entraid_user": "Microsoft.Entra/users",
   "entraid_directory_role": "Microsoft.Entra/directoryroles",
   "entraid_directory_setting": "Microsoft.Entra/directorysettings",
+  "entraid_application_app_role_assigned_to": "Microsoft.Entra/applicationapproleassignedto",
+  "entraid_service_principal_app_role_assigned_to": "Microsoft.Entra/serviceprincipalapproleassignedto",
+  "entraid_service_principal_app_role_assignment": "Microsoft.Entra/serviceprincipalapproleassignment",
+  "entraid_user_app_role_assignment": "Microsoft.Entra/userapproleassignment",
 }

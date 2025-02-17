@@ -853,3 +853,76 @@ type AdMicrosoftApplicationDescription struct {
 	ServicePrincipalNames []string
 	TagsSrc               []string
 }
+
+//index:microsoft_resources_groups_memberships
+type ApplicationAppRoleAssignedToDescription struct {
+	TenantID string
+
+	Id                  *string
+	AppRoleId           *string
+	ResourceId          *string
+	ResourceDisplayName *string
+
+	CreatedDateTime *time.Time
+	DeletedDateTime *time.Time
+
+	PrincipalId          *string
+	PrincipalDisplayName *string
+	PrincipalType        *string
+
+	AppId *string
+}
+
+type ServicePrincipalAppRoleAssignedToDescription struct {
+	TenantID string
+
+	Id                  *string
+	AppRoleId           *string
+	ResourceId          *string
+	ResourceDisplayName *string
+
+	CreatedDateTime *time.Time
+	DeletedDateTime *time.Time
+
+	PrincipalId          *string
+	PrincipalDisplayName *string
+	PrincipalType        *string
+
+	ServicePrincipalId *string
+}
+
+type ServicePrincipalAppRoleAssignmentDescription struct {
+	TenantID string
+
+	Id                  *string
+	AppRoleId           *string
+	ResourceId          *string
+	ResourceDisplayName *string
+
+	CreatedDateTime *time.Time
+	DeletedDateTime *time.Time
+
+	PrincipalId          *string
+	PrincipalDisplayName *string
+	PrincipalType        *string
+
+	ServicePrincipalId *string
+}
+
+type UserAppRoleAssignmentDescription struct {
+	TenantID string
+
+	Id                  *string
+	AppRoleId           *string
+	ResourceId          *string
+	ResourceDisplayName *string
+
+	CreatedDateTime *time.Time
+	DeletedDateTime *time.Time
+
+	PrincipalId          *string
+	PrincipalDisplayName *string
+	PrincipalType        *string
+
+	UserId *string
+}
