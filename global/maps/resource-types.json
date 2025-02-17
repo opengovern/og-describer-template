@@ -159,6 +159,18 @@
     "Model": "OrgAlertDependabot"
   },
   {
+    "ResourceName": "Github/Organization/ExternalIdentity",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.GetAllExternalIdentities)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_external_identity",
+    "Model": "OrgExternalIdentity"
+  },
+  {
     "ResourceName": "Github/Organization/Member",
     "Tags": {
       "category": [

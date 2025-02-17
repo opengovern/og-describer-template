@@ -1,10 +1,10 @@
-package describer
+package describers
 
 import (
 	"context"
 	"fmt"
-	"github.com/opengovern/og-describer-github/describer/pkg/models"
-	model "github.com/opengovern/og-describer-github/describer/provider"
+	"github.com/opengovern/og-describer-github/discovery/pkg/models"
+	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 )
@@ -51,13 +51,11 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.G
 			value := models.Resource{
 				ID:   id,
 				Name: org,
-				Description: JSONAllFieldsMarshaller{
-					Value: model.OrgExternalIdentityDescription{
-						OrganizationExternalIdentity: externalIdentity,
-						Organization:                 org,
-						UserLogin:                    externalIdentity.User.Login,
-						UserDetail:                   externalIdentity.User,
-					},
+				Description: model.OrgExternalIdentityDescription{
+					OrganizationExternalIdentity: externalIdentity,
+					Organization:                 org,
+					UserLogin:                    externalIdentity.User.Login,
+					UserDetail:                   externalIdentity.User,
 				},
 			}
 			if stream != nil {
