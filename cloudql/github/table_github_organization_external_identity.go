@@ -1,8 +1,6 @@
 package github
 
 import (
-	opengovernance "github.com/opengovern/og-describer-github/describer/pkg/sdk/es"
-
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -32,7 +30,7 @@ func tableGitHubOrganizationExternalIdentity() *plugin.Table {
 		Name:        "github_organization_external_identity",
 		Description: "GitHub members for a given organization. GitHub Users are user accounts in GitHub.",
 		List: &plugin.ListConfig{
-			Hydrate: opengovernance.ListOrgExternalIdentity,
+			Hydrate: nil,
 		},
 		Columns: commonColumns(gitHubOrganizationExternalIdentityColumns()),
 	}
