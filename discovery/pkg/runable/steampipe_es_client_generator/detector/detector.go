@@ -3,7 +3,7 @@ package detector
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/opengovern/og-describer-azure/global/maps"
+	"github.com/opengovern/og-describer-template/global/maps"
 	"go/ast"
 	"reflect"
 	"strings"
