@@ -24,6 +24,41 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 			Name:      "has_two_factor_enabled",
 			Type:      proto.ColumnType_BOOL,
 			Transform: transform.FromField("Description.HasTwoFactorEnabled")},
+		{
+			Name:        "login",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.Login")},
+		{
+			Name:        "login_id",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.LoginID")},
+		{
+			Name:        "url",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.URL")},
+		{
+			Name:        "email",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.Email")},
+		{
+			Name:        "created_at",
+			Type:        proto.ColumnType_TIMESTAMP,
+			Description: "",
+			Transform:   transform.FromField("Description.CreatedAt")},
+		{
+			Name:        "company",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.Company")},
+		{
+			Name:        "status",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
+			Transform:   transform.FromField("Description.Status")},
 	}
 
 	return append(tableCols, sharedUserColumns()...)

@@ -809,6 +809,13 @@ type OrgMembersDescription struct {
 	Organization        string
 	HasTwoFactorEnabled *bool
 	Role                *string
+	Login               string
+	LoginID             string
+	URL                 string
+	Email               string
+	CreatedAt           time.Time
+	Company             *string
+	Status              *bool
 }
 
 type PullRequestDescription struct {
