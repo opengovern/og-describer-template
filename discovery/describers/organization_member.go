@@ -14,7 +14,20 @@ import (
 type memberWithRole struct {
 	HasTwoFactorEnabled *bool
 	Role                *string
-	Node                steampipemodels.User
+	Node                struct {
+		DatabaseID int
+		Login      string
+		Name       string
+		URL        string
+		Email      string
+		CreatedAt  githubv4.DateTime
+		Company    *string
+		Status     *struct {
+			Message                      *string
+			IndicatesLimitedAvailability *bool
+		}
+		steampipemodels.User
+	}
 }
 
 func GetAllMembers(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -63,10 +76,16 @@ func GetOrganizationMembers(ctx context.Context, githubClient model.GitHubClient
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
 				Description: model.OrgMembersDescription{
-					User:                member.Node,
+					User:                member.Node.User,
 					Organization:        org,
 					HasTwoFactorEnabled: member.HasTwoFactorEnabled,
 					Role:                member.Role,
+					Login:               member.Node.Login,
+					LoginID:             strconv.Itoa(member.Node.DatabaseID),
+					URL:                 member.Node.URL,
+					Email:               member.Node.Email,
+					CreatedAt:           member.Node.CreatedAt.Time,
+					Company:             member.Node.Company,
 				},
 			}
 			if stream != nil {

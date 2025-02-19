@@ -3232,9 +3232,16 @@ func (p OrgMembersPaginator) NextPage(ctx context.Context) ([]OrgMembers, error)
 }
 
 var listOrgMembersFilters = map[string]string{
+	"company":                "Description.Company",
+	"created_at":             "Description.CreatedAt",
+	"email":                  "Description.Email",
 	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
+	"login":                  "Description.Login",
+	"login_id":               "Description.LoginID",
 	"organization":           "Description.Organization",
 	"role":                   "Description.Role",
+	"status":                 "Description.Status",
+	"url":                    "Description.URL",
 }
 
 func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3298,9 +3305,16 @@ func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getOrgMembersFilters = map[string]string{
+	"company":                "Description.Company",
+	"created_at":             "Description.CreatedAt",
+	"email":                  "Description.Email",
 	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
+	"login":                  "Description.Login",
+	"login_id":               "Description.LoginID",
 	"organization":           "Description.Organization",
 	"role":                   "Description.Role",
+	"status":                 "Description.Status",
+	"url":                    "Description.URL",
 }
 
 func GetOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
