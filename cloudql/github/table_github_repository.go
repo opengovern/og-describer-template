@@ -15,12 +15,7 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.RepositoryFullName"),
 			Description: "repository full name",
 		},
-		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.Organization"),
-			Description: "organization name",
-		},
+
 		{
 			Name:        "github_repo_id",
 			Type:        proto.ColumnType_INT,
@@ -136,11 +131,18 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Description: "Permissions associated with the repository.",
 		},
 		{
+			Name:        "organization_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "organization name",
+		},
+		{
 			Name:        "organization",
 			Type:        proto.ColumnType_JSON,
 			Transform:   transform.FromField("Description.Organization"),
 			Description: "Organization details of the repository.",
 		},
+				
 		{
 			Name:        "parent",
 			Type:        proto.ColumnType_JSON,
