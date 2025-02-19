@@ -27,37 +27,37 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 		{
 			Name:        "login",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "login",
 			Transform:   transform.FromField("Description.Login")},
 		{
 			Name:        "login_id",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "login id",
 			Transform:   transform.FromField("Description.LoginID")},
 		{
 			Name:        "url",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "url",
 			Transform:   transform.FromField("Description.URL")},
 		{
 			Name:        "email",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "email",
 			Transform:   transform.FromField("Description.Email")},
 		{
 			Name:        "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "",
+			Description: "created at",
 			Transform:   transform.FromField("Description.CreatedAt")},
 		{
 			Name:        "company",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "company",
 			Transform:   transform.FromField("Description.Company")},
 		{
 			Name:        "status",
 			Type:        proto.ColumnType_STRING,
-			Description: "",
+			Description: "status",
 			Transform:   transform.FromField("Description.Status")},
 	}
 

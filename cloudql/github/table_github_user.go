@@ -27,7 +27,7 @@ func tableGitHubUserColumns() []*plugin.Column {
 			Name:        "organization",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Organization"),
-			Description: "",
+			Description: "User organization name",
 		},
 		{Name: "repositories_total_disk_usage", Type: proto.ColumnType_INT, Description: "Total disk spaced used by the users repositories.",
 			Transform: transform.FromField("Description.RepositoriesTotalDiskUsage")},

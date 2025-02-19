@@ -32,13 +32,13 @@ func tableGitHubActionsRepositorySecret() *plugin.Table {
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "name",

@@ -23,19 +23,19 @@ func tableGitHubArtifactDockerFile() *plugin.Table {
 				Name:        "repository_full_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
-				Description: "",
+				Description: "repository full name",
 			},
 			{
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "sha",
@@ -91,7 +91,7 @@ func tableGitHubArtifactDockerFile() *plugin.Table {
 				Name:        "images",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Description.Images"),
-				Description: ""},
+				Description: "images"},
 		}),
 	}
 }

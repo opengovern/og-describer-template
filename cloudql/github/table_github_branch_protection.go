@@ -31,13 +31,13 @@ func tableGitHubBranchProtection() *plugin.Table {
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "id",

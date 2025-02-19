@@ -14,7 +14,7 @@ func gitHubDependabotAlertColumns() []*plugin.Column {
 			Name:        "organization",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Organization"),
-			Description: "",
+			Description: "organization name",
 		},
 		{
 			Name:        "alert_number",

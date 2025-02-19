@@ -25,19 +25,19 @@ func tableGitHubActionsRepositoryWorkflowRun() *plugin.Table {
 				Name:        "repository_full_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
-				Description: "",
+				Description: "repository full name",
 			},
 			{
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "id",

@@ -13,13 +13,13 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Name:        "repository_full_name",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.RepositoryFullName"),
-			Description: "",
+			Description: "repository full name",
 		},
 		{
 			Name:        "organization",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Organization"),
-			Description: "",
+			Description: "organization name",
 		},
 		{
 			Name:        "github_repo_id",

@@ -29,7 +29,7 @@ func tableGithubRepositoryWebhook() *plugin.Table {
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "type",

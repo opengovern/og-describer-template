@@ -23,13 +23,13 @@ func tableGitHubArtifactAIModel() *plugin.Table {
 				Name:        "name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Name"),
-				Description: "",
+				Description: "name",
 			},
 			{
 				Name:        "repository_id",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryID"),
-				Description: "",
+				Description: "repository id",
 			},
 			{
 				Name:        "repository_full_name",
@@ -41,13 +41,13 @@ func tableGitHubArtifactAIModel() *plugin.Table {
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "extensions",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Description.Extensions"),
-				Description: "",
+				Description: "extention",
 			},
 		}),
 	}

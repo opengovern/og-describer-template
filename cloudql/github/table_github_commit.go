@@ -25,19 +25,19 @@ func tableGitHubCommit() *plugin.Table {
 				Name:        "repository_full_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryFullName"),
-				Description: "",
+				Description: "repository full name",
 			},
 			{
 				Name:        "organization",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Organization"),
-				Description: "",
+				Description: "organization name",
 			},
 			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),
-				Description: "",
+				Description: "repository name",
 			},
 			{
 				Name:        "sha",
@@ -49,7 +49,7 @@ func tableGitHubCommit() *plugin.Table {
 				Name:        "node_id",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.NodeID"),
-				Description: "",
+				Description: "node id",
 			},
 			{
 				Name:        "commit_detail",
@@ -73,7 +73,7 @@ func tableGitHubCommit() *plugin.Table {
 				Name:        "comments_url",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.CommentsURL"),
-				Description: "",
+				Description: "comments url",
 			},
 			{
 				Name:        "author",
