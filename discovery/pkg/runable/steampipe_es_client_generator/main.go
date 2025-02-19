@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/opengovern/og-describer-template/discovery/pkg/runable/steampipe_es_client_generator/detector"
 	"github.com/opengovern/og-describer-template/global/constants"
 	"go/ast"
 	"go/format"
@@ -352,7 +353,7 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 											}
 										} else if i.Name == "Transform" {
 											if cl, ok := kv.Value.(*ast.CallExpr); ok {
-												transformer = extractTransformer(cl)
+												transformer = detector.ExtractTransformer(cl)
 											}
 										}
 									}
@@ -367,6 +368,14 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 						}
 						return true
 					})
+
+					getFilters, ListFilters := detector.DetectFilters(resourceType.ResourceName, tableNode)
+					for k, v := range getFilters {
+						s.GetFilters[k] = v
+					}
+					for k, v := range ListFilters {
+						s.ListFilters[k] = v
+					}
 				}
 			}
 
@@ -431,23 +440,4 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	if err != nil {
 		panic(err)
 	}
-}
-
-func extractTransformer(cl *ast.CallExpr) string {
-	if sl, ok := cl.Fun.(*ast.SelectorExpr); ok {
-		if sl.Sel.Name == "Transform" {
-			return ""
-		}
-		if call, ok := sl.X.(*ast.CallExpr); ok {
-			return extractTransformer(call)
-		}
-		if sl.Sel.Name == "FromField" {
-			for _, arg := range cl.Args {
-				if bl, ok := arg.(*ast.BasicLit); ok {
-					return strings.Trim(bl.Value, "\"")
-				}
-			}
-		}
-	}
-	return ""
 }
