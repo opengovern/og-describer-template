@@ -25,11 +25,6 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 			Type:      proto.ColumnType_BOOL,
 			Transform: transform.FromField("Description.HasTwoFactorEnabled")},
 		{
-			Name:        "login",
-			Type:        proto.ColumnType_STRING,
-			Description: "login",
-			Transform:   transform.FromField("Description.Login")},
-		{
 			Name:        "login_id",
 			Type:        proto.ColumnType_STRING,
 			Description: "login id",
