@@ -80,9 +80,8 @@ func tableGitHubOrganizationTeam() *plugin.Table {
 			Hydrate: opengovernance.ListTeamMembers,
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns:        plugin.AllColumns([]string{"organization", "slug"}),
-			ShouldIgnoreError: isNotFoundError([]string{"404"}),
-			Hydrate:           opengovernance.GetTeamMembers,
+			KeyColumns: plugin.AllColumns([]string{"organization", "slug"}),
+			Hydrate:    opengovernance.GetTeamMembers,
 		},
 		Columns: commonColumns(gitHubTeamColumns()),
 	}
