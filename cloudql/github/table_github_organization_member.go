@@ -29,31 +29,6 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 			Type:        proto.ColumnType_STRING,
 			Description: "login id",
 			Transform:   transform.FromField("Description.LoginID")},
-		{
-			Name:        "url",
-			Type:        proto.ColumnType_STRING,
-			Description: "url",
-			Transform:   transform.FromField("Description.URL")},
-		{
-			Name:        "email",
-			Type:        proto.ColumnType_STRING,
-			Description: "email",
-			Transform:   transform.FromField("Description.Email")},
-		{
-			Name:        "created_at",
-			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "created at",
-			Transform:   transform.FromField("Description.CreatedAt")},
-		{
-			Name:        "company",
-			Type:        proto.ColumnType_STRING,
-			Description: "company",
-			Transform:   transform.FromField("Description.Company")},
-		{
-			Name:        "status",
-			Type:        proto.ColumnType_STRING,
-			Description: "status",
-			Transform:   transform.FromField("Description.Status")},
 	}
 
 	return append(tableCols, sharedUserColumns()...)
