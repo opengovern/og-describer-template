@@ -347,6 +347,18 @@
     "Model": "Tag"
   },
   {
+    "ResourceName": "Github/Team",
+    "Tags": {
+      "category": [
+        "Team"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.GetTeamList)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_team",
+    "Model": "Team"
+  },
+  {
     "ResourceName": "Github/Team/Member",
     "Tags": {
       "category": [
@@ -356,7 +368,19 @@
     "ListDescriber": "DescribeByGithub(describers.GetAllTeamsMembers)",
     "GetDescriber": "",
     "SteampipeTable": "github_team_member",
-    "Model": "TeamMembers"
+    "Model": "TeamMember"
+  },
+  {
+    "ResourceName": "Github/Team/Repository",
+    "Tags": {
+      "category": [
+        "Team"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.GetAllTeamsRepositories)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_team_repository",
+    "Model": "TeamRepository"
   },
   {
     "ResourceName": "Github/User",
