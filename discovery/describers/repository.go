@@ -322,7 +322,6 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 		OrganizationObject:      finalOrg,
 		Parent:                  parent,
 		Source:                  source,
-		Organization:            finalOrg.Login,
 		RepositoryFullName:      repoFullName,
 
 		// Single primary language from /repos
@@ -380,6 +379,9 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 			Size:        detail.Size,
 			OpenIssues:  detail.OpenIssuesCount,
 		},
+	}
+	if finalOrg != nil {
+		finalDetail.Organization = finalOrg.Login
 	}
 
 	return finalDetail
