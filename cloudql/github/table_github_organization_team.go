@@ -49,12 +49,8 @@ func gitHubTeamColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.RepositoriesTotalCount")},
 		{Name: "url", Type: proto.ColumnType_STRING, Description: "URL for the team page in GitHub.",
 			Transform: transform.FromField("Description.URL")},
-		{Name: "avatar_url", Type: proto.ColumnType_STRING, Description: "URL for teams avatar.",
-			Transform: transform.FromField("Description.AvatarURL")},
 		{Name: "discussions_url", Type: proto.ColumnType_STRING, Description: "URL for team discussions.",
 			Transform: transform.FromField("Description.DiscussionsURL")},
-		{Name: "edit_team_url", Type: proto.ColumnType_STRING, Description: "URL for editing this team.",
-			Transform: transform.FromField("Description.EditTeamURL")},
 		{Name: "members_url", Type: proto.ColumnType_STRING, Description: "URL for team members.",
 			Transform: transform.FromField("Description.MembersURL")},
 		{Name: "new_team_url", Type: proto.ColumnType_STRING, Description: "The HTTP URL creating a new team.",
@@ -63,10 +59,6 @@ func gitHubTeamColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.RepositoriesURL")},
 		{Name: "teams_url", Type: proto.ColumnType_STRING, Description: "URL for this team's teams.",
 			Transform: transform.FromField("Description.TeamsURL")},
-		{Name: "can_administer", Type: proto.ColumnType_BOOL, Description: "If true, current user can administer the team.",
-			Transform: transform.FromField("Description.CanAdminister")},
-		{Name: "can_subscribe", Type: proto.ColumnType_BOOL, Description: "If true, current user can subscribe to the team.",
-			Transform: transform.FromField("Description.CanSubscribe")},
 		{Name: "subscription", Type: proto.ColumnType_STRING, Description: "Subscription status of the current user to the team.",
 			Transform: transform.FromField("Description.Subscription")},
 	}
@@ -77,11 +69,11 @@ func tableGitHubOrganizationTeam() *plugin.Table {
 		Name:        "github_organization_team",
 		Description: "GitHub Teams in a given organization. GitHub Teams are groups of organization members that reflect your company or group's structure with cascading access permissions and mentions.",
 		List: &plugin.ListConfig{
-			Hydrate: opengovernance.ListTeamMembers,
+			Hydrate: opengovernance.ListTeamMember,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.AllColumns([]string{"organization", "slug"}),
-			Hydrate:    opengovernance.GetTeamMembers,
+			Hydrate:    opengovernance.GetTeamMember,
 		},
 		Columns: commonColumns(gitHubTeamColumns()),
 	}

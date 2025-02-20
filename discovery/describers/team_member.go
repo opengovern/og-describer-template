@@ -2,13 +2,12 @@ package describers
 
 import (
 	"context"
-	"strconv"
-	"strings"
-
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+	"strconv"
+	"strings"
 )
 
 func GetAllTeamsMembers(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -65,11 +64,20 @@ func tableGitHubTeamMemberList(ctx context.Context, githubClient model.GitHubCli
 			value := models.Resource{
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
-				Description: model.TeamMembersDescription{
-					User:         member.Node,
-					Organization: org,
-					Slug:         slug,
-					Role:         member.Role,
+				Description: model.TeamMemberDescription{
+					Company:            member.Node.Company,
+					CreatedAt:          member.Node.CreatedAt.Time,
+					Email:              member.Node.Email,
+					ID:                 member.Node.Id,
+					InteractionAbility: member.Node.InteractionAbility,
+					IsSiteAdmin:        member.Node.IsSiteAdmin,
+					Location:           member.Node.Location,
+					Login:              member.Node.Login,
+					LoginID:            member.Node.Login,
+					Name:               member.Node.Name,
+					NodeID:             member.Node.NodeId,
+					Organization:       org,
+					Role:               string(member.Role),
 				},
 			}
 			if stream != nil {

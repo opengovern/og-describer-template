@@ -1447,23 +1447,38 @@ type TeamDescription struct {
 	ProjectsV2TotalCount   int
 	RepositoriesTotalCount int
 	URL                    string
-	AvatarURL              string
 	DiscussionsURL         string
-	EditTeamURL            string
 	MembersURL             string
 	NewTeamURL             string
 	RepositoriesURL        string
 	TeamsURL               string
-	CanAdminister          bool
-	CanSubscribe           bool
 	Subscription           string
+	OrganizationID         int
 }
 
-type TeamMembersDescription struct {
-	steampipemodels.User
-	Organization string
-	Slug         string
-	Role         githubv4.TeamMemberRole
+type TeamRepositoryDescription struct {
+	TeamID             int
+	RepositoryFullName string
+	Permission         string
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
+}
+
+type TeamMemberDescription struct {
+	Company            string
+	CreatedAt          time.Time
+	Email              string
+	ID                 int
+	InteractionAbility interface{}
+	IsSiteAdmin        bool
+	Location           string
+	Login              string
+	LoginID            string
+	Name               string
+	NodeID             string
+	Organization       string
+	Role               string
+	Slug               string
 }
 
 type TrafficViewDailyDescription struct {
