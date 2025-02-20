@@ -1009,6 +1009,10 @@ type RepositorySettings struct {
 	ForkingAllowed            bool                   `json:"forking_allowed"`
 	IsTemplate                bool                   `json:"is_template"`
 	AllowRebaseMerge          bool                   `json:"allow_rebase_merge"`
+	IsPrivate                 bool                   `json:"is_private"`
+	IsMirror                  bool                   `json:"is_mirror"`
+	IsInOrganization          bool                   `json:"is_in_organization"`
+	BlankIssuesEnabled        bool                   `json:"bank_issues_enabled"`
 	// Renamed fields:
 	Archived bool `json:"archived"`
 	Disabled bool `json:"disabled"`
@@ -1179,36 +1183,77 @@ type Metrics struct {
 //}
 
 type RepositoryDescription struct {
-	GitHubRepoID            int
-	NodeID                  *string
-	Name                    *string
-	NameWithOwner           *string
-	Description             *string
-	CreatedAt               *string
-	UpdatedAt               *string
-	PushedAt                *string
-	IsActive                bool
-	IsEmpty                 bool
-	IsFork                  bool
-	IsSecurityPolicyEnabled bool
-	Owner                   *Owner
-	HomepageURL             *string
-	LicenseInfo             json.RawMessage
-	Topics                  []string
-	Visibility              string
-	DefaultBranchRef        json.RawMessage
-	Permissions             *Permissions
-	OrganizationObject      *Organization
-	Parent                  *RepositoryDescription
-	Source                  *RepositoryDescription
-	PrimaryLanguage         *string
-	Languages               map[string]int
-	RepositorySettings      RepositorySettings
-	SecuritySettings        SecuritySettings
-	RepoURLs                RepoURLs
-	Metrics                 Metrics
-	Organization            string
-	RepositoryFullName      string
+	GitHubRepoID                  int
+	NodeID                        *string
+	Name                          *string
+	NameWithOwner                 *string
+	Description                   *string
+	CreatedAt                     *string
+	UpdatedAt                     *string
+	ArchivedAt                    *string
+	PushedAt                      *string
+	IsActive                      bool
+	IsEmpty                       bool
+	IsFork                        bool
+	IsSecurityPolicyEnabled       bool
+	Owner                         *Owner
+	ContactLinks                  []steampipemodels.RepositoryContactLink
+	HomepageURL                   *string
+	LicenseInfo                   json.RawMessage
+	Topics                        []string
+	Visibility                    string
+	NetworkCount                  int
+	OpenIssuesCount               int
+	WatchersCount                 int
+	TopicsTotalCount              int
+	DefaultBranchRef              json.RawMessage
+	Permissions                   *Permissions
+	OrganizationObject            *Organization
+	Parent                        *RepositoryDescription
+	Source                        *RepositoryDescription
+	PrimaryLanguage               *string
+	Languages                     map[string]int
+	RepositorySettings            RepositorySettings
+	SecuritySettings              SecuritySettings
+	RepoURLs                      RepoURLs
+	Metrics                       Metrics
+	Organization                  string
+	RepositoryFullName            string
+	Hooks                         []RepoHook
+	CodeOfConduct                 *github.CodeOfConduct
+	DiskUsage                     int
+	InteractionAbility            steampipemodels.RepositoryInteractionAbility
+	IsUserConfigurationRepository bool
+	IssueTemplates                []steampipemodels.IssueTemplate
+	LockReason                    string
+	PossibleCommitEmails          []string
+	ProjectsUrl                   string
+	PullRequestTemplates          []steampipemodels.PullRequestTemplate
+	SecurityPolicyUrl             string
+	UsesCustomOpenGraphImage      bool
+}
+
+type RepoHook struct {
+	ID            int64        `json:"id"`
+	Name          string       `json:"name"`
+	Active        bool         `json:"active"`
+	Events        []string     `json:"events"`
+	Config        HookConfig   `json:"config"`
+	Type          string       `json:"type"`
+	URL           string       `json:"url"`
+	TestURL       string       `json:"test_url"`
+	PingURL       string       `json:"ping_url"`
+	DeliveriesURL string       `json:"deliveries_url"`
+	LastResponse  HookResponse `json:"last_response"`
+	CreatedAt     string       `json:"created_at"`
+	UpdatedAt     string       `json:"updated_at"`
+}
+
+type HookConfig struct {
+	URL         string `json:"url"`
+	ContentType string `json:"content_type"`
+	InsecureSSL string `json:"insecure_ssl"`
+	Secret      string `json:"secret"`
 }
 
 type MinimalRepoInfo struct {

@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/google/go-github/v55/github"
+	"github.com/shurcooL/githubv4"
+	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
 	"log"
 	"regexp"
 	"strconv"
@@ -185,8 +188,36 @@ func GetRepository(
 			organizationName, repositoryName, err)
 	}
 
+	hooks, err := util_fetchRepoHooks(sdk, organizationName, repositoryName)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching repository hooks for %s/%s: %w", organizationName, repositoryName, err)
+	}
+
+	var repoRestDetail *github.Repository
+	var repoGraphqlDetail steampipemodels.Repository
+	if githubClient.RestClient != nil {
+		repoRestDetail, _, err = githubClient.RestClient.Repositories.Get(ctx, organizationName, repositoryName)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching repository rest details for %s/%s: %w", organizationName, repositoryName, err)
+		}
+	}
+	if githubClient.GraphQLClient != nil {
+		var query struct {
+			RateLimit  steampipemodels.RateLimit
+			Repository steampipemodels.Repository `graphql:"repository(owner: $owner, name: $name)"`
+		}
+
+		variables := map[string]interface{}{
+			"owner": githubv4.String(organizationName),
+			"name":  githubv4.String(repositoryName),
+		}
+
+		err = githubClient.GraphQLClient.Query(ctx, &query, variables)
+		repoGraphqlDetail = query.Repository
+	}
+
 	// 2) Transform -> RepositoryDescription
-	finalDetail := util_transformToFinalRepoDetail(repoDetail)
+	finalDetail := util_transformToFinalRepoDetail(repoDetail, hooks, repoRestDetail, &repoGraphqlDetail)
 
 	// 3) Fetch /languages => map[string]int
 	langs, err := util_fetchLanguages(sdk, organizationName, repositoryName)
@@ -250,14 +281,35 @@ func util_fetchRepoDetails(sdk *resilientbridge.ResilientBridge, owner, repo str
 	return &detail, nil
 }
 
-func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.RepositoryDescription {
+func util_fetchRepoHooks(sdk *resilientbridge.ResilientBridge, owner, repo string) ([]model.RepoHook, error) {
+	req := &resilientbridge.NormalizedRequest{
+		Method:   "GET",
+		Endpoint: fmt.Sprintf("/repos/%s/%s/hooks", owner, repo),
+		Headers:  map[string]string{"Accept": "application/vnd.github+json"},
+	}
+	resp, err := sdk.Request("github", req)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching repo hooks: %w", err)
+	}
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, string(resp.Data))
+	}
+
+	var hooks []model.RepoHook
+	if err := json.Unmarshal(resp.Data, &hooks); err != nil {
+		return nil, fmt.Errorf("error decoding repo hooks: %w", err)
+	}
+	return nil, nil
+}
+
+func util_transformToFinalRepoDetail(detail *model.RepoDetail, hooks []model.RepoHook, repoRestDetail *github.Repository, repoGraphqlDetail *steampipemodels.Repository) *model.RepositoryDescription {
 	var parent *model.RepositoryDescription
 	if detail.Parent != nil {
-		parent = util_transformToFinalRepoDetail(detail.Parent)
+		parent = util_transformToFinalRepoDetail(detail.Parent, nil, repoRestDetail.Parent, nil)
 	}
 	var source *model.RepositoryDescription
 	if detail.Source != nil {
-		source = util_transformToFinalRepoDetail(detail.Source)
+		source = util_transformToFinalRepoDetail(detail.Source, nil, repoRestDetail.Source, nil)
 	}
 
 	var finalOwner *model.Owner
@@ -272,6 +324,7 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 	}
 
 	var finalOrg *model.Organization
+	isInOrganization := false
 	if detail.Organization != nil {
 		finalOrg = &model.Organization{
 			Login:        detail.Organization.Login,
@@ -282,13 +335,14 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 			UserViewType: detail.Organization.UserViewType,
 			SiteAdmin:    detail.Organization.SiteAdmin,
 		}
+		isInOrganization = true
 	}
 
 	dbObj := map[string]string{"name": detail.DefaultBranch}
 	dbBytes, _ := json.Marshal(dbObj)
 
 	isActive := !(detail.Archived || detail.Disabled)
-	isEmpty := (detail.Size == 0)
+	isEmpty := detail.Size == 0
 
 	var licenseJSON json.RawMessage
 	if detail.License != nil {
@@ -299,14 +353,26 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 
 	repoFullName := detail.FullName
 
+	isMirror := detail.MirrorURL != nil
+
+	topicsTotalCount := len(detail.Topics)
+	var archiveTime string
+	if repoGraphqlDetail != nil {
+		archiveTime = repoGraphqlDetail.ArchivedAt.String()
+	}
 	finalDetail := &model.RepositoryDescription{
 		GitHubRepoID:            detail.ID,
 		NodeID:                  &detail.NodeID,
 		Name:                    &detail.Name,
 		NameWithOwner:           &detail.FullName,
+		NetworkCount:            detail.NetworkCount,
+		OpenIssuesCount:         detail.OpenIssuesCount,
+		WatchersCount:           detail.WatchersCount,
+		TopicsTotalCount:        topicsTotalCount,
 		Description:             detail.Description,
 		CreatedAt:               &detail.CreatedAt,
 		UpdatedAt:               &detail.UpdatedAt,
+		ArchivedAt:              &archiveTime,
 		PushedAt:                &detail.PushedAt,
 		IsActive:                isActive,
 		IsEmpty:                 isEmpty,
@@ -323,7 +389,6 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 		Parent:                  parent,
 		Source:                  source,
 		RepositoryFullName:      repoFullName,
-
 		// Single primary language from /repos
 		PrimaryLanguage: detail.PrimaryLanguage,
 
@@ -356,6 +421,10 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 			Archived:                  detail.Archived,
 			Disabled:                  detail.Disabled,
 			Locked:                    detail.Locked,
+			IsPrivate:                 detail.Private,
+			IsMirror:                  isMirror,
+			IsInOrganization:          isInOrganization,
+			BlankIssuesEnabled:        detail.BlankIssuesEnabled,
 		},
 		SecuritySettings: model.SecuritySettings{
 			VulnerabilityAlertsEnabled:               false,
@@ -379,9 +448,26 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail) *model.Repository
 			Size:        detail.Size,
 			OpenIssues:  detail.OpenIssuesCount,
 		},
+		Hooks: hooks,
 	}
 	if finalOrg != nil {
 		finalDetail.Organization = finalOrg.Login
+	}
+
+	if repoRestDetail != nil {
+		finalDetail.CodeOfConduct = repoRestDetail.CodeOfConduct
+	}
+	if repoGraphqlDetail != nil {
+		finalDetail.DiskUsage = repoGraphqlDetail.DiskUsage
+		finalDetail.InteractionAbility = repoGraphqlDetail.InteractionAbility
+		finalDetail.IsUserConfigurationRepository = repoGraphqlDetail.IsUserConfigurationRepository
+		finalDetail.LockReason = string(repoGraphqlDetail.LockReason)
+		finalDetail.PossibleCommitEmails = repoGraphqlDetail.PossibleCommitEmails
+		finalDetail.ProjectsUrl = repoGraphqlDetail.ProjectsUrl
+		finalDetail.PullRequestTemplates = repoGraphqlDetail.PullRequestTemplates
+		finalDetail.SecurityPolicyUrl = repoGraphqlDetail.SecurityPolicyUrl
+		finalDetail.UsesCustomOpenGraphImage = repoGraphqlDetail.UsesCustomOpenGraphImage
+		finalDetail.ContactLinks = repoGraphqlDetail.ContactLinks
 	}
 
 	return finalDetail
