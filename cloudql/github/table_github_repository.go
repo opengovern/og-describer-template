@@ -282,12 +282,6 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Description: "IsUserConfigurationRepository.",
 		},
 		{
-			Name:        "is_user_configuration_repository",
-			Type:        proto.ColumnType_BOOL,
-			Transform:   transform.FromField("Description.IsUserConfigurationRepository"),
-			Description: "IsUserConfigurationRepository.",
-		},
-		{
 			Name:        "rebase_merge_allowed",
 			Type:        proto.ColumnType_BOOL,
 			Transform:   transform.FromField("Description.RepositorySettings.AllowRebaseMerge"),
