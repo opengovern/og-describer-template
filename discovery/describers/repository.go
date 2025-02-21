@@ -212,7 +212,12 @@ func GetRepository(
 			"name":  githubv4.String(repositoryName),
 		}
 
+		appendRepoColumnIncludes(&variables, nil)
+
 		err = githubClient.GraphQLClient.Query(ctx, &query, variables)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching repository rest details for %s/%s: %w", organizationName, repositoryName, err)
+		}
 		repoGraphqlDetail = query.Repository
 	}
 

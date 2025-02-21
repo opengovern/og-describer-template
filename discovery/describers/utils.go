@@ -105,8 +105,8 @@ func appendRepoColumnIncludes(m *map[string]interface{}, cols []string) {
 		"web_commit_signoff_required":      "includeWebCommitSignoffRequired",
 		"your_permission":                  "includeYourPermission",
 	}
-	for key, value := range optionals {
-		(*m)[value] = githubv4.Boolean(slices.Contains(cols, key))
+	for _, value := range optionals {
+		(*m)[value] = githubv4.Boolean(true)
 	}
 }
 
