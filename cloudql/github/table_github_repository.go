@@ -102,7 +102,7 @@ func sharedRepositoryColumns() []*plugin.Column {
 		},
 		{
 			Name:        "owner_login",
-			Type:        proto.ColumnType_JSON,
+			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Owner.Login"),
 			Description: "Owner login.",
 		},
