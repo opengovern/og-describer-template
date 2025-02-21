@@ -9,16 +9,10 @@ import (
 
 func gitHubTeamRepositoryColumns() []*plugin.Column {
 	teamColumns := []*plugin.Column{
-		{Name: "repository_full_name", Type: proto.ColumnType_STRING, Description: "",
-			Transform: transform.FromQual("Description.RepositoryFullName")},
 		{Name: "permission", Type: proto.ColumnType_STRING, Description: "The permission level the team has on the repository.",
 			Transform: transform.FromQual("Description.Permission")},
 		{Name: "team_id", Type: proto.ColumnType_INT, Description: "",
 			Transform: transform.FromQual("Description.TeamID")},
-		{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-			Transform: transform.FromQual("Description.CreatedAt")},
-		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-			Transform: transform.FromQual("Description.UpdatedAt")},
 	}
 
 	return append(teamColumns, sharedRepositoryColumns()...)

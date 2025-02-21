@@ -78,6 +78,7 @@ func tableGitHubTeamMemberList(ctx context.Context, githubClient model.GitHubCli
 					NodeID:             member.Node.NodeId,
 					Organization:       org,
 					Role:               string(member.Role),
+					Slug:               slug,
 				},
 			}
 			if stream != nil {
