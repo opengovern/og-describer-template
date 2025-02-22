@@ -13,9 +13,15 @@ func gitHubTeamRepositoryColumns() []*plugin.Column {
 			Transform: transform.FromQual("Description.Permission")},
 		{Name: "team_id", Type: proto.ColumnType_INT, Description: "",
 			Transform: transform.FromQual("Description.TeamID")},
+		{Name: "repository_full_name", Type: proto.ColumnType_STRING, Description: "",
+			Transform: transform.FromQual("Description.RepositoryFullName")},
+		{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
+			Transform: transform.FromQual("Description.CreatedAt")},
+		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
+			Transform: transform.FromQual("Description.UpdatedAt")},
 	}
 
-	return append(teamColumns, sharedRepositoryColumns()...)
+	return teamColumns
 }
 
 func tableGitHubTeamRepository() *plugin.Table {
