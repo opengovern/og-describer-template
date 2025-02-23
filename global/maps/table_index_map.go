@@ -43,6 +43,7 @@ var ResourceTypesToTables = map[string]string{
   "Github/Artifact/DockerFile": "github_artifact_dockerfile",
   "Github/Repository/Webhook": "github_repository_webhook",
   "Github/Artifact/AI/Model": "github_artifact_ai_model",
+  "Github/Organization/Role": "github_organization_role",
 }
 
 var ResourceTypeToDescription = map[string]interface{}{
@@ -84,6 +85,7 @@ var ResourceTypeToDescription = map[string]interface{}{
   "Github/Artifact/DockerFile": opengovernance.ArtifactDockerFile{},
   "Github/Repository/Webhook": opengovernance.Webhook{},
   "Github/Artifact/AI/Model": opengovernance.ArtifactAIModel{},
+  "Github/Organization/Role": opengovernance.OrganizationRole{},
 }
 
 var TablesToResourceTypes = map[string]string{
@@ -125,4 +127,5 @@ var TablesToResourceTypes = map[string]string{
   "github_artifact_dockerfile": "Github/Artifact/DockerFile",
   "github_repository_webhook": "Github/Repository/Webhook",
   "github_artifact_ai_model": "Github/Artifact/AI/Model",
+  "github_organization_role": "Github/Organization/Role",
 }

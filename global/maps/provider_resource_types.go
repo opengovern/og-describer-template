@@ -539,6 +539,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		ListDescriber:        provider.DescribeByGithub(describers.ListArtifactAIModels),
 		GetDescriber:         nil,
 	},
+
+	"Github/Organization/Role": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Github/Organization/Role",
+		Tags:                 map[string][]string{
+            "category": {"Organization"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeByGithub(describers.ListOrganizationRoles),
+		GetDescriber:         nil,
+	},
 }
 
 
@@ -884,6 +898,13 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		Description:                 "",
 		
 	},
+
+	"Github/Organization/Role": {
+		Name:         "Github/Organization/Role",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
 }
 
 
@@ -926,4 +947,5 @@ var ResourceTypesList = []string{
   "Github/Artifact/DockerFile",
   "Github/Repository/Webhook",
   "Github/Artifact/AI/Model",
+  "Github/Organization/Role",
 }

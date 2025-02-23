@@ -1844,3 +1844,15 @@ type ArtifactAIModelDescription struct {
 	RepositoryFullName string
 	Extensions         map[string][]string
 }
+
+type OrganizationRoleDescription struct {
+	ID           int
+	Name         string
+	Description  string
+	Permissions  []string
+	Organization interface{}
+	Source       string
+	BaseRole     string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
