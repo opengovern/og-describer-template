@@ -56,7 +56,7 @@ func gitHubOrganizationRoleColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.UpdatedAt")},
 	}
 
-	return append(tableCols, sharedUserColumns()...)
+	return tableCols
 }
 
 func tableGitHubOrganizationRole() *plugin.Table {
