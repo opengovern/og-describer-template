@@ -3230,10 +3230,22 @@ func (p OrgMembersPaginator) NextPage(ctx context.Context) ([]OrgMembers, error)
 }
 
 var listOrgMembersFilters = map[string]string{
+	"company":                "Description.Company",
+	"created_at":             "Description.CreatedAt",
+	"email":                  "Description.Email",
 	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
+	"id":                     "Description.ID",
+	"is_site_admin":          "Description.IsSiteAdmin",
+	"location":               "Description.Location",
+	"login":                  "Description.Login",
 	"login_id":               "Description.LoginID",
+	"name":                   "Description.Name",
+	"node_id":                "Description.NodeID",
 	"organization":           "Description.Organization",
 	"role":                   "Description.Role",
+	"status":                 "Description.Status",
+	"updated_at":             "Description.UpdatedAt",
+	"website_url":            "Description.WebsiteURL",
 }
 
 func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3297,10 +3309,22 @@ func ListOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getOrgMembersFilters = map[string]string{
+	"company":                "Description.Company",
+	"created_at":             "Description.CreatedAt",
+	"email":                  "Description.Email",
 	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
+	"id":                     "Description.ID",
+	"is_site_admin":          "Description.IsSiteAdmin",
+	"location":               "Description.Location",
+	"login":                  "Description.Login",
 	"login_id":               "Description.LoginID",
+	"name":                   "Description.Name",
+	"node_id":                "Description.NodeID",
 	"organization":           "Description.Organization",
 	"role":                   "Description.Role",
+	"status":                 "Description.Status",
+	"updated_at":             "Description.UpdatedAt",
+	"website_url":            "Description.WebsiteURL",
 }
 
 func GetOrgMembers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6373,9 +6397,11 @@ func (p TeamRepositoryPaginator) NextPage(ctx context.Context) ([]TeamRepository
 }
 
 var listTeamRepositoryFilters = map[string]string{
+	"created_at":           "Description.CreatedAt",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepositoryFullName",
 	"team_id":              "Description.TeamID",
+	"updated_at":           "Description.UpdatedAt",
 }
 
 func ListTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6439,9 +6465,11 @@ func ListTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 }
 
 var getTeamRepositoryFilters = map[string]string{
+	"created_at":           "Description.CreatedAt",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepositoryFullName",
 	"team_id":              "Description.TeamID",
+	"updated_at":           "Description.UpdatedAt",
 }
 
 func GetTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6581,15 +6609,16 @@ func (p TeamMemberPaginator) NextPage(ctx context.Context) ([]TeamMember, error)
 
 var listTeamMemberFilters = map[string]string{
 	"company":             "Description.Company",
+	"created_at":          "Description.CreatedAt",
 	"email":               "Description.Email",
-	"id":                  "Description.Id",
+	"id":                  "Description.ID",
 	"interaction_ability": "Description.InteractionAbility",
 	"is_site_admin":       "Description.IsSiteAdmin",
 	"location":            "Description.Location",
 	"login":               "Description.Login",
 	"login_id":            "Description.LoginID",
 	"name":                "Description.Name",
-	"node_id":             "Description.NodeId",
+	"node_id":             "Description.NodeID",
 	"organization":        "Description.Organization",
 	"role":                "Description.Role",
 	"slug":                "Description.Slug",
@@ -6657,15 +6686,16 @@ func ListTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 
 var getTeamMemberFilters = map[string]string{
 	"company":             "Description.Company",
+	"created_at":          "Description.CreatedAt",
 	"email":               "Description.Email",
-	"id":                  "Description.Id",
+	"id":                  "Description.ID",
 	"interaction_ability": "Description.InteractionAbility",
 	"is_site_admin":       "Description.IsSiteAdmin",
 	"location":            "Description.Location",
 	"login":               "Description.Login",
 	"login_id":            "Description.LoginID",
 	"name":                "Description.Name",
-	"node_id":             "Description.NodeId",
+	"node_id":             "Description.NodeID",
 	"organization":        "Description.Organization",
 	"role":                "Description.Role",
 	"slug":                "Description.Slug",
@@ -8641,10 +8671,15 @@ func (p OrganizationRolePaginator) NextPage(ctx context.Context) ([]Organization
 }
 
 var listOrganizationRoleFilters = map[string]string{
-	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
-	"login_id":               "Description.LoginID",
-	"organization":           "Description.Organization",
-	"role":                   "Description.Role",
+	"base_role":    "Description.BaseRole",
+	"created_at":   "Description.CreatedAt",
+	"description":  "Description.Description",
+	"id":           "Description.ID",
+	"name":         "Description.Name",
+	"organization": "Description.Organization",
+	"permissions":  "Description.Permissions",
+	"source":       "Description.Source",
+	"updated_at":   "Description.UpdatedAt",
 }
 
 func ListOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8708,10 +8743,15 @@ func ListOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 }
 
 var getOrganizationRoleFilters = map[string]string{
-	"has_two_factor_enabled": "Description.HasTwoFactorEnabled",
-	"login_id":               "Description.LoginID",
-	"organization":           "Description.Organization",
-	"role":                   "Description.Role",
+	"base_role":    "Description.BaseRole",
+	"created_at":   "Description.CreatedAt",
+	"description":  "Description.Description",
+	"id":           "Description.ID",
+	"name":         "Description.Name",
+	"organization": "Description.Organization",
+	"permissions":  "Description.Permissions",
+	"source":       "Description.Source",
+	"updated_at":   "Description.UpdatedAt",
 }
 
 func GetOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8768,3 +8808,242 @@ func GetOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 }
 
 // ==========================  END: OrganizationRole =============================
+
+// ==========================  START: OrganizationApp =============================
+
+type OrganizationApp struct {
+	ResourceID      string                            `json:"resource_id"`
+	PlatformID      string                            `json:"platform_id"`
+	Description     github.OrganizationAppDescription `json:"Description"`
+	Metadata        github.Metadata                   `json:"metadata"`
+	DescribedBy     string                            `json:"described_by"`
+	ResourceType    string                            `json:"resource_type"`
+	IntegrationType string                            `json:"integration_type"`
+	IntegrationID   string                            `json:"integration_id"`
+}
+
+type OrganizationAppHit struct {
+	ID      string          `json:"_id"`
+	Score   float64         `json:"_score"`
+	Index   string          `json:"_index"`
+	Type    string          `json:"_type"`
+	Version int64           `json:"_version,omitempty"`
+	Source  OrganizationApp `json:"_source"`
+	Sort    []interface{}   `json:"sort"`
+}
+
+type OrganizationAppHits struct {
+	Total essdk.SearchTotal    `json:"total"`
+	Hits  []OrganizationAppHit `json:"hits"`
+}
+
+type OrganizationAppSearchResponse struct {
+	PitID string              `json:"pit_id"`
+	Hits  OrganizationAppHits `json:"hits"`
+}
+
+type OrganizationAppPaginator struct {
+	paginator *essdk.BaseESPaginator
+}
+
+func (k Client) NewOrganizationAppPaginator(filters []essdk.BoolFilter, limit *int64) (OrganizationAppPaginator, error) {
+	paginator, err := essdk.NewPaginator(k.ES(), "github_organization_app", filters, limit)
+	if err != nil {
+		return OrganizationAppPaginator{}, err
+	}
+
+	p := OrganizationAppPaginator{
+		paginator: paginator,
+	}
+
+	return p, nil
+}
+
+func (p OrganizationAppPaginator) HasNext() bool {
+	return !p.paginator.Done()
+}
+
+func (p OrganizationAppPaginator) Close(ctx context.Context) error {
+	return p.paginator.Deallocate(ctx)
+}
+
+func (p OrganizationAppPaginator) NextPage(ctx context.Context) ([]OrganizationApp, error) {
+	var response OrganizationAppSearchResponse
+	err := p.paginator.Search(ctx, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	var values []OrganizationApp
+	for _, hit := range response.Hits.Hits {
+		values = append(values, hit.Source)
+	}
+
+	hits := int64(len(response.Hits.Hits))
+	if hits > 0 {
+		p.paginator.UpdateState(hits, response.Hits.Hits[hits-1].Sort, response.PitID)
+	} else {
+		p.paginator.UpdateState(hits, nil, "")
+	}
+
+	return values, nil
+}
+
+var listOrganizationAppFilters = map[string]string{
+	"access_tokens_url":         "Description.AccessTokensURL",
+	"app_id":                    "Description.AppID",
+	"app_slug":                  "Description.AppSlug",
+	"client_id":                 "Description.ClientID",
+	"created_at":                "Description.CreatedAt",
+	"events":                    "Description.Events",
+	"has_multiple_single_files": "Description.HasMultipleSingleFiles",
+	"html_url":                  "Description.HTMLURL",
+	"id":                        "Description.ID",
+	"permissions":               "Description.Permissions",
+	"repositories_url":          "Description.RepositoriesURL",
+	"repository_selection":      "Description.RepositorySelection",
+	"single_file_name":          "Description.SingleFileName",
+	"single_file_paths":         "Description.SingleFilePaths",
+	"suspended_at":              "Description.SuspendedAt",
+	"suspended_by":              "Description.SuspendedBy",
+	"target_id":                 "Description.TargetID",
+	"target_type":               "Description.TargetType",
+	"updated_at":                "Description.UpdatedAt",
+}
+
+func ListOrganizationApp(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("ListOrganizationApp")
+	runtime.GC()
+
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp NewClientCached", "error", err)
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp NewSelfClientCached", "error", err)
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp GetConfigTableValueOrNil for OpenGovernanceConfigKeyIntegrationID", "error", err)
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp GetConfigTableValueOrNil for OpenGovernanceConfigKeyResourceCollectionFilters", "error", err)
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp GetConfigTableValueOrNil for OpenGovernanceConfigKeyClientType", "error", err)
+		return nil, err
+	}
+
+	paginator, err := k.NewOrganizationAppPaginator(essdk.BuildFilter(ctx, d.QueryContext, listOrganizationAppFilters, integrationId, encodedResourceCollectionFilters, clientType), d.QueryContext.Limit)
+	if err != nil {
+		plugin.Logger(ctx).Error("ListOrganizationApp NewOrganizationAppPaginator", "error", err)
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			plugin.Logger(ctx).Error("ListOrganizationApp paginator.NextPage", "error", err)
+			return nil, err
+		}
+
+		for _, v := range page {
+			d.StreamListItem(ctx, v)
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+var getOrganizationAppFilters = map[string]string{
+	"access_tokens_url":         "Description.AccessTokensURL",
+	"app_id":                    "Description.AppID",
+	"app_slug":                  "Description.AppSlug",
+	"client_id":                 "Description.ClientID",
+	"created_at":                "Description.CreatedAt",
+	"events":                    "Description.Events",
+	"has_multiple_single_files": "Description.HasMultipleSingleFiles",
+	"html_url":                  "Description.HTMLURL",
+	"id":                        "Description.ID",
+	"permissions":               "Description.Permissions",
+	"repositories_url":          "Description.RepositoriesURL",
+	"repository_selection":      "Description.RepositorySelection",
+	"single_file_name":          "Description.SingleFileName",
+	"single_file_paths":         "Description.SingleFilePaths",
+	"suspended_at":              "Description.SuspendedAt",
+	"suspended_by":              "Description.SuspendedBy",
+	"target_id":                 "Description.TargetID",
+	"target_type":               "Description.TargetType",
+	"updated_at":                "Description.UpdatedAt",
+}
+
+func GetOrganizationApp(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("GetOrganizationApp")
+	runtime.GC()
+	// create service
+	cfg := essdk.GetConfig(d.Connection)
+	ke, err := essdk.NewClientCached(cfg, d.ConnectionCache, ctx)
+	if err != nil {
+		return nil, err
+	}
+	k := Client{Client: ke}
+
+	sc, err := steampipesdk.NewSelfClientCached(ctx, d.ConnectionCache)
+	if err != nil {
+		return nil, err
+	}
+	integrationId, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyIntegrationID)
+	if err != nil {
+		return nil, err
+	}
+	encodedResourceCollectionFilters, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyResourceCollectionFilters)
+	if err != nil {
+		return nil, err
+	}
+	clientType, err := sc.GetConfigTableValueOrNil(ctx, steampipesdk.OpenGovernanceConfigKeyClientType)
+	if err != nil {
+		return nil, err
+	}
+
+	limit := int64(1)
+	paginator, err := k.NewOrganizationAppPaginator(essdk.BuildFilter(ctx, d.QueryContext, getOrganizationAppFilters, integrationId, encodedResourceCollectionFilters, clientType), &limit)
+	if err != nil {
+		return nil, err
+	}
+
+	for paginator.HasNext() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, v := range page {
+			return v, nil
+		}
+	}
+
+	err = paginator.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// ==========================  END: OrganizationApp =============================

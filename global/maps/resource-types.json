@@ -519,5 +519,17 @@
     "GetDescriber": "",
     "SteampipeTable": "github_organization_role",
     "Model": "OrganizationRole"
+  },
+  {
+    "ResourceName": "Github/Organization/App",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListOrganizationApps)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_app",
+    "Model": "OrganizationApp"
   }
 ]

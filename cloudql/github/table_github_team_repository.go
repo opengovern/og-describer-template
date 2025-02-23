@@ -31,10 +31,10 @@ func tableGitHubTeamRepository() *plugin.Table {
 				Transform: transform.FromField("Description.RepositoryFullName")},
 
 			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-				Transform: transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp)},
+				Transform: transform.FromField("Description.CreatedAt")},
 
 			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-				Transform: transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp)},
+				Transform: transform.FromField("Description.UpdatedAt")},
 		}),
 	}
 }
