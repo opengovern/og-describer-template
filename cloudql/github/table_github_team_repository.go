@@ -7,23 +7,6 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func gitHubTeamRepositoryColumns() []*plugin.Column {
-	teamColumns := []*plugin.Column{
-		{Name: "permission", Type: proto.ColumnType_STRING, Description: "The permission level the team has on the repository.",
-			Transform: transform.FromQual("Description.Permission")},
-		{Name: "team_id", Type: proto.ColumnType_INT, Description: "",
-			Transform: transform.FromQual("Description.TeamID")},
-		{Name: "repository_full_name", Type: proto.ColumnType_STRING, Description: "",
-			Transform: transform.FromQual("Description.RepositoryFullName")},
-		{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-			Transform: transform.FromQual("Description.CreatedAt")},
-		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
-			Transform: transform.FromQual("Description.UpdatedAt")},
-	}
-
-	return teamColumns
-}
-
 func tableGitHubTeamRepository() *plugin.Table {
 	return &plugin.Table{
 		Name:        "github_team_repository",
@@ -37,6 +20,21 @@ func tableGitHubTeamRepository() *plugin.Table {
 			},
 			Hydrate: opengovernance.GetTeamRepository,
 		},
-		Columns: commonColumns(gitHubTeamRepositoryColumns()),
+		Columns: commonColumns([]*plugin.Column{
+			{Name: "permission", Type: proto.ColumnType_STRING, Description: "The permission level the team has on the repository.",
+				Transform: transform.FromField("Description.Permission")},
+
+			{Name: "team_id", Type: proto.ColumnType_INT, Description: "",
+				Transform: transform.FromField("Description.TeamID")},
+
+			{Name: "repository_full_name", Type: proto.ColumnType_STRING, Description: "",
+				Transform: transform.FromField("Description.RepositoryFullName")},
+
+			{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
+				Transform: transform.FromField("Description.CreatedAt").NullIfZero().Transform(convertTimestamp)},
+
+			{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "",
+				Transform: transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp)},
+		}),
 	}
 }
