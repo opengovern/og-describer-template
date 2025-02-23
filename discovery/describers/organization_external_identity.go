@@ -55,7 +55,6 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.G
 					OrganizationExternalIdentity: externalIdentity,
 					Organization:                 org,
 					UserLogin:                    externalIdentity.User.Login,
-					UserDetail:                   externalIdentity.User,
 				},
 			}
 			if stream != nil {

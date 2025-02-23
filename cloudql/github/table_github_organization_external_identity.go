@@ -1,6 +1,7 @@
 package github
 
 import (
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -13,8 +14,8 @@ func gitHubOrganizationExternalIdentityColumns() []*plugin.Column {
 		{Name: "guid", Type: proto.ColumnType_STRING, Description: "Guid identifier for the external identity.",
 			Transform: transform.FromField("Description.Guid")},
 		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The GitHub user login.",
-			Transform: transform.FromField("Description.User.Login")},
-		{Name: "user_detail", Type: proto.ColumnType_JSON, Description: "The GitHub user details.",
+			Transform: transform.FromField("Description.UserLogin")},
+		{Name: "user", Type: proto.ColumnType_JSON, Description: "The GitHub user details.",
 			Transform: transform.FromField("Description.User")},
 		{Name: "saml_identity", Type: proto.ColumnType_JSON, Description: "The external SAML identity.",
 			Transform: transform.FromField("Description.SamlIdentity")},
@@ -30,7 +31,11 @@ func tableGitHubOrganizationExternalIdentity() *plugin.Table {
 		Name:        "github_organization_external_identity",
 		Description: "GitHub members for a given organization. GitHub Users are user accounts in GitHub.",
 		List: &plugin.ListConfig{
-			Hydrate: nil,
+			Hydrate: opengovernance.ListOrgExternalIdentity,
+		},
+		Get: &plugin.GetConfig{
+			KeyColumns: plugin.SingleColumn("guid"),
+			Hydrate:    opengovernance.GetOrgExternalIdentity,
 		},
 		Columns: commonColumns(gitHubOrganizationExternalIdentityColumns()),
 	}
