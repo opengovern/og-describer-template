@@ -3020,8 +3020,8 @@ var listOrgExternalIdentityFilters = map[string]string{
 	"organization_invitation": "Description.OrganizationInvitation",
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
-	"user_detail":             "Description.User",
-	"user_login":              "Description.User.Login",
+	"user":                    "Description.User",
+	"user_login":              "Description.UserLogin",
 }
 
 func ListOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -3090,8 +3090,8 @@ var getOrgExternalIdentityFilters = map[string]string{
 	"organization_invitation": "Description.OrganizationInvitation",
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
-	"user_detail":             "Description.User",
-	"user_login":              "Description.User.Login",
+	"user":                    "Description.User",
+	"user_login":              "Description.UserLogin",
 }
 
 func GetOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6372,7 +6372,11 @@ func (p TeamRepositoryPaginator) NextPage(ctx context.Context) ([]TeamRepository
 	return values, nil
 }
 
-var listTeamRepositoryFilters = map[string]string{}
+var listTeamRepositoryFilters = map[string]string{
+	"permission":           "Description.Permission",
+	"repository_full_name": "Description.RepositoryFullName",
+	"team_id":              "Description.TeamID",
+}
 
 func ListTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("ListTeamRepository")
@@ -6434,7 +6438,11 @@ func ListTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	return nil, nil
 }
 
-var getTeamRepositoryFilters = map[string]string{}
+var getTeamRepositoryFilters = map[string]string{
+	"permission":           "Description.Permission",
+	"repository_full_name": "Description.RepositoryFullName",
+	"team_id":              "Description.TeamID",
+}
 
 func GetTeamRepository(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	plugin.Logger(ctx).Trace("GetTeamRepository")
@@ -6572,9 +6580,19 @@ func (p TeamMemberPaginator) NextPage(ctx context.Context) ([]TeamMember, error)
 }
 
 var listTeamMemberFilters = map[string]string{
-	"login_id": "Description.LoginID",
-	"role":     "Description.Role",
-	"slug":     "Description.Slug",
+	"company":             "Description.Company",
+	"email":               "Description.Email",
+	"id":                  "Description.Id",
+	"interaction_ability": "Description.InteractionAbility",
+	"is_site_admin":       "Description.IsSiteAdmin",
+	"location":            "Description.Location",
+	"login":               "Description.Login",
+	"login_id":            "Description.LoginID",
+	"name":                "Description.Name",
+	"node_id":             "Description.NodeId",
+	"organization":        "Description.Organization",
+	"role":                "Description.Role",
+	"slug":                "Description.Slug",
 }
 
 func ListTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6638,9 +6656,19 @@ func ListTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getTeamMemberFilters = map[string]string{
-	"login_id": "Description.LoginID",
-	"role":     "Description.Role",
-	"slug":     "Description.Slug",
+	"company":             "Description.Company",
+	"email":               "Description.Email",
+	"id":                  "Description.Id",
+	"interaction_ability": "Description.InteractionAbility",
+	"is_site_admin":       "Description.IsSiteAdmin",
+	"location":            "Description.Location",
+	"login":               "Description.Login",
+	"login_id":            "Description.LoginID",
+	"name":                "Description.Name",
+	"node_id":             "Description.NodeId",
+	"organization":        "Description.Organization",
+	"role":                "Description.Role",
+	"slug":                "Description.Slug",
 }
 
 func GetTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {

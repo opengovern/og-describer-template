@@ -801,7 +801,6 @@ type OrgExternalIdentityDescription struct {
 	steampipemodels.OrganizationExternalIdentity
 	Organization string
 	UserLogin    string
-	UserDetail   steampipemodels.BasicUser
 }
 
 type OrgMembersDescription struct {
