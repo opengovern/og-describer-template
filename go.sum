@@ -745,10 +745,6 @@ github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQ
 github.com/opencontainers/image-spec v1.1.0/go.mod h1:W4s4sFTMaBeK1BQLXbG4AdM2szdn85PY75RI83NrTrM=
 github.com/opengovern/og-util v1.12.0 h1:D/1khsUlO2LZGBN+YrSbupjJ5MxsZeg7z9Mg+o9I3eU=
 github.com/opengovern/og-util v1.12.0/go.mod h1:9uNpGalixRoQkUzPPBdT+JG1epg8FTRx/qmkfTyUZHE=
-github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d h1:OnoG1Za89armxN1ZlEbr/eKvAdbRN6UGKXCFxee58s0=
-github.com/opengovern/resilient-bridge v0.0.0-20241223164127-85ad8f42a67d/go.mod h1:zEulaGgccj5tPXGiudGz17NRhXAk2HHh+GPj2VkjNq0=
-github.com/opengovern/resilient-bridge v0.0.0-20250208020500-8c05a42e1425 h1:Wq1/15yhtA4U9FjLrizSexrPc2YZ+3vi7qbZnMqw1d4=
-github.com/opengovern/resilient-bridge v0.0.0-20250208020500-8c05a42e1425/go.mod h1:zEulaGgccj5tPXGiudGz17NRhXAk2HHh+GPj2VkjNq0=
 github.com/opengovern/resilient-bridge v0.0.0-20250208182328-7c337fbee003 h1:FWdsT4VmQcpqjaoV4Hk1RjQSAlK25UEMovwbGdTQJXA=
 github.com/opengovern/resilient-bridge v0.0.0-20250208182328-7c337fbee003/go.mod h1:zEulaGgccj5tPXGiudGz17NRhXAk2HHh+GPj2VkjNq0=
 github.com/opensearch-project/opensearch-go/v2 v2.3.0 h1:nQIEMr+A92CkhHrZgUhcfsrZjibvB3APXf2a1VwCmMQ=

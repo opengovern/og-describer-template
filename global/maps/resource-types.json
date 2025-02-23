@@ -507,5 +507,17 @@
     "GetDescriber": "",
     "SteampipeTable": "github_artifact_ai_model",
     "Model": "ArtifactAIModel"
+  },
+  {
+    "ResourceName": "Github/Organization/Role",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListOrganizationRoles)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_role",
+    "Model": "OrganizationRole"
   }
 ]
