@@ -2,13 +2,12 @@ package describers
 
 import (
 	"context"
-	"strconv"
-	"strings"
-
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
 	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
+	"strconv"
+	"strings"
 )
 
 type memberWithRole struct {
@@ -72,20 +71,30 @@ func GetOrganizationMembers(ctx context.Context, githubClient model.GitHubClient
 			return nil, err
 		}
 		for _, member := range query.Organization.MembersWithRole.Edges {
+			status := new(bool)
+			if member.Node.Status != nil {
+				status = member.Node.Status.IndicatesLimitedAvailability
+			}
 			value := models.Resource{
 				ID:   strconv.Itoa(member.Node.Id),
 				Name: member.Node.Name,
 				Description: model.OrgMembersDescription{
-					User:                member.Node.User,
-					Organization:        org,
-					HasTwoFactorEnabled: member.HasTwoFactorEnabled,
-					Role:                member.Role,
+					Company:             member.Node.Company,
+					CreatedAt:           member.Node.CreatedAt.Time,
+					UpdatedAt:           member.Node.UpdatedAt.Time,
+					Email:               member.Node.Email,
+					ID:                  member.Node.Id,
+					IsSiteAdmin:         member.Node.IsSiteAdmin,
+					Location:            member.Node.Location,
 					Login:               member.Node.Login,
 					LoginID:             strconv.Itoa(member.Node.DatabaseID),
-					URL:                 member.Node.URL,
-					Email:               member.Node.Email,
-					CreatedAt:           member.Node.CreatedAt.Time,
-					Company:             member.Node.Company,
+					Name:                member.Node.Name,
+					NodeID:              member.Node.NodeId,
+					Organization:        org,
+					Role:                member.Role,
+					HasTwoFactorEnabled: member.HasTwoFactorEnabled,
+					Status:              status,
+					WebsiteURL:          member.Node.WebsiteUrl,
 				},
 			}
 			if stream != nil {

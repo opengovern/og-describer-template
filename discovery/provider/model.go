@@ -804,17 +804,22 @@ type OrgExternalIdentityDescription struct {
 }
 
 type OrgMembersDescription struct {
-	steampipemodels.User
-	Organization        string
-	HasTwoFactorEnabled *bool
-	Role                *string
+	Company             *string
+	CreatedAt           time.Time
+	UpdatedAt           time.Time
+	Email               string
+	ID                  int
+	IsSiteAdmin         bool
+	Location            string
 	Login               string
 	LoginID             string
-	URL                 string
-	Email               string
-	CreatedAt           time.Time
-	Company             *string
+	Name                string
+	NodeID              string
+	Organization        string
+	Role                *string
+	HasTwoFactorEnabled *bool
 	Status              *bool
+	WebsiteURL          string
 }
 
 type PullRequestDescription struct {
@@ -1854,4 +1859,49 @@ type OrganizationRoleDescription struct {
 	BaseRole     string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+}
+
+type OrganizationAppDescription struct {
+	ID                     int64
+	ClientID               string
+	Account                Account
+	RepositorySelection    string
+	AccessTokensURL        string
+	RepositoriesURL        string
+	HTMLURL                string
+	AppID                  int
+	AppSlug                string
+	TargetID               int64
+	TargetType             string
+	Permissions            map[string]string
+	Events                 []string
+	CreatedAt              time.Time
+	UpdatedAt              time.Time
+	SingleFileName         *string
+	HasMultipleSingleFiles bool
+	SingleFilePaths        []string
+	SuspendedBy            *Account
+	SuspendedAt            *time.Time
+}
+
+type Account struct {
+	Login             string
+	ID                int64
+	NodeID            string
+	AvatarURL         string
+	GravatarID        string
+	URL               string
+	HTMLURL           string
+	FollowersURL      string
+	FollowingURL      string
+	GistsURL          string
+	StarredURL        string
+	SubscriptionsURL  string
+	OrganizationsURL  string
+	ReposURL          string
+	EventsURL         string
+	ReceivedEventsURL string
+	Type              string
+	UserViewType      string
+	SiteAdmin         bool
 }
