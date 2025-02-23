@@ -1861,6 +1861,21 @@ type OrganizationRoleDescription struct {
 	UpdatedAt    time.Time
 }
 
+type OrganizationTokenDescription struct {
+	AuthorizedCredentialId        int64
+	AuthorizedCredentialTitle     string
+	AuthorizedCredentialNote      string
+	AuthorizedCredentialExpiresAt time.Time
+	Login                         string
+	Scopes                        []string
+	CredentialId                  int64
+	CredentialType                string
+	CredentialAccessedAt          time.Time
+	CredentialAuthorizedAt        time.Time
+	TokenLastEight                string
+	Fingerprint                   string
+}
+
 type OrganizationAppDescription struct {
 	ID                     int64
 	ClientID               string

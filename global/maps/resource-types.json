@@ -531,5 +531,17 @@
     "GetDescriber": "",
     "SteampipeTable": "github_organization_app",
     "Model": "OrganizationApp"
+  },
+  {
+    "ResourceName": "Github/Organization/Token",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListOrganizationTokens)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_token",
+    "Model": "OrganizationToken"
   }
 ]

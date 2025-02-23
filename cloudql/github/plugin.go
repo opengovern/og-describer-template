@@ -66,6 +66,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"github_artifact_ai_model":   tableGitHubArtifactAIModel(),
 			"github_organization_role":   tableGitHubOrganizationRole(),
 			"github_organization_app":    tableGitHubOrganizationApp(),
+			"github_organization_token":  tableGitHubOrganizationToken(),
 		},
 	}
 	for key, table := range p.TableMap {

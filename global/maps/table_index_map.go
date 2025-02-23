@@ -45,6 +45,7 @@ var ResourceTypesToTables = map[string]string{
   "Github/Artifact/AI/Model": "github_artifact_ai_model",
   "Github/Organization/Role": "github_organization_role",
   "Github/Organization/App": "github_organization_app",
+  "Github/Organization/Token": "github_organization_token",
 }
 
 var ResourceTypeToDescription = map[string]interface{}{
@@ -88,6 +89,7 @@ var ResourceTypeToDescription = map[string]interface{}{
   "Github/Artifact/AI/Model": opengovernance.ArtifactAIModel{},
   "Github/Organization/Role": opengovernance.OrganizationRole{},
   "Github/Organization/App": opengovernance.OrganizationApp{},
+  "Github/Organization/Token": opengovernance.OrganizationToken{},
 }
 
 var TablesToResourceTypes = map[string]string{
@@ -131,4 +133,5 @@ var TablesToResourceTypes = map[string]string{
   "github_artifact_ai_model": "Github/Artifact/AI/Model",
   "github_organization_role": "Github/Organization/Role",
   "github_organization_app": "Github/Organization/App",
+  "github_organization_token": "Github/Organization/Token",
 }
