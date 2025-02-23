@@ -51,7 +51,7 @@ func ListOrganizationRoles(ctx context.Context,
 			ID:   strconv.Itoa(r.ID),
 			Name: r.Name,
 			Description: model.OrganizationRoleDescription{
-				Organization: r.Organization,
+				Organization: organizationName,
 				Name:         r.Name,
 				ID:           r.ID,
 				Source:       r.Source,
