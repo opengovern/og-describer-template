@@ -70,7 +70,7 @@ func tableGitHubOrganizationTeam() *plugin.Table {
 			Hydrate: opengovernance.ListTeamMember,
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns: plugin.AllColumns([]string{"organization", "slug"}),
+			KeyColumns: plugin.AllColumns([]string{"organization_name", "slug"}),
 			Hydrate:    opengovernance.GetTeamMember,
 		},
 		Columns: commonColumns(gitHubTeamColumns()),

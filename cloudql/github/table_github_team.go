@@ -13,7 +13,7 @@ func tableGitHubTeam() *plugin.Table {
 			Hydrate: opengovernance.ListTeam,
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns:        plugin.AllColumns([]string{"organization", "slug"}),
+			KeyColumns:        plugin.AllColumns([]string{"organization_name", "slug"}),
 			ShouldIgnoreError: isNotFoundError([]string{"404"}),
 			Hydrate:           opengovernance.GetTeam,
 		},
