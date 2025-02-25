@@ -38,9 +38,14 @@ func gitHubOrganizationCollaborators() []*plugin.Column {
 
 		{
 			Name:        "user_login",
-			Type:        proto.ColumnType_JSON,
+			Type:        proto.ColumnType_STRING,
 			Description: "The login details of the collaborator.",
 			Transform:   transform.FromField("Description.UserLogin")},
+		{
+			Name:        "user_id",
+			Type:        proto.ColumnType_STRING,
+			Description: "The id of the collaborator.",
+			Transform:   transform.FromField("Description.UserID")},
 	}
 
 	return tableCols

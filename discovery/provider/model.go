@@ -765,7 +765,8 @@ type OrgCollaboratorsDescription struct {
 	Affiliation    string
 	RepositoryName githubv4.String
 	Permission     githubv4.RepositoryPermission
-	UserLogin      steampipemodels.CollaboratorLogin
+	UserLogin      string
+	UserID         string
 }
 
 type OrgAlertDependabotDescription struct {
@@ -801,6 +802,7 @@ type OrgExternalIdentityDescription struct {
 	steampipemodels.OrganizationExternalIdentity
 	Organization string
 	UserLogin    string
+	UserID       int
 }
 
 type OrgMembersDescription struct {
@@ -1854,7 +1856,7 @@ type OrganizationRoleDescription struct {
 	Name         string
 	Description  string
 	Permissions  []string
-	Organization interface{}
+	Organization string
 	Source       string
 	BaseRole     string
 	CreatedAt    time.Time

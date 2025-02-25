@@ -12,8 +12,11 @@ import (
 )
 
 type CollaboratorEdge struct {
-	Permission githubv4.RepositoryPermission     `graphql:"permission @include(if:$includeOCPermission)" json:"permission"`
-	Node       steampipemodels.CollaboratorLogin `graphql:"node @include(if:$includeOCNode)" json:"node"`
+	Permission githubv4.RepositoryPermission `graphql:"permission @include(if:$includeOCPermission)" json:"permission"`
+	Node       struct {
+		Login githubv4.String `graphql:"login" json:"login"`
+		ID    githubv4.String `graphql:"id" json:"id"`
+	} `graphql:"node @include(if:$includeOCNode)" json:"node"`
 }
 
 func GetAllOrganizationsCollaborators(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
@@ -76,7 +79,8 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient model.GitHub
 						Affiliation:    "ALL",
 						RepositoryName: node.Name,
 						Permission:     collaborator.Permission,
-						UserLogin:      collaborator.Node,
+						UserLogin:      string(collaborator.Node.Login),
+						UserID:         string(collaborator.Node.ID),
 					},
 				}
 				if stream != nil {

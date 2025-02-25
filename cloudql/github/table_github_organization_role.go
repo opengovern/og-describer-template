@@ -31,28 +31,28 @@ func gitHubOrganizationRoleColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.Permissions")},
 		{
 			Name:        "organization",
-			Type:        proto.ColumnType_JSON,
-			Description: "permissions",
+			Type:        proto.ColumnType_STRING,
+			Description: "",
 			Transform:   transform.FromField("Description.Organization")},
 		{
 			Name:        "source",
-			Description: "permissions",
+			Description: "",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Source")},
 		{
 			Name:        "base_role",
 			Type:        proto.ColumnType_STRING,
-			Description: "permissions",
+			Description: "",
 			Transform:   transform.FromField("Description.BaseRole")},
 		{
 			Name:        "created_at",
 			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "permissions",
+			Description: "",
 			Transform:   transform.FromField("Description.CreatedAt")},
 		{
 			Name:        "updated_at",
 			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "permissions",
+			Description: "",
 			Transform:   transform.FromField("Description.UpdatedAt")},
 	}
 

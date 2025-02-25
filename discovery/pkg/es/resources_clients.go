@@ -2571,6 +2571,7 @@ var listOrgCollaboratorsFilters = map[string]string{
 	"organization":    "Description.Organization",
 	"permission":      "Description.Permission",
 	"repository_name": "Description.RepositoryName",
+	"user_id":         "Description.UserID",
 	"user_login":      "Description.UserLogin",
 }
 
@@ -2639,6 +2640,7 @@ var getOrgCollaboratorsFilters = map[string]string{
 	"organization":    "Description.Organization",
 	"permission":      "Description.Permission",
 	"repository_name": "Description.RepositoryName",
+	"user_id":         "Description.UserID",
 	"user_login":      "Description.UserLogin",
 }
 
@@ -3021,6 +3023,7 @@ var listOrgExternalIdentityFilters = map[string]string{
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
 	"user":                    "Description.User",
+	"user_id":                 "Description.UserID",
 	"user_login":              "Description.UserLogin",
 }
 
@@ -3091,6 +3094,7 @@ var getOrgExternalIdentityFilters = map[string]string{
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
 	"user":                    "Description.User",
+	"user_id":                 "Description.UserID",
 	"user_login":              "Description.UserLogin",
 }
 
