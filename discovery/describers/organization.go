@@ -35,7 +35,7 @@ func GetOrganizationList(ctx context.Context, githubClient model.GitHubClient, o
 	if err != nil {
 		return nil, err
 	}
-	additionalOrgInfo, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	additionalOrgInfo, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org.Login)
 	if err != nil {
 		return nil, err
 	}
@@ -151,9 +151,8 @@ func GetOrganizationHooks(ctx context.Context, client *github.Client, org steamp
 	return orgHooks, nil
 }
 
-func GetOrganizationAdditionalData(ctx context.Context, client *github.Client, org steampipemodels.OrganizationWithCounts) (*github.Organization, error) {
-	login := org.Login
-	organization, _, err := client.Organizations.Get(ctx, login)
+func GetOrganizationAdditionalData(ctx context.Context, client *github.Client, orgName string) (*github.Organization, error) {
+	organization, _, err := client.Organizations.Get(ctx, orgName)
 	if err != nil {
 		return nil, err
 	}

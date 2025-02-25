@@ -12,18 +12,20 @@ import (
 
 func gitHubRepositoryCollaboratorColumns() []*plugin.Column {
 	return []*plugin.Column{
+		{Name: "repository_name", Type: proto.ColumnType_STRING, Description: "The full name of the repository, including the owner and repo name.",
+			Transform: transform.FromField("Description.RepositoryName")},
 		{Name: "repository_full_name", Type: proto.ColumnType_STRING, Description: "The full name of the repository, including the owner and repo name.",
 			Transform: transform.FromField("Description.RepoFullName")},
-		{Name: "affiliation", Type: proto.ColumnType_STRING, Description: "Affiliation filter - valid values 'ALL' (default), 'OUTSIDE', 'DIRECT'.",
-			Transform: transform.FromField("Description.Affiliation")},
+		{Name: "collaborator_id", Type: proto.ColumnType_STRING, Description: "The full name of the repository, including the owner and repo name.",
+			Transform: transform.FromField("Description.CollaboratorID")},
+		{Name: "collaborator_type", Type: proto.ColumnType_STRING, Description: "The full name of the repository, including the owner and repo name.",
+			Transform: transform.FromField("Description.CollaboratorType")},
 		{Name: "permission", Type: proto.ColumnType_STRING, Description: "The permission the collaborator has on the repository.",
 			Transform: transform.FromField("Description.Permission")},
-		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The login of the collaborator",
-			Transform: transform.FromField("Description.UserLogin")},
 		{
-			Name:        "repository_name",
+			Name:        "organization_id",
 			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.RepositoryName"),
+			Transform:   transform.FromField("Description.OrganizationID"),
 			Description: "repository name",
 		},
 	}

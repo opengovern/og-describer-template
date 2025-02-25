@@ -1279,12 +1279,13 @@ type ReleaseDescription struct {
 }
 
 type RepoCollaboratorsDescription struct {
-	Affiliation    string
-	RepoFullName   string
-	Permission     githubv4.RepositoryPermission
-	UserLogin      string
-	Organization   string
-	RepositoryName string
+	RepositoryName   string
+	RepoFullName     string
+	CollaboratorID   string
+	CollaboratorType string
+	Permission       githubv4.RepositoryPermission
+	Organization     string
+	OrganizationID   int64
 }
 
 type RepoAlertDependabotDescription struct {

@@ -17,10 +17,25 @@ func GetAllRepositoriesCollaborators(ctx context.Context, githubClient model.Git
 		repositoryName = value.(string)
 	}
 
+	teamsRepositories, err := GetAllTeamsRepositories(ctx, githubClient, organizationName, stream)
+	if err != nil {
+		return nil, err
+	}
+
 	if repositoryName != "" {
-		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, repositoryName)
+		org, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+		var orgId int64
+		if org != nil && org.ID != nil {
+			orgId = *org.ID
+		}
+		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repositoryName)
 		if err != nil {
 			return nil, err
+		}
+		for _, t := range teamsRepositories {
+			if t.Description.(model.RepoCollaboratorsDescription).RepositoryName == repositoryName {
+				repoValues = append(repoValues, t)
+			}
 		}
 		return repoValues, nil
 	}
@@ -30,16 +45,22 @@ func GetAllRepositoriesCollaborators(ctx context.Context, githubClient model.Git
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, repo.GetName())
+		org, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+		var orgId int64
+		if org != nil && org.ID != nil {
+			orgId = *org.ID
+		}
+		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repo.GetName())
 		if err != nil {
 			return nil, err
 		}
 		values = append(values, repoValues...)
 	}
+	values = append(values, teamsRepositories...)
 	return values, nil
 }
 
-func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner string, orgId int64, repo string) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	affiliation := githubv4.CollaboratorAffiliationAll
 	var query struct {
@@ -76,12 +97,13 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubCl
 				ID:   id,
 				Name: collaborator.Node.Name,
 				Description: model.RepoCollaboratorsDescription{
-					Affiliation:    "ALL",
-					RepoFullName:   repoFullName,
-					Permission:     collaborator.Permission,
-					UserLogin:      collaborator.Node.Login,
-					Organization:   owner,
-					RepositoryName: repo,
+					RepositoryName:   repo,
+					RepoFullName:     repoFullName,
+					CollaboratorID:   collaborator.Node.Login,
+					CollaboratorType: "User",
+					Permission:       collaborator.Permission,
+					Organization:     owner,
+					OrganizationID:   orgId,
 				},
 			}
 			if stream != nil {

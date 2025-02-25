@@ -2,6 +2,7 @@ package describers
 
 import (
 	"context"
+	"fmt"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
@@ -18,7 +19,12 @@ func GetAllTeamsRepositories(ctx context.Context, githubClient model.GitHubClien
 	}
 	var values []models.Resource
 	for _, team := range teams {
-		teamValues, err := GetTeamRepositories(ctx, githubClient, organizationName, stream, team.GetOrganization().GetLogin(), team.GetSlug(), team.GetID())
+		org, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+		var orgId int64
+		if org != nil && org.ID != nil {
+			orgId = *org.ID
+		}
+		teamValues, err := GetTeamRepositories(ctx, githubClient, organizationName, stream, team.GetOrganization().GetLogin(), orgId, team.GetSlug(), team.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -27,11 +33,13 @@ func GetAllTeamsRepositories(ctx context.Context, githubClient model.GitHubClien
 	return values, nil
 }
 
-func GetTeamRepositories(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender, org, slug string, teamID int64) ([]models.Resource, error) {
+func GetTeamRepositories(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender, org string, orgId int64, slug string, teamID int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit    steampipemodels.RateLimit
 		Organization struct {
+			ID   string `graphql:"id"`
+			Name string `graphql:"name"`
 			Team struct {
 				Repositories struct {
 					TotalCount int
@@ -58,15 +66,19 @@ func GetTeamRepositories(ctx context.Context, githubClient model.GitHubClient, o
 			return nil, err
 		}
 		for _, repo := range query.Organization.Team.Repositories.Edges {
+			id := fmt.Sprintf("%s/%d/%s", repo.Node.NameWithOwner, teamID, string(repo.Permission))
+
 			value := models.Resource{
-				ID:   strconv.Itoa(repo.Node.Id),
+				ID:   id,
 				Name: repo.Node.Name,
-				Description: model.TeamRepositoryDescription{
-					TeamID:             int(teamID),
-					RepositoryFullName: repo.Node.NameWithOwner,
-					Permission:         string(repo.Permission),
-					CreatedAt:          repo.Node.CreatedAt.Time,
-					UpdatedAt:          repo.Node.UpdatedAt.Time,
+				Description: model.RepoCollaboratorsDescription{
+					RepositoryName:   repo.Node.Name,
+					RepoFullName:     repo.Node.NameWithOwner,
+					CollaboratorID:   strconv.FormatInt(teamID, 10),
+					CollaboratorType: "Team",
+					Permission:       repo.Permission,
+					Organization:     query.Organization.Name,
+					OrganizationID:   orgId,
 				},
 			}
 			if stream != nil {
