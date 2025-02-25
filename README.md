@@ -151,9 +151,9 @@ All models without `Description` suffix should be used for the response of the P
 For genertaing the all neccessary files, you should run this three commands:
 
 ```bash
-go run pkg/sdk/runable/resurce_type/main.go
-go run pkg/sdk/runable/steampipe_es_client_generator/main.go
-go run pkg/sdk/runable/steampipe_index_map/main.go
+go run discovery/pkg/runable/resource_type/main.go
+go run discovery/pkg/runable/steampipe_es_client_generator/main.go
+go run discovery/pkg/runable/steampipe_index_map/main.go
 ```
 
 ## 6. Test the describer
