@@ -23,12 +23,6 @@ func tableGitHubBranch() *plugin.Table {
 				Description: "Full name of the repository that contains the branch.",
 			},
 			{
-				Name:        "organization",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.Organization"),
-				Description: "organization name",
-			},
-			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),

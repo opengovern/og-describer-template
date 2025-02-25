@@ -70,7 +70,7 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient model.GitHub
 		for _, node := range query.Organization.Repositories.Nodes {
 			repoFullName := formRepositoryFullName(org, string(node.Name))
 			for _, collaborator := range node.Collaborators.Edges {
-				id := fmt.Sprintf("%s/%s", repoFullName, collaborator.Node.Login)
+				id := fmt.Sprintf("%s/%s/%s", repoFullName, collaborator.Node.Login, string(collaborator.Permission))
 				value := models.Resource{
 					ID:   id,
 					Name: repoFullName,

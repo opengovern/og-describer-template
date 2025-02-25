@@ -34,12 +34,6 @@ func tableGitHubActionsRepositoryRunner() *plugin.Table {
 				Description: "repository name",
 			},
 			{
-				Name:        "organization",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.Organization"),
-				Description: "organization name",
-			},
-			{
 				Name:        "id",
 				Type:        proto.ColumnType_INT,
 				Transform:   transform.FromField("Description.ID"),

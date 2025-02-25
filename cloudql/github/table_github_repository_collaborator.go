@@ -21,12 +21,6 @@ func gitHubRepositoryCollaboratorColumns() []*plugin.Column {
 		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The login of the collaborator",
 			Transform: transform.FromField("Description.UserLogin")},
 		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.Organization"),
-			Description: "organization name",
-		},
-		{
 			Name:        "repository_name",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.RepositoryName"),

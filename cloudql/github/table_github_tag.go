@@ -41,12 +41,6 @@ func tableGitHubTag() *plugin.Table {
 				Transform: transform.FromField("Description.Message")},
 			{Name: "commit", Type: proto.ColumnType_JSON, Description: "Commit the tag is associated with.",
 				Transform: transform.FromField("Description.Commit")},
-			{
-				Name:        "organization",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.Organization"),
-				Description: "organization name",
-			},
 		}),
 	}
 }

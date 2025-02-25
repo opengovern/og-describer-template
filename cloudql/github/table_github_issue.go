@@ -26,12 +26,6 @@ func sharedIssueColumns() []*plugin.Column {
 			Type:        proto.ColumnType_INT,
 			Transform:   transform.FromField("Description.Number"),
 			Description: "The issue number."},
-		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.Organization"),
-			Description: "organization name",
-		},
 		{Name: "id",
 			Type:      proto.ColumnType_INT,
 			Transform: transform.FromField("Description.Id"),

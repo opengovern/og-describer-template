@@ -12,8 +12,6 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 	cols := []*plugin.Column{
 		{Name: "has_two_factor_enabled", Type: proto.ColumnType_BOOL,
 			Transform: transform.FromField("Description.HasTwoFactorEnabled")},
-		{Name: "organization", Type: proto.ColumnType_STRING, Description: "The team organization",
-			Transform: transform.FromField("Description.Organization")},
 		{Name: "role", Type: proto.ColumnType_STRING, Description: "The team member's role (MEMBER, MAINTAINER).",
 			Transform: transform.FromField("Description.Role")},
 		{Name: "login_id", Type: proto.ColumnType_STRING, Description: "Unique identifier for the user login.",

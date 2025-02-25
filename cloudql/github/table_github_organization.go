@@ -10,12 +10,6 @@ import (
 func sharedOrganizationColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.Organization"),
-			Description: "organization name",
-		},
-		{
 			Name: "login", Type: proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.Login"),
 			Description: "The login name of the organization."},

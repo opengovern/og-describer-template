@@ -26,8 +26,6 @@ func gitHubTeamMemberColumns() []*plugin.Column {
 	cols := []*plugin.Column{
 		{Name: "slug", Type: proto.ColumnType_STRING, Description: "The team slug name.",
 			Transform: transform.FromField("Description.Slug")},
-		{Name: "organization", Type: proto.ColumnType_STRING, Description: "The team organization",
-			Transform: transform.FromField("Description.Organization")},
 		{Name: "role", Type: proto.ColumnType_STRING, Description: "The team member's role (MEMBER, MAINTAINER).",
 			Transform: transform.FromField("Description.Role")},
 		{Name: "login_id", Type: proto.ColumnType_STRING, Description: "Unique identifier for the user login.",

@@ -30,11 +30,6 @@ func gitHubOrganizationRoleColumns() []*plugin.Column {
 			Description: "permissions",
 			Transform:   transform.FromField("Description.Permissions")},
 		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Description: "",
-			Transform:   transform.FromField("Description.Organization")},
-		{
 			Name:        "source",
 			Description: "",
 			Type:        proto.ColumnType_STRING,

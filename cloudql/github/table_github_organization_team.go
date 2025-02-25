@@ -9,8 +9,6 @@ import (
 
 func gitHubTeamColumns() []*plugin.Column {
 	return []*plugin.Column{
-		{Name: "organization", Type: proto.ColumnType_STRING, Description: "The organization the team is associated with.",
-			Transform: transform.FromField("Description.Organization")},
 		{Name: "slug",
 			Transform: transform.FromField("Description.Slug"),
 			Type:      proto.ColumnType_STRING, Description: "The team slug name."},

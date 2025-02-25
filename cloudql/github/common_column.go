@@ -14,6 +14,12 @@ import (
 func commonColumns(c []*plugin.Column) []*plugin.Column {
 	return append(c, []*plugin.Column{
 		{
+			Name:        "organization_name",
+			Type:        proto.ColumnType_STRING,
+			Transform:   transform.FromField("Description.Organization"),
+			Description: "organization name",
+		},
+		{
 			Name:        "platform_integration_id",
 			Type:        proto.ColumnType_STRING,
 			Description: "The Platform Integration ID in which the resource is located.",

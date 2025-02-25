@@ -26,12 +26,6 @@ func tableGitHubArtifactDockerFile() *plugin.Table {
 				Description: "repository full name",
 			},
 			{
-				Name:        "organization",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.Organization"),
-				Description: "organization name",
-			},
-			{
 				Name:        "repository_name",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.RepositoryName"),

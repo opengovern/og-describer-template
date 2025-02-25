@@ -165,16 +165,6 @@ func tableGitHubOrganizationDependabotAlert() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListOrgAlertDependabot,
 		},
-		Columns: commonColumns(append(
-			gitHubDependabotAlertColumns(),
-			[]*plugin.Column{
-				{
-					Name:        "organization",
-					Type:        proto.ColumnType_STRING,
-					Description: "The login name of the organization.",
-					Transform:   transform.FromQual("organization"),
-				},
-			}...,
-		)),
+		Columns: commonColumns(gitHubDependabotAlertColumns()),
 	}
 }

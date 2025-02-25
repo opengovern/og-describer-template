@@ -30,12 +30,6 @@ func gitHubRulesetColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.RepoFullName"),
 			Description: "Full name of the repository that contains the ruleset."},
 		{
-			Name:        "organization",
-			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromField("Description.Organization"),
-			Description: "organization name",
-		},
-		{
 			Name:        "repository_name",
 			Type:        proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.RepositoryName"),

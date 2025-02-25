@@ -2,8 +2,7 @@ package describers
 
 import (
 	"context"
-	"strconv"
-
+	"fmt"
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
 	"github.com/shurcooL/githubv4"
@@ -72,8 +71,9 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubCl
 			return nil, err
 		}
 		for _, collaborator := range query.Repository.Collaborators.Edges {
+			id := fmt.Sprintf("%s/%s/%s", repoFullName, collaborator.Node.Login, string(collaborator.Permission))
 			value := models.Resource{
-				ID:   strconv.Itoa(collaborator.Node.Id),
+				ID:   id,
 				Name: collaborator.Node.Name,
 				Description: model.RepoCollaboratorsDescription{
 					Affiliation:    "ALL",

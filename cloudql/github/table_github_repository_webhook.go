@@ -26,12 +26,6 @@ func tableGithubRepositoryWebhook() *plugin.Table {
 				Description: "The unique identifier of the webhook.",
 			},
 			{
-				Name:        "organization",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Description.Organization"),
-				Description: "organization name",
-			},
-			{
 				Name:        "type",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.Type"),
