@@ -69,6 +69,10 @@ func tableGitHubOrganizationCollaborator() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: opengovernance.ListOrgCollaborators,
 		},
+		Get: &plugin.GetConfig{
+			Hydrate:    opengovernance.GetOrgCollaborators,
+			KeyColumns: plugin.SingleColumn("user_id"),
+		},
 		Columns: commonColumns(gitHubOrganizationCollaborators()),
 	}
 }
