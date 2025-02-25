@@ -15,8 +15,6 @@ func gitHubOrganizationExternalIdentityColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.Guid")},
 		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The GitHub user login.",
 			Transform: transform.FromField("Description.UserLogin")},
-		{Name: "user", Type: proto.ColumnType_JSON, Description: "The GitHub user details.",
-			Transform: transform.FromField("Description.User")},
 		{Name: "user_id", Type: proto.ColumnType_INT, Description: "The GitHub user details.",
 			Transform: transform.FromField("Description.UserID")},
 		{Name: "saml_identity", Type: proto.ColumnType_JSON, Description: "The external SAML identity.",
