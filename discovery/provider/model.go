@@ -1515,26 +1515,29 @@ type TreeDescription struct {
 }
 
 type UserDescription struct {
-	steampipemodels.User
-	RepositoriesTotalDiskUsage    int
-	FollowersTotalCount           int
-	FollowingTotalCount           int
-	PublicRepositoriesTotalCount  int
-	PrivateRepositoriesTotalCount int
-	PublicGistsTotalCount         int
-	IssuesTotalCount              int
-	OrganizationsTotalCount       int
-	PublicKeysTotalCount          int
-	OpenPullRequestsTotalCount    int
-	MergedPullRequestsTotalCount  int
-	ClosedPullRequestsTotalCount  int
-	PackagesTotalCount            int
-	PinnedItemsTotalCount         int
-	SponsoringTotalCount          int
-	SponsorsTotalCount            int
-	StarredRepositoriesTotalCount int
-	WatchingTotalCount            int
-	Organization                  string
+	Login        string
+	ID           int64
+	NodeId       string
+	Name         string
+	Email        string
+	Company      string
+	Location     string
+	Url          string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	Organization string
+}
+
+type RepositoryPermissionDescription struct {
+	PrincipalName      string
+	PrincipalId        int
+	PrincipalType      string
+	RepositoryName     string
+	RepositoryFullName string
+	RepositoryId       int
+	Permissions        *map[string]bool
+	RoleName           *string
+	Organization       string
 }
 
 type WorkflowDescription struct {
@@ -1862,6 +1865,30 @@ type OrganizationRoleDescription struct {
 	BaseRole     string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+}
+
+type OrganizationRoleAssignmentDescription struct {
+	RoleId         int
+	OrganizationId int
+	Organization   string
+	ListOfTeams    []int
+	ListOfUsers    []int
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+}
+
+type OrganizationRoleDefinitionDescription struct {
+	Id             int
+	Name           string
+	Description    string
+	Permissions    []string
+	OrganizationId int
+	Organization   string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	Source         string
+	BaseRole       *string
+	Type           string
 }
 
 type OrganizationTokenDescription struct {

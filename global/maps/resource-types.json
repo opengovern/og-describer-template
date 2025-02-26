@@ -195,6 +195,30 @@
     "Model": "Team"
   },
   {
+    "ResourceName": "Github/Organization/RoleAssignment",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListOrganizationRoleAssignments)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_role_assignment",
+    "Model": "OrganizationRoleAssignment"
+  },
+  {
+    "ResourceName": "Github/Organization/RoleDefinition",
+    "Tags": {
+      "category": [
+        "Organization"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListOrganizationRoleDefinitions)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_organization_role_definition",
+    "Model": "OrganizationRoleDefinition"
+  },
+  {
     "ResourceName": "Github/PullRequest",
     "Tags": {
       "category": ["PullRequest"]
@@ -333,6 +357,18 @@
     "GetDescriber": "",
     "SteampipeTable": "github_repository_vulnerability_alert",
     "Model": "RepoVulnerabilityAlert"
+  },
+  {
+    "ResourceName": "Github/Repository/Permission",
+    "Tags": {
+      "category": [
+        "Repository"
+      ]
+    },
+    "ListDescriber": "DescribeByGithub(describers.ListRepositoryPermissions)",
+    "GetDescriber": "",
+    "SteampipeTable": "github_repository_permission",
+    "Model": "RepositoryPermission"
   },
   {
     "ResourceName": "Github/Tag",

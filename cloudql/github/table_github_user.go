@@ -20,48 +20,28 @@ func tableGitHubUser() *plugin.Table {
 }
 
 func tableGitHubUserColumns() []*plugin.Column {
-	cols := sharedUserColumns()
-
-	counts := []*plugin.Column{
-		{Name: "repositories_total_disk_usage", Type: proto.ColumnType_INT, Description: "Total disk spaced used by the users repositories.",
-			Transform: transform.FromField("Description.RepositoriesTotalDiskUsage")},
-		{Name: "followers_total_count", Type: proto.ColumnType_INT, Description: "Count of how many users this user follows.",
-			Transform: transform.FromField("Description.FollowersTotalCount")},
-		{Name: "following_total_count", Type: proto.ColumnType_INT, Description: "Count of how many users follow this user.",
-			Transform: transform.FromField("Description.FollowingTotalCount")},
-		{Name: "public_repositories_total_count", Type: proto.ColumnType_INT, Description: "Count of public repositories for the user.",
-			Transform: transform.FromField("Description.PublicRepositoriesTotalCount")},
-		{Name: "private_repositories_total_count", Type: proto.ColumnType_INT, Description: "Count of private repositories for the user.",
-			Transform: transform.FromField("Description.PrivateRepositoriesTotalCount")},
-		{Name: "public_gists_total_count", Type: proto.ColumnType_INT, Description: "Count of public gists for the user.",
-			Transform: transform.FromField("Description.PublicGistsTotalCount")},
-		{Name: "issues_total_count", Type: proto.ColumnType_INT, Description: "Count of issues associated with the user.",
-			Transform: transform.FromField("Description.IssuesTotalCount")},
-		{Name: "organizations_total_count", Type: proto.ColumnType_INT, Description: "Count of organizations the user belongs to.",
-			Transform: transform.FromField("Description.OrganizationsTotalCount")},
-		{Name: "public_keys_total_count", Type: proto.ColumnType_INT, Description: "Count of public keys associated with the user.",
-			Transform: transform.FromField("Description.PublicKeysTotalCount")},
-		{Name: "open_pull_requests_total_count", Type: proto.ColumnType_INT, Description: "Count of open pull requests associated with the user.",
-			Transform: transform.FromField("Description.OpenPullRequestsTotalCount")},
-		{Name: "merged_pull_requests_total_count", Type: proto.ColumnType_INT, Description: "Count of merged pull requests associated with the user.",
-			Transform: transform.FromField("Description.MergedPullRequestsTotalCount")},
-		{Name: "closed_pull_requests_total_count", Type: proto.ColumnType_INT, Description: "Count of closed pull requests associated with the user.",
-			Transform: transform.FromField("Description.ClosedPullRequestsTotalCount")},
-		{Name: "packages_total_count", Type: proto.ColumnType_INT, Description: "Count of packages hosted by the user.",
-			Transform: transform.FromField("Description.PackagesTotalCount")},
-		{Name: "pinned_items_total_count", Type: proto.ColumnType_INT, Description: "Count of items pinned on the users profile.",
-			Transform: transform.FromField("Description.PinnedItemsTotalCount")},
-		{Name: "sponsoring_total_count", Type: proto.ColumnType_INT, Description: "Count of users that this user is sponsoring.",
-			Transform: transform.FromField("Description.SponsoringTotalCount")},
-		{Name: "sponsors_total_count", Type: proto.ColumnType_INT, Description: "Count of users sponsoring this user.",
-			Transform: transform.FromField("Description.SponsorsTotalCount")},
-		{Name: "starred_repositories_total_count", Type: proto.ColumnType_INT, Description: "Count of repositories the user has starred.",
-			Transform: transform.FromField("Description.StarredRepositoriesTotalCount")},
-		{Name: "watching_total_count", Type: proto.ColumnType_INT, Description: "Count of repositories being watched by the user.",
-			Transform: transform.FromField("Description.WatchingTotalCount")},
+	cols := []*plugin.Column{
+		{Name: "login", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Login")},
+		{Name: "id", Type: proto.ColumnType_INT, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.ID")},
+		{Name: "node_id", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.NodeId")},
+		{Name: "name", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Name")},
+		{Name: "email", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Email")},
+		{Name: "company", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Company")},
+		{Name: "location", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Location")},
+		{Name: "url", Type: proto.ColumnType_STRING, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.Url")},
+		{Name: "created_at", Type: proto.ColumnType_TIMESTAMP, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.CreatedAt")},
+		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP, Description: "Total disk spaced used by the users repositories.",
+			Transform: transform.FromField("Description.UpdatedAt")},
 	}
-
-	cols = append(cols, counts...)
 
 	return cols
 }

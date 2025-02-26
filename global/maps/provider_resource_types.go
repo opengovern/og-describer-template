@@ -218,6 +218,34 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
+	"Github/Organization/RoleAssignment": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Github/Organization/RoleAssignment",
+		Tags:                 map[string][]string{
+            "category": {"Organization"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeByGithub(describers.ListOrganizationRoleAssignments),
+		GetDescriber:         nil,
+	},
+
+	"Github/Organization/RoleDefinition": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Github/Organization/RoleDefinition",
+		Tags:                 map[string][]string{
+            "category": {"Organization"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeByGithub(describers.ListOrganizationRoleDefinitions),
+		GetDescriber:         nil,
+	},
+
 	"Github/PullRequest": {
 		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/PullRequest",
@@ -355,6 +383,20 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        provider.DescribeByGithub(describers.GetAllRepositoriesVulnerabilities),
+		GetDescriber:         nil,
+	},
+
+	"Github/Repository/Permission": {
+		IntegrationType:      constants.IntegrationName,
+		ResourceName:         "Github/Repository/Permission",
+		Tags:                 map[string][]string{
+            "category": {"Repository"},
+        },
+		Labels:               map[string]string{
+        },
+		Annotations:          map[string]string{
+        },
+		ListDescriber:        provider.DescribeByGithub(describers.ListRepositoryPermissions),
 		GetDescriber:         nil,
 	},
 
@@ -713,6 +755,20 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		
 	},
 
+	"Github/Organization/RoleAssignment": {
+		Name:         "Github/Organization/RoleAssignment",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Organization/RoleDefinition": {
+		Name:         "Github/Organization/RoleDefinition",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
 	"Github/PullRequest": {
 		Name:         "Github/PullRequest",
 		IntegrationType:      constants.IntegrationName,
@@ -808,6 +864,13 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 
 	"Github/Repository/VulnerabilityAlert": {
 		Name:         "Github/Repository/VulnerabilityAlert",
+		IntegrationType:      constants.IntegrationName,
+		Description:                 "",
+		
+	},
+
+	"Github/Repository/Permission": {
+		Name:         "Github/Repository/Permission",
 		IntegrationType:      constants.IntegrationName,
 		Description:                 "",
 		
@@ -966,6 +1029,8 @@ var ResourceTypesList = []string{
   "Github/Organization/ExternalIdentity",
   "Github/Organization/Member",
   "Github/Organization/Team",
+  "Github/Organization/RoleAssignment",
+  "Github/Organization/RoleDefinition",
   "Github/PullRequest",
   "Github/Release",
   "Github/Repository",
@@ -976,6 +1041,7 @@ var ResourceTypesList = []string{
   "Github/Repository/Ruleset",
   "Github/Repository/SBOM",
   "Github/Repository/VulnerabilityAlert",
+  "Github/Repository/Permission",
   "Github/Tag",
   "Github/Team",
   "Github/Team/Member",
