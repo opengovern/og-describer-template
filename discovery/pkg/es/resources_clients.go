@@ -9005,12 +9005,10 @@ func (p OrganizationRoleAssignmentPaginator) NextPage(ctx context.Context) ([]Or
 }
 
 var listOrganizationRoleAssignmentFilters = map[string]string{
-	"created_at":      "Description.CreatedAt",
-	"list_of_teams":   "Description.ListOfTeams",
-	"list_of_users":   "Description.ListOfUsers",
 	"organization_id": "Description.OrganizationId",
+	"principal_id":    "Description.PrincipalId",
+	"principal_type":  "Description.PrincipalType",
 	"role_id":         "Description.RoleId",
-	"updated_at":      "Description.UpdatedAt",
 }
 
 func ListOrganizationRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -9074,12 +9072,10 @@ func ListOrganizationRoleAssignment(ctx context.Context, d *plugin.QueryData, _ 
 }
 
 var getOrganizationRoleAssignmentFilters = map[string]string{
-	"created_at":      "Description.CreatedAt",
-	"list_of_teams":   "Description.ListOfTeams",
-	"list_of_users":   "Description.ListOfUsers",
 	"organization_id": "Description.OrganizationId",
+	"principal_id":    "Description.PrincipalId",
+	"principal_type":  "Description.PrincipalType",
 	"role_id":         "Description.RoleId",
-	"updated_at":      "Description.UpdatedAt",
 }
 
 func GetOrganizationRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
