@@ -3,7 +3,7 @@ package detector
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/opengovern/og-describer-template/global/maps"
+	"github.com/opengovern/og-describer-azure/global/maps"
 	"go/ast"
 	"reflect"
 	"strings"
@@ -48,7 +48,30 @@ func getInitValue(t reflect.Type) reflect.Value {
 			slice.Index(0).Set(getInitValue(t.Elem()))
 		}
 	case reflect.Struct:
-		return reflect.New(t).Elem()
+		// populate the struct with zero values
+		val := reflect.New(t).Elem()
+		for i := 0; i < val.NumField(); i++ {
+			if !val.Field(i).CanSet() {
+				continue
+			}
+			switch val.Field(i).Kind() {
+			case reflect.String:
+				val.Field(i).SetString(getInitValue(val.Field(i).Type()).String())
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				val.Field(i).SetInt(getInitValue(val.Field(i).Type()).Int())
+			case reflect.Bool:
+				val.Field(i).SetBool(getInitValue(val.Field(i).Type()).Bool())
+			case reflect.Float64, reflect.Float32:
+				val.Field(i).SetFloat(getInitValue(val.Field(i).Type()).Float())
+			case reflect.Struct:
+				val.Field(i).Set(reflect.New(val.Field(i).Type()).Elem())
+			case reflect.Slice:
+				val.Field(i).Set(reflect.MakeSlice(val.Field(i).Type(), 0, 1))
+			case reflect.Ptr:
+				val.Field(i).Set(reflect.New(val.Field(i).Type().Elem()))
+			}
+		}
+		return val
 	case reflect.Ptr:
 		derefVal := getInitValue(t.Elem())
 		val := reflect.New(derefVal.Type())
