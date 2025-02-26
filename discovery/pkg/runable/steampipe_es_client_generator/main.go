@@ -393,8 +393,8 @@ func Get{{ .Name }}(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 						s.ListFilters[fparts[0]] = fparts[1]
 					}
 				}
-				s.GetFilters["platform_integration_id"] = "IntegrationID"
-				s.ListFilters["platform_integration_id"] = "IntegrationID"
+				s.GetFilters["platform_integration_id"] = "integration_id"
+				s.ListFilters["platform_integration_id"] = "integration_id"
 			}
 
 			if s.Index != "" {
