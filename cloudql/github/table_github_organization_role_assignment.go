@@ -20,28 +20,16 @@ func gitHubOrganizationRoleAssignment() []*plugin.Column {
 			Type:        proto.ColumnType_INT,
 			Description: "The name of the repository",
 			Transform:   transform.FromField("Description.OrganizationId")},
-
 		{
-			Name:        "list_of_teams",
-			Type:        proto.ColumnType_JSON,
-			Description: "The permission the collaborator has on the repository.",
-			Transform:   transform.FromField("Description.ListOfTeams")},
-
+			Name:        "principal_type",
+			Type:        proto.ColumnType_STRING,
+			Description: "The name of the repository",
+			Transform:   transform.FromField("Description.PrincipalType")},
 		{
-			Name:        "list_of_users",
-			Type:        proto.ColumnType_JSON,
-			Description: "The login details of the collaborator.",
-			Transform:   transform.FromField("Description.ListOfUsers")},
-		{
-			Name:        "created_at",
-			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "The id of the collaborator.",
-			Transform:   transform.FromField("Description.CreatedAt")},
-		{
-			Name:        "updated_at",
-			Type:        proto.ColumnType_TIMESTAMP,
-			Description: "The id of the collaborator.",
-			Transform:   transform.FromField("Description.UpdatedAt")},
+			Name:        "principal_id",
+			Type:        proto.ColumnType_INT,
+			Description: "The name of the repository",
+			Transform:   transform.FromField("Description.PrincipalId")},
 	}
 
 	return tableCols

@@ -34,8 +34,8 @@ func ListOrganizationRoleAssignments(ctx context.Context, githubClient model.Git
 		return nil, err
 	}
 
-	// 3) For each role, gather assigned teams and users
-	var assignments []GitHubRoleAssignment
+	// 3) For each role, gather assigned teams and users, then produce output
+	var allAssignments []GitHubOrganizationRoleAssignment
 
 	for _, role := range orgRoles {
 		teams, err := fetchTeamsAssignedToRole(sdk, organizationName, role.ID)
@@ -43,31 +43,32 @@ func ListOrganizationRoleAssignments(ctx context.Context, githubClient model.Git
 			fmt.Println(err)
 			continue
 		}
-		teamIDs := make([]int, 0, len(teams))
+		// Create one JSON object per assigned team
 		for _, t := range teams {
-			teamIDs = append(teamIDs, t.ID)
+			allAssignments = append(allAssignments, GitHubOrganizationRoleAssignment{
+				RoleID:         role.ID,
+				OrganizationID: orgID,
+				PrincipalType:  "team",
+				PrincipalID:    t.ID,
+			})
 		}
 
 		users, err := fetchUsersAssignedToRole(sdk, organizationName, role.ID)
 		if err != nil {
 			return nil, err
 		}
-		userIDs := make([]int, 0, len(users))
+		// Create one JSON object per assigned user
 		for _, u := range users {
-			userIDs = append(userIDs, u.ID)
+			allAssignments = append(allAssignments, GitHubOrganizationRoleAssignment{
+				RoleID:         role.ID,
+				OrganizationID: orgID,
+				PrincipalType:  "user",
+				PrincipalID:    u.ID,
+			})
 		}
-
-		assignments = append(assignments, GitHubRoleAssignment{
-			RoleID:         role.ID,
-			OrganizationID: orgID,
-			CreatedAt:      role.CreatedAt,
-			UpdatedAt:      role.UpdatedAt,
-			ListOfTeams:    teamIDs,
-			ListOfUsers:    userIDs,
-		})
 	}
 
-	for _, a := range assignments {
+	for _, a := range allAssignments {
 		id := fmt.Sprintf("%d/%d", a.OrganizationID, a.RoleID)
 		value := models.Resource{
 			ID: id,
@@ -75,10 +76,8 @@ func ListOrganizationRoleAssignments(ctx context.Context, githubClient model.Git
 				RoleId:         a.RoleID,
 				OrganizationId: a.OrganizationID,
 				Organization:   organizationName,
-				ListOfTeams:    a.ListOfTeams,
-				ListOfUsers:    a.ListOfUsers,
-				CreatedAt:      a.CreatedAt,
-				UpdatedAt:      a.UpdatedAt,
+				PrincipalType:  a.PrincipalType,
+				PrincipalId:    a.PrincipalID,
 			},
 		}
 
@@ -109,24 +108,21 @@ type orgRoleListResponseForAssignment struct {
 	Roles []OrgRoleForAssignment `json:"roles"`
 }
 
-// GitHubRoleAssignment captures which teams and which users are assigned to a single org role
-type GitHubRoleAssignment struct {
-	RoleID         int       `json:"role_id"`
-	OrganizationID int       `json:"organization_id"`
-	CreatedAt      time.Time `json:"created_at,omitempty"`
-	UpdatedAt      time.Time `json:"updated_at,omitempty"`
-
-	ListOfTeams []int `json:"list_of_teams"`
-	ListOfUsers []int `json:"list_of_users"`
-}
-
-// Minimal structs for teams and users assigned to roles
 type GitHubTeam struct {
 	ID int `json:"id"`
 }
 
 type GitHubUser struct {
 	ID int `json:"id"`
+}
+
+// GitHubOrganizationRoleAssignment is the final output format:
+// one object per "principal" (team or user) assigned to a role.
+type GitHubOrganizationRoleAssignment struct {
+	RoleID         int    `json:"role_id"`
+	OrganizationID int    `json:"organization_id"`
+	PrincipalType  string `json:"principal_type"` // "team" or "user"
+	PrincipalID    int    `json:"principal_id"`
 }
 
 // -----------------------------------------------------

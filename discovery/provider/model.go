@@ -1871,10 +1871,8 @@ type OrganizationRoleAssignmentDescription struct {
 	RoleId         int
 	OrganizationId int
 	Organization   string
-	ListOfTeams    []int
-	ListOfUsers    []int
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	PrincipalType  string
+	PrincipalId    int
 }
 
 type OrganizationRoleDefinitionDescription struct {
