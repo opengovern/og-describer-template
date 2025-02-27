@@ -58,6 +58,10 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient model.GitHub
 		"affiliation": affiliation,
 	}
 	appendOrgCollaboratorColumnIncludes(&variables, orgCollaboratorsCols())
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
 	var values []models.Resource
 	for {
 		err := client.Query(ctx, &query, variables)
@@ -76,6 +80,7 @@ func GetOrganizationCollaborators(ctx context.Context, githubClient model.GitHub
 					Name: repoFullName,
 					Description: model.OrgCollaboratorsDescription{
 						Organization:   org,
+						OrganizationID: organization.ID,
 						Affiliation:    "ALL",
 						RepositoryName: node.Name,
 						Permission:     collaborator.Permission,

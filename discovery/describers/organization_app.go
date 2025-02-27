@@ -45,6 +45,11 @@ func ListOrganizationApps(ctx context.Context,
 		return nil, fmt.Errorf("error decoding repos list: %w", err)
 	}
 
+	orgID, err := fetchOrganizationID(sdk, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("fetching org ID: %w", err)
+	}
+
 	for _, app := range appsResponse.Installations {
 		account := model.Account{
 			Login:             app.Account.Login,
@@ -95,6 +100,8 @@ func ListOrganizationApps(ctx context.Context,
 			ID:   strconv.Itoa(int(app.ID)),
 			Name: app.AppSlug,
 			Description: model.OrganizationAppDescription{
+				Organization:           organizationName,
+				OrganizationID:         orgID,
 				ID:                     app.ID,
 				ClientID:               app.ClientID,
 				Account:                account,

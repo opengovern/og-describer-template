@@ -40,6 +40,8 @@ func gitHubOrganizationMemberColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.WebsiteURL")},
 		{Name: "status", Type: proto.ColumnType_BOOL, Description: "",
 			Transform: transform.FromField("Description.Status")},
+		{Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 
 	return cols

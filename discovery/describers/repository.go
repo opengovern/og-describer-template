@@ -457,6 +457,7 @@ func util_transformToFinalRepoDetail(detail *model.RepoDetail, hooks []model.Rep
 	}
 	if finalOrg != nil {
 		finalDetail.Organization = finalOrg.Login
+		finalDetail.OrganizationID = finalOrg.ID
 	}
 
 	if repoRestDetail != nil {

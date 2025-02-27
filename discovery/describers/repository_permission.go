@@ -49,6 +49,10 @@ func ListRepositoryPermissions(ctx context.Context, githubClient model.GitHubCli
 		}
 		allPrincipals = append(allPrincipals, principals...)
 	}
+	orgID, err := fetchOrganizationID(sdk, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("fetching org ID: %w", err)
+	}
 
 	for _, p := range allPrincipals {
 		value := models.Resource{
@@ -64,6 +68,7 @@ func ListRepositoryPermissions(ctx context.Context, githubClient model.GitHubCli
 				Permissions:        p.Permissions,
 				RoleName:           p.RoleName,
 				Organization:       organizationName,
+				OrganizationID:     orgID,
 			},
 		}
 

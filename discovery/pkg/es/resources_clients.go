@@ -2548,6 +2548,7 @@ func (p OrgCollaboratorsPaginator) NextPage(ctx context.Context) ([]OrgCollabora
 
 var listOrgCollaboratorsFilters = map[string]string{
 	"affiliation":     "Description.Affiliation",
+	"organization_id": "Description.OrganizationID",
 	"permission":      "Description.Permission",
 	"repository_name": "Description.RepositoryName",
 	"user_id":         "Description.UserID",
@@ -2616,6 +2617,7 @@ func ListOrgCollaborators(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 
 var getOrgCollaboratorsFilters = map[string]string{
 	"affiliation":     "Description.Affiliation",
+	"organization_id": "Description.OrganizationID",
 	"permission":      "Description.Permission",
 	"repository_name": "Description.RepositoryName",
 	"user_id":         "Description.UserID",
@@ -2766,6 +2768,7 @@ var listOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
+	"organization_id":                      "Description.OrganizationID",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -2847,6 +2850,7 @@ var getOrgAlertDependabotFilters = map[string]string{
 	"dismissed_comment":                    "Description.DismissedComment",
 	"dismissed_reason":                     "Description.DismissedReason",
 	"html_url":                             "Description.HTMLURL",
+	"organization_id":                      "Description.OrganizationID",
 	"security_advisory_cve_id":             "Description.SecurityAdvisoryCVEID",
 	"security_advisory_cvss_score":         "Description.SecurityAdvisoryCVSSScore",
 	"security_advisory_cvss_vector_string": "Description.SecurityAdvisoryCVSSVector",
@@ -2996,6 +3000,7 @@ func (p OrgExternalIdentityPaginator) NextPage(ctx context.Context) ([]OrgExtern
 
 var listOrgExternalIdentityFilters = map[string]string{
 	"guid":                    "Description.Guid",
+	"organization_id":         "Description.OrganizationID",
 	"organization_invitation": "Description.OrganizationInvitation",
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
@@ -3065,6 +3070,7 @@ func ListOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin
 
 var getOrgExternalIdentityFilters = map[string]string{
 	"guid":                    "Description.Guid",
+	"organization_id":         "Description.OrganizationID",
 	"organization_invitation": "Description.OrganizationInvitation",
 	"saml_identity":           "Description.SamlIdentity",
 	"scim_identity":           "Description.ScimIdentity",
@@ -3219,6 +3225,7 @@ var listOrgMembersFilters = map[string]string{
 	"login_id":               "Description.LoginID",
 	"name":                   "Description.Name",
 	"node_id":                "Description.NodeID",
+	"organization_id":        "Description.OrganizationID",
 	"role":                   "Description.Role",
 	"status":                 "Description.Status",
 	"updated_at":             "Description.UpdatedAt",
@@ -3297,6 +3304,7 @@ var getOrgMembersFilters = map[string]string{
 	"login_id":               "Description.LoginID",
 	"name":                   "Description.Name",
 	"node_id":                "Description.NodeID",
+	"organization_id":        "Description.OrganizationID",
 	"role":                   "Description.Role",
 	"status":                 "Description.Status",
 	"updated_at":             "Description.UpdatedAt",
@@ -3816,6 +3824,7 @@ var listRepositoryFilters = map[string]string{
 	"network_count":                    "Description.NetworkCount",
 	"node_id":                          "Description.NodeID",
 	"open_issues_total_count":          "Description.OpenIssuesCount",
+	"organization_id":                  "Description.OrganizationID",
 	"owner_login":                      "Description.Owner.Login",
 	"parent":                           "Description.Parent",
 	"permissions":                      "Description.Permissions",
@@ -3826,6 +3835,7 @@ var listRepositoryFilters = map[string]string{
 	"pushed_at":                        "Description.PushedAt",
 	"rebase_merge_allowed":             "Description.RepositorySettings.AllowRebaseMerge",
 	"repository_full_name":             "Description.RepositoryFullName",
+	"repository_id":                    "Description.GitHubRepoID",
 	"repository_topics_total_count":    "Description.TopicsTotalCount",
 	"security_policy_url":              "Description.SecurityPolicyUrl",
 	"security_settings":                "Description.SecuritySettings",
@@ -3956,6 +3966,7 @@ var getRepositoryFilters = map[string]string{
 	"network_count":                    "Description.NetworkCount",
 	"node_id":                          "Description.NodeID",
 	"open_issues_total_count":          "Description.OpenIssuesCount",
+	"organization_id":                  "Description.OrganizationID",
 	"owner_login":                      "Description.Owner.Login",
 	"parent":                           "Description.Parent",
 	"permissions":                      "Description.Permissions",
@@ -3966,6 +3977,7 @@ var getRepositoryFilters = map[string]string{
 	"pushed_at":                        "Description.PushedAt",
 	"rebase_merge_allowed":             "Description.RepositorySettings.AllowRebaseMerge",
 	"repository_full_name":             "Description.RepositoryFullName",
+	"repository_id":                    "Description.GitHubRepoID",
 	"repository_topics_total_count":    "Description.TopicsTotalCount",
 	"security_policy_url":              "Description.SecurityPolicyUrl",
 	"security_settings":                "Description.SecuritySettings",
@@ -4363,6 +4375,7 @@ var listRepoCollaboratorsFilters = map[string]string{
 	"organization_id":      "Description.OrganizationID",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 }
 
@@ -4432,6 +4445,7 @@ var getRepoCollaboratorsFilters = map[string]string{
 	"organization_id":      "Description.OrganizationID",
 	"permission":           "Description.Permission",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 }
 
@@ -4571,6 +4585,7 @@ func (p RepoAlertDependabotPaginator) NextPage(ctx context.Context) ([]RepoAlert
 }
 
 var listRepoAlertDependabotFilters = map[string]string{
+	"repository_id":   "Description.RepositoryID",
 	"repository_name": "Description.RepositoryName",
 }
 
@@ -4635,6 +4650,7 @@ func ListRepoAlertDependabot(ctx context.Context, d *plugin.QueryData, _ *plugin
 }
 
 var getRepoAlertDependabotFilters = map[string]string{
+	"repository_id":   "Description.RepositoryID",
 	"repository_name": "Description.RepositoryName",
 }
 
@@ -4782,10 +4798,12 @@ var listRepoDeploymentFilters = map[string]string{
 	"latest_environment":   "Description.LatestEnvironment",
 	"latest_status":        "Description.LatestStatus",
 	"node_id":              "Description.NodeId",
+	"organization_id":      "Description.OrganizationID",
 	"original_environment": "Description.OriginalEnvironment",
 	"payload":              "Description.Payload",
 	"ref":                  "Description.Ref",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"state":                "Description.State",
 	"task":                 "Description.Task",
@@ -4860,10 +4878,12 @@ var getRepoDeploymentFilters = map[string]string{
 	"latest_environment":   "Description.LatestEnvironment",
 	"latest_status":        "Description.LatestStatus",
 	"node_id":              "Description.NodeId",
+	"organization_id":      "Description.OrganizationID",
 	"original_environment": "Description.OriginalEnvironment",
 	"payload":              "Description.Payload",
 	"ref":                  "Description.Ref",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"state":                "Description.State",
 	"task":                 "Description.Task",
@@ -5008,7 +5028,9 @@ var listRepoEnvironmentFilters = map[string]string{
 	"id":                   "Description.Id",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeId",
+	"organization_id":      "Description.OrganizationID",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 }
 
@@ -5076,7 +5098,9 @@ var getRepoEnvironmentFilters = map[string]string{
 	"id":                   "Description.Id",
 	"name":                 "Description.Name",
 	"node_id":              "Description.NodeId",
+	"organization_id":      "Description.OrganizationID",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 }
 
@@ -5222,7 +5246,9 @@ var listRepoRuleSetFilters = map[string]string{
 	"enforcement":          "Description.Enforcement",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization_id":      "Description.OrganizationID",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"rules":                "Description.Rules",
 }
@@ -5294,7 +5320,9 @@ var getRepoRuleSetFilters = map[string]string{
 	"enforcement":          "Description.Enforcement",
 	"id":                   "Description.ID",
 	"name":                 "Description.Name",
+	"organization_id":      "Description.OrganizationID",
 	"repository_full_name": "Description.RepoFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"rules":                "Description.Rules",
 }
@@ -5440,8 +5468,10 @@ var listRepoSBOMFilters = map[string]string{
 	"document_describes":   "Description.DocumentDescribes",
 	"document_namespace":   "Description.DocumentNamespace",
 	"name":                 "Description.Name",
+	"organization_id":      "Description.OrganizationID",
 	"packages":             "Description.Packages",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"spdx_id":              "Description.SPDXID",
 	"spdx_version":         "Description.SPDXVersion",
@@ -5513,8 +5543,10 @@ var getRepoSBOMFilters = map[string]string{
 	"document_describes":   "Description.DocumentDescribes",
 	"document_namespace":   "Description.DocumentNamespace",
 	"name":                 "Description.Name",
+	"organization_id":      "Description.OrganizationID",
 	"packages":             "Description.Packages",
 	"repository_full_name": "Description.RepositoryFullName",
+	"repository_id":        "Description.RepositoryID",
 	"repository_name":      "Description.RepositoryName",
 	"spdx_id":              "Description.SPDXID",
 	"spdx_version":         "Description.SPDXVersion",
@@ -5663,7 +5695,9 @@ var listRepoVulnerabilityAlertFilters = map[string]string{
 	"dismisser":                    "Description.Dismisser",
 	"node_id":                      "Description.NodeID",
 	"number":                       "Description.Number",
+	"organization_id":              "Description.OrganizationID",
 	"repository_full_name":         "Description.RepositoryFullName",
+	"repository_id":                "Description.RepositoryID",
 	"repository_name":              "Description.RepositoryName",
 	"security_advisory":            "Description.SecurityAdvisory",
 	"security_vulnerability":       "Description.SecurityVulnerability",
@@ -5742,7 +5776,9 @@ var getRepoVulnerabilityAlertFilters = map[string]string{
 	"dismisser":                    "Description.Dismisser",
 	"node_id":                      "Description.NodeID",
 	"number":                       "Description.Number",
+	"organization_id":              "Description.OrganizationID",
 	"repository_full_name":         "Description.RepositoryFullName",
+	"repository_id":                "Description.RepositoryID",
 	"repository_name":              "Description.RepositoryName",
 	"security_advisory":            "Description.SecurityAdvisory",
 	"security_vulnerability":       "Description.SecurityVulnerability",
@@ -7034,6 +7070,7 @@ func (p RepositoryPermissionPaginator) NextPage(ctx context.Context) ([]Reposito
 }
 
 var listRepositoryPermissionFilters = map[string]string{
+	"organization_id":      "Description.OrganizationID",
 	"permissions":          "Description.Permissions",
 	"principal_id":         "Description.PrincipalId",
 	"principal_name":       "Description.PrincipalName",
@@ -7105,6 +7142,7 @@ func ListRepositoryPermission(ctx context.Context, d *plugin.QueryData, _ *plugi
 }
 
 var getRepositoryPermissionFilters = map[string]string{
+	"organization_id":      "Description.OrganizationID",
 	"permissions":          "Description.Permissions",
 	"principal_id":         "Description.PrincipalId",
 	"principal_name":       "Description.PrincipalName",
@@ -8316,19 +8354,21 @@ func (p WebhookPaginator) NextPage(ctx context.Context) ([]Webhook, error) {
 }
 
 var listWebhookFilters = map[string]string{
-	"active":         "Description.Active",
-	"config":         "Description.Config",
-	"created_at":     "Description.CreatedAt",
-	"deliveries_url": "Description.DeliveriesURL",
-	"events":         "Description.Events",
-	"id":             "Description.ID",
-	"last_response":  "Description.LastResponse",
-	"name":           "Description.Name",
-	"ping_url":       "Description.PingURL",
-	"test_url":       "Description.TestURL",
-	"type":           "Description.Type",
-	"updated_at":     "Description.UpdatedAt",
-	"url":            "Description.URL",
+	"active":          "Description.Active",
+	"config":          "Description.Config",
+	"created_at":      "Description.CreatedAt",
+	"deliveries_url":  "Description.DeliveriesURL",
+	"events":          "Description.Events",
+	"id":              "Description.ID",
+	"last_response":   "Description.LastResponse",
+	"name":            "Description.Name",
+	"organization_id": "Description.OrganizationID",
+	"ping_url":        "Description.PingURL",
+	"repository_id":   "Description.RepositoryID",
+	"test_url":        "Description.TestURL",
+	"type":            "Description.Type",
+	"updated_at":      "Description.UpdatedAt",
+	"url":             "Description.URL",
 }
 
 func ListWebhook(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8392,19 +8432,21 @@ func ListWebhook(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 }
 
 var getWebhookFilters = map[string]string{
-	"active":         "Description.Active",
-	"config":         "Description.Config",
-	"created_at":     "Description.CreatedAt",
-	"deliveries_url": "Description.DeliveriesURL",
-	"events":         "Description.Events",
-	"id":             "Description.ID",
-	"last_response":  "Description.LastResponse",
-	"name":           "Description.Name",
-	"ping_url":       "Description.PingURL",
-	"test_url":       "Description.TestURL",
-	"type":           "Description.Type",
-	"updated_at":     "Description.UpdatedAt",
-	"url":            "Description.URL",
+	"active":          "Description.Active",
+	"config":          "Description.Config",
+	"created_at":      "Description.CreatedAt",
+	"deliveries_url":  "Description.DeliveriesURL",
+	"events":          "Description.Events",
+	"id":              "Description.ID",
+	"last_response":   "Description.LastResponse",
+	"name":            "Description.Name",
+	"organization_id": "Description.OrganizationID",
+	"ping_url":        "Description.PingURL",
+	"repository_id":   "Description.RepositoryID",
+	"test_url":        "Description.TestURL",
+	"type":            "Description.Type",
+	"updated_at":      "Description.UpdatedAt",
+	"url":             "Description.URL",
 }
 
 func GetWebhook(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8754,14 +8796,15 @@ func (p OrganizationRolePaginator) NextPage(ctx context.Context) ([]Organization
 }
 
 var listOrganizationRoleFilters = map[string]string{
-	"base_role":   "Description.BaseRole",
-	"created_at":  "Description.CreatedAt",
-	"description": "Description.Description",
-	"id":          "Description.ID",
-	"name":        "Description.Name",
-	"permissions": "Description.Permissions",
-	"source":      "Description.Source",
-	"updated_at":  "Description.UpdatedAt",
+	"base_role":       "Description.BaseRole",
+	"created_at":      "Description.CreatedAt",
+	"description":     "Description.Description",
+	"id":              "Description.ID",
+	"name":            "Description.Name",
+	"organization_id": "Description.OrganizationID",
+	"permissions":     "Description.Permissions",
+	"source":          "Description.Source",
+	"updated_at":      "Description.UpdatedAt",
 }
 
 func ListOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -8825,14 +8868,15 @@ func ListOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.Hy
 }
 
 var getOrganizationRoleFilters = map[string]string{
-	"base_role":   "Description.BaseRole",
-	"created_at":  "Description.CreatedAt",
-	"description": "Description.Description",
-	"id":          "Description.ID",
-	"name":        "Description.Name",
-	"permissions": "Description.Permissions",
-	"source":      "Description.Source",
-	"updated_at":  "Description.UpdatedAt",
+	"base_role":       "Description.BaseRole",
+	"created_at":      "Description.CreatedAt",
+	"description":     "Description.Description",
+	"id":              "Description.ID",
+	"name":            "Description.Name",
+	"organization_id": "Description.OrganizationID",
+	"permissions":     "Description.Permissions",
+	"source":          "Description.Source",
+	"updated_at":      "Description.UpdatedAt",
 }
 
 func GetOrganizationRole(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -9639,6 +9683,7 @@ var listOrganizationAppFilters = map[string]string{
 	"has_multiple_single_files": "Description.HasMultipleSingleFiles",
 	"html_url":                  "Description.HTMLURL",
 	"id":                        "Description.ID",
+	"organization_id":           "Description.OrganizationID",
 	"permissions":               "Description.Permissions",
 	"repositories_url":          "Description.RepositoriesURL",
 	"repository_selection":      "Description.RepositorySelection",
@@ -9721,6 +9766,7 @@ var getOrganizationAppFilters = map[string]string{
 	"has_multiple_single_files": "Description.HasMultipleSingleFiles",
 	"html_url":                  "Description.HTMLURL",
 	"id":                        "Description.ID",
+	"organization_id":           "Description.OrganizationID",
 	"permissions":               "Description.Permissions",
 	"repositories_url":          "Description.RepositoriesURL",
 	"repository_selection":      "Description.RepositorySelection",

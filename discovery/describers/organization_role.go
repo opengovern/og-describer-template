@@ -25,6 +25,11 @@ func ListOrganizationRoles(ctx context.Context,
 
 	var values []models.Resource
 
+	orgID, err := fetchOrganizationID(sdk, organizationName)
+	if err != nil {
+		return nil, fmt.Errorf("fetching org ID: %w", err)
+	}
+
 	endpoint := fmt.Sprintf("/orgs/%s/organization-roles", organizationName)
 	req := &resilientbridge.NormalizedRequest{
 		Method:   "GET",
@@ -51,15 +56,16 @@ func ListOrganizationRoles(ctx context.Context,
 			ID:   strconv.Itoa(r.ID),
 			Name: r.Name,
 			Description: model.OrganizationRoleDescription{
-				Organization: organizationName,
-				Name:         r.Name,
-				ID:           r.ID,
-				Source:       r.Source,
-				BaseRole:     r.BaseRole,
-				Permissions:  r.Permissions,
-				Description:  r.Description,
-				CreatedAt:    r.CreatedAt,
-				UpdatedAt:    r.UpdatedAt,
+				Organization:   organizationName,
+				OrganizationID: orgID,
+				Name:           r.Name,
+				ID:             r.ID,
+				Source:         r.Source,
+				BaseRole:       r.BaseRole,
+				Permissions:    r.Permissions,
+				Description:    r.Description,
+				CreatedAt:      r.CreatedAt,
+				UpdatedAt:      r.UpdatedAt,
 			},
 		}
 		if stream != nil {

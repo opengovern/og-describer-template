@@ -63,6 +63,9 @@ func tableGitHubRepositoryPermission() *plugin.Table {
 				Transform:   transform.FromField("Description.RoleName"),
 				Description: "The full name of the repository (login/repo-name).",
 			},
+			{
+				Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+				Transform: transform.FromField("Description.OrganizationID")},
 		}),
 	}
 }

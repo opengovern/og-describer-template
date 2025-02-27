@@ -26,6 +26,10 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient model.Git
 	opt := &github.ListAlertsOptions{
 		ListCursorOptions: github.ListCursorOptions{First: maxPagesCount},
 	}
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
 	var values []models.Resource
 	for {
 		alerts, resp, err := client.Dependabot.ListOrgAlerts(ctx, org, opt)
@@ -68,6 +72,7 @@ func GetOrganizationDependabotAlerts(ctx context.Context, githubClient model.Git
 					DismissedComment:            alert.GetDismissedComment(),
 					FixedAt:                     alert.GetFixedAt(),
 					Organization:                org,
+					OrganizationID:              organization.ID,
 				},
 			}
 			if stream != nil {

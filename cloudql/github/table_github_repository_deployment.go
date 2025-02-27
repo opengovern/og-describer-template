@@ -70,6 +70,9 @@ func gitHubRepositoryDeploymentColumns() []*plugin.Column {
 		{Name: "updated_at", Type: proto.ColumnType_TIMESTAMP,
 			Transform:   transform.FromField("Description.UpdatedAt").NullIfZero().Transform(convertTimestamp),
 			Description: "Timestamp when the deployment was last updated."},
+		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 }
 

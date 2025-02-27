@@ -155,6 +155,9 @@ func gitHubDependabotAlertColumns() []*plugin.Column {
 			Description: "The time that the alert was no longer detected and was considered fixed.",
 			Transform:   transform.FromField("Description.FixedAt").NullIfZero().Transform(convertTimestamp),
 		},
+		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 }
 

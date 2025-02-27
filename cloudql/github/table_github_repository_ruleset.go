@@ -73,6 +73,9 @@ func gitHubRulesetColumns() []*plugin.Column {
 			Type:        proto.ColumnType_JSON,
 			Transform:   transform.FromField("Description.Conditions"),
 			Description: "The conditions under which the ruleset applies."},
+		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 }
 

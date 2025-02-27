@@ -15,12 +15,17 @@ func GetAllRepositoriesSBOMs(ctx context.Context, githubClient model.GitHubClien
 		repositoryName = value.(string)
 	}
 
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
+
 	if repositoryName != "" {
 		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
 		if err != nil {
 			return nil, err
 		}
-		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repositoryName, repo.GetID())
+		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repositoryName, repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -33,7 +38,7 @@ func GetAllRepositoriesSBOMs(ctx context.Context, githubClient model.GitHubClien
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repo.GetName(), repo.GetID())
+		repoValue, err := GetRepositorySBOMs(ctx, githubClient, organizationName, repo.GetName(), repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -48,7 +53,7 @@ func GetAllRepositoriesSBOMs(ctx context.Context, githubClient model.GitHubClien
 	return values, nil
 }
 
-func GetRepositorySBOMs(ctx context.Context, githubClient model.GitHubClient, owner, repo string, repoId int64) (*models.Resource, error) {
+func GetRepositorySBOMs(ctx context.Context, githubClient model.GitHubClient, owner, repo string, repoId int64, orgId int64) (*models.Resource, error) {
 	client := githubClient.RestClient
 	SBOM, _, err := client.DependencyGraph.GetSBOM(ctx, owner, repo)
 	if err != nil {
@@ -70,6 +75,7 @@ func GetRepositorySBOMs(ctx context.Context, githubClient model.GitHubClient, ow
 			DocumentNamespace:  SBOM.GetSBOM().GetDocumentNamespace(),
 			Packages:           SBOM.GetSBOM().Packages,
 			Organization:       owner,
+			OrganizationID:     orgId,
 			RepositoryName:     repo,
 		},
 	}

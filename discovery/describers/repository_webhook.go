@@ -27,6 +27,11 @@ func ListRepositoryWebhooks(ctx context.Context, githubClient model.GitHubClient
 		return nil, err
 	}
 
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
+
 	var values []models.Resource
 	for _, repo := range repositories {
 		webhooks, err := processRepositoryWebhooks(ctx, handler, organizationName, repo.GetName())
@@ -49,21 +54,22 @@ func ListRepositoryWebhooks(ctx context.Context, githubClient model.GitHubClient
 				ID:   strconv.Itoa(int(webhook.ID)),
 				Name: webhook.Name,
 				Description: model.WebhookDescription{
-					RepositoryID:  repo.GetID(),
-					Type:          webhook.Type,
-					ID:            webhook.ID,
-					Name:          webhook.Name,
-					Active:        webhook.Active,
-					Events:        webhook.Events,
-					Config:        config,
-					UpdatedAt:     webhook.UpdatedAt,
-					CreatedAt:     webhook.CreatedAt,
-					URL:           webhook.URL,
-					TestURL:       webhook.TestURL,
-					PingURL:       webhook.PingURL,
-					DeliveriesURL: webhook.DeliveriesURL,
-					LastResponse:  lastResponse,
-					Organization:  organizationName,
+					RepositoryID:   repo.GetID(),
+					Type:           webhook.Type,
+					ID:             webhook.ID,
+					Name:           webhook.Name,
+					Active:         webhook.Active,
+					Events:         webhook.Events,
+					Config:         config,
+					UpdatedAt:      webhook.UpdatedAt,
+					CreatedAt:      webhook.CreatedAt,
+					URL:            webhook.URL,
+					TestURL:        webhook.TestURL,
+					PingURL:        webhook.PingURL,
+					DeliveriesURL:  webhook.DeliveriesURL,
+					LastResponse:   lastResponse,
+					Organization:   organizationName,
+					OrganizationID: organization.GetID(),
 				},
 			}
 			if stream != nil {

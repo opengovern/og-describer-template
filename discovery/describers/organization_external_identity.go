@@ -41,6 +41,10 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.G
 	}
 	appendOrganizationExternalIdentityColumnIncludes(&variables, orgExternalIdentitiesCols())
 	var values []models.Resource
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
 	for {
 		err := client.Query(ctx, &query, variables)
 		if err != nil {
@@ -54,6 +58,7 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.G
 				Description: model.OrgExternalIdentityDescription{
 					OrganizationExternalIdentity: externalIdentity,
 					Organization:                 org,
+					OrganizationID:               organization.ID,
 					UserLogin:                    externalIdentity.User.Login,
 					UserID:                       externalIdentity.User.Id,
 				},

@@ -49,6 +49,9 @@ func gitHubOrganizationRoleColumns() []*plugin.Column {
 			Type:        proto.ColumnType_TIMESTAMP,
 			Description: "",
 			Transform:   transform.FromField("Description.UpdatedAt")},
+		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 
 	return tableCols

@@ -17,13 +17,17 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	if value := ctx.Value(paramKeyRepoName); value != nil {
 		repositoryName = value.(string)
 	}
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
 
 	if repositoryName != "" {
 		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
 		if err != nil {
 			return nil, err
 		}
-		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
+		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -36,7 +40,7 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
+		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -45,7 +49,7 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	return values, nil
 }
 
-func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
+func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId, orgId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit  steampipemodels.RateLimit
@@ -80,6 +84,7 @@ func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubCli
 					Environment:    environment,
 					RepoFullName:   repoFullName,
 					Organization:   owner,
+					OrganizationID: orgId,
 					RepositoryName: repo,
 				},
 			}

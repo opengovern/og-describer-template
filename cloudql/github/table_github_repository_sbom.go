@@ -76,6 +76,9 @@ func tableGitHubRepositorySbom() *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 				Description: "Array of packages in SPDX format.",
 				Transform:   transform.FromField("Description.Packages")},
+			{
+				Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+				Transform: transform.FromField("Description.OrganizationID")},
 		}),
 	}
 }

@@ -23,7 +23,8 @@ func tableGitHubOrganizationApp() *plugin.Table {
 		Columns: commonColumns([]*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
 				Transform: transform.FromField("Description.ID")},
-
+			{Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+				Transform: transform.FromField("Description.OrganizationID")},
 			{Name: "client_id", Type: proto.ColumnType_STRING, Description: "The client ID of the app.",
 				Transform: transform.FromField("Description.ClientID")},
 

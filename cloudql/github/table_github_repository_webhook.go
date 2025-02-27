@@ -103,6 +103,9 @@ func tableGithubRepositoryWebhook() *plugin.Table {
 				Transform:   transform.FromField("Description.LastResponse"),
 				Description: "The last response received from the webhook endpoint.",
 			},
+			{
+				Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+				Transform: transform.FromField("Description.OrganizationID")},
 		}),
 	}
 }

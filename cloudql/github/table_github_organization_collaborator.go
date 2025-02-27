@@ -15,6 +15,9 @@ import (
 func gitHubOrganizationCollaborators() []*plugin.Column {
 	tableCols := []*plugin.Column{
 		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
+		{
 			Name:        "affiliation",
 			Type:        proto.ColumnType_STRING,
 			Description: "Affiliation filter - valid values 'ALL' (default), 'OUTSIDE', 'DIRECT'.",

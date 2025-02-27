@@ -21,6 +21,8 @@ func gitHubOrganizationExternalIdentityColumns() []*plugin.Column {
 			Transform: transform.FromField("Description.ScimIdentity")},
 		{Name: "organization_invitation", Type: proto.ColumnType_JSON, Description: "The invitation to the organization.",
 			Transform: transform.FromField("Description.OrganizationInvitation")},
+		{Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 }
 

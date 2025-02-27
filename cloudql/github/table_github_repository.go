@@ -479,6 +479,9 @@ func sharedRepositoryColumns() []*plugin.Column {
 			Transform:   transform.FromField("Description.Metrics.Subscribers"),
 			Description: "Subscribers.",
 		},
+		{
+			Name: "organization_id", Type: proto.ColumnType_INT, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.OrganizationID")},
 	}
 }
 

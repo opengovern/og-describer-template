@@ -17,13 +17,17 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	if value := ctx.Value(paramKeyRepoName); value != nil {
 		repositoryName = value.(string)
 	}
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
 
 	if repositoryName != "" {
 		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
 		if err != nil {
 			return nil, err
 		}
-		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
+		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -36,7 +40,7 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
+		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -45,7 +49,7 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	return values, nil
 }
 
-func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
+func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64, orgId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit  steampipemodels.RateLimit
@@ -80,6 +84,7 @@ func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClie
 					Deployment:     deployment,
 					RepoFullName:   repoFullName,
 					Organization:   owner,
+					OrganizationID: orgId,
 					RepositoryName: repo,
 				},
 			}

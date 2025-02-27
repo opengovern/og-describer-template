@@ -762,6 +762,7 @@ type OrganizationDescription struct {
 
 type OrgCollaboratorsDescription struct {
 	Organization   string
+	OrganizationID *int64
 	Affiliation    string
 	RepositoryName githubv4.String
 	Permission     githubv4.RepositoryPermission
@@ -796,13 +797,15 @@ type OrgAlertDependabotDescription struct {
 	DismissedComment            string
 	FixedAt                     github.Timestamp
 	Organization                string
+	OrganizationID              *int64
 }
 
 type OrgExternalIdentityDescription struct {
 	steampipemodels.OrganizationExternalIdentity
-	Organization string
-	UserLogin    string
-	UserID       int
+	Organization   string
+	OrganizationID *int64
+	UserLogin      string
+	UserID         int
 }
 
 type OrgMembersDescription struct {
@@ -818,6 +821,7 @@ type OrgMembersDescription struct {
 	Name                string
 	NodeID              string
 	Organization        string
+	OrganizationID      *int64
 	Role                *string
 	HasTwoFactorEnabled *bool
 	Status              *bool
@@ -1224,6 +1228,7 @@ type RepositoryDescription struct {
 	RepoURLs                      RepoURLs
 	Metrics                       Metrics
 	Organization                  string
+	OrganizationID                int
 	RepositoryFullName            string
 	Hooks                         []RepoHook
 	CodeOfConduct                 *github.CodeOfConduct
@@ -1326,6 +1331,7 @@ type RepoDeploymentDescription struct {
 	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
+	OrganizationID int64
 	RepositoryName string
 }
 
@@ -1334,6 +1340,7 @@ type RepoEnvironmentDescription struct {
 	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
+	OrganizationID int64
 	RepositoryName string
 }
 
@@ -1342,6 +1349,7 @@ type RepoRuleSetDescription struct {
 	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
+	OrganizationID int64
 	RepositoryName string
 }
 
@@ -1357,6 +1365,7 @@ type RepoSBOMDescription struct {
 	DocumentNamespace  string
 	Packages           []*github.RepoDependencies
 	Organization       string
+	OrganizationID     int64
 	RepositoryName     string
 }
 
@@ -1381,6 +1390,7 @@ type RepoVulnerabilityAlertDescription struct {
 	Severity                   githubv4.SecurityAdvisorySeverity
 	CvssScore                  float64
 	Organization               string
+	OrganizationID             int64
 	RepositoryName             string
 	RepositoryID               int64
 }
@@ -1539,6 +1549,7 @@ type RepositoryPermissionDescription struct {
 	Permissions        *map[string]bool
 	RoleName           *string
 	Organization       string
+	OrganizationID     int
 }
 
 type WorkflowDescription struct {
@@ -1832,21 +1843,22 @@ type WebhookJSON struct {
 }
 
 type WebhookDescription struct {
-	Type          string
-	ID            int64
-	Name          string
-	Active        bool
-	Events        []string
-	Config        WebhookConfig
-	UpdatedAt     time.Time
-	CreatedAt     time.Time
-	URL           string
-	TestURL       string
-	PingURL       string
-	DeliveriesURL string
-	LastResponse  HookResponse
-	Organization  string
-	RepositoryID  int64
+	Type           string
+	ID             int64
+	Name           string
+	Active         bool
+	Events         []string
+	Config         WebhookConfig
+	UpdatedAt      time.Time
+	CreatedAt      time.Time
+	URL            string
+	TestURL        string
+	PingURL        string
+	DeliveriesURL  string
+	LastResponse   HookResponse
+	Organization   string
+	OrganizationID int64
+	RepositoryID   int64
 }
 
 type ArtifactAIModelDescription struct {
@@ -1858,15 +1870,16 @@ type ArtifactAIModelDescription struct {
 }
 
 type OrganizationRoleDescription struct {
-	ID           int
-	Name         string
-	Description  string
-	Permissions  []string
-	Organization string
-	Source       string
-	BaseRole     string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	ID             int
+	Name           string
+	Description    string
+	Permissions    []string
+	Organization   string
+	OrganizationID int
+	Source         string
+	BaseRole       string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
 
 type OrganizationRoleAssignmentDescription struct {
@@ -1911,6 +1924,8 @@ type OrganizationTokenDescription struct {
 }
 
 type OrganizationAppDescription struct {
+	OrganizationID         int
+	Organization           string
 	ID                     int64
 	ClientID               string
 	Account                Account

@@ -61,6 +61,10 @@ func GetOrganizationMembers(ctx context.Context, githubClient model.GitHubClient
 		"cursor":   (*githubv4.String)(nil),
 	}
 	appendUserColumnIncludes(&variables, orgMembersCols())
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, org)
+	if err != nil {
+		return nil, err
+	}
 	var values []models.Resource
 	for {
 		err := client.Query(ctx, &query, variables)
@@ -91,6 +95,7 @@ func GetOrganizationMembers(ctx context.Context, githubClient model.GitHubClient
 					Name:                member.Node.Name,
 					NodeID:              member.Node.NodeId,
 					Organization:        org,
+					OrganizationID:      organization.ID,
 					Role:                member.Role,
 					HasTwoFactorEnabled: member.HasTwoFactorEnabled,
 					Status:              status,

@@ -17,12 +17,17 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 		repositoryName = value.(string)
 	}
 
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
+
 	if repositoryName != "" {
 		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
 		if err != nil {
 			return nil, err
 		}
-		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
+		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -35,7 +40,7 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
+		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +49,7 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 	return values, nil
 }
 
-func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
+func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64, orgId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	rulesetPageSize := pageSize
 	rulePageSize := pageSize
@@ -139,6 +144,7 @@ func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient,
 					RepoFullName:   repoFullName,
 					Organization:   owner,
 					RepositoryName: repo,
+					OrganizationID: orgId,
 				},
 			}
 			if stream != nil {
