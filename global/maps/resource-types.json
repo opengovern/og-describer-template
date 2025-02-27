@@ -183,18 +183,6 @@
     "Model": "OrgMembers"
   },
   {
-    "ResourceName": "Github/Organization/Team",
-    "Tags": {
-      "category": [
-        "Organization"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describers.GetOrganizationTeamList)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_organization_team",
-    "Model": "Team"
-  },
-  {
     "ResourceName": "Github/Organization/RoleAssignment",
     "Tags": {
       "category": [
