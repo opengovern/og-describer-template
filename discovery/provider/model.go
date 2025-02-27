@@ -1435,32 +1435,36 @@ type ParentTeam struct {
 }
 
 type TeamDescription struct {
-	Organization           string
-	Slug                   string
-	Name                   string
-	ID                     int
-	NodeID                 string
-	Description            string
-	CreatedAt              time.Time
-	UpdatedAt              time.Time
-	CombinedSlug           string
-	ParentTeam             ParentTeam
-	Privacy                string
-	AncestorsTotalCount    int
-	ChildTeamsTotalCount   int
-	DiscussionsTotalCount  int
-	InvitationsTotalCount  int
-	MembersTotalCount      int
-	ProjectsV2TotalCount   int
-	RepositoriesTotalCount int
-	URL                    string
-	DiscussionsURL         string
-	MembersURL             string
-	NewTeamURL             string
-	RepositoriesURL        string
-	TeamsURL               string
-	Subscription           string
-	OrganizationID         int
+	Name                string
+	ID                  int
+	NodeID              string
+	Slug                string
+	Description         *string
+	Privacy             string
+	NotificationSetting *string
+	URL                 string
+	HTMLURL             string
+	Permission          string
+	MembersCount        int
+	ReposCount          int
+	OrganizationID      string
+	Organization        string
+
+	ParentTeamID *int
+
+	TeamSync *TeamIdpGroups
+}
+
+// teamIdpGroups => shape from GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
+type TeamIdpGroups struct {
+	Groups []IdpGroup `json:"groups"`
+}
+
+// idpGroup => each group in the above response
+type IdpGroup struct {
+	GroupID          string `json:"group_id"`
+	GroupName        string `json:"group_name"`
+	GroupDescription string `json:"group_description"`
 }
 
 type TeamRepositoryDescription struct {
@@ -1472,20 +1476,10 @@ type TeamRepositoryDescription struct {
 }
 
 type TeamMemberDescription struct {
-	Company            string
-	CreatedAt          time.Time
-	Email              string
-	ID                 int
-	InteractionAbility interface{}
-	IsSiteAdmin        bool
-	Location           string
-	Login              string
-	LoginID            string
-	Name               string
-	NodeID             string
-	Organization       string
-	Role               string
-	Slug               string
+	Organization        string
+	TeamID              string
+	MemberPrincipalType string
+	MemberPrincipalID   string
 }
 
 type TrafficViewDailyDescription struct {
@@ -1890,18 +1884,22 @@ type OrganizationRoleDefinitionDescription struct {
 }
 
 type OrganizationTokenDescription struct {
-	AuthorizedCredentialId        int64
-	AuthorizedCredentialTitle     string
-	AuthorizedCredentialNote      string
-	AuthorizedCredentialExpiresAt time.Time
-	Login                         string
-	Scopes                        []string
+	Login          string
+	PrincipleType  string
+	OrganizationID string
+	Organization   string
+	PrincipalID    string
+
 	CredentialId                  int64
 	CredentialType                string
-	CredentialAccessedAt          time.Time
-	CredentialAuthorizedAt        time.Time
-	TokenLastEight                string
-	Fingerprint                   string
+	TokenLastEight                *string
+	CredentialAuthorizedAt        *time.Time
+	Scopes                        []string
+	Fingerprint                   *string
+	CredentialAccessedAt          *time.Time
+	AuthorizedCredentialId        int64
+	AuthorizedCredentialExpiresAt *time.Time
+	Title                         *string
 }
 
 type OrganizationAppDescription struct {

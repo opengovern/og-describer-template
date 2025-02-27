@@ -6104,28 +6104,21 @@ func (p TeamPaginator) NextPage(ctx context.Context) ([]Team, error) {
 }
 
 var listTeamFilters = map[string]string{
-	"ancestors_total_count":    "Description.AncestorsTotalCount",
-	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
-	"combined_slug":            "Description.CombinedSlug",
-	"description":              "Description.Description",
-	"discussions_total_count":  "Description.DiscussionsTotalCount",
-	"discussions_url":          "Description.DiscussionsURL",
-	"id":                       "Description.ID",
-	"invitations_total_count":  "Description.InvitationsTotalCount",
-	"members_total_count":      "Description.MembersTotalCount",
-	"members_url":              "Description.MembersURL",
-	"name":                     "Description.Name",
-	"new_team_url":             "Description.NewTeamURL",
-	"node_id":                  "Description.NodeID",
-	"parent_team":              "Description.ParentTeam",
-	"privacy":                  "Description.Privacy",
-	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
-	"repositories_total_count": "Description.RepositoriesTotalCount",
-	"repositories_url":         "Description.RepositoriesURL",
-	"slug":                     "Description.Slug",
-	"subscription":             "Description.Subscription",
-	"teams_url":                "Description.TeamsURL",
-	"url":                      "Description.URL",
+	"description":          "Description.Description",
+	"html_url":             "Description.HTMLURL",
+	"id":                   "Description.ID",
+	"members_count":        "Description.MembersCount",
+	"name":                 "Description.Name",
+	"node_id":              "Description.NodeID",
+	"notification_setting": "Description.NotificationSetting",
+	"organization_id":      "Description.OrganizationID",
+	"parent_team_id":       "Description.ParentTeamID",
+	"permission":           "Description.Permission",
+	"privacy":              "Description.Privacy",
+	"repos_count":          "Description.ReposCount",
+	"slug":                 "Description.Slug",
+	"team_sync":            "Description.TeamSync",
+	"url":                  "Description.URL",
 }
 
 func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6189,28 +6182,21 @@ func ListTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 }
 
 var getTeamFilters = map[string]string{
-	"ancestors_total_count":    "Description.AncestorsTotalCount",
-	"child_teams_total_count":  "Description.ChildTeamsTotalCount",
-	"combined_slug":            "Description.CombinedSlug",
-	"description":              "Description.Description",
-	"discussions_total_count":  "Description.DiscussionsTotalCount",
-	"discussions_url":          "Description.DiscussionsURL",
-	"id":                       "Description.ID",
-	"invitations_total_count":  "Description.InvitationsTotalCount",
-	"members_total_count":      "Description.MembersTotalCount",
-	"members_url":              "Description.MembersURL",
-	"name":                     "Description.Name",
-	"new_team_url":             "Description.NewTeamURL",
-	"node_id":                  "Description.NodeID",
-	"parent_team":              "Description.ParentTeam",
-	"privacy":                  "Description.Privacy",
-	"projects_v2_total_count":  "Description.ProjectsV2TotalCount",
-	"repositories_total_count": "Description.RepositoriesTotalCount",
-	"repositories_url":         "Description.RepositoriesURL",
-	"slug":                     "Description.Slug",
-	"subscription":             "Description.Subscription",
-	"teams_url":                "Description.TeamsURL",
-	"url":                      "Description.URL",
+	"description":          "Description.Description",
+	"html_url":             "Description.HTMLURL",
+	"id":                   "Description.ID",
+	"members_count":        "Description.MembersCount",
+	"name":                 "Description.Name",
+	"node_id":              "Description.NodeID",
+	"notification_setting": "Description.NotificationSetting",
+	"organization_id":      "Description.OrganizationID",
+	"parent_team_id":       "Description.ParentTeamID",
+	"permission":           "Description.Permission",
+	"privacy":              "Description.Privacy",
+	"repos_count":          "Description.ReposCount",
+	"slug":                 "Description.Slug",
+	"team_sync":            "Description.TeamSync",
+	"url":                  "Description.URL",
 }
 
 func GetTeam(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6560,19 +6546,9 @@ func (p TeamMemberPaginator) NextPage(ctx context.Context) ([]TeamMember, error)
 }
 
 var listTeamMemberFilters = map[string]string{
-	"company":             "Description.Company",
-	"created_at":          "Description.CreatedAt",
-	"email":               "Description.Email",
-	"id":                  "Description.ID",
-	"interaction_ability": "Description.InteractionAbility",
-	"is_site_admin":       "Description.IsSiteAdmin",
-	"location":            "Description.Location",
-	"login":               "Description.Login",
-	"login_id":            "Description.LoginID",
-	"name":                "Description.Name",
-	"node_id":             "Description.NodeID",
-	"role":                "Description.Role",
-	"slug":                "Description.Slug",
+	"member_principal_id":   "Description.MemberPrincipalID",
+	"member_principal_type": "Description.MemberPrincipalType",
+	"team_id":               "Description.TeamID",
 }
 
 func ListTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -6636,19 +6612,9 @@ func ListTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 var getTeamMemberFilters = map[string]string{
-	"company":             "Description.Company",
-	"created_at":          "Description.CreatedAt",
-	"email":               "Description.Email",
-	"id":                  "Description.ID",
-	"interaction_ability": "Description.InteractionAbility",
-	"is_site_admin":       "Description.IsSiteAdmin",
-	"location":            "Description.Location",
-	"login":               "Description.Login",
-	"login_id":            "Description.LoginID",
-	"name":                "Description.Name",
-	"node_id":             "Description.NodeID",
-	"role":                "Description.Role",
-	"slug":                "Description.Slug",
+	"member_principal_id":   "Description.MemberPrincipalID",
+	"member_principal_type": "Description.MemberPrincipalType",
+	"team_id":               "Description.TeamID",
 }
 
 func GetTeamMember(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -9437,15 +9403,17 @@ func (p OrganizationTokenPaginator) NextPage(ctx context.Context) ([]Organizatio
 var listOrganizationTokenFilters = map[string]string{
 	"authorized_credential_expires_at": "Description.AuthorizedCredentialExpiresAt",
 	"authorized_credential_id":         "Description.AuthorizedCredentialId",
-	"authorized_credential_note":       "Description.AuthorizedCredentialNote",
-	"authorized_credential_title":      "Description.AuthorizedCredentialTitle",
 	"credential_accessed_at":           "Description.CredentialAccessedAt",
 	"credential_authorized_at":         "Description.CredentialAuthorizedAt",
 	"credential_id":                    "Description.CredentialId",
 	"credential_type":                  "Description.CredentialType",
 	"fingerprint":                      "Description.Fingerprint",
 	"login":                            "Description.Login",
+	"organization_id":                  "Description.OrganizationID",
+	"principal_id":                     "Description.PrincipalID",
+	"principle_type":                   "Description.PrincipleType",
 	"scopes":                           "Description.Scopes",
+	"title":                            "Description.Title",
 	"token_last_eight":                 "Description.TokenLastEight",
 }
 
@@ -9512,15 +9480,17 @@ func ListOrganizationToken(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 var getOrganizationTokenFilters = map[string]string{
 	"authorized_credential_expires_at": "Description.AuthorizedCredentialExpiresAt",
 	"authorized_credential_id":         "Description.AuthorizedCredentialId",
-	"authorized_credential_note":       "Description.AuthorizedCredentialNote",
-	"authorized_credential_title":      "Description.AuthorizedCredentialTitle",
 	"credential_accessed_at":           "Description.CredentialAccessedAt",
 	"credential_authorized_at":         "Description.CredentialAuthorizedAt",
 	"credential_id":                    "Description.CredentialId",
 	"credential_type":                  "Description.CredentialType",
 	"fingerprint":                      "Description.Fingerprint",
 	"login":                            "Description.Login",
+	"organization_id":                  "Description.OrganizationID",
+	"principal_id":                     "Description.PrincipalID",
+	"principle_type":                   "Description.PrincipleType",
 	"scopes":                           "Description.Scopes",
+	"title":                            "Description.Title",
 	"token_last_eight":                 "Description.TokenLastEight",
 }
 

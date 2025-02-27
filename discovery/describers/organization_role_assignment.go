@@ -108,10 +108,6 @@ type orgRoleListResponseForAssignment struct {
 	Roles []OrgRoleForAssignment `json:"roles"`
 }
 
-type GitHubTeam struct {
-	ID int `json:"id"`
-}
-
 type GitHubUser struct {
 	ID int `json:"id"`
 }

@@ -2,85 +2,82 @@ package describers
 
 import (
 	"context"
+	"fmt"
+	resilientbridge "github.com/opengovern/resilient-bridge"
+	"github.com/opengovern/resilient-bridge/adapters"
+	"log"
+	"strconv"
+
 	"github.com/opengovern/og-describer-github/discovery/pkg/models"
 	model "github.com/opengovern/og-describer-github/discovery/provider"
-	"github.com/shurcooL/githubv4"
-	steampipemodels "github.com/turbot/steampipe-plugin-github/github/models"
-	"strconv"
 )
 
 func GetTeamList(ctx context.Context, githubClient model.GitHubClient, organizationName string, stream *models.StreamSender) ([]models.Resource, error) {
-	client := githubClient.GraphQLClient
-	var query struct {
-		RateLimit steampipemodels.RateLimit
-		Viewer    struct {
-			Organization struct {
-				Login string
-				Teams struct {
-					PageInfo steampipemodels.PageInfo
-					Nodes    []steampipemodels.TeamWithCounts
-				} `graphql:"teams(first: $pageSize, after: $cursor)"`
-			} `graphql:"organization(login: $orgName)"`
-		}
-	}
-	variables := map[string]interface{}{
-		"orgName":  githubv4.String(organizationName),
-		"pageSize": githubv4.Int(pageSize),
-		"cursor":   (*githubv4.String)(nil),
-	}
-	appendTeamColumnIncludes(&variables, teamCols())
+	sdk := resilientbridge.NewResilientBridge()
+	sdk.RegisterProvider("github", adapters.NewGitHubAdapter(githubClient.Token), &resilientbridge.ProviderConfig{
+		UseProviderLimits: true,
+		MaxRetries:        3,
+		BaseBackoff:       0,
+	})
+
 	var values []models.Resource
-	var teams []steampipemodels.TeamWithCounts
-	err := client.Query(ctx, &query, variables)
+
+	// 1) Confirm org => retrieve numeric org ID
+	orgID, err := fetchOrganizationID(sdk, organizationName)
 	if err != nil {
-		return nil, err
-	}
-	teams = append(teams, query.Viewer.Organization.Teams.Nodes...)
-	if query.Viewer.Organization.Teams.PageInfo.HasNextPage {
-		ts, err := getAdditionalTeams(ctx, client, query.Viewer.Organization.Login, query.Viewer.Organization.Teams.PageInfo.EndCursor)
-		if err != nil {
-			return nil, err
-		}
-		teams = append(teams, ts...)
+		return nil, fmt.Errorf("fetching org ID: %w", err)
 	}
 
-	for _, team := range teams {
+	// 2) List all teams
+	rawTeams, err := listAllTeams(sdk, organizationName, githubClient.Token)
+	if err != nil {
+		return nil, fmt.Errorf("listing teams: %w", err)
+	}
+
+	// 3) Build final slice, fetch team-sync for each
+	var final []model.TeamDescription
+	for _, t := range rawTeams {
+		td := model.TeamDescription{
+			Name:                t.Name,
+			ID:                  t.ID,
+			NodeID:              t.NodeID,
+			Slug:                t.Slug,
+			Description:         t.Description,
+			Privacy:             t.Privacy,
+			NotificationSetting: t.NotificationSetting,
+			URL:                 t.URL,
+			HTMLURL:             t.HTMLURL,
+			Permission:          t.Permission,
+			MembersCount:        t.MembersCount,
+			ReposCount:          t.ReposCount,
+			OrganizationID:      strconv.Itoa(orgID),
+			Organization:        organizationName,
+			ParentTeamID:        nil, // default null
+			TeamSync:            nil, // default null
+		}
+
+		// If there's a parent, fill it
+		if t.Parent != nil {
+			td.ParentTeamID = &t.Parent.ID
+		}
+
+		// Attempt to get team sync
+		syncInfo, syncErr := getTeamSyncInfo(sdk, organizationName, t.Slug, githubClient.Token)
+		if syncErr != nil {
+			// Could be 403 "not externally managed," 404, 429, etc.
+			log.Printf("Warning: Could not fetch team-sync for team=%q => %v", t.Slug, syncErr)
+		} else {
+			td.TeamSync = syncInfo
+		}
+
+		final = append(final, td)
+	}
+
+	for _, team := range final {
 		value := models.Resource{
-			ID:   strconv.Itoa(team.Id),
-			Name: team.Name,
-			Description: model.TeamDescription{
-				Organization: team.Organization.Name,
-				Slug:         team.Slug,
-				Name:         team.Name,
-				ID:           team.Id,
-				NodeID:       team.NodeId,
-				Description:  team.Description,
-				CreatedAt:    team.CreatedAt,
-				UpdatedAt:    team.UpdatedAt,
-				CombinedSlug: team.CombinedSlug,
-				ParentTeam: struct {
-					Id     int
-					NodeId string
-					Name   string
-					Slug   string
-				}{Id: team.ParentTeam.Id, NodeId: team.ParentTeam.NodeId, Name: team.ParentTeam.Name, Slug: team.ParentTeam.Slug},
-				Privacy:                team.Privacy,
-				AncestorsTotalCount:    team.Ancestors.TotalCount,
-				ChildTeamsTotalCount:   team.ChildTeams.TotalCount,
-				DiscussionsTotalCount:  team.Discussions.TotalCount,
-				InvitationsTotalCount:  team.Invitations.TotalCount,
-				MembersTotalCount:      team.Members.TotalCount,
-				ProjectsV2TotalCount:   team.ProjectsV2.TotalCount,
-				RepositoriesTotalCount: team.Repositories.TotalCount,
-				URL:                    team.Url,
-				DiscussionsURL:         team.DiscussionsUrl,
-				MembersURL:             team.MembersUrl,
-				NewTeamURL:             team.NewTeamUrl,
-				RepositoriesURL:        team.RepositoriesUrl,
-				TeamsURL:               team.TeamsUrl,
-				Subscription:           team.Subscription,
-				OrganizationID:         team.Organization.Id,
-			},
+			ID:          strconv.Itoa(team.ID),
+			Name:        team.Name,
+			Description: team,
 		}
 		if stream != nil {
 			if err := (*stream)(value); err != nil {
