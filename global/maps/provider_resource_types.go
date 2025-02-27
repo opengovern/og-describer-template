@@ -204,20 +204,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		GetDescriber:         nil,
 	},
 
-	"Github/Organization/Team": {
-		IntegrationType:      constants.IntegrationName,
-		ResourceName:         "Github/Organization/Team",
-		Tags:                 map[string][]string{
-            "category": {"Organization"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        provider.DescribeByGithub(describers.GetOrganizationTeamList),
-		GetDescriber:         nil,
-	},
-
 	"Github/Organization/RoleAssignment": {
 		IntegrationType:      constants.IntegrationName,
 		ResourceName:         "Github/Organization/RoleAssignment",
@@ -313,20 +299,6 @@ var ResourceTypes = map[string]model.ResourceType{
 		Annotations:          map[string]string{
         },
 		ListDescriber:        provider.DescribeByGithub(describers.GetAllRepositoriesDependabotAlerts),
-		GetDescriber:         nil,
-	},
-
-	"Github/Repository/Deployment": {
-		IntegrationType:      constants.IntegrationName,
-		ResourceName:         "Github/Repository/Deployment",
-		Tags:                 map[string][]string{
-            "category": {"Repository"},
-        },
-		Labels:               map[string]string{
-        },
-		Annotations:          map[string]string{
-        },
-		ListDescriber:        provider.DescribeByGithub(describers.GetAllRepositoriesDeployments),
 		GetDescriber:         nil,
 	},
 
@@ -748,13 +720,6 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 		
 	},
 
-	"Github/Organization/Team": {
-		Name:         "Github/Organization/Team",
-		IntegrationType:      constants.IntegrationName,
-		Description:                 "",
-		
-	},
-
 	"Github/Organization/RoleAssignment": {
 		Name:         "Github/Organization/RoleAssignment",
 		IntegrationType:      constants.IntegrationName,
@@ -829,13 +794,6 @@ var ResourceTypeConfigs = map[string]*interfaces.ResourceTypeConfiguration{
 
 	"Github/Repository/DependabotAlert": {
 		Name:         "Github/Repository/DependabotAlert",
-		IntegrationType:      constants.IntegrationName,
-		Description:                 "",
-		
-	},
-
-	"Github/Repository/Deployment": {
-		Name:         "Github/Repository/Deployment",
 		IntegrationType:      constants.IntegrationName,
 		Description:                 "",
 		
@@ -1028,7 +986,6 @@ var ResourceTypesList = []string{
   "Github/Organization/Dependabot/Alert",
   "Github/Organization/ExternalIdentity",
   "Github/Organization/Member",
-  "Github/Organization/Team",
   "Github/Organization/RoleAssignment",
   "Github/Organization/RoleDefinition",
   "Github/PullRequest",
@@ -1036,7 +993,6 @@ var ResourceTypesList = []string{
   "Github/Repository",
   "Github/Repository/Collaborator",
   "Github/Repository/DependabotAlert",
-  "Github/Repository/Deployment",
   "Github/Repository/Environment",
   "Github/Repository/Ruleset",
   "Github/Repository/SBOM",

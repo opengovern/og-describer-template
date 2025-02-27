@@ -287,18 +287,6 @@
     "Model": "RepoAlertDependabot"
   },
   {
-    "ResourceName": "Github/Repository/Deployment",
-    "Tags": {
-      "category": [
-        "Repository"
-      ]
-    },
-    "ListDescriber": "DescribeByGithub(describers.GetAllRepositoriesDeployments)",
-    "GetDescriber": "",
-    "SteampipeTable": "github_repository_deployment",
-    "Model": "RepoDeployment"
-  },
-  {
     "ResourceName": "Github/Repository/Environment",
     "Tags": {
       "category": [

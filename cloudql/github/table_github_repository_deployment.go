@@ -1,8 +1,6 @@
 package github
 
 import (
-	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
-
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -76,13 +74,14 @@ func gitHubRepositoryDeploymentColumns() []*plugin.Column {
 	}
 }
 
-func tableGitHubRepositoryDeployment() *plugin.Table {
-	return &plugin.Table{
-		Name:        "github_repository_deployment",
-		Description: "GitHub Deployments are releases of the app/service/etc to an environment.",
-		List: &plugin.ListConfig{
-			Hydrate: opengovernance.ListRepoDeployment,
-		},
-		Columns: commonColumns(gitHubRepositoryDeploymentColumns()),
-	}
-}
+//
+//func tableGitHubRepositoryDeployment() *plugin.Table {
+//	return &plugin.Table{
+//		Name:        "github_repository_deployment",
+//		Description: "GitHub Deployments are releases of the app/service/etc to an environment.",
+//		List: &plugin.ListConfig{
+//			Hydrate: opengovernance.ListRepoDeployment,
+//		},
+//		Columns: commonColumns(gitHubRepositoryDeploymentColumns()),
+//	}
+//}
