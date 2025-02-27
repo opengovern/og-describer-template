@@ -46,9 +46,15 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHu
 	opt := &github.ListAlertsOptions{
 		ListCursorOptions: github.ListCursorOptions{First: pageSize},
 	}
+	repo_details, _, err := client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		return nil, err
+	}
+
 	var values []models.Resource
 	for {
 		alerts, resp, err := client.Dependabot.ListRepoAlerts(ctx, owner, repo, opt)
+		
 		if err != nil {
 			return nil, err
 		}
@@ -62,8 +68,8 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHu
 				ID:   id,
 				Name: strconv.Itoa(alert.GetNumber()),
 				Description: model.RepoAlertDependabotDescription{
-					RepositoryID:                *alert.GetRepository().ID,
-					RepoFullName: *alert.GetRepository().FullName,
+					RepositoryID:                repo_details.GetID(),
+					RepoFullName:repo_details.GetFullName(),
 					AlertNumber:                 alert.GetNumber(),
 					State:                       alert.GetState(),
 					DependencyPackageEcosystem:  alert.GetDependency().GetPackage().GetEcosystem(),
