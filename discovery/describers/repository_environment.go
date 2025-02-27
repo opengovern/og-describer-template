@@ -19,7 +19,11 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	}
 
 	if repositoryName != "" {
-		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repositoryName)
+		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -32,7 +36,7 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := GetRepositoryEnvironments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -41,7 +45,7 @@ func GetAllRepositoriesEnvironments(ctx context.Context, githubClient model.GitH
 	return values, nil
 }
 
-func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit  steampipemodels.RateLimit
@@ -72,6 +76,7 @@ func GetRepositoryEnvironments(ctx context.Context, githubClient model.GitHubCli
 				ID:   strconv.Itoa(environment.Id),
 				Name: environment.Name,
 				Description: model.RepoEnvironmentDescription{
+					RepositoryID:   repoId,
 					Environment:    environment,
 					RepoFullName:   repoFullName,
 					Organization:   owner,

@@ -10,6 +10,12 @@ import (
 
 func gitHubRepositoryEnvironmentColumns() []*plugin.Column {
 	return []*plugin.Column{
+		{
+			Name:        "repository_id",
+			Type:        proto.ColumnType_INT,
+			Transform:   transform.FromField("Description.RepositoryID"),
+			Description: "Unique identifier of the GitHub repository.",
+		},
 		{Name: "repository_full_name", Type: proto.ColumnType_STRING,
 			Transform:   transform.FromField("Description.RepoFullName"),
 			Description: "The full name of the repository (login/repo-name)."},

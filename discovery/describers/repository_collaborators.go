@@ -28,7 +28,11 @@ func GetAllRepositoriesCollaborators(ctx context.Context, githubClient model.Git
 		if org != nil && org.ID != nil {
 			orgId = *org.ID
 		}
-		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repositoryName)
+		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repositoryName, repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -50,7 +54,7 @@ func GetAllRepositoriesCollaborators(ctx context.Context, githubClient model.Git
 		if org != nil && org.ID != nil {
 			orgId = *org.ID
 		}
-		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repo.GetName())
+		repoValues, err := GetRepositoryCollaborators(ctx, githubClient, stream, organizationName, orgId, repo.GetName(), repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -60,7 +64,7 @@ func GetAllRepositoriesCollaborators(ctx context.Context, githubClient model.Git
 	return values, nil
 }
 
-func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner string, orgId int64, repo string) ([]models.Resource, error) {
+func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner string, orgId int64, repo string, repoId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	affiliation := githubv4.CollaboratorAffiliationAll
 	var query struct {
@@ -97,6 +101,7 @@ func GetRepositoryCollaborators(ctx context.Context, githubClient model.GitHubCl
 				ID:   id,
 				Name: collaborator.Node.Name,
 				Description: model.RepoCollaboratorsDescription{
+					RepositoryID:     repoId,
 					RepositoryName:   repo,
 					RepoFullName:     repoFullName,
 					CollaboratorID:   collaborator.Node.Login,

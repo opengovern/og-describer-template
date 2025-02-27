@@ -1375,6 +1375,17 @@ func getRepositories(ctx context.Context, client *github.Client, owner string) (
 	return repositories, nil
 }
 
+func getRepositoryDetails(ctx context.Context, client *github.Client, owner, repo string) (*github.Repository, error) {
+
+	repository, _, err := client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		fmt.Printf("failed: %v\n", err)
+		return nil, err
+	}
+
+	return repository, nil
+}
+
 func getIssues(ctx context.Context, orgName string, client *github.Client) ([]*github.Issue, error) {
 	opt := &github.IssueListOptions{
 		Filter:      "assigned",

@@ -49,6 +49,7 @@ func ListRepositoryWebhooks(ctx context.Context, githubClient model.GitHubClient
 				ID:   strconv.Itoa(int(webhook.ID)),
 				Name: webhook.Name,
 				Description: model.WebhookDescription{
+					RepositoryID:  repo.GetID(),
 					Type:          webhook.Type,
 					ID:            webhook.ID,
 					Name:          webhook.Name,

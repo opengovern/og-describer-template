@@ -19,7 +19,11 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	}
 
 	if repositoryName != "" {
-		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repositoryName)
+		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -32,7 +36,7 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := GetRepositoryDeployments(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -41,7 +45,7 @@ func GetAllRepositoriesDeployments(ctx context.Context, githubClient model.GitHu
 	return values, nil
 }
 
-func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	var query struct {
 		RateLimit  steampipemodels.RateLimit
@@ -72,6 +76,7 @@ func GetRepositoryDeployments(ctx context.Context, githubClient model.GitHubClie
 				ID:   strconv.Itoa(deployment.Id),
 				Name: strconv.Itoa(deployment.Id),
 				Description: model.RepoDeploymentDescription{
+					RepositoryID:   repoId,
 					Deployment:     deployment,
 					RepoFullName:   repoFullName,
 					Organization:   owner,

@@ -24,6 +24,12 @@ func tableGitHubRepositoryDependabotAlert() *plugin.Table {
 			gitHubDependabotAlertColumns(),
 			[]*plugin.Column{
 				{
+					Name:        "repository_id",
+					Type:        proto.ColumnType_INT,
+					Transform:   transform.FromField("Description.RepositoryID"),
+					Description: "Unique identifier of the GitHub repository.",
+				},
+				{
 					Name:        "repository_full_name",
 					Type:        proto.ColumnType_STRING,
 					Transform:   transform.FromQual("Description.RepoFullName"),

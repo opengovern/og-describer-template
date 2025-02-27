@@ -18,7 +18,11 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 	}
 
 	if repositoryName != "" {
-		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repositoryName)
+		repo, err := getRepositoryDetails(ctx, githubClient.RestClient, organizationName, repositoryName)
+		if err != nil {
+			return nil, err
+		}
+		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repositoryName, repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -31,7 +35,7 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := GetRepositoryRuleSets(ctx, githubClient, stream, organizationName, repo.GetName(), repo.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +44,7 @@ func GetAllRepositoriesRuleSets(ctx context.Context, githubClient model.GitHubCl
 	return values, nil
 }
 
-func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, repoId int64) ([]models.Resource, error) {
 	client := githubClient.GraphQLClient
 	rulesetPageSize := pageSize
 	rulePageSize := pageSize
@@ -131,6 +135,7 @@ func GetRepositoryRuleSets(ctx context.Context, githubClient model.GitHubClient,
 				Name: ruleset.Name,
 				Description: model.RepoRuleSetDescription{
 					Ruleset:        ruleset,
+					RepositoryID:   repoId,
 					RepoFullName:   repoFullName,
 					Organization:   owner,
 					RepositoryName: repo,

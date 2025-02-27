@@ -1279,6 +1279,7 @@ type ReleaseDescription struct {
 }
 
 type RepoCollaboratorsDescription struct {
+	RepositoryID     int64
 	RepositoryName   string
 	RepoFullName     string
 	CollaboratorID   string
@@ -1289,6 +1290,7 @@ type RepoCollaboratorsDescription struct {
 }
 
 type RepoAlertDependabotDescription struct {
+	RepositoryID                int64
 	RepoFullName                string
 	AlertNumber                 int
 	State                       string
@@ -1321,6 +1323,7 @@ type RepoAlertDependabotDescription struct {
 
 type RepoDeploymentDescription struct {
 	steampipemodels.Deployment
+	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
 	RepositoryName string
@@ -1328,6 +1331,7 @@ type RepoDeploymentDescription struct {
 
 type RepoEnvironmentDescription struct {
 	steampipemodels.Environment
+	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
 	RepositoryName string
@@ -1335,12 +1339,14 @@ type RepoEnvironmentDescription struct {
 
 type RepoRuleSetDescription struct {
 	steampipemodels.Ruleset
+	RepositoryID   int64
 	RepoFullName   string
 	Organization   string
 	RepositoryName string
 }
 
 type RepoSBOMDescription struct {
+	RepositoryID       int64
 	RepositoryFullName string
 	SPDXID             string
 	SPDXVersion        string
@@ -1376,6 +1382,7 @@ type RepoVulnerabilityAlertDescription struct {
 	CvssScore                  float64
 	Organization               string
 	RepositoryName             string
+	RepositoryID               int64
 }
 
 type SearchCodeDescription struct {
@@ -1839,6 +1846,7 @@ type WebhookDescription struct {
 	DeliveriesURL string
 	LastResponse  HookResponse
 	Organization  string
+	RepositoryID  int64
 }
 
 type ArtifactAIModelDescription struct {
