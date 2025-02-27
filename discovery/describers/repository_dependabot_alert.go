@@ -62,7 +62,8 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHu
 				ID:   id,
 				Name: strconv.Itoa(alert.GetNumber()),
 				Description: model.RepoAlertDependabotDescription{
-					RepositoryID:                alert.GetRepository().GetID(),
+					RepositoryID:                *alert.GetRepository().ID,
+					RepoFullName: *alert.GetRepository().FullName,
 					AlertNumber:                 alert.GetNumber(),
 					State:                       alert.GetState(),
 					DependencyPackageEcosystem:  alert.GetDependency().GetPackage().GetEcosystem(),
