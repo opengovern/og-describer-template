@@ -11,6 +11,10 @@ func gitHubOrganizationExternalIdentityColumns() []*plugin.Column {
 	return []*plugin.Column{
 		{Name: "guid", Type: proto.ColumnType_STRING, Description: "Guid identifier for the external identity.",
 			Transform: transform.FromField("Description.Guid")},
+		{Name: "external_id", Type: proto.ColumnType_STRING, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.ExternalID")},
+		{Name: "external_provider_id", Type: proto.ColumnType_STRING, Description: "The unique identifier of the app.",
+			Transform: transform.FromField("Description.ExternalProviderID")},
 		{Name: "user_login", Type: proto.ColumnType_STRING, Description: "The GitHub user login.",
 			Transform: transform.FromField("Description.UserLogin")},
 		{Name: "user_id", Type: proto.ColumnType_INT, Description: "The GitHub user details.",

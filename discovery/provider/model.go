@@ -802,10 +802,12 @@ type OrgAlertDependabotDescription struct {
 
 type OrgExternalIdentityDescription struct {
 	steampipemodels.OrganizationExternalIdentity
-	Organization   string
-	OrganizationID *int64
-	UserLogin      string
-	UserID         int
+	ExternalID         string
+	ExternalProviderID string
+	Organization       string
+	OrganizationID     *int64
+	UserLogin          string
+	UserID             int
 }
 
 type OrgMembersDescription struct {

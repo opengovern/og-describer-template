@@ -52,12 +52,25 @@ func GetOrganizationExternalIdentities(ctx context.Context, githubClient model.G
 		}
 		for _, externalIdentity := range query.Organization.SamlIdentityProvider.ExternalIdentities.Nodes {
 			id := fmt.Sprintf("%s/%s", org, externalIdentity.User.Login)
+			var externalID string
+			var externalProviderID string
+
+			for _, att := range externalIdentity.SamlIdentity.Attributes {
+				if att.Name == "http://schemas.microsoft.com/identity/claims/objectidentifier" {
+					externalID = att.Value
+				}
+				if att.Name == "http://schemas.microsoft.com/identity/claims/tenantid" {
+					externalProviderID = att.Value
+				}
+			}
 			value := models.Resource{
 				ID:   id,
 				Name: org,
 				Description: model.OrgExternalIdentityDescription{
 					OrganizationExternalIdentity: externalIdentity,
 					Organization:                 org,
+					ExternalID:                   externalID,
+					ExternalProviderID:           externalProviderID,
 					OrganizationID:               organization.ID,
 					UserLogin:                    externalIdentity.User.Login,
 					UserID:                       externalIdentity.User.Id,

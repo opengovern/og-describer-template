@@ -2999,6 +2999,8 @@ func (p OrgExternalIdentityPaginator) NextPage(ctx context.Context) ([]OrgExtern
 }
 
 var listOrgExternalIdentityFilters = map[string]string{
+	"external_id":             "Description.ExternalID",
+	"external_provider_id":    "Description.ExternalProviderID",
 	"guid":                    "Description.Guid",
 	"organization_id":         "Description.OrganizationID",
 	"organization_invitation": "Description.OrganizationInvitation",
@@ -3069,6 +3071,8 @@ func ListOrgExternalIdentity(ctx context.Context, d *plugin.QueryData, _ *plugin
 }
 
 var getOrgExternalIdentityFilters = map[string]string{
+	"external_id":             "Description.ExternalID",
+	"external_provider_id":    "Description.ExternalProviderID",
 	"guid":                    "Description.Guid",
 	"organization_id":         "Description.OrganizationID",
 	"organization_invitation": "Description.OrganizationInvitation",
