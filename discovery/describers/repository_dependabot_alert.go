@@ -18,8 +18,13 @@ func GetAllRepositoriesDependabotAlerts(ctx context.Context, githubClient model.
 		repositoryName = value.(string)
 	}
 
+	organization, err := GetOrganizationAdditionalData(ctx, githubClient.RestClient, organizationName)
+	if err != nil {
+		return nil, err
+	}
+
 	if repositoryName != "" {
-		repoValues, err := GetRepositoryDependabotAlerts(ctx, githubClient, stream, organizationName, repositoryName)
+		repoValues, err := GetRepositoryDependabotAlerts(ctx, githubClient, stream, organizationName, repositoryName, organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -32,7 +37,7 @@ func GetAllRepositoriesDependabotAlerts(ctx context.Context, githubClient model.
 	}
 	var values []models.Resource
 	for _, repo := range repositories {
-		repoValues, err := GetRepositoryDependabotAlerts(ctx, githubClient, stream, organizationName, repo.GetName())
+		repoValues, err := GetRepositoryDependabotAlerts(ctx, githubClient, stream, organizationName, repo.GetName(), organization.GetID())
 		if err != nil {
 			return nil, err
 		}
@@ -41,7 +46,7 @@ func GetAllRepositoriesDependabotAlerts(ctx context.Context, githubClient model.
 	return values, nil
 }
 
-func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string) ([]models.Resource, error) {
+func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHubClient, stream *models.StreamSender, owner, repo string, orgId int64) ([]models.Resource, error) {
 	client := githubClient.RestClient
 	opt := &github.ListAlertsOptions{
 		ListCursorOptions: github.ListCursorOptions{First: pageSize},
@@ -96,6 +101,7 @@ func GetRepositoryDependabotAlerts(ctx context.Context, githubClient model.GitHu
 					DismissedComment:            alert.GetDismissedComment(),
 					FixedAt:                     alert.GetFixedAt(),
 					Organization:                owner,
+					OrganizationID:              orgId,
 					RepositoryName:              repo,
 				},
 			}

@@ -1325,6 +1325,7 @@ type RepoAlertDependabotDescription struct {
 	DismissedComment            string
 	FixedAt                     github.Timestamp
 	Organization                string
+	OrganizationID              int64
 	RepositoryName              string
 }
 
