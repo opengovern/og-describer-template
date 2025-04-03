@@ -72,7 +72,7 @@ func GetContainerPackageList(
 				continue
 			}
 			//fmt.Println(packageValues)
-			allValues = append(allValues, packageValues...)
+			allValues = append(allValues, packageValues)
 		}
 	}
 	fmt.Println(allValues)

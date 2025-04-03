@@ -1617,7 +1617,8 @@ type ContainerPackageDescription struct {
 	TotalSize    int64
 	Metadata     ContainerMetadata
 	Manifest     interface{}
-	Organization string
+	ImageRef string
+	ImageUri []string
 
 	// -- Add these new fields/methods: --
 
