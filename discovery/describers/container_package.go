@@ -90,9 +90,9 @@ func getVersionOutput(
 	apiToken, org, packageName string,
 	version model.PackageVersion,
 	stream *models.StreamSender,
-) ([]models.Resource, error) {
+) (models.Resource, error) {
 
-	var concurrentResults []models.Resource
+	var concurrentResults models.Resource
 	normalizedPackageName := strings.ToLower(packageName)
 	tags := version.Metadata.Container.Tags
 	if len(tags) == 0 {
@@ -105,21 +105,23 @@ func getVersionOutput(
 	errChan := make(chan error, 1)
 
 	// For each tag, fetch the container details in a goroutine
+	// empty string array
+	image_uri := make([]string, 0)
 	for _, tag := range tags {
-		wg.Add(1)
-		go func(t string) {
-			defer wg.Done()
-			normalizedTag := strings.ToLower(t)
-			imageRef := fmt.Sprintf("ghcr.io/%s/%s:%s", org, normalizedPackageName, normalizedTag)
+		normalizedTag := strings.ToLower(tag)
+		image_uri = append(image_uri,fmt.Sprintf("ghcr.io/%s/%s:%s", org, normalizedPackageName, normalizedTag ))
+		
+	}
+	imageRef := fmt.Sprintf("ghcr.io/%s/%s@sha256%s", org, normalizedPackageName, strings.Split(version.Name, ":")[1])
 
-			ov, err := fetchAndAssembleOutput(apiToken, org, normalizedPackageName, version, imageRef)
-			if err != nil {
-				select {
-				case errChan <- err:
-				default:
-				}
-				return
-			}
+	ov, err := fetchAndAssembleOutput(apiToken, org, normalizedPackageName, version, imageRef,image_uri)
+	if err != nil {
+		select {
+		case errChan <- err:
+		default:
+		}
+		return concurrentResults,nil
+	}
 
 			// Convert ov -> models.Resource
 			value := models.Resource{
@@ -128,9 +130,6 @@ func getVersionOutput(
 				Description: ov,
 			}
 			resultsChan <- value
-		}(tag)
-	}
-
 	// Wait for goroutines
 	go func() {
 		wg.Wait()
@@ -140,25 +139,25 @@ func getVersionOutput(
 
 	// If any goroutine sends an error, return the first one
 	if err := <-errChan; err != nil {
-		return nil, err
+		return concurrentResults, err
 	}
 
 	// Collect concurrency results
-	for res := range resultsChan {
-		// Always append to concurrentResults so it can be returned
-		concurrentResults = append(concurrentResults, res)
+	// for res := range resultsChan {
+	// 	// Always append to concurrentResults so it can be returned
+	// 	concurrentResults = append(concurrentResults, res)
 
-		// If streaming, also stream each item
-		if stream != nil {
-			if e := (*stream)(res); e != nil {
-				return nil, e
-			}
-		}
-	}
+	// 	// If streaming, also stream each item
+	// 	if stream != nil {
+	// 		if e := (*stream)(res); e != nil {
+	// 			return nil, e
+	// 		}
+	// 	}
+	// }
 
 	// Deduplicate by (version.ID + actualDigest)
-	deduped := deduplicateVersionOutputsByDigest(concurrentResults, version.ID, org)
-	return deduped, nil
+	// deduped := deduplicateVersionOutputsByDigest(concurrentResults, version.ID, org)
+	return value, nil
 }
 
 // -----------------------------------------------------------------------------
@@ -231,6 +230,7 @@ func fetchAndAssembleOutput(
 	apiToken, org, packageName string,
 	version model.PackageVersion,
 	imageRef string,
+	imageURIs []string,
 ) (model.ContainerPackageDescription, error) {
 
 	authOption := remote.WithAuth(&authn.Basic{
@@ -297,7 +297,10 @@ func fetchAndAssembleOutput(
 		CreatedAt:             version.CreatedAt,
 		UpdatedAt:             version.UpdatedAt,
 		PackageURL:            version.HTMLURL,
-		Name:                  imageRef,
+		Name:                  packageName,
+		ImageUri: imageURIs,
+		ImageRef: imageRef,
+
 		MediaType:             string(desc.Descriptor.MediaType),
 		TotalSize:             totalSize,
 		Metadata:              version.Metadata,

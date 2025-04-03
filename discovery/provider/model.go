@@ -1619,6 +1619,7 @@ type ContainerPackageDescription struct {
 	Manifest     interface{}
 	ImageRef string
 	ImageUri []string
+	Organization string
 
 	// -- Add these new fields/methods: --
 
