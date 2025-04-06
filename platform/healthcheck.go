@@ -282,7 +282,8 @@ func IsHealthy(ctx context.Context, client *github.Client, org string) error {
 	fmt.Println(string(output))
 
 	if !healthy {
-		return errors.New("organization is not healthy due to missing permissions")
+		errorMsg := fmt.Sprintf("Organization '%s' is not healthy. Missing permissions: %s", org, missingPermissions)
+		return errors.New(errorMsg)
 	}
 
 	return nil
