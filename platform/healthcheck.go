@@ -1,17 +1,31 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"sync"
 	"time"
 
 	"github.com/google/go-github/v66/github"
 	"golang.org/x/oauth2"
 )
+
+type GraphQLResponse struct {
+	Data   interface{}    `json:"data,omitempty"`
+	Errors []GraphQLError `json:"errors,omitempty"`
+}
+type GraphQLError struct {
+	Message string `json:"message"`
+}
+type GraphQLRequest struct {
+	Query     string                 `json:"query"`
+	Variables map[string]interface{} `json:"variables"`
+}
 
 // Config represents the JSON input configuration
 type Config struct {
@@ -107,14 +121,66 @@ func IsHealthy(ctx context.Context, client *github.Client, org string) error {
 		{
 			Name: ReadProject,
 			Check: func(ctx context.Context, client *github.Client, org string) error {
-				// Attempt to list projects in the organization
-				_, _, err := client.Organizations.ListProjects(ctx, org, &github.ProjectListOptions{
-					State: "all",
-					ListOptions: github.ListOptions{
-						PerPage: 1,
-					},
-				})
-				return err
+				graphqlQuery := `
+						query CheckOrgProjectAccess($orgLogin: String!) {
+						  organization(login: $orgLogin) {
+							# Requesting projectsV2 itself requires read:project or read:org
+							projectsV2(first: 1) {
+							  # Requesting nodes requires read access
+							  nodes {
+								id # Requesting a simple field
+							  }
+							}
+						  }
+						}`
+
+				variables := map[string]interface{}{
+					"orgLogin": org,
+				}
+
+				requestBody := GraphQLRequest{
+					Query:     graphqlQuery,
+					Variables: variables,
+				}
+				requestBodyBytes, err := json.Marshal(requestBody)
+				if err != nil {
+					// Should not happen with this static structure, but handle defensively
+					return fmt.Errorf("failed to marshal graphql request for project check: %w", err)
+				}
+
+				// Create POST request to GraphQL endpoint
+				url := "https://api.github.com/graphql" // Correct GraphQL endpoint
+				req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyBytes))
+				if err != nil {
+					return fmt.Errorf("failed to create graphql request for project check: %w", err)
+				}
+				req.Header.Set("Content-Type", "application/json")
+
+				// Use client.Do to execute the request with the client's auth
+				graphqlResp := new(GraphQLResponse)
+				// client.Do handles sending the request and basic response checking (non-2xx status codes)
+				// It also decodes the response body into graphqlResp if successful
+				_, err = client.Do(ctx, req, graphqlResp)
+				if err != nil {
+					// This err could be a transport error or a non-2xx status code error from CheckResponse
+					// It might already indicate a 401/403 permission issue at the HTTP level
+					return fmt.Errorf("graphql request for project check failed (HTTP level): %w", err)
+				}
+
+				// Even with 200 OK, check for errors reported within the GraphQL response body
+				if len(graphqlResp.Errors) > 0 {
+					errorMessages := ""
+					for i, gqlErr := range graphqlResp.Errors {
+						if i > 0 {
+							errorMessages += "; "
+						}
+						errorMessages += gqlErr.Message
+					}
+					return fmt.Errorf("graphql query for project check returned errors: %s", errorMessages)
+				}
+
+				// If no error from client.Do and no errors in the response body, access is likely okay
+				return nil
 			},
 		},
 		{
