@@ -40,20 +40,20 @@ func tableGitHubContainerPackage() *plugin.Table {
 				Description: "Timestamp when the package was last updated."},
 			{
 				Name:        "package_url",
-				Type:        proto.ColumnType_JSON,
+				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.PackageURL"),
 				Description: "HTML URL for the package."},
-				{
+			{
 				Name:        "image_ref",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Description.ImageRef"),
 				Description: "HTML URL for the package."},
-				{
+			{
 				Name:        "image_uri",
-				Type:        proto.ColumnType_STRING,
+				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Description.ImageUri"),
 				Description: "HTML URL for the package."},
-				
+
 			{
 				Name:        "name",
 				Type:        proto.ColumnType_STRING,
