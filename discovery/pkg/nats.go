@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	opengovernance "github.com/opengovern/og-describer-github/discovery/pkg/es"
 	"github.com/opengovern/og-describer-template/discovery/pkg/orchestrator"
 	"github.com/opengovern/og-describer-template/global"
 	"os"
@@ -47,7 +48,7 @@ func NewWorker(
 	if ManualTriggers == "true" {
 		topic = global.JobQueueTopicManuals
 	}
-	if err := jq.Stream(ctx, global.StreamName, " describe job runner queue", []string{topic}, 200000); err != nil {
+	if err := jq.Stream(ctx, global.StreamName, " describe job runner queue", []string{topic}, 5000); err != nil {
 		logger.Error("failed to create stream", zap.Error(err))
 		return nil, err
 	}
