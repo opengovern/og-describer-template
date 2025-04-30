@@ -4,3 +4,4 @@ Publisher: opencomply.io
 Author : opencomply engineering team
 SupportedPlatformVersion: 2.x.x
 DemoDataURL: https://demo-data.opencomply.io/github/demo_data.tar.gz.enc
+DiscoveryType: Task
